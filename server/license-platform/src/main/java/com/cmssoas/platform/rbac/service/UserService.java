@@ -24,11 +24,14 @@ public class UserService {
     private final OpsUserRepository userRepo;
     private final OpsRoleRepository roleRepo;
     private final PasswordEncoder encoder;
+    private final com.cmssoas.platform.common.AuditWriter audit;
 
-    public UserService(OpsUserRepository userRepo, OpsRoleRepository roleRepo, PasswordEncoder encoder) {
+    public UserService(OpsUserRepository userRepo, OpsRoleRepository roleRepo, PasswordEncoder encoder,
+                       com.cmssoas.platform.common.AuditWriter audit) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
         this.encoder = encoder;
+        this.audit = audit;
     }
 
     public List<UserView> list() {
@@ -56,6 +59,7 @@ public class UserService {
         u.setMustChangePwd(true);   // 首登强制改密
         u.setCreatedAt(LocalDateTime.now());
         userRepo.save(u);
+        audit.log(null, "USER_CREATE", u.getUsername() + " · 角色=" + role.getCode());
         return new UserView(u.getId(), u.getUsername(), role.getCode(), role.getName(),
                 u.getStatus(), true, u.getCreatedAt().toString());
     }
@@ -66,6 +70,7 @@ public class UserService {
         u.setPasswordHash(encoder.encode(pwd));
         u.setMustChangePwd(true);
         userRepo.save(u);
+        audit.log(null, "USER_RESET_PWD", u.getUsername());
     }
 
     public void toggle(Long id) {
@@ -73,6 +78,7 @@ public class UserService {
         if ("admin".equals(u.getUsername())) throw ApiException.badRequest("不能停用内置管理员");
         u.setStatus("ACTIVE".equals(u.getStatus()) ? "DISABLED" : "ACTIVE");
         userRepo.save(u);
+        audit.log(null, "USER_TOGGLE", u.getUsername() + " -> " + u.getStatus());
     }
 
     public void changePassword(Long uid, ChangePwdRequest req) {

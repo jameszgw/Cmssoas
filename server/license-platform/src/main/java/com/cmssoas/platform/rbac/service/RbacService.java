@@ -20,12 +20,15 @@ public class RbacService {
     private final PermissionRepository permRepo;
     private final OpsRoleRepository roleRepo;
     private final RolePermissionRepository rolePermRepo;
+    private final com.cmssoas.platform.common.AuditWriter audit;
 
     public RbacService(PermissionRepository permRepo, OpsRoleRepository roleRepo,
-                       RolePermissionRepository rolePermRepo) {
+                       RolePermissionRepository rolePermRepo,
+                       com.cmssoas.platform.common.AuditWriter audit) {
         this.permRepo = permRepo;
         this.roleRepo = roleRepo;
         this.rolePermRepo = rolePermRepo;
+        this.audit = audit;
     }
 
     /** 权限定义树（按 parentCode 组装；先建全部节点再链接，避免顺序依赖）。 */
@@ -60,9 +63,12 @@ public class RbacService {
         if (!CurrentUser.isSuperAdmin()) throw new ApiException(HttpStatus.FORBIDDEN, "仅超级管理员可修改权限");
         roleRepo.findById(roleId).orElseThrow(() -> ApiException.notFound("角色不存在"));
         rolePermRepo.deleteByRoleId(roleId);
+        int granted = 0;
         for (PermItem it : items) {
             if (it.mode() == null || "NONE".equals(it.mode())) continue;
             rolePermRepo.save(new RolePermission(roleId, it.code(), it.mode()));
+            granted++;
         }
+        audit.log(null, "ROLE_PERM_UPDATE", "roleId=" + roleId + " · 授予 " + granted + " 项权限");
     }
 }

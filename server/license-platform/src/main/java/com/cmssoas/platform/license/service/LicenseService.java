@@ -1,6 +1,7 @@
 package com.cmssoas.platform.license.service;
 
 import com.cmssoas.platform.common.ApiException;
+import com.cmssoas.platform.common.AuditWriter;
 import com.cmssoas.platform.license.domain.License;
 import com.cmssoas.platform.license.domain.LicenseHistory;
 import com.cmssoas.platform.license.domain.LicenseStatus;
@@ -32,13 +33,15 @@ public class LicenseService {
     private final LicenseHistoryRepository historyRepo;
     private final Ed25519KeyService keyService;
     private final ObjectMapper mapper;
+    private final AuditWriter audit;
 
     public LicenseService(LicenseRepository licenseRepo, LicenseHistoryRepository historyRepo,
-                          Ed25519KeyService keyService, ObjectMapper mapper) {
+                          Ed25519KeyService keyService, ObjectMapper mapper, AuditWriter audit) {
         this.licenseRepo = licenseRepo;
         this.historyRepo = historyRepo;
         this.keyService = keyService;
         this.mapper = mapper;
+        this.audit = audit;
     }
 
     // ---------- 查询 ----------
@@ -93,6 +96,7 @@ public class LicenseService {
         resign(l);
         licenseRepo.save(l);
         historyRepo.save(LicenseHistory.of(l, "ISSUE", "operator", r.reason()));
+        audit.log(null, "LICENSE_ISSUE", l.getLicenseId() + " · " + l.getEdition() + " · " + l.getCustomer());
         log.info("[license] 已签发 {} v{}", l.getLicenseId(), l.getCurrentVersion());
         return LicenseDetail.from(l);
     }
@@ -106,6 +110,7 @@ public class LicenseService {
         l.setNotAfter(r.notAfter());
         if (l.getStatus() == LicenseStatus.EXPIRED) l.setStatus(LicenseStatus.ACTIVE);
         bumpAndResign(l, "RENEW", r.reason());
+        audit.log(null, "LICENSE_RENEW", l.getLicenseId() + " -> " + l.getNotAfter() + " v" + l.getCurrentVersion());
         return LicenseDetail.from(l);
     }
 
@@ -120,6 +125,7 @@ public class LicenseService {
         if (r.concurrency() != null) l.setConcurrency(r.concurrency());
         if (r.edition() != null && !r.edition().isBlank()) l.setEdition(r.edition());
         bumpAndResign(l, "MODIFY", r.reason());
+        audit.log(null, "LICENSE_MODIFY", l.getLicenseId() + " v" + l.getCurrentVersion());
         return LicenseDetail.from(l);
     }
 
@@ -130,6 +136,7 @@ public class LicenseService {
         if (l.getStatus() == LicenseStatus.REVOKED) throw ApiException.badRequest("该 License 已吊销");
         l.setStatus(LicenseStatus.REVOKED);
         bumpAndResign(l, "REVOKE", r == null ? null : r.reason());
+        audit.log(null, "LICENSE_REVOKE", l.getLicenseId() + " · " + (r == null ? "" : r.reason()));
         log.info("[license] 已吊销 {}", licenseId);
         return LicenseDetail.from(l);
     }

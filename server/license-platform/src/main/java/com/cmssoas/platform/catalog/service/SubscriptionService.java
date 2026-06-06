@@ -30,13 +30,16 @@ public class SubscriptionService {
     private final PlanRepository planRepo;
     private final LicenseService licenseService;
     private final ObjectMapper mapper;
+    private final com.cmssoas.platform.common.AuditWriter audit;
 
     public SubscriptionService(SubscriptionRepository subRepo, PlanRepository planRepo,
-                               LicenseService licenseService, ObjectMapper mapper) {
+                               LicenseService licenseService, ObjectMapper mapper,
+                               com.cmssoas.platform.common.AuditWriter audit) {
         this.subRepo = subRepo;
         this.planRepo = planRepo;
         this.licenseService = licenseService;
         this.mapper = mapper;
+        this.audit = audit;
     }
 
     public List<PlanView> plans() {
@@ -76,6 +79,8 @@ public class SubscriptionService {
         s.setCreatedAt(LocalDateTime.now());
         subRepo.save(s);
 
+        audit.log(null, "SUBSCRIPTION_CREATE",
+                r.tenantCode() + " · " + plan.getCode() + " x" + qty + " -> " + lic.licenseId());
         log.info("[subscription] 租户 {} 订阅 {} x{} -> 自动签发 {}",
                 r.tenantCode(), plan.getCode(), qty, lic.licenseId());
         return SubscriptionView.from(s);
