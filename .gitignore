@@ -4,3 +4,9 @@ web/prototype/package.json
 dist/
 .tmp/
 *.tsbuildinfo
+
+# Java / Maven
+target/
+!**/src/**/target/
+# 邮件本地落盘（delivery=log）
+server/license-platform/var/

@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: license-platform
+
+  # ---- 数据源：默认 H2 内存库（开箱即跑）。生产改 PostgreSQL ----
+  datasource:
+    url: jdbc:h2:mem:cmssoas;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true       # http://localhost:8080/h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # schema 由 Flyway 管理，JPA 仅校验
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # ---- 邮件（SMTP）。delivery=log 时不真正外发，仅渲染落盘+日志 ----
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# ---- 应用自定义 ----
+app:
+  mail:
+    delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
+    from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
+    from-name: CMSSOAS
+    spool-dir: ./var/mail                 # delivery=log 时渲染后的邮件落盘目录
+  activation:
+    base-url: ${APP_ACTIVATION_BASE_URL:http://localhost:5173/activate}
+    ttl-hours: 24
+
+# 允许前端开发服务器跨域
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:4173
+
+logging:
+  level:
+    com.cmssoas: INFO

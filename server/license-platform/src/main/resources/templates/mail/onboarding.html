@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#eef2f9;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f9;padding:28px 0;">
+    <tr><td align="center">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0"
+             style="width:560px;max-width:92%;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e3e9f4;">
+        <!-- 头部 -->
+        <tr><td style="background:linear-gradient(120deg,#1c388a,#2f6bff 48%,#37b6ff);padding:34px 24px;text-align:center;">
+          <div style="display:inline-block;width:46px;height:46px;line-height:46px;border-radius:12px;background:rgba(255,255,255,.2);color:#fff;font-weight:900;font-size:22px;">C</div>
+          <div style="color:#fff;font-size:20px;font-weight:800;margin-top:12px;">欢迎加入 CMSSOAS</div>
+          <div style="color:rgba(255,255,255,.9);font-size:13px;margin-top:4px;">您的软件授权运营租户已成功开通</div>
+        </td></tr>
+
+        <!-- 正文 -->
+        <tr><td style="padding:26px 30px;color:#0f1b34;">
+          <p style="font-size:14px;margin:0 0 12px;">尊敬的管理员，您好：</p>
+          <p style="font-size:14px;line-height:1.6;margin:0 0 18px;color:#3a465e;">
+            您所在企业的租户已完成开通与初始化，请点击下方按钮激活管理员账户并设置登录密码。
+          </p>
+
+          <!-- 关键信息 -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                 style="background:#f4f7fd;border:1px solid #e3e9f4;border-radius:10px;padding:6px 14px;margin:0 0 20px;">
+            <tr><td style="font-size:13px;color:#647089;padding:7px 0;">租户名称</td>
+                <td align="right" style="font-size:13px;color:#103e9c;font-family:'Consolas',monospace;font-weight:700;" th:text="${tenantName}">华东数据科技</td></tr>
+            <tr><td style="font-size:13px;color:#647089;padding:7px 0;border-top:1px solid #e8eef8;">租户编号</td>
+                <td align="right" style="font-size:13px;color:#103e9c;font-family:'Consolas',monospace;font-weight:700;border-top:1px solid #e8eef8;" th:text="${tenantCode}">T-100482</td></tr>
+            <tr><td style="font-size:13px;color:#647089;padding:7px 0;border-top:1px solid #e8eef8;">套餐版本</td>
+                <td align="right" style="font-size:13px;color:#103e9c;font-family:'Consolas',monospace;font-weight:700;border-top:1px solid #e8eef8;" th:text="${version}">v2.4.0</td></tr>
+            <tr><td style="font-size:13px;color:#647089;padding:7px 0;border-top:1px solid #e8eef8;">链接有效期</td>
+                <td align="right" style="font-size:13px;color:#103e9c;font-family:'Consolas',monospace;font-weight:700;border-top:1px solid #e8eef8;">
+                  <span th:text="${ttlHours}">24</span> 小时</td></tr>
+          </table>
+
+          <!-- 激活按钮 -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+            <a th:href="${activationUrl}" href="#"
+               style="display:inline-block;width:100%;box-sizing:border-box;text-align:center;background:linear-gradient(100deg,#2f6bff,#19b7ff);color:#ffffff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 0;border-radius:11px;">
+              激活管理员账户 →
+            </a>
+          </td></tr></table>
+
+          <p style="font-size:12px;color:#93a0b8;text-align:center;margin:14px 0 0;">
+            为保障安全，首次登录将强制修改密码并绑定双因素认证（MFA）。
+          </p>
+          <p style="font-size:12px;color:#93a0b8;margin:16px 0 0;word-break:break-all;">
+            若按钮无法点击，请复制以下链接到浏览器打开：<br/>
+            <a th:href="${activationUrl}" th:text="${activationUrl}" href="#" style="color:#2f6bff;">激活链接</a>
+          </p>
+        </td></tr>
+
+        <!-- 页脚 -->
+        <tr><td style="background:#f4f7fd;padding:16px 24px;text-align:center;border-top:1px solid #e3e9f4;">
+          <div style="font-size:12px;color:#93a0b8;">本邮件由 <span th:text="${fromName}">CMSSOAS</span> 系统自动发送，请勿直接回复。</div>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
