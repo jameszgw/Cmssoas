@@ -8,6 +8,7 @@ const navs = [
   { to: '/overview', key: 'nav.overview' },
   { to: '/tenants', key: 'nav.tenants' },
   { to: '/licensing', key: 'nav.license' },
+  { to: '/online', key: 'nav.online' },
   { to: '/products', key: 'nav.catalog' },
   { to: '/plans', key: 'nav.plan' },
   { to: '/audit', key: 'nav.audit' },

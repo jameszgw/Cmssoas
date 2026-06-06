@@ -6,6 +6,7 @@ import AreaChart from '@/components/charts/AreaChart.vue'
 import DonutChart from '@/components/charts/DonutChart.vue'
 import BarList from '@/components/charts/BarList.vue'
 import OnboardTenantDialog from '@/components/OnboardTenantDialog.vue'
+import PageHelp from '@/components/PageHelp.vue'
 import { mockTenants, planMix, trendIssue, trendRenew } from '@/api/mock'
 
 const { t } = useI18n()
@@ -23,6 +24,8 @@ const statusClass: Record<string, string> = { active: 's-active', soon: 's-soon'
 
 <template>
   <div class="wrap">
+    <PageHelp id="overview" :title="t('help.overview.title')"
+      :tips="[t('help.overview.t1'), t('help.overview.t2'), t('help.overview.t3')]" />
     <!-- Hero -->
     <section class="hero">
       <div class="crumbs">{{ t('hero.crumbs') }}</div>

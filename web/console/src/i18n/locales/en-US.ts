@@ -3,8 +3,44 @@ export default {
   theme: { label: 'Theme', tech: 'Tech Blue', midnight: 'Midnight', gold: 'Business Gold' },
   lang: { label: 'EN' },
   nav: {
-    overview: 'Overview', tenants: 'Tenants', license: 'Licensing',
+    overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
     catalog: 'Products', plan: 'Plans', audit: 'Audit',
+  },
+  help: {
+    overview: {
+      title: 'Guide · Overview',
+      t1: 'Use “Onboard Tenant” to auto-provision the DB, initialize data and email the admin an activation invite.',
+      t2: 'KPIs and charts are live data; IDs, versions and amounts use a monospace font for easy verification.',
+      t3: '“Quick Actions” gathers frequent entries; expiry and heartbeat anomalies surface in “Operations To-do”.',
+    },
+    tenants: {
+      title: 'Guide · Tenants',
+      t1: 'Onboarding auto-provisions the DB, seeds data and creates the super-admin account.',
+      t2: 'Account opening is notified by email; the admin activates via a one-time link, sets a password and binds MFA.',
+      t3: 'Search by name/ID, filter by status; expiring or expired tenants can be renewed directly.',
+    },
+    licensing: {
+      title: 'Guide · Licensing',
+      t1: 'Issued licenses are signed by the server private key (Ed25519) into a downloadable .lic; clients verify with the embedded public key — forgery is infeasible.',
+      t2: 'Renew / modify bumps the version (+1) and stores a snapshot; compare any two versions in “History” (diff).',
+      t3: 'Revoking adds it to the CRL immediately; online instances are rejected on the next heartbeat.',
+    },
+    online: {
+      title: 'Guide · Online Monitor',
+      t1: 'Instances “activate” via the SDK to take a floating seat; activations beyond the concurrency limit are rejected.',
+      t2: 'Heartbeats carry a nonce against replay; a grace period covers network drops and stale seats are reclaimed.',
+      t3: 'Revocation takes effect on the next heartbeat; this page auto-refreshes every 5s.',
+    },
+  },
+  online: {
+    title: 'Online Authorization Monitor', lead: 'Live activated instances, floating-seat usage and heartbeat anomalies; real-time revocation and offline grace period.',
+    auto: 'auto-refresh 5s',
+    k1: 'Online instances', k1d: 'heartbeat healthy', k2: 'Grace instances', k2d: 'heartbeat timing out',
+    k3: 'Seats used', k3d: 'current concurrency', k4: 'Online licenses', k4d: 'with active instances',
+    instances: 'Activated instances', instancesSub: 'instance id, machine code, IP, state, last heartbeat',
+    instance: 'Instance', machine: 'Machine code', state: 'State', lastHb: 'Last heartbeat',
+    seats: 'Seat usage', seatsSub: 'concurrency seats per license', empty: 'No online instances',
+    s: { online: 'Online', grace: 'Grace', offline: 'Offline', released: 'Released' },
   },
   common: {
     search: 'Search tenants / licenses', viewAll: 'View all', detail: 'Detail', renew: 'Renew',
@@ -96,6 +132,15 @@ export default {
     st: { ACTIVE: 'Active', REVOKED: 'Revoked', EXPIRED: 'Expired', SUSPENDED: 'Suspended' },
     op: { ISSUE: 'Issue', RENEW: 'Renew', MODIFY: 'Modify', REVOKE: 'Revoke' },
     diff: { added: 'added', removed: 'removed', changed: 'changed' },
+    tip: {
+      download: 'Download the signed .lic for the customer to import (offline licensing)',
+      hist: 'View version history and field-level diff between versions',
+      renew: 'Extend the expiry date; version +1 and re-signed',
+      revoke: 'Revoke immediately and add to CRL; online instances rejected on next heartbeat (irreversible)',
+      range: 'Allowed software version range, e.g. >=2.0.0 <3.0.0 — enables version-based entitlement',
+      concurrency: 'Max simultaneously-online instances (floating seats); extra activations are rejected',
+      features: 'Feature-level entitlement & quotas; the SDK gates features via @RequiresFeature',
+    },
   },
   act: {
     loading: 'Validating activation link…',

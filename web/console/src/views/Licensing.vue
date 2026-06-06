@@ -2,6 +2,8 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import PageHelp from '@/components/PageHelp.vue'
+import HelpTip from '@/components/HelpTip.vue'
 import {
   listLicenses, issueLicense, renewLicense, revokeLicense, licenseHistory, downloadUrl,
   type LicenseView, type HistoryView,
@@ -121,6 +123,8 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
 
 <template>
   <div class="wrap">
+    <PageHelp id="licensing" :title="t('help.licensing.title')"
+      :tips="[t('help.licensing.t1'), t('help.licensing.t2'), t('help.licensing.t3')]" />
     <div class="section-title">
       <div>
         <h2>{{ t('nav.license') }}</h2>
@@ -159,10 +163,18 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         </el-table-column>
         <el-table-column :label="t('th.op')" width="240">
           <template #default="{ row }">
-            <button class="linkbtn" @click="onDownload(row)">{{ t('lic.download') }}</button>
-            <button class="linkbtn" style="margin-left:10px" @click="openHistory(row)">{{ t('lic.hist') }}</button>
-            <button class="linkbtn" style="margin-left:10px" @click="onRenew(row)" v-if="row.status!=='REVOKED'">{{ t('lic.renew') }}</button>
-            <button class="linkbtn" style="margin-left:10px;color:var(--danger)" @click="onRevoke(row)" v-if="row.status!=='REVOKED'">{{ t('lic.revoke') }}</button>
+            <el-tooltip :content="t('lic.tip.download')" placement="top" :show-after="80">
+              <button class="linkbtn" @click="onDownload(row)">{{ t('lic.download') }}</button>
+            </el-tooltip>
+            <el-tooltip :content="t('lic.tip.hist')" placement="top" :show-after="80">
+              <button class="linkbtn" style="margin-left:10px" @click="openHistory(row)">{{ t('lic.hist') }}</button>
+            </el-tooltip>
+            <el-tooltip :content="t('lic.tip.renew')" placement="top" :show-after="80" v-if="row.status!=='REVOKED'">
+              <button class="linkbtn" style="margin-left:10px" @click="onRenew(row)">{{ t('lic.renew') }}</button>
+            </el-tooltip>
+            <el-tooltip :content="t('lic.tip.revoke')" placement="top" :show-after="80" v-if="row.status!=='REVOKED'">
+              <button class="linkbtn" style="margin-left:10px;color:var(--danger)" @click="onRevoke(row)">{{ t('lic.revoke') }}</button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -188,15 +200,22 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
             <el-checkbox v-for="m in ALL_MODULES" :key="m" :value="m" border>{{ m }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item :label="t('lic.features')">
+        <el-form-item>
+          <template #label>{{ t('lic.features') }}<HelpTip :content="t('lic.tip.features')" /></template>
           <el-checkbox v-model="form.featRealtime">RISK.REALTIME</el-checkbox>
           <el-checkbox v-model="form.featExport">REPORT.EXPORT</el-checkbox>
           <span style="margin-left:14px">MAX_USERS</span>
           <el-input-number v-model="form.maxUsers" :min="1" :max="100000" size="small" style="margin-left:8px" />
         </el-form-item>
         <div class="two">
-          <el-form-item :label="t('lic.range')"><el-input v-model="form.appVersionRange" class="dataf" /></el-form-item>
-          <el-form-item :label="t('lic.concurrency')"><el-input-number v-model="form.concurrency" :min="1" :max="10000" style="width:100%" /></el-form-item>
+          <el-form-item>
+            <template #label>{{ t('lic.range') }}<HelpTip :content="t('lic.tip.range')" /></template>
+            <el-input v-model="form.appVersionRange" class="dataf" />
+          </el-form-item>
+          <el-form-item>
+            <template #label>{{ t('lic.concurrency') }}<HelpTip :content="t('lic.tip.concurrency')" /></template>
+            <el-input-number v-model="form.concurrency" :min="1" :max="10000" style="width:100%" />
+          </el-form-item>
         </div>
         <div class="two">
           <el-form-item :label="t('lic.notBefore')"><el-date-picker v-model="form.notBefore" type="date" value-format="YYYY-MM-DD" style="width:100%" /></el-form-item>

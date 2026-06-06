@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import OnboardTenantDialog from '@/components/OnboardTenantDialog.vue'
+import PageHelp from '@/components/PageHelp.vue'
 import { listTenants } from '@/api/tenant'
 import type { Tenant } from '@/types'
 
@@ -31,6 +32,8 @@ onMounted(load)
 
 <template>
   <div class="wrap">
+    <PageHelp id="tenants" :title="t('help.tenants.title')"
+      :tips="[t('help.tenants.t1'), t('help.tenants.t2'), t('help.tenants.t3')]" />
     <div class="section-title">
       <div>
         <h2>{{ t('tenants.title') }}</h2>

@@ -3,8 +3,44 @@ export default {
   theme: { label: '主题', tech: '科技蓝', midnight: '暗夜', gold: '商务金' },
   lang: { label: '中文' },
   nav: {
-    overview: '运营总览', tenants: '租户管理', license: 'License 授权',
+    overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
     catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯',
+  },
+  help: {
+    overview: {
+      title: '操作指引 · 运营总览',
+      t1: '顶部「开通新租户」可一键建库、初始化并向管理员邮箱发送开通邮件。',
+      t2: 'KPI 与图表为实时运营数据；编号、版本、金额等业务数据采用等宽字体便于核对。',
+      t3: '右侧「快捷操作」聚合高频入口；到期与心跳异常会在「运营待办」中提醒。',
+    },
+    tenants: {
+      title: '操作指引 · 租户管理',
+      t1: '「开通租户」后系统自动建库、写入种子数据并创建超管账号。',
+      t2: '开通将以邮件通知账户开通，管理员凭一次性链接激活并设密、绑定 MFA。',
+      t3: '可按名称/编号搜索、按状态筛选；到期或过期的租户可直接续期。',
+    },
+    licensing: {
+      title: '操作指引 · License 授权',
+      t1: '「签发 License」由服务端私钥（Ed25519）签名，生成可下载的 .lic；客户端用内置公钥验签，无法伪造。',
+      t2: '续期 / 变更会使版本号 +1 并保存历史快照，可在「历史」中逐版本对比（diff）。',
+      t3: '吊销后该 License 立即进入 CRL，在线实例下次心跳即被拒绝。',
+    },
+    online: {
+      title: '操作指引 · 在线监控',
+      t1: '实例通过 SDK「激活」占用浮动席位，超出并发数将被拒绝。',
+      t2: '心跳带 nonce 防重放；断网进入宽限期，超期席位自动回收。',
+      t3: '吊销在下次心跳即时生效；本页每 5 秒自动刷新。',
+    },
+  },
+  online: {
+    title: '在线授权监控', lead: '实时查看激活实例、浮动席位占用与心跳异常；支持实时吊销与断网宽限期。',
+    auto: '每 5 秒自动刷新',
+    k1: '在线实例', k1d: '心跳正常', k2: '宽限期实例', k2d: '心跳超时容忍中',
+    k3: '占用席位', k3d: '当前并发', k4: '在线 License', k4d: '有活跃实例',
+    instances: '激活实例', instancesSub: '实例编号、机器指纹、IP、状态、最近心跳',
+    instance: '实例编号', machine: '机器指纹', state: '状态', lastHb: '最近心跳',
+    seats: '席位用量', seatsSub: '按 License 的并发席位占用', empty: '暂无在线实例',
+    s: { online: '在线', grace: '宽限期', offline: '离线', released: '已释放' },
   },
   common: {
     search: '搜索租户 / License', viewAll: '查看全部', detail: '详情', renew: '续期',
@@ -96,6 +132,15 @@ export default {
     st: { ACTIVE: '生效中', REVOKED: '已吊销', EXPIRED: '已过期', SUSPENDED: '已暂停' },
     op: { ISSUE: '签发', RENEW: '续期', MODIFY: '变更', REVOKE: '吊销' },
     diff: { added: '新增', removed: '移除', changed: '变更' },
+    tip: {
+      download: '下载签名后的 .lic 文件，交付客户导入（离线授权）',
+      hist: '查看该 License 的版本历史与逐版本字段对比（diff）',
+      renew: '延长到期日，版本号 +1 并重新签名',
+      revoke: '立即吊销并加入 CRL；在线实例下次心跳即被拒绝（不可逆）',
+      range: '授权可运行的软件版本范围，例如 >=2.0.0 <3.0.0，实现按版本授权',
+      concurrency: '允许同时在线的实例数（浮动席位），超出将拒绝新激活',
+      features: '功能点级授权与配额，SDK 通过 @RequiresFeature 做功能门禁',
+    },
   },
   act: {
     loading: '正在校验激活链接…',
