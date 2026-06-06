@@ -27,7 +27,7 @@ public class ActivationController {
     /** 提交激活：设置管理员密码。 */
     @PostMapping("/{token}")
     public Map<String, Object> activate(@PathVariable String token, @Valid @RequestBody ActivateRequest req) {
-        activationService.activate(token, req.password());
+        activationService.activate(token, req.password(), req.mfaCode());
         return Map.of("success", true, "message", "账户已激活，请使用新密码登录");
     }
 }

@@ -2,7 +2,8 @@ import { http } from './request'
 import { mockTenants } from './mock'
 import type { OnboardPayload, OnboardResult, Tenant } from '@/types'
 
-const USE_MOCK = true // 后端就绪后置为 false
+// 默认 mock；设置 VITE_USE_MOCK=false（.env）即对接真实后端
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false'
 
 /** 租户列表 */
 export async function listTenants(): Promise<Tenant[]> {

@@ -2,6 +2,7 @@ package com.cmssoas.platform.tenant.service;
 
 import com.cmssoas.platform.config.AppProperties;
 import com.cmssoas.platform.mail.OnboardingMailService;
+import com.cmssoas.platform.mail.Totp;
 import com.cmssoas.platform.tenant.domain.*;
 import com.cmssoas.platform.tenant.dto.OnboardTenantRequest;
 import com.cmssoas.platform.tenant.dto.OnboardTenantResponse;
@@ -34,16 +35,18 @@ public class TenantOnboardingService {
     private final AuditLogRepository auditRepo;
     private final OnboardingMailService mailService;
     private final AppProperties props;
+    private final Totp totp;
 
     public TenantOnboardingService(TenantRepository tenantRepo, SysUserRepository userRepo,
                                    ActivationTokenRepository tokenRepo, AuditLogRepository auditRepo,
-                                   OnboardingMailService mailService, AppProperties props) {
+                                   OnboardingMailService mailService, AppProperties props, Totp totp) {
         this.tenantRepo = tenantRepo;
         this.userRepo = userRepo;
         this.tokenRepo = tokenRepo;
         this.auditRepo = auditRepo;
         this.mailService = mailService;
         this.props = props;
+        this.totp = totp;
     }
 
     @Transactional
@@ -82,6 +85,7 @@ public class TenantOnboardingService {
         admin.setStatus("PENDING_ACTIVATION");
         admin.setMustChangePwd(true);
         admin.setMfaBound(false);
+        admin.setMfaSecret(totp.generateSecret());
         admin.setCreatedAt(LocalDateTime.now());
         admin = userRepo.save(admin);
         audit(tenant.getId(), "SUPER_ADMIN_CREATED", "超管已创建（待激活）：" + admin.getEmail());

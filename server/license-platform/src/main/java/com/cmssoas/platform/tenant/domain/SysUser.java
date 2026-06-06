@@ -39,6 +39,9 @@ public class SysUser {
     @Column(name = "mfa_bound", nullable = false)
     private boolean mfaBound;
 
+    @Column(name = "mfa_secret", length = 64)
+    private String mfaSecret;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -60,6 +63,8 @@ public class SysUser {
     public void setMustChangePwd(boolean mustChangePwd) { this.mustChangePwd = mustChangePwd; }
     public boolean isMfaBound() { return mfaBound; }
     public void setMfaBound(boolean mfaBound) { this.mfaBound = mfaBound; }
+    public String getMfaSecret() { return mfaSecret; }
+    public void setMfaSecret(String mfaSecret) { this.mfaSecret = mfaSecret; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
