@@ -74,8 +74,8 @@ body{
 /* ===== 顶栏（大气官网风格，顶部导航）===== */
 .topbar{position:sticky;top:0;z-index:30;background:var(--topbar);color:#fff;
   box-shadow:0 10px 30px -16px rgba(0,0,0,.45);}
-.topbar .inner{max-width:1880px;margin:0 auto;display:flex;align-items:center;gap:2rem;
-  padding:.85rem 2.2rem;}
+.topbar .inner{width:100%;display:flex;align-items:center;gap:2rem;
+  padding:.85rem clamp(28px,2.6vw,80px);}
 .brand{display:flex;align-items:center;gap:.7rem;font-weight:800;font-size:1.18rem;letter-spacing:.4px;}
 .brand .logo{width:2.1rem;height:2.1rem;border-radius:9px;display:grid;place-items:center;
   background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);font-weight:900;}
@@ -96,7 +96,7 @@ body{
 .avatar{width:2.2rem;height:2.2rem;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-weight:800;font-size:.9rem}
 
 /* ===== 主区 ===== */
-.wrap{max-width:1880px;margin:0 auto;padding:1.8rem 2.2rem 3rem}
+.wrap{width:100%;padding:1.8rem clamp(28px,2.6vw,80px) 3rem}
 
 /* Hero / 页头 */
 .hero{position:relative;overflow:hidden;border-radius:var(--r-xl);background:var(--hero);color:#fff;
@@ -121,6 +121,26 @@ body{
 .kpis{grid-template-columns:repeat(4,1fr)}
 .cols-2{grid-template-columns:1.65fr 1fr}
 .cols-2b{grid-template-columns:1.5fr 1fr}
+.cols-3{grid-template-columns:1.7fr 1fr 1.15fr}
+.cols-3b{grid-template-columns:1.9fr 1fr 1fr}
+/* 横向条形（套餐分布）*/
+.bars{display:flex;flex-direction:column;gap:.95rem;margin-top:.3rem}
+.bar .bl{display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:.4rem}
+.bar .bl b{font-family:var(--font-data);color:var(--data-ink);font-variant-numeric:tabular-nums}
+.bar .track{height:.7rem;border-radius:999px;background:var(--surface-3);overflow:hidden}
+.bar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+/* 公告/快捷 */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.2rem}
+.qtile{border:1px solid var(--border);border-radius:var(--r);padding:.85rem .9rem;background:var(--surface-2);cursor:pointer;transition:.15s}
+.qtile:hover{border-color:var(--brand);box-shadow:0 8px 20px -12px var(--ring)}
+.qtile .qi{font-size:1.25rem}
+.qtile .qt{font-weight:700;font-size:.86rem;margin-top:.35rem}
+.qtile .qd{font-size:.74rem;color:var(--muted)}
+.notif{display:flex;flex-direction:column;gap:.1rem;margin-top:.9rem}
+.notif .n{display:flex;gap:.6rem;padding:.55rem .1rem;border-top:1px dashed var(--border)}
+.notif .n .nd{width:.5rem;height:.5rem;border-radius:50%;margin-top:.45rem;flex:none}
+.notif .nt{font-size:.84rem;font-weight:600}
+.notif .nm{font-size:.74rem;color:var(--faint)}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
   box-shadow:var(--shadow-sm);padding:1.3rem 1.4rem;position:relative}
@@ -307,7 +327,7 @@ tbody tr:last-child td{border-bottom:0}
   </section>
 
   <!-- ===== 图表行 ===== -->
-  <section class="grid cols-2" style="margin-bottom:1.2rem">
+  <section class="grid cols-3" style="margin-bottom:1.2rem">
     <!-- 面积图 -->
     <div class="card">
       <div class="card-head">
@@ -369,10 +389,24 @@ tbody tr:last-child td{border-bottom:0}
         </div>
       </div>
     </div>
+    <!-- 套餐分布 横向条形 -->
+    <div class="card">
+      <div class="card-head"><div><h3>📦 <span data-i18n="chart.plan">套餐版型分布</span></h3>
+        <div class="sub" data-i18n="chart.planSub">按有效授权数</div></div></div>
+      <div class="bars">
+        <div class="bar"><div class="bl"><span data-i18n="plan.flag">旗舰版</span><b>1,486</b></div><div class="track"><div class="fill" style="width:92%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.ent">企业版</span><b>1,032</b></div><div class="track"><div class="fill" style="width:68%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.pro">专业版</span><b>724</b></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.basic">基础版</span><b>330</b></div><div class="track"><div class="fill" style="width:22%"></div></div></div>
+      </div>
+      <div class="chart-legend" style="margin-top:1.1rem">
+        <span class="lg muted"><span data-i18n="chart.arpu">户均年费</span> <b class="data">¥38,200</b></span>
+      </div>
+    </div>
   </section>
 
   <!-- ===== 表格 + 侧栏 ===== -->
-  <section class="grid cols-2b" style="margin-bottom:1.2rem">
+  <section class="grid cols-3b" style="margin-bottom:1.2rem">
     <div class="card">
       <div class="card-head">
         <div><h3>🏢 <span data-i18n="recent.title">最近开通租户</span></h3>
@@ -426,6 +460,24 @@ tbody tr:last-child td{border-bottom:0}
         <div class="item"><div class="badge b-ok">✉️</div>
           <div><div class="ttl" data-i18n="todo.t4">今日开通邮件已送达</div>
           <div class="desc"><span class="data">128</span> <span data-i18n="todo.d4">封 · 送达率</span> <span class="data">99.2%</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- 快捷操作 + 公告 -->
+    <div class="card">
+      <div class="card-head"><div><h3>⚡ <span data-i18n="quick.title">快捷操作</span></h3>
+        <div class="sub" data-i18n="quick.sub">高频运营入口</div></div></div>
+      <div class="quick">
+        <div class="qtile"><div class="qi">🏢</div><div class="qt" data-i18n="quick.q1">开通租户</div><div class="qd" data-i18n="quick.d1">建库·发邮件</div></div>
+        <div class="qtile"><div class="qi">🔑</div><div class="qt" data-i18n="quick.q2">签发 License</div><div class="qd" data-i18n="quick.d2">离线 / 在线</div></div>
+        <div class="qtile"><div class="qi">🔄</div><div class="qt" data-i18n="quick.q3">批量续期</div><div class="qd" data-i18n="quick.d3">到期提醒</div></div>
+        <div class="qtile"><div class="qi">🧩</div><div class="qt" data-i18n="quick.q4">配置套餐</div><div class="qd" data-i18n="quick.d4">模块/版本</div></div>
+      </div>
+      <div class="notif">
+        <div class="n"><span class="nd" style="background:var(--brand)"></span>
+          <div><div class="nt" data-i18n="notif.t1">v2.4.0 授权策略已发布</div><div class="nm"><span class="data">2026-06-05</span> · <span data-i18n="notif.m1">支持按功能点计量</span></div></div></div>
+        <div class="n"><span class="nd" style="background:var(--success)"></span>
+          <div><div class="nt" data-i18n="notif.t2">邮件网关已切换至双通道</div><div class="nm"><span class="data">2026-06-03</span> · <span data-i18n="notif.m2">送达率提升至 99.2%</span></div></div></div>
       </div>
     </div>
   </section>
@@ -525,6 +577,13 @@ const I18N = {
     "chart.issue":"New issuance","chart.renew":"Renewal","chart.mode":"Activation Mode Share",
     "chart.modeSub":"Offline / Online / Hybrid","chart.total":"Total licenses",
     "mode.hybrid":"Hybrid","mode.online":"Online","mode.offline":"Offline",
+    "chart.plan":"Plan / Edition Mix","chart.planSub":"by active licenses","chart.arpu":"Avg. annual fee",
+    "plan.flag":"Flagship","plan.ent":"Enterprise","plan.pro":"Professional","plan.basic":"Basic",
+    "quick.title":"Quick Actions","quick.sub":"frequent operations",
+    "quick.q1":"Onboard tenant","quick.d1":"DB · email","quick.q2":"Issue license","quick.d2":"offline / online",
+    "quick.q3":"Batch renew","quick.d3":"expiry alerts","quick.q4":"Configure plan","quick.d4":"module/version",
+    "notif.t1":"v2.4.0 entitlement policy released","notif.m1":"feature-level metering",
+    "notif.t2":"Mail gateway switched to dual-channel","notif.m2":"delivery rate up to 99.2%",
     "recent.title":"Recently Onboarded Tenants","recent.sub":"IDs, versions, dates are business data (monospace)","recent.all":"View all →",
     "th.code":"Tenant ID","th.name":"Tenant","th.plan":"Plan / Version","th.status":"Status","th.expire":"Expires",
     "st.active":"Active","st.soon":"Expiring","st.init":"Initializing","st.exp":"Expired",
