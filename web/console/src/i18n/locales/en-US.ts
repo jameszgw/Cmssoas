@@ -59,7 +59,10 @@ export default {
     lead: 'Plan (SKU) composition and tenant subscriptions; subscriptions drive license issuance.',
     popular: 'Popular', perYear: '/yr', seats: 'Seats', versionRange: 'Version range',
     includes: 'Includes', choose: 'Choose plan',
-    subsTitle: 'Tenant Subscriptions', subsSub: 'tenant-to-plan purchases', qty: 'Qty', period: 'Period',
+    subsTitle: 'Tenant Subscriptions', subsSub: 'a License is auto-issued on subscribe', qty: 'Qty', period: 'Period',
+    createTitle: 'Create Subscription', seatsTotal: 'Seats (auto)', start: 'Start date', end: 'End date',
+    submit: 'Subscribe & issue License', autoIssue: 'On submit, a License is auto-issued from the plan (modules/features/version range/seats = plan × qty).',
+    required: 'Tenant ID and customer are required', created: 'Subscribed; auto-issued {id}', failed: 'Subscription failed',
   },
   audit: {
     lead: 'Operational audit log (onboarding, init, activation, revocation) for compliance and accountability.',

@@ -59,7 +59,10 @@ export default {
     lead: '套餐(SKU)编排与租户订阅；订阅驱动 License 签发。',
     popular: '热门', perYear: '/年', seats: '并发席位', versionRange: '版本范围',
     includes: '包含模块', choose: '选择套餐',
-    subsTitle: '租户订阅', subsSub: '租户与套餐的购买关系', qty: '数量', period: '周期',
+    subsTitle: '租户订阅', subsSub: '订阅创建后自动签发对应 License', qty: '数量', period: '周期',
+    createTitle: '创建订阅', seatsTotal: '并发席位(自动)', start: '开始日期', end: '结束日期',
+    submit: '订阅并签发 License', autoIssue: '提交后将据套餐自动签发 License(模块/功能/版本范围/席位=套餐×数量)。',
+    required: '请填写租户编号与客户名称', created: '订阅成功，已自动签发 {id}', failed: '订阅失败',
   },
   audit: {
     lead: '运营动作审计日志（开通、初始化、激活、吊销等），用于合规与追责。',

@@ -1,22 +1,52 @@
 <script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { ElMessage } from 'element-plus'
 import PageHelp from '@/components/PageHelp.vue'
+import {
+  getPlans, getSubscriptions, createSubscription,
+  type PlanView, type SubscriptionView,
+} from '@/api/catalog'
 
 const { t } = useI18n()
-
-const plans = [
-  { key: 'basic', code: 'BASIC', price: 19800, modules: ['RISK', 'REPORT'], versionRange: '>=2.2.0', seats: 2, popular: false },
-  { key: 'pro', code: 'PROFESSIONAL', price: 49800, modules: ['RISK', 'REPORT', 'AUDIT'], versionRange: '>=2.3.0', seats: 5, popular: true },
-  { key: 'ent', code: 'ENTERPRISE', price: 99800, modules: ['RISK', 'REPORT', 'AUDIT', 'BI'], versionRange: '>=2.4.0', seats: 20, popular: false },
-  { key: 'flag', code: 'FLAGSHIP', price: 198000, modules: ['RISK', 'REPORT', 'AUDIT', 'BI', 'DATA'], versionRange: '>=2.4.0', seats: 50, popular: false },
-]
-const subs = [
-  { tenant: '长江证券股份公司', code: 'T-100480', plan: 'plan.flag', qty: 1, period: '2026-06-06 ~ 2027-05-30', status: 'active' },
-  { tenant: '华东数据科技有限公司', code: 'T-100482', plan: 'plan.ent', qty: 1, period: '2026-06-06 ~ 2027-06-06', status: 'active' },
-  { tenant: '瑞康医疗集团', code: 'T-100481', plan: 'plan.pro', qty: 1, period: '2025-06-29 ~ 2026-06-29', status: 'soon' },
-]
-const statusClass: Record<string, string> = { active: 's-active', soon: 's-soon', exp: 's-exp' }
+const plans = ref<PlanView[]>([])
+const subs = ref<SubscriptionView[]>([])
 const fmtPrice = (n: number) => '¥' + n.toLocaleString('en-US')
+
+async function load() {
+  ;[plans.value, subs.value] = await Promise.all([getPlans(), getSubscriptions()])
+}
+onMounted(load)
+
+const planName = (code: string) => {
+  const p = plans.value.find((x) => x.code === code)
+  return p ? t(p.planKey) : code
+}
+
+// 订阅对话框
+const open = ref(false)
+const submitting = ref(false)
+const today = new Date().toISOString().slice(0, 10)
+const nextYear = new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10)
+const form = reactive({ planCode: '', tenantCode: 'T-100482', customer: '华东数据科技有限公司', qty: 1, startAt: today, endAt: nextYear })
+const curPlan = computed(() => plans.value.find((p) => p.code === form.planCode))
+
+function choose(p: PlanView) {
+  form.planCode = p.code
+  open.value = true
+}
+async function submit() {
+  if (!form.tenantCode || !form.customer) { ElMessage.warning(t('subs.required')); return }
+  submitting.value = true
+  try {
+    const r = await createSubscription({ ...form })
+    ElMessage.success(t('subs.created', { id: r.licenseId }))
+    open.value = false
+    load()
+  } catch (e: any) {
+    ElMessage.error(e?.response?.data?.message || t('subs.failed'))
+  } finally { submitting.value = false }
+}
 </script>
 
 <template>
@@ -27,42 +57,71 @@ const fmtPrice = (n: number) => '¥' + n.toLocaleString('en-US')
       <div><h2>{{ t('nav.plan') }}</h2><div class="sub" style="margin-top:.3rem">{{ t('subs.lead') }}</div></div>
     </div>
 
-    <!-- 套餐卡 -->
     <section class="grid" style="grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:1.2rem">
-      <div v-for="p in plans" :key="p.key" class="card plan" :class="{ hot: p.popular }">
-        <div v-if="p.popular" class="ribbon">{{ t('subs.popular') }}</div>
-        <div class="pname">{{ t('plan.' + p.key) }}</div>
+      <div v-for="p in plans" :key="p.code" class="card plan" :class="{ hot: p.code === 'PROFESSIONAL' }">
+        <div v-if="p.code === 'PROFESSIONAL'" class="ribbon">{{ t('subs.popular') }}</div>
+        <div class="pname">{{ t(p.planKey) }}</div>
         <div class="pcode data faint">{{ p.code }}</div>
         <div class="price"><span class="data">{{ fmtPrice(p.price) }}</span><span class="per">{{ t('subs.perYear') }}</span></div>
         <div class="meta"><span>{{ t('subs.seats') }}</span><b class="data">{{ p.seats }}</b></div>
         <div class="meta"><span>{{ t('subs.versionRange') }}</span><b class="data">{{ p.versionRange }}</b></div>
         <div class="incl">{{ t('subs.includes') }}</div>
         <div class="mods"><el-tag v-for="m in p.modules" :key="m" size="small" effect="plain" style="margin:2px">{{ m }}</el-tag></div>
-        <el-button :type="p.popular ? 'primary' : 'default'" class="choose">{{ t('subs.choose') }}</el-button>
+        <el-button :type="p.code === 'PROFESSIONAL' ? 'primary' : 'default'" class="choose" @click="choose(p)">{{ t('subs.choose') }}</el-button>
       </div>
     </section>
 
-    <!-- 订阅表 -->
     <div class="card">
       <div class="card-head"><div><h3>📃 {{ t('subs.subsTitle') }}</h3><div class="sub">{{ t('subs.subsSub') }}</div></div></div>
       <el-table :data="subs" style="width:100%">
         <el-table-column :label="t('th.name')" min-width="200">
-          <template #default="{ row }"><b>{{ row.tenant }}</b> <span class="data faint" style="font-size:.74rem">{{ row.code }}</span></template>
+          <template #default="{ row }"><b>{{ row.customer }}</b> <span class="data faint" style="font-size:.74rem">{{ row.tenantCode }}</span></template>
         </el-table-column>
-        <el-table-column :label="t('common.plan')" width="140">
-          <template #default="{ row }">{{ t(row.plan) }}</template>
+        <el-table-column :label="t('common.plan')" width="120">
+          <template #default="{ row }">{{ planName(row.planCode) }}</template>
         </el-table-column>
-        <el-table-column :label="t('subs.qty')" width="90">
+        <el-table-column :label="t('subs.qty')" width="80">
           <template #default="{ row }"><span class="data">{{ row.qty }}</span></template>
         </el-table-column>
-        <el-table-column :label="t('subs.period')" width="240">
-          <template #default="{ row }"><span class="data">{{ row.period }}</span></template>
+        <el-table-column :label="t('subs.period')" width="220">
+          <template #default="{ row }"><span class="data">{{ row.startAt }} ~ {{ row.endAt }}</span></template>
         </el-table-column>
-        <el-table-column :label="t('th.status')" width="120">
-          <template #default="{ row }"><span class="status" :class="statusClass[row.status]"><i></i>{{ t('st.' + row.status) }}</span></template>
+        <el-table-column :label="t('lic.id')" width="150">
+          <template #default="{ row }"><span class="data">{{ row.licenseId || '—' }}</span></template>
+        </el-table-column>
+        <el-table-column :label="t('th.status')" width="110">
+          <template #default="{ row }"><span class="status s-active"><i></i>{{ t('st.active') }}</span></template>
         </el-table-column>
       </el-table>
     </div>
+
+    <!-- 订阅对话框 -->
+    <el-dialog v-model="open" :title="t('subs.createTitle')" width="560px" align-center>
+      <el-form label-position="top">
+        <el-form-item :label="t('common.plan')">
+          <el-input :model-value="curPlan ? t(curPlan.planKey) + ' · ' + curPlan.code : ''" readonly />
+        </el-form-item>
+        <div class="two">
+          <el-form-item :label="t('m.tcode')"><el-input v-model="form.tenantCode" class="dataf" /></el-form-item>
+          <el-form-item :label="t('th.name')"><el-input v-model="form.customer" /></el-form-item>
+        </div>
+        <div class="two">
+          <el-form-item :label="t('subs.qty')"><el-input-number v-model="form.qty" :min="1" :max="999" style="width:100%" /></el-form-item>
+          <el-form-item :label="t('subs.seatsTotal')">
+            <el-input :model-value="curPlan ? String(curPlan.seats * form.qty) : ''" readonly class="dataf" />
+          </el-form-item>
+        </div>
+        <div class="two">
+          <el-form-item :label="t('subs.start')"><el-date-picker v-model="form.startAt" type="date" value-format="YYYY-MM-DD" style="width:100%" /></el-form-item>
+          <el-form-item :label="t('subs.end')"><el-date-picker v-model="form.endAt" type="date" value-format="YYYY-MM-DD" style="width:100%" /></el-form-item>
+        </div>
+        <div class="notice">🔏 <div>{{ t('subs.autoIssue') }}</div></div>
+      </el-form>
+      <template #footer>
+        <el-button @click="open = false">{{ t('common.cancel') }}</el-button>
+        <el-button type="primary" :loading="submitting" @click="submit">{{ t('subs.submit') }}</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -80,4 +139,8 @@ const fmtPrice = (n: number) => '¥' + n.toLocaleString('en-US')
 .incl{font-size:.74rem;color:var(--faint);margin-top:.5rem;text-transform:uppercase;letter-spacing:.5px}
 .mods{display:flex;flex-wrap:wrap;min-height:2.2rem}
 .choose{margin-top:.6rem;width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.notice{display:flex;gap:.6rem;align-items:flex-start;background:color-mix(in srgb,var(--brand) 9%,transparent);
+  border:1px solid color-mix(in srgb,var(--brand) 22%,transparent);border-radius:12px;padding:.7rem .9rem;font-size:.82rem;margin-top:.4rem}
+:deep(.dataf .el-input__inner){font-family:var(--font-data);color:var(--data-ink)}
 </style>
