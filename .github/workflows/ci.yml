@@ -16,9 +16,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - name: Build license-platform
+      - name: Build & test license-platform
         working-directory: server/license-platform
-        run: mvn -B -ntp -DskipTests package
+        run: mvn -B -ntp verify
 
   sdk:
     name: 客户端 SDK 构建
@@ -30,9 +30,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - name: Build & install license-sdk
+      - name: Build & test license-sdk
         working-directory: sdk/license-sdk
-        run: mvn -B -ntp -DskipTests install
+        run: mvn -B -ntp install
       - name: Build protected-app demo
         working-directory: examples/protected-app
         run: mvn -B -ntp -DskipTests compile
