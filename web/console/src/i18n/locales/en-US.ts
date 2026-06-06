@@ -4,7 +4,24 @@ export default {
   lang: { label: 'EN' },
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
-    catalog: 'Products', plan: 'Plans', audit: 'Audit',
+    catalog: 'Products', plan: 'Plans', audit: 'Audit', system: 'System',
+  },
+  login: {
+    title: 'Sign in', subtitle: 'Licensing Operations Console',
+    username: 'Username', password: 'Password', pwdPlaceholder: 'Enter password', submit: 'Sign in',
+    required: 'Enter username and password', ok: 'Signed in', fail: 'Login failed', demo: 'Default account',
+  },
+  user: { logout: 'Sign out', logoutConfirm: 'Sign out now?' },
+  roles: {
+    title: 'Guide · Roles & Permissions',
+    t1: 'Pick a role on the left; on the right, set each node to None / Read / Edit / Full (polymorphic states).',
+    t2: 'Setting a parent cascades to all children; SUPER_ADMIN has all permissions.',
+    t3: 'Takes effect after the role’s users re-login; only SUPER_ADMIN can edit.',
+    lead: 'el-tree based polymorphic permission tree: each node supports multiple grant states (not a plain checkbox).',
+    save: 'Save', saved: 'Permissions saved', saveFail: 'Save failed',
+    roleList: 'Roles', permTree: 'Permission Tree (polymorphic)', permSub: 'each node: None / Read / Edit / Full',
+    readonly: 'Only SUPER_ADMIN can edit; read-only view.',
+    m: { NONE: 'None', VIEW: 'Read', EDIT: 'Edit', FULL: 'Full' },
   },
   help: {
     overview: {

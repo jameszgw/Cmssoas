@@ -14,5 +14,12 @@ http.interceptors.request.use((cfg) => {
 
 http.interceptors.response.use(
   (resp) => resp.data,
-  (err) => Promise.reject(err),
+  (err) => {
+    if (err?.response?.status === 401 && !location.pathname.startsWith('/login')) {
+      localStorage.removeItem('cmssoas.token')
+      const redirect = encodeURIComponent(location.pathname + location.search)
+      location.href = '/login?redirect=' + redirect
+    }
+    return Promise.reject(err)
+  },
 )

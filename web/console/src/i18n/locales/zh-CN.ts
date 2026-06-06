@@ -4,7 +4,24 @@ export default {
   lang: { label: '中文' },
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
-    catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯',
+    catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯', system: '系统管理',
+  },
+  login: {
+    title: '登录运营平台', subtitle: '软件授权运营控制台',
+    username: '用户名', password: '密码', pwdPlaceholder: '请输入密码', submit: '登 录',
+    required: '请输入用户名与密码', ok: '登录成功', fail: '登录失败', demo: '初始账号',
+  },
+  user: { logout: '退出登录', logoutConfirm: '确定要退出登录吗？' },
+  roles: {
+    title: '操作指引 · 角色权限',
+    t1: '左侧选择角色，右侧权限树为每个节点选择「无 / 只读 / 编辑 / 完全」多态状态。',
+    t2: '设置父节点会级联同步其全部子节点；超级管理员拥有全部权限。',
+    t3: '保存后该角色用户重新登录即生效；仅超级管理员可修改。',
+    lead: '基于 el-tree 的多态权限树：每个节点可选多种授权状态（非简单勾选）。',
+    save: '保存权限', saved: '权限已保存', saveFail: '保存失败',
+    roleList: '角色', permTree: '权限树（多态选择）', permSub: '每个节点：无 / 只读 / 编辑 / 完全',
+    readonly: '仅超级管理员可编辑权限，当前为只读查看。',
+    m: { NONE: '无', VIEW: '只读', EDIT: '编辑', FULL: '完全' },
   },
   help: {
     overview: {
