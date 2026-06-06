@@ -1,3 +1,6 @@
 node_modules/
 package-lock.json
 web/prototype/package.json
+dist/
+.tmp/
+*.tsbuildinfo
