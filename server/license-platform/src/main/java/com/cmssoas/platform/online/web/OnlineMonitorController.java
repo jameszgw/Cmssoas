@@ -2,6 +2,7 @@ package com.cmssoas.platform.online.web;
 
 import com.cmssoas.platform.online.dto.OnlineDtos.*;
 import com.cmssoas.platform.online.service.OnlineService;
+import com.cmssoas.platform.rbac.service.RequirePerm;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,16 +19,19 @@ public class OnlineMonitorController {
     }
 
     @GetMapping("/instances")
+    @RequirePerm("online:view")
     public List<InstanceView> instances() {
         return service.instances();
     }
 
     @GetMapping("/seats")
+    @RequirePerm("online:view")
     public List<SeatUsage> seats() {
         return service.seatUsage();
     }
 
     @GetMapping("/stats")
+    @RequirePerm("online:view")
     public OnlineStats stats() {
         return service.stats();
     }

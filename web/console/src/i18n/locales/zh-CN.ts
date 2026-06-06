@@ -4,7 +4,24 @@ export default {
   lang: { label: '中文' },
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
-    catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯', system: '系统管理',
+    catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯', system: '角色权限', users: '用户管理',
+  },
+  pwd: {
+    title: '首次登录 · 请修改密码', lead: '为保障安全，初始密码需修改后方可使用系统。',
+    old: '原密码', new: '新密码', confirm: '确认新密码', submit: '修改并继续',
+    short: '新密码至少 6 位', mismatch: '两次输入不一致', ok: '密码已修改', fail: '修改失败',
+  },
+  users: {
+    title: '操作指引 · 用户管理',
+    t1: '创建用户需指定角色，初始密码默认为 Cmssoas@123，可自定义。',
+    t2: '新用户/重置密码后首次登录将强制修改密码。',
+    t3: '可启用/停用用户；内置 admin 不可停用。',
+    lead: '运营账号与角色分配；权限由角色决定（见角色权限）。',
+    create: '＋ 新建用户', role: '角色', initPwd: '初始密码', initPwdHint: '留空则用默认 Cmssoas@123',
+    note: '新用户首次登录将强制修改密码。', disabled: '已停用', mustChange: '待改密',
+    reset: '重置密码', disable: '停用', enable: '启用',
+    required: '请填写用户名并选择角色', created: '用户已创建', createFail: '创建失败',
+    resetTip: '确定重置用户 {u} 的密码为默认密码？', resetOk: '已重置为：{p}',
   },
   login: {
     title: '登录运营平台', subtitle: '软件授权运营控制台',

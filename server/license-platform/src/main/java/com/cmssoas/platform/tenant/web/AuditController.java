@@ -1,5 +1,6 @@
 package com.cmssoas.platform.tenant.web;
 
+import com.cmssoas.platform.rbac.service.RequirePerm;
 import com.cmssoas.platform.tenant.repo.AuditLogRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class AuditController {
     }
 
     @GetMapping
+    @RequirePerm("audit:view")
     public List<Map<String, Object>> list() {
         return repo.findTop200ByOrderByCreatedAtDesc().stream().map(a -> {
             Map<String, Object> m = new java.util.LinkedHashMap<>();

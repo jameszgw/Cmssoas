@@ -4,7 +4,24 @@ export default {
   lang: { label: 'EN' },
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
-    catalog: 'Products', plan: 'Plans', audit: 'Audit', system: 'System',
+    catalog: 'Products', plan: 'Plans', audit: 'Audit', system: 'Roles', users: 'Users',
+  },
+  pwd: {
+    title: 'First login · Change password', lead: 'For security, please change the initial password before using the system.',
+    old: 'Current password', new: 'New password', confirm: 'Confirm password', submit: 'Change & continue',
+    short: 'At least 6 characters', mismatch: 'Passwords do not match', ok: 'Password changed', fail: 'Change failed',
+  },
+  users: {
+    title: 'Guide · User Management',
+    t1: 'Creating a user requires a role; the default initial password is Cmssoas@123 (customizable).',
+    t2: 'New users / reset passwords must be changed on first login.',
+    t3: 'Enable/disable users; the built-in admin cannot be disabled.',
+    lead: 'Operator accounts and role assignment; permissions come from roles (see Roles).',
+    create: '＋ New user', role: 'Role', initPwd: 'Initial password', initPwdHint: 'blank = default Cmssoas@123',
+    note: 'New users must change password on first login.', disabled: 'Disabled', mustChange: 'Pending',
+    reset: 'Reset', disable: 'Disable', enable: 'Enable',
+    required: 'Enter username and select a role', created: 'User created', createFail: 'Create failed',
+    resetTip: 'Reset password of {u} to default?', resetOk: 'Reset to: {p}',
   },
   login: {
     title: 'Sign in', subtitle: 'Licensing Operations Console',

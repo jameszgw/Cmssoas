@@ -5,6 +5,7 @@ import com.cmssoas.platform.tenant.dto.OnboardTenantResponse;
 import com.cmssoas.platform.tenant.dto.TenantView;
 import com.cmssoas.platform.tenant.repo.TenantRepository;
 import com.cmssoas.platform.tenant.service.TenantOnboardingService;
+import com.cmssoas.platform.rbac.service.RequirePerm;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +25,14 @@ public class TenantController {
 
     /** 开通租户：建库/初始化/创建超管 + 发送开通邮件。 */
     @PostMapping
+    @RequirePerm("tenant:onboard")
     public OnboardTenantResponse onboard(@Valid @RequestBody OnboardTenantRequest req) {
         return onboardingService.onboard(req);
     }
 
     /** 租户列表。 */
     @GetMapping
+    @RequirePerm("tenant:view")
     public List<TenantView> list() {
         return tenantRepo.findAllByOrderByCreatedAtDesc().stream().map(TenantView::from).toList();
     }

@@ -4,12 +4,14 @@ import { useI18n } from 'vue-i18n'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import PageHelp from '@/components/PageHelp.vue'
 import HelpTip from '@/components/HelpTip.vue'
+import { useAuthStore } from '@/stores/auth'
 import {
   listLicenses, issueLicense, renewLicense, revokeLicense, licenseHistory, downloadUrl,
   type LicenseView, type HistoryView,
 } from '@/api/license'
 
 const { t } = useI18n()
+const auth = useAuthStore()
 
 const rows = ref<LicenseView[]>([])
 const loading = ref(false)
@@ -130,7 +132,7 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         <h2>{{ t('nav.license') }}</h2>
         <div class="sub" style="margin-top:.3rem">{{ t('lic.lead') }}</div>
       </div>
-      <el-button type="primary" size="large" @click="issueOpen = true">{{ t('lic.issue') }}</el-button>
+      <el-button v-if="auth.has('license:issue')" type="primary" size="large" @click="issueOpen = true">{{ t('lic.issue') }}</el-button>
     </div>
 
     <div class="card">
@@ -163,16 +165,16 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         </el-table-column>
         <el-table-column :label="t('th.op')" width="240">
           <template #default="{ row }">
-            <el-tooltip :content="t('lic.tip.download')" placement="top" :show-after="80">
+            <el-tooltip v-if="auth.has('license:download')" :content="t('lic.tip.download')" placement="top" :show-after="80">
               <button class="linkbtn" @click="onDownload(row)">{{ t('lic.download') }}</button>
             </el-tooltip>
             <el-tooltip :content="t('lic.tip.hist')" placement="top" :show-after="80">
               <button class="linkbtn" style="margin-left:10px" @click="openHistory(row)">{{ t('lic.hist') }}</button>
             </el-tooltip>
-            <el-tooltip :content="t('lic.tip.renew')" placement="top" :show-after="80" v-if="row.status!=='REVOKED'">
+            <el-tooltip :content="t('lic.tip.renew')" placement="top" :show-after="80" v-if="auth.has('license:renew') && row.status!=='REVOKED'">
               <button class="linkbtn" style="margin-left:10px" @click="onRenew(row)">{{ t('lic.renew') }}</button>
             </el-tooltip>
-            <el-tooltip :content="t('lic.tip.revoke')" placement="top" :show-after="80" v-if="row.status!=='REVOKED'">
+            <el-tooltip :content="t('lic.tip.revoke')" placement="top" :show-after="80" v-if="auth.has('license:revoke') && row.status!=='REVOKED'">
               <button class="linkbtn" style="margin-left:10px;color:var(--danger)" @click="onRevoke(row)">{{ t('lic.revoke') }}</button>
             </el-tooltip>
           </template>

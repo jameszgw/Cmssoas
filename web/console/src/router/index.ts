@@ -12,6 +12,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/plans', name: 'plans', component: () => import('@/views/Plans.vue') },
   { path: '/audit', name: 'audit', component: () => import('@/views/Audit.vue') },
   { path: '/system/roles', name: 'roles', component: () => import('@/views/Roles.vue') },
+  { path: '/system/users', name: 'users', component: () => import('@/views/Users.vue') },
   // 公开页：管理员激活（无顶部导航）
   { path: '/activate/:token', name: 'activate', meta: { public: true }, component: () => import('@/views/Activate.vue') },
 ]

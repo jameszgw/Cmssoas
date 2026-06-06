@@ -40,13 +40,17 @@ public class DataInitializer implements CommandLineRunner {
         OpsRole superRole = roleRepo.findByCode("SUPER_ADMIN").orElse(null);
         if (superRole == null) return;
 
-        // SUPER_ADMIN -> 全部权限 FULL
-        if (rolePermRepo.findByRoleId(superRole.getId()).isEmpty()) {
-            for (Permission p : permRepo.findAll()) {
+        // SUPER_ADMIN -> 全部权限 FULL（幂等：补齐缺失的权限点，新增权限自动授予）
+        var superCodes = rolePermRepo.findByRoleId(superRole.getId()).stream()
+                .map(RolePermission::getPermCode).collect(java.util.stream.Collectors.toSet());
+        int added = 0;
+        for (Permission p : permRepo.findAll()) {
+            if (!superCodes.contains(p.getCode())) {
                 rolePermRepo.save(new RolePermission(superRole.getId(), p.getCode(), "FULL"));
+                added++;
             }
-            log.info("[init] SUPER_ADMIN 已授予全部权限");
         }
+        if (added > 0) log.info("[init] SUPER_ADMIN 补齐 {} 项权限", added);
 
         // VIEWER -> 各菜单 + *:view 只读
         roleRepo.findByCode("VIEWER").ifPresent(viewer -> {
