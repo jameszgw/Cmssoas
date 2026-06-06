@@ -17,9 +17,9 @@ CREATE TABLE license (
     watermark         VARCHAR(64)  NOT NULL,
     status            VARCHAR(16)  NOT NULL,
     current_version   INT          NOT NULL,
-    claims_json       CLOB         NOT NULL,
+    claims_json       TEXT         NOT NULL,
     signature         VARCHAR(256) NOT NULL,
-    lic               CLOB         NOT NULL,
+    lic               TEXT         NOT NULL,
     created_at        TIMESTAMP    NOT NULL,
     updated_at        TIMESTAMP    NOT NULL
 );
@@ -29,9 +29,9 @@ CREATE TABLE license_history (
     license_id  VARCHAR(40)  NOT NULL,
     version     INT          NOT NULL,
     op_type     VARCHAR(16)  NOT NULL,   -- ISSUE / RENEW / MODIFY / REVOKE
-    claims_json CLOB         NOT NULL,
+    claims_json TEXT         NOT NULL,
     signature   VARCHAR(256) NOT NULL,
-    lic         CLOB         NOT NULL,
+    lic         TEXT         NOT NULL,
     operator    VARCHAR(64)  NOT NULL,
     reason      VARCHAR(256),
     created_at  TIMESTAMP    NOT NULL

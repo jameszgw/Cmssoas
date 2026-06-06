@@ -59,13 +59,13 @@ public class License {
     @Column(name = "current_version", nullable = false)
     private int currentVersion;
 
-    @Lob @Column(name = "claims_json", nullable = false)
+    @Column(name = "claims_json", nullable = false, columnDefinition = "text")
     private String claimsJson;
 
     @Column(nullable = false, length = 256)
     private String signature;
 
-    @Lob @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String lic;
 
     @Column(name = "created_at", nullable = false)

@@ -100,19 +100,18 @@ public class TenantOnboardingService {
         token.setCreatedAt(LocalDateTime.now());
         tokenRepo.save(token);
 
-        // —— 步骤 7：发送开通邮件（失败不回滚，记录状态）
-        boolean sent = mailService.sendOnboarding(tenant, token.getToken());
-        tenant.setEmailSent(sent);
+        // —— 步骤 7：开通邮件入发件箱(outbox)，与本事务原子提交，异步投递
+        boolean queued = mailService.enqueueOnboarding(tenant, token.getToken());
+        tenant.setEmailSent(queued);
 
         // —— 步骤 8：置为 ACTIVE
         tenant.setStatus(TenantStatus.ACTIVE);
         tenant.setExpireAt(LocalDate.now().plusYears(1));
         tenantRepo.save(tenant);
-        audit(tenant.getId(), sent ? "ONBOARD_DONE" : "ONBOARD_DONE_MAIL_FAILED",
-                "开通完成，开通邮件=" + (sent ? "已发送" : "发送失败"));
+        audit(tenant.getId(), "ONBOARD_DONE", "开通完成，开通邮件已入发件箱");
 
-        log.info("[onboard] 租户 {} 开通完成，邮件={}", tenant.getCode(), sent);
-        return new OnboardTenantResponse(tenant.getCode(), sent, tenant.getAdminEmail());
+        log.info("[onboard] 租户 {} 开通完成，邮件已入队", tenant.getCode());
+        return new OnboardTenantResponse(tenant.getCode(), queued, tenant.getAdminEmail());
     }
 
     private void audit(Long tenantId, String action, String detail) {

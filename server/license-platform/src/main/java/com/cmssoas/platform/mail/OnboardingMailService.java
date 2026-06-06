@@ -2,8 +2,10 @@ package com.cmssoas.platform.mail;
 
 import com.cmssoas.platform.config.AppProperties;
 import com.cmssoas.platform.tenant.domain.EmailLog;
+import com.cmssoas.platform.tenant.domain.EmailOutbox;
 import com.cmssoas.platform.tenant.domain.Tenant;
 import com.cmssoas.platform.tenant.repo.EmailLogRepository;
+import com.cmssoas.platform.tenant.repo.EmailOutboxRepository;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,65 +24,76 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * 开通邮件服务：用 Thymeleaf 渲染邮件 HTML，按配置经 SMTP 发送或落盘（开发态）。
- * 无论成功失败均落 email_log，便于追溯与重发。
+ * 开通邮件服务（事务发件箱模式）：
+ *  - enqueueOnboarding：渲染 HTML 并写入 email_outbox（与租户创建同事务，原子）。
+ *  - deliver：实际投递（SMTP 或落盘），由 OutboxDispatcher 异步调用并重试。
  */
 @Service
 public class OnboardingMailService {
 
     private static final Logger log = LoggerFactory.getLogger(OnboardingMailService.class);
     private static final DateTimeFormatter TS = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+    public static final String SUBJECT = "【CMSSOAS】您的租户已开通，请激活管理员账户";
 
     private final TemplateEngine templateEngine;
     private final ObjectProvider<JavaMailSender> mailSenderProvider;
     private final EmailLogRepository emailLogRepo;
+    private final EmailOutboxRepository outboxRepo;
     private final AppProperties props;
 
     public OnboardingMailService(TemplateEngine templateEngine,
                                  ObjectProvider<JavaMailSender> mailSenderProvider,
                                  EmailLogRepository emailLogRepo,
+                                 EmailOutboxRepository outboxRepo,
                                  AppProperties props) {
         this.templateEngine = templateEngine;
         this.mailSenderProvider = mailSenderProvider;
         this.emailLogRepo = emailLogRepo;
+        this.outboxRepo = outboxRepo;
         this.props = props;
     }
 
-    /**
-     * 发送开通邮件。
-     * @return 是否已投递（SMTP 成功 或 已落盘）
-     */
-    public boolean sendOnboarding(Tenant tenant, String activationToken) {
-        String subject = "【CMSSOAS】您的租户已开通，请激活管理员账户";
+    /** 入队（事务内）：返回是否已入队。 */
+    public boolean enqueueOnboarding(Tenant tenant, String activationToken) {
         String activationUrl = props.getActivation().getBaseUrl() + "/" + activationToken;
         String html = render(tenant, activationUrl);
+        EmailOutbox o = new EmailOutbox();
+        o.setTenantId(tenant.getId());
+        o.setToAddr(tenant.getAdminEmail());
+        o.setSubject(SUBJECT);
+        o.setBodyHtml(html);
+        o.setStatus("PENDING");
+        o.setAttempts(0);
+        o.setMaxAttempts(5);
+        o.setNextAttemptAt(LocalDateTime.now());
+        o.setCreatedAt(LocalDateTime.now());
+        outboxRepo.save(o);
+        log.info("[mail] 开通邮件已入发件箱(outbox) -> {}", tenant.getAdminEmail());
+        return true;
+    }
 
-        EmailLog elog = new EmailLog();
-        elog.setTenantId(tenant.getId());
-        elog.setToAddr(tenant.getAdminEmail());
-        elog.setSubject(subject);
-        elog.setCreatedAt(LocalDateTime.now());
-
-        try {
-            if ("smtp".equalsIgnoreCase(props.getMail().getDelivery())) {
-                sendSmtp(tenant.getAdminEmail(), subject, html);
-                elog.setStatus("SENT");
-                log.info("[mail] 开通邮件已通过 SMTP 发送至 {}", tenant.getAdminEmail());
-            } else {
-                String path = spool(tenant, html);
-                elog.setStatus("SPOOLED");
-                elog.setRenderedPath(path);
-                log.info("[mail] 开通邮件已渲染落盘（delivery=log）：{} -> {}", tenant.getAdminEmail(), path);
-            }
-            emailLogRepo.save(elog);
-            return true;
-        } catch (Exception ex) {
-            elog.setStatus("FAILED");
-            elog.setError(truncate(ex.getMessage()));
-            emailLogRepo.save(elog);
-            log.error("[mail] 开通邮件发送失败：{}", ex.getMessage());
-            return false;
+    /** 实际投递；失败抛异常（由 dispatcher 处理重试）。 */
+    public void deliver(EmailOutbox o) throws Exception {
+        if ("smtp".equalsIgnoreCase(props.getMail().getDelivery())) {
+            sendSmtp(o.getToAddr(), o.getSubject(), o.getBodyHtml());
+            record(o, "SENT", null);
+            log.info("[mail] outbox#{} 经 SMTP 发送至 {}", o.getId(), o.getToAddr());
+        } else {
+            String path = spool(o);
+            record(o, "SPOOLED", path);
+            log.info("[mail] outbox#{} 已落盘 {}", o.getId(), path);
         }
+    }
+
+    private void record(EmailOutbox o, String status, String path) {
+        EmailLog e = new EmailLog();
+        e.setTenantId(o.getTenantId());
+        e.setToAddr(o.getToAddr());
+        e.setSubject(o.getSubject());
+        e.setStatus(status);
+        e.setRenderedPath(path);
+        e.setCreatedAt(LocalDateTime.now());
+        emailLogRepo.save(e);
     }
 
     private String render(Tenant tenant, String activationUrl) {
@@ -97,9 +110,7 @@ public class OnboardingMailService {
 
     private void sendSmtp(String to, String subject, String html) throws Exception {
         JavaMailSender sender = mailSenderProvider.getIfAvailable();
-        if (sender == null) {
-            throw new IllegalStateException("未配置 SMTP（spring.mail.host 为空），无法以 smtp 模式发送");
-        }
+        if (sender == null) throw new IllegalStateException("未配置 SMTP（spring.mail.host 为空）");
         MimeMessage msg = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
         helper.setFrom(props.getMail().getFrom(), props.getMail().getFromName());
@@ -109,17 +120,11 @@ public class OnboardingMailService {
         sender.send(msg);
     }
 
-    private String spool(Tenant tenant, String html) throws Exception {
+    private String spool(EmailOutbox o) throws Exception {
         Path dir = Path.of(props.getMail().getSpoolDir());
         Files.createDirectories(dir);
-        String fileName = LocalDateTime.now().format(TS) + "-" + tenant.getCode() + ".html";
-        Path file = dir.resolve(fileName);
-        Files.writeString(file, html, StandardCharsets.UTF_8);
+        Path file = dir.resolve(LocalDateTime.now().format(TS) + "-outbox" + o.getId() + ".html");
+        Files.writeString(file, o.getBodyHtml(), StandardCharsets.UTF_8);
         return file.toAbsolutePath().toString();
-    }
-
-    private String truncate(String s) {
-        if (s == null) return null;
-        return s.length() > 500 ? s.substring(0, 500) : s;
     }
 }

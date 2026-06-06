@@ -33,15 +33,15 @@ public class OnlineService {
 
     private final LicenseRepository licenseRepo;
     private final LicenseInstanceRepository instanceRepo;
-    private final NonceStore nonceStore;
+    private final NonceGuard nonceGuard;
     private final Ed25519KeyService keyService;
     private final AppProperties props;
 
     public OnlineService(LicenseRepository licenseRepo, LicenseInstanceRepository instanceRepo,
-                         NonceStore nonceStore, Ed25519KeyService keyService, AppProperties props) {
+                         NonceGuard nonceGuard, Ed25519KeyService keyService, AppProperties props) {
         this.licenseRepo = licenseRepo;
         this.instanceRepo = instanceRepo;
-        this.nonceStore = nonceStore;
+        this.nonceGuard = nonceGuard;
         this.keyService = keyService;
         this.props = props;
     }
@@ -87,7 +87,7 @@ public class OnlineService {
     @Transactional
     public HeartbeatResponse heartbeat(HeartbeatRequest r) {
         String nonceKey = r.licenseId() + ":" + r.instanceId() + ":" + r.nonce();
-        if (!nonceStore.register(nonceKey)) {
+        if (!nonceGuard.register(nonceKey)) {
             return new HeartbeatResponse(false, "REPLAY", "nonce 重复（疑似重放攻击）", now(), null, 0, 0);
         }
         License l = licenseRepo.findByLicenseId(r.licenseId()).orElse(null);

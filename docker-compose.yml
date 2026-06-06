@@ -1,0 +1,58 @@
+# CMSSOAS 一键起：PostgreSQL + Redis + 后端(prod) + 前端(nginx)
+# 用法：docker compose up -d --build   然后访问 http://localhost
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cmssoas
+      POSTGRES_USER: cmssoas
+      POSTGRES_PASSWORD: cmssoas
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cmssoas"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./server/license-platform
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://postgres:5432/cmssoas
+      DB_USER: cmssoas
+      DB_PASSWORD: cmssoas
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      APP_REDIS_ENABLED: "true"
+      # 邮件：默认 log（落盘）；配置 SMTP 后改为 smtp
+      APP_MAIL_DELIVERY: ${APP_MAIL_DELIVERY:-log}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@cmssoas.com}
+      APP_ACTIVATION_BASE_URL: ${APP_ACTIVATION_BASE_URL:-http://localhost/activate}
+      CORS_ORIGINS: http://localhost
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    ports:
+      - "8080:8080"
+
+  console:
+    build: ./web/console
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:

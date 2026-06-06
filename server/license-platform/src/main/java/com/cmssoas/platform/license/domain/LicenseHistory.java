@@ -22,13 +22,13 @@ public class LicenseHistory {
     @Column(name = "op_type", nullable = false, length = 16)
     private String opType;
 
-    @Lob @Column(name = "claims_json", nullable = false)
+    @Column(name = "claims_json", nullable = false, columnDefinition = "text")
     private String claimsJson;
 
     @Column(nullable = false, length = 256)
     private String signature;
 
-    @Lob @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String lic;
 
     @Column(nullable = false, length = 64)

@@ -18,7 +18,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate  # schema 由 Flyway 管理，JPA 仅校验
+      ddl-auto: none      # schema 完全由 Flyway 管理（跨 H2/PG 兼容）
     open-in-view: false
     properties:
       hibernate:
@@ -42,8 +42,15 @@ spring:
           starttls:
             enable: true
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
 # ---- 应用自定义 ----
 app:
+  redis:
+    enabled: ${APP_REDIS_ENABLED:false}   # true 时 nonce 走 Redis（多实例水平扩展）
   mail:
     delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
     from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
