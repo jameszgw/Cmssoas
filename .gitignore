@@ -10,3 +10,4 @@ target/
 !**/src/**/target/
 # 邮件本地落盘（delivery=log）
 server/license-platform/var/
+dependency-reduced-pom.xml

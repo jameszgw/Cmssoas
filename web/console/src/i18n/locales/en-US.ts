@@ -31,6 +31,40 @@ export default {
       t2: 'Heartbeats carry a nonce against replay; a grace period covers network drops and stale seats are reclaimed.',
       t3: 'Revocation takes effect on the next heartbeat; this page auto-refreshes every 5s.',
     },
+    catalog: {
+      title: 'Guide · Products & Versions',
+      t1: 'A product is composed of “modules → features”; entitlement and billing use this granularity.',
+      t2: 'The feature-version matrix decides whether a feature exists in a version — enabling version-based entitlement.',
+      t3: 'These modules/features map to the License modules/features and app version range.',
+    },
+    plans: {
+      title: 'Guide · Plans & Subscriptions',
+      t1: 'A plan (SKU) = a bundle of modules/features/quotas/version-range + pricing.',
+      t2: 'When a tenant subscribes, the system issues the matching License (re-signed on plan change).',
+      t3: 'Expiry alerts fire ahead of time; renew or upgrade in one click.',
+    },
+    audit: {
+      title: 'Guide · Audit',
+      t1: 'Records key operations: onboarding, initialization, admin activation, revocation, etc.',
+      t2: 'Each entry has actor, time, target and detail — supporting compliance and accountability.',
+      t3: 'Search by action / actor / detail keyword.',
+    },
+  },
+  cat: {
+    lead: 'Product → modules → features, plus the feature-version matrix (basis of version-based entitlement).',
+    modules: 'Modules & Features', modulesSub: 'finest granularity for entitlement & billing',
+    matrix: 'Feature-Version Matrix', matrixSub: '✓ means the feature ships in that version', feature: 'Feature',
+  },
+  subs: {
+    lead: 'Plan (SKU) composition and tenant subscriptions; subscriptions drive license issuance.',
+    popular: 'Popular', perYear: '/yr', seats: 'Seats', versionRange: 'Version range',
+    includes: 'Includes', choose: 'Choose plan',
+    subsTitle: 'Tenant Subscriptions', subsSub: 'tenant-to-plan purchases', qty: 'Qty', period: 'Period',
+  },
+  audit: {
+    lead: 'Operational audit log (onboarding, init, activation, revocation) for compliance and accountability.',
+    search: 'Search action / actor / detail', time: 'Time', action: 'Action', actor: 'Actor',
+    tenant: 'Tenant', detail: 'Detail', empty: 'No audit records',
   },
   online: {
     title: 'Online Authorization Monitor', lead: 'Live activated instances, floating-seat usage and heartbeat anomalies; real-time revocation and offline grace period.',
