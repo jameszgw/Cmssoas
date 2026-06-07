@@ -23,6 +23,18 @@ public class InvoiceController {
         return service.list();
     }
 
+    @GetMapping("/export.csv")
+    @RequirePerm("billing:view")
+    public org.springframework.http.ResponseEntity<byte[]> exportCsv() {
+        var rows = service.list().stream().map(i -> java.util.List.<Object>of(
+                i.getId(), i.getTenantCode(), i.getCustomer(), i.getPlanCode(), i.getType(),
+                i.getAmount(), i.getStatus(), i.getInvoiceNo() == null ? "" : i.getInvoiceNo(),
+                i.getCreatedAt())).toList();
+        return com.cmssoas.platform.common.CsvUtil.response("invoices.csv",
+                java.util.List.of("id", "tenantCode", "customer", "planCode", "type", "amount", "status", "invoiceNo", "createdAt"),
+                rows);
+    }
+
     @PostMapping("/{id}/pay")
     @RequirePerm("billing:manage")
     public Invoice pay(@PathVariable Long id) {

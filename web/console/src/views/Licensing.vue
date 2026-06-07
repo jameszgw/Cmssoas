@@ -5,8 +5,9 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import PageHelp from '@/components/PageHelp.vue'
 import HelpTip from '@/components/HelpTip.vue'
 import { useAuthStore } from '@/stores/auth'
+import { downloadFile } from '@/api/request'
 import {
-  listLicenses, issueLicense, renewLicense, revokeLicense, licenseHistory, downloadUrl,
+  listLicenses, issueLicense, renewLicense, revokeLicense, licenseHistory,
   type LicenseView, type HistoryView,
 } from '@/api/license'
 
@@ -84,8 +85,10 @@ async function onRevoke(row: LicenseView) {
   } catch { /* cancelled */ }
 }
 
+function exportCsv() { downloadFile('/licenses/export.csv', 'licenses.csv') }
 function onDownload(row: LicenseView) {
-  window.open(downloadUrl(row.licenseId), '_blank')
+  // 经鉴权的 blob 下载（window.open 不带 JWT 会被拦）
+  downloadFile(`/licenses/${row.licenseId}/download`, `${row.licenseId}.lic`)
 }
 
 // ---------- 历史 + diff ----------
@@ -132,6 +135,7 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         <h2>{{ t('nav.license') }}</h2>
         <div class="sub" style="margin-top:.3rem">{{ t('lic.lead') }}</div>
       </div>
+      <el-button @click="exportCsv">⬇ {{ t('common.exportCsv') }}</el-button>
       <el-button v-if="auth.has('license:issue')" type="primary" size="large" @click="issueOpen = true">{{ t('lic.issue') }}</el-button>
     </div>
 

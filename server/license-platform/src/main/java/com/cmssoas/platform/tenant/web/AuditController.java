@@ -33,4 +33,14 @@ public class AuditController {
             return m;
         }).toList();
     }
+
+    @GetMapping("/export.csv")
+    @RequirePerm("audit:view")
+    public org.springframework.http.ResponseEntity<byte[]> exportCsv() {
+        var rows = repo.findTop200ByOrderByCreatedAtDesc().stream().map(a -> java.util.List.<Object>of(
+                a.getCreatedAt().toString(), a.getActor(), a.getAction(),
+                a.getTenantId() == null ? "" : a.getTenantId(), a.getDetail() == null ? "" : a.getDetail())).toList();
+        return com.cmssoas.platform.common.CsvUtil.response("audit.csv",
+                java.util.List.of("createdAt", "actor", "action", "tenantId", "detail"), rows);
+    }
 }
