@@ -56,6 +56,17 @@ class AuthIntegrationTest {
         assertEquals(HttpStatus.UNAUTHORIZED, r.getStatusCode());
     }
 
+    /**
+     * 回归用例：租户管理员激活接口必须公开（管理员尚无账号），
+     * 不得被 JwtAuthFilter 拦截返回 401。
+     */
+    @Test
+    void activationEndpointIsPublic() {
+        ResponseEntity<String> r = rest.getForEntity("/api/activation/nonexistent-token", String.class);
+        assertNotEquals(HttpStatus.UNAUTHORIZED, r.getStatusCode(),
+                "激活接口被鉴权拦截（应放行 /api/activation/**）");
+    }
+
     @Test
     void permissionEnforcedForNonSuper() {
         String admin = login("admin", "8888");
