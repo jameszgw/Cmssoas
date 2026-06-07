@@ -5,7 +5,7 @@ import com.cmssoas.platform.config.AppProperties;
 import com.cmssoas.platform.license.domain.License;
 import com.cmssoas.platform.license.domain.LicenseStatus;
 import com.cmssoas.platform.license.repo.LicenseRepository;
-import com.cmssoas.platform.license.service.Ed25519KeyService;
+import com.cmssoas.platform.license.service.SignatureService;
 import com.cmssoas.platform.online.domain.LicenseInstance;
 import com.cmssoas.platform.online.dto.OnlineDtos.*;
 import com.cmssoas.platform.online.repo.LicenseInstanceRepository;
@@ -34,11 +34,11 @@ public class OnlineService {
     private final LicenseRepository licenseRepo;
     private final LicenseInstanceRepository instanceRepo;
     private final NonceGuard nonceGuard;
-    private final Ed25519KeyService keyService;
+    private final SignatureService keyService;   // 可插拔签名实现（Ed25519 / SM2）
     private final AppProperties props;
 
     public OnlineService(LicenseRepository licenseRepo, LicenseInstanceRepository instanceRepo,
-                         NonceGuard nonceGuard, Ed25519KeyService keyService, AppProperties props) {
+                         NonceGuard nonceGuard, SignatureService keyService, AppProperties props) {
         this.licenseRepo = licenseRepo;
         this.instanceRepo = instanceRepo;
         this.nonceGuard = nonceGuard;

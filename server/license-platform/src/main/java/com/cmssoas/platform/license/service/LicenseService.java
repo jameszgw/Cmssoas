@@ -31,12 +31,12 @@ public class LicenseService {
 
     private final LicenseRepository licenseRepo;
     private final LicenseHistoryRepository historyRepo;
-    private final Ed25519KeyService keyService;
+    private final SignatureService keyService;   // 可插拔签名实现（Ed25519 / SM2）
     private final ObjectMapper mapper;
     private final AuditWriter audit;
 
     public LicenseService(LicenseRepository licenseRepo, LicenseHistoryRepository historyRepo,
-                          Ed25519KeyService keyService, ObjectMapper mapper, AuditWriter audit) {
+                          SignatureService keyService, ObjectMapper mapper, AuditWriter audit) {
         this.licenseRepo = licenseRepo;
         this.historyRepo = historyRepo;
         this.keyService = keyService;
@@ -198,6 +198,7 @@ public class LicenseService {
         claims.put("concurrency", l.getConcurrency());
         claims.put("status", l.getStatus().name());
         claims.put("watermark", l.getWatermark());
+        claims.put("sigAlg", keyService.algorithm());   // 签名算法（Ed25519 / SM2），供 SDK 选择验签
         claims.put("issuedAt", LocalDateTime.now().toString());
 
         String payload = writeJson(claims);
