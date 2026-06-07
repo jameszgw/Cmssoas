@@ -65,6 +65,14 @@ public class LicenseService {
         return new PublicKeyView(keyService.algorithm(), keyService.publicKeyBase64());
     }
 
+    /** JWKS 风格的公钥集（支持多 kid 轮换；当前为活跃密钥，轮换后保留旧公钥用于验旧 License）。 */
+    public List<Map<String, String>> publicKeys() {
+        return List.of(Map.of(
+                "kid", keyService.kid(),
+                "algorithm", keyService.algorithm(),
+                "publicKeyBase64", keyService.publicKeyBase64()));
+    }
+
     public List<String> crl() {
         return licenseRepo.findByStatus(LicenseStatus.REVOKED).stream().map(License::getLicenseId).toList();
     }
@@ -199,6 +207,7 @@ public class LicenseService {
         claims.put("status", l.getStatus().name());
         claims.put("watermark", l.getWatermark());
         claims.put("sigAlg", keyService.algorithm());   // 签名算法（Ed25519 / SM2），供 SDK 选择验签
+        claims.put("kid", keyService.kid());             // 密钥标识，支持多公钥轮换
         claims.put("issuedAt", LocalDateTime.now().toString());
 
         String payload = writeJson(claims);

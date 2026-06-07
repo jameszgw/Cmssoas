@@ -19,4 +19,7 @@ public interface SignatureService {
 
     /** 算法名（Ed25519 / SM2），写入 License 声明并供 SDK 选择验签算法。 */
     String algorithm();
+
+    /** 密钥标识（kid），写入 License 声明；支持多公钥轮换（SDK 按 kid 选公钥验签）。 */
+    String kid();
 }

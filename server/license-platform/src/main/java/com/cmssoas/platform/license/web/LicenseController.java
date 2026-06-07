@@ -32,6 +32,12 @@ public class LicenseController {
         return service.publicKey();
     }
 
+    /** JWKS 风格公钥集（含 kid），SDK 可按 License 的 kid 选公钥验签，支持密钥轮换。 */
+    @GetMapping("/public-keys")
+    public List<java.util.Map<String, String>> publicKeys() {
+        return service.publicKeys();
+    }
+
     @GetMapping("/crl")
     public List<String> crl() {
         return service.crl();

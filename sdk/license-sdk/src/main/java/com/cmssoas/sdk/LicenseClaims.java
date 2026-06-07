@@ -23,6 +23,7 @@ public class LicenseClaims {
     public String mode() { return str("mode"); }
     public String status() { return str("status"); }
     public String watermark() { return str("watermark"); }
+    public String kid() { return str("kid"); }
     public String appVersionRange() { return str("appVersionRange"); }
     public String notBefore() { return str("notBefore"); }
     public String notAfter() { return str("notAfter"); }

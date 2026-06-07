@@ -56,6 +56,8 @@ app:
     ttl-hours: ${JWT_TTL_HOURS:12}
   redis:
     enabled: ${APP_REDIS_ENABLED:false}   # true 时 nonce 走 Redis（多实例水平扩展）
+  sdk:
+    rate-limit-per-min: ${APP_SDK_RATE_LIMIT:120}   # SDK 在线通道每 IP 每分钟限流
   mail:
     delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
     from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
