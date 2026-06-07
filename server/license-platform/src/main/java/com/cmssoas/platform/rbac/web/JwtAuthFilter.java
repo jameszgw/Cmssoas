@@ -28,7 +28,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain)
             throws ServletException, IOException {
         String path = req.getServletPath();
-        if (!path.startsWith("/api/") || path.equals("/api/auth/login") || "OPTIONS".equalsIgnoreCase(req.getMethod())) {
+        // 放行：非 /api 资源、登录、租户管理员激活（无账号场景，必须公开）、预检请求
+        if (!path.startsWith("/api/")
+                || path.equals("/api/auth/login")
+                || path.startsWith("/api/activation/")
+                || "OPTIONS".equalsIgnoreCase(req.getMethod())) {
             chain.doFilter(req, resp);
             return;
         }
