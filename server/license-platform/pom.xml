@@ -11,11 +11,19 @@
     <relativePath/>
   </parent>
 
-  <groupId>com.cmssoas</groupId>
+  <groupId>com.codeman</groupId>
   <artifactId>license-platform</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>CMSSOAS License Platform</name>
   <description>软件授权运营平台后端 · 租户开通与开通邮件服务</description>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License v3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <java.version>21</java.version>

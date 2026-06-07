@@ -8,7 +8,7 @@ RUN mvn -q -B -DskipTests package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /build/target/license-platform-1.0.0.jar app.jar
+COPY --from=build /build/target/license-platform-1.0.1.jar app.jar
 EXPOSE 8080
 ENV SPRING_PROFILES_ACTIVE=prod
 ENTRYPOINT ["java", "-jar", "app.jar"]

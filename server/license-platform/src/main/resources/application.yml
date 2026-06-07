@@ -112,4 +112,4 @@ cors:
 
 logging:
   level:
-    com.cmssoas: INFO
+    com.codeman: INFO

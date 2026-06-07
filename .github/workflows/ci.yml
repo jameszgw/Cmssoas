@@ -73,7 +73,7 @@ jobs:
         working-directory: server/license-platform
         run: |
           mvn -B -ntp -DskipTests package
-          LICENSE_SIGN_ALGO=${{ matrix.algo }} nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          LICENSE_SIGN_ALGO=${{ matrix.algo }} nohup java -jar target/license-platform-1.0.1.jar > /tmp/backend.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
       - name: 端到端验签冒烟（签发 → SDK 验签）
         run: |
@@ -112,12 +112,12 @@ jobs:
       - name: 校验混淆生效（辅助类被改名，入口/被加载类保留）
         working-directory: examples/protected-app
         run: |
-          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/a.class' && echo "OK: 辅助类已混淆"
-          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/secret/SecretAlgorithm.class' && echo "OK: 被加载类保留"
+          jar tf target/protected-app-1.0.1-obf.jar | grep -q 'com/codeman/protect/a.class' && echo "OK: 辅助类已混淆"
+          jar tf target/protected-app-1.0.1-obf.jar | grep -q 'com/codeman/protect/secret/SecretAlgorithm.class' && echo "OK: 被加载类保留"
       - uses: actions/upload-artifact@v4
         with:
           name: protected-app-obfuscated
-          path: examples/protected-app/target/protected-app-1.0.0-obf.jar
+          path: examples/protected-app/target/protected-app-1.0.1-obf.jar
           retention-days: 7
 
   frontend:
@@ -148,7 +148,7 @@ jobs:
         working-directory: server/license-platform
         run: |
           mvn -B -ntp -DskipTests package
-          nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          nohup java -jar target/license-platform-1.0.1.jar > /tmp/backend.log 2>&1 &
           # 等待后端健康
           for i in $(seq 1 60); do
             curl -sf http://localhost:8080/actuator/health && break || sleep 2

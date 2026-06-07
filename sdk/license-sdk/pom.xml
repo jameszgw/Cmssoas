@@ -4,12 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cmssoas</groupId>
+  <groupId>com.codeman</groupId>
   <artifactId>license-sdk</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
   <name>CMSSOAS License SDK</name>
   <description>客户端 License SDK：Ed25519 验签、.lic 读取、功能/版本门禁</description>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License v3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
@@ -59,7 +67,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.cmssoas.sdk.demo.DemoCli</mainClass>
+                  <mainClass>com.codeman.sdk.demo.DemoCli</mainClass>
                 </transformer>
               </transformers>
               <!-- 剔除被依赖签名 jar（如 BouncyCastle）的签名文件，否则 uber-jar 校验失败 -->

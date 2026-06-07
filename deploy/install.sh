@@ -3,7 +3,7 @@
 # 用法：sudo bash deploy/install.sh <backend-jar> <web-dist-dir>
 set -euo pipefail
 
-JAR="${1:-server/license-platform/target/license-platform-1.0.0.jar}"
+JAR="${1:-server/license-platform/target/license-platform-1.0.1.jar}"
 WEB="${2:-web/console/dist}"
 
 echo "[1/6] 创建用户与目录"

@@ -70,7 +70,7 @@ See `web/console/shots/st-01..st-07*.png` (online monitor, polymorphic permissio
 cd server/license-platform && mvn test            # backend 9/9
 cd sdk/license-sdk && mvn test                     # SDK 8/8
 cd web/console && npm install && npx playwright test  # E2E 4/4 (backend on :8080)
-LICENSE_SIGN_ALGO=sm2 java -jar server/license-platform/target/license-platform-1.0.0.jar  # SM2 mode
+LICENSE_SIGN_ALGO=sm2 java -jar server/license-platform/target/license-platform-1.0.1.jar  # SM2 mode
 cd examples/protected-app && bash demo.sh && mvn -Pharden -DskipTests package               # code protection / obfuscation
 ```
 

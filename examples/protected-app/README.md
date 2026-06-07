@@ -33,8 +33,8 @@ C. 被篡改 License          -> ⛔ 验签未通过
 
 ## L1 混淆已接入构建流水线（ProGuard）
 ```bash
-mvn -Pharden -DskipTests package          # 产出 target/protected-app-1.0.0-obf.jar
-jar tf target/protected-app-1.0.0-obf.jar # 观察类名
+mvn -Pharden -DskipTests package          # 产出 target/protected-app-1.0.1-obf.jar
+jar tf target/protected-app-1.0.1-obf.jar # 观察类名
 ```
 混淆前后对比（实测）：
 ```

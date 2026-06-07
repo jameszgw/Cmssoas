@@ -1,0 +1,10 @@
+package com.codeman.platform.cs.repo;
+
+import com.codeman.platform.cs.domain.CsMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface CsMessageRepository extends JpaRepository<CsMessage, Long> {
+    List<CsMessage> findByConversationIdOrderByCreatedAtAsc(Long conversationId);
+}

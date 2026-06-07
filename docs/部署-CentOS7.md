@@ -23,14 +23,14 @@ yum install -y nginx
 ## 3. 构建（GitLab CI 或 Jenkins）
 - **GitLab CI**：仓库根 `.gitlab-ci.yml` 已提供(build/test/e2e/package/release + 签名冒烟矩阵)。
 - **Jenkins**：仓库根 `Jenkinsfile`(声明式 pipeline)。需在 Jenkins 配置 JDK21/Maven/NodeJS 工具,凭据(DB/SMTP/registry)用 Jenkins Credentials 注入为环境变量。
-- 产物：`server/license-platform/target/license-platform-1.0.0.jar` 与 `web/console/dist`。
+- 产物：`server/license-platform/target/license-platform-1.0.1.jar` 与 `web/console/dist`。
 - 国密构建：`mvn -Pnacos ...`(接 Nacos)与 `LICENSE_SIGN_ALGO=sm2`(SM2 签名)按需组合。
 
 ## 4. 部署（脚本）
 ```bash
 # 在仓库根、已产出 jar 与 dist 后：
 sudo bash deploy/install.sh \
-  server/license-platform/target/license-platform-1.0.0.jar \
+  server/license-platform/target/license-platform-1.0.1.jar \
   web/console/dist
 # 编辑环境变量后重启
 sudo vi /etc/cmssoas/backend.env      # 见 deploy/cmssoas-backend.env.example

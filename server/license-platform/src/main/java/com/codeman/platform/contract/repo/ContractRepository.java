@@ -1,0 +1,10 @@
+package com.codeman.platform.contract.repo;
+
+import com.codeman.platform.contract.domain.Contract;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ContractRepository extends JpaRepository<Contract, Long> {
+    List<Contract> findAllByOrderByCreatedAtDesc();
+}

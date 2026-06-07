@@ -10,7 +10,7 @@ Spring Boot 3.3 (Java 21) · Spring Web · Spring Data JPA · Flyway · H2（默
 
 ## 开箱即跑
 ```bash
-mvn spring-boot:run        # 或 mvn -DskipTests package && java -jar target/license-platform-1.0.0.jar
+mvn spring-boot:run        # 或 mvn -DskipTests package && java -jar target/license-platform-1.0.1.jar
 # 默认 H2 内存库 + 邮件 delivery=log（渲染落盘到 ./var/mail，不外发）
 ```
 
@@ -47,7 +47,7 @@ MAIL_HOST=smtp.example.com MAIL_PORT=587 \
 MAIL_USERNAME=xxx MAIL_PASSWORD=xxx \
 APP_MAIL_FROM=no-reply@yourdomain.com \
 APP_ACTIVATION_BASE_URL=https://console.yourdomain.com/activate \
-java -jar target/license-platform-1.0.0.jar
+java -jar target/license-platform-1.0.1.jar
 ```
 
 ## 设计要点

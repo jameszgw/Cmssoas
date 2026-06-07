@@ -7,7 +7,7 @@
 
 ## 0. 前置
 ```bash
-cd server/license-platform && mvn -q -DskipTests package   # 产出 target/license-platform-1.0.0.jar
+cd server/license-platform && mvn -q -DskipTests package   # 产出 target/license-platform-1.0.1.jar
 ```
 
 ## 方式 A:本地模拟模型(零联网、零 GPU,最快)
@@ -21,7 +21,7 @@ python3 demo/ai-mock-server.py 8770 &
 # 2) 启动后端并指向它
 cd server/license-platform
 AI_ENABLED=true AI_BASE_URL=http://127.0.0.1:8770/v1 AI_MODEL=demo-llm AI_API_KEY=demo-key \
-  java -jar target/license-platform-1.0.0.jar &
+  java -jar target/license-platform-1.0.1.jar &
 
 # 3) 验证(应返回 ready:true 与逐字 SSE)
 TOK=$(curl -s -X POST localhost:8080/api/auth/login -H 'Content-Type: application/json' \
@@ -43,7 +43,7 @@ event:done  data:{}
 ollama pull qwen2.5          # 或 llama3.1 / deepseek-r1 等
 ollama serve                 # 默认 :11434
 AI_ENABLED=true AI_BASE_URL=http://127.0.0.1:11434/v1 AI_MODEL=qwen2.5 \
-  java -jar target/license-platform-1.0.0.jar
+  java -jar target/license-platform-1.0.1.jar
 # Ollama 无需 api-key;数据全程留在内网。
 ```
 
@@ -53,7 +53,7 @@ AI_ENABLED=true \
 AI_BASE_URL=https://api.deepseek.com/v1 \
 AI_API_KEY=sk-你的key \
 AI_MODEL=deepseek-chat \
-  java -jar target/license-platform-1.0.0.jar
+  java -jar target/license-platform-1.0.1.jar
 ```
 > 生产中 `AI_API_KEY` 经 env/Nacos/KMS 注入,不落明文;CentOS 网络策略需放行所配 `base-url` 域名。
 

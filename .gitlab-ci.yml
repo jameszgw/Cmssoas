@@ -67,7 +67,7 @@ sign-smoke:
   script:
     - cd sdk/license-sdk && $MAVEN_CLI -DskipTests package && cd ../..
     - cd server/license-platform && $MAVEN_CLI -DskipTests package
-    - LICENSE_SIGN_ALGO=$ALGO nohup java -jar target/license-platform-1.0.0.jar > /tmp/be.log 2>&1 &
+    - LICENSE_SIGN_ALGO=$ALGO nohup java -jar target/license-platform-1.0.1.jar > /tmp/be.log 2>&1 &
     - for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
     - cd ../..
     - |
@@ -88,9 +88,9 @@ harden:
   script:
     - cd sdk/license-sdk && $MAVEN_CLI -DskipTests install && cd ../..
     - cd examples/protected-app && $MAVEN_CLI -Pharden -DskipTests package
-    - jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/a.class'
+    - jar tf target/protected-app-1.0.1-obf.jar | grep -q 'com/codeman/protect/a.class'
   artifacts:
-    paths: ["examples/protected-app/target/protected-app-1.0.0-obf.jar"]
+    paths: ["examples/protected-app/target/protected-app-1.0.1-obf.jar"]
     expire_in: 1 week
 
 # ---------- e2e ----------
@@ -99,7 +99,7 @@ e2e:
   image: mcr.microsoft.com/playwright:v1.56.1-jammy
   script:
     # Playwright 镜像需自带 JDK21 才能跑后端；否则用单独 service。此处假定已装或改用 compose。
-    - cd server/license-platform && (nohup java -jar target/license-platform-1.0.0.jar > /tmp/be.log 2>&1 &) || true
+    - cd server/license-platform && (nohup java -jar target/license-platform-1.0.1.jar > /tmp/be.log 2>&1 &) || true
     - for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
     - cd ../../web/console && npm install && npx playwright test
   artifacts:

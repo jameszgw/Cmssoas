@@ -16,11 +16,11 @@
 -keepattributes SourceFile,LineNumberTable,*Annotation*
 
 # 保留入口（启动器需被 java -cp 调用）
--keep public class com.cmssoas.protect.ProtectedLauncher { public static void main(java.lang.String[]); }
--keep public class com.cmssoas.protect.BuildProtected   { public static void main(java.lang.String[]); }
+-keep public class com.codeman.protect.ProtectedLauncher { public static void main(java.lang.String[]); }
+-keep public class com.codeman.protect.BuildProtected   { public static void main(java.lang.String[]); }
 
 # 受保护业务类通过反射 + 自定义类加载器加载，保留其名以便 defineClass/反射
--keep class com.cmssoas.protect.secret.SecretAlgorithm { *; }
+-keep class com.codeman.protect.secret.SecretAlgorithm { *; }
 
 # 字符串加密（需商用混淆器如 Allatori 才支持；ProGuard 无此功能）
 # Allatori 可对 CryptoKeys 中的根密钥常量、类名字符串做加密，进一步抬高门槛。
