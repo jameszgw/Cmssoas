@@ -63,6 +63,28 @@ app:
     base-url: ${APP_ACTIVATION_BASE_URL:http://localhost:5173/activate}
     ttl-hours: 24
 
+# ---- 可观测：Actuator + Prometheus 抓取端点 ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    mail:
+      enabled: false    # 邮件走异步发件箱，SMTP 可选，不纳入健康探针
+    redis:
+      enabled: false    # 默认单机内存 nonce；prod profile 再开启
+  metrics:
+    tags:
+      application: cmssoas   # 所有指标打上 application 标签，便于多服务区分
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 # 允许前端开发服务器跨域
 cors:
   allowed-origins: http://localhost:5173,http://localhost:4173

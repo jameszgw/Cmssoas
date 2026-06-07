@@ -17,6 +17,12 @@ spring:
       host: ${REDIS_HOST:redis}
       port: ${REDIS_PORT:6379}
 
+# 生产开启 Redis 健康探针（Redis 为 nonce 后端，需纳入健康检查）
+management:
+  health:
+    redis:
+      enabled: true
+
 app:
   redis:
     enabled: ${APP_REDIS_ENABLED:true}
