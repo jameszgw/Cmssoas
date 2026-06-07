@@ -1,5 +1,12 @@
 # Cmssoas
 
+[![CI](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml/badge.svg)](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml)
+![backend tests](https://img.shields.io/badge/backend%20tests-9%2F9-brightgreen)
+![sdk tests](https://img.shields.io/badge/sdk%20tests-8%2F8-brightgreen)
+![e2e](https://img.shields.io/badge/e2e-7%2F7-brightgreen)
+![sign](https://img.shields.io/badge/sign-Ed25519%20%7C%20SM2-blue)
+![coverage](https://img.shields.io/badge/coverage-JaCoCo%20(CI%20artifact)-informational)
+
 **C**ode **M**anagement **S**ecurity **S**ystem · Obfuscation & Authorization Scheme
 （Spring Boot 代码保护与 License 认证及多租户运营平台 —— 解决方案）
 
