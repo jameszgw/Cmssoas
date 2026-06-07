@@ -195,7 +195,7 @@ jobs:
       - name: 在真实 MySQL 上应用 db/mysql 全量方言迁移
         working-directory: server/license-platform
         env:
-          MYSQL_TEST_URL: "jdbc:mysql://127.0.0.1:3306/cmssoas?characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false"
+          MYSQL_TEST_URL: "jdbc:mysql://127.0.0.1:3306/cmssoas?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false"
           MYSQL_TEST_USER: root
           MYSQL_TEST_PASSWORD: root
         run: mvn -B -ntp test -Dtest=MysqlRealMigrationTest

@@ -47,7 +47,7 @@ docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql red
 ```bash
 # 库需 utf8mb4
 mysql -uroot -p -e "CREATE DATABASE cmssoas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-SPRING_PROFILES_ACTIVE=mysql DB_URL='jdbc:mysql://HOST:3306/cmssoas?characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai' \
+SPRING_PROFILES_ACTIVE=mysql DB_URL='jdbc:mysql://HOST:3306/cmssoas?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai' \
 DB_USER=cmssoas DB_PASSWORD=*** java -jar target/license-platform-1.0.0.jar
 ```
 
