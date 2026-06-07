@@ -1,0 +1,23 @@
+# CMSSOAS 后端 systemd 单元（CentOS7）
+# 安装：cp 到 /etc/systemd/system/ ；jar 放 /opt/cmssoas/backend/app.jar ；环境变量见 /etc/cmssoas/backend.env
+[Unit]
+Description=CMSSOAS License Platform Backend
+After=network.target
+
+[Service]
+Type=simple
+User=cmssoas
+Group=cmssoas
+WorkingDirectory=/opt/cmssoas/backend
+EnvironmentFile=/etc/cmssoas/backend.env
+# JDK21（Temurin）建议装到 /opt/jdk-21，并在此指定绝对路径
+ExecStart=/opt/jdk-21/bin/java -Xms512m -Xmx1g -Dstdout.encoding=UTF-8 -jar /opt/cmssoas/backend/app.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=5
+# 简单加固
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

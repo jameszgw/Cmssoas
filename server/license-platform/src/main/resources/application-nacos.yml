@@ -1,0 +1,18 @@
+# Nacos 配置中心 profile（需以 -Pnacos 构建 + SPRING_PROFILES_ACTIVE=nacos,prod 启用）
+# 用法：把 DB/Redis/SMTP/JWT 密钥/sign-algo 等敏感与环境相关项放到 Nacos 的 cmssoas.yml，
+# 不同环境用 namespace 隔离（dev/test/prod），灰度用 group。
+spring:
+  config:
+    # optional: 即便 Nacos 不可达也不阻断启动（便于排障）；生产可去掉 optional 强校验
+    import: optional:nacos:${NACOS_DATA_ID:cmssoas.yml}
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yml
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        # 配置变更自动刷新（@RefreshScope 的 Bean 生效）
+        refresh-enabled: true
