@@ -11,6 +11,7 @@ import com.cmssoas.platform.license.repo.LicenseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +76,56 @@ public class LicenseService {
 
     public List<String> crl() {
         return licenseRepo.findByStatus(LicenseStatus.REVOKED).stream().map(License::getLicenseId).toList();
+    }
+
+    /**
+     * 已签名的吊销名单(CRL),供离线客户端拉取并用公钥(按 kid)验签。
+     * 结构:{issuedAt, kid, sigAlg, count, revoked:[{licenseId, revokedAt}], payloadB64, signature}。
+     * 离线 SDK:base64url 解码 payloadB64 → 用对应 kid 公钥 verify(signature) → 信任后据 revoked 拒绝已吊销 License。
+     */
+    public Map<String, Object> signedCrl() {
+        List<Map<String, Object>> revoked = licenseRepo.findByStatus(LicenseStatus.REVOKED).stream()
+                .map(l -> {
+                    Map<String, Object> m = new LinkedHashMap<>();
+                    m.put("licenseId", l.getLicenseId());
+                    m.put("revokedAt", l.getUpdatedAt() == null ? null : l.getUpdatedAt().toString());
+                    return m;
+                }).toList();
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("issuedAt", LocalDateTime.now().toString());
+        body.put("kid", keyService.kid());
+        body.put("sigAlg", keyService.algorithm());
+        body.put("count", revoked.size());
+        body.put("revoked", revoked);
+
+        byte[] payloadBytes = writeJson(body).getBytes(StandardCharsets.UTF_8);
+        byte[] sig = keyService.sign(payloadBytes);
+        Map<String, Object> out = new LinkedHashMap<>(body);
+        out.put("payloadB64", B64U.encodeToString(payloadBytes));
+        out.put("signature", B64U.encodeToString(sig));
+        return out;
+    }
+
+    /** 到期自动停用:将 notAfter 已过的 ACTIVE License 置 EXPIRED 并重签(状态进入 .lic 与 CRL 逻辑)。 */
+    @Transactional
+    public int autoExpire() {
+        int n = 0;
+        for (License l : licenseRepo.findByStatus(LicenseStatus.ACTIVE)) {
+            if (l.getNotAfter().isBefore(LocalDate.now())) {
+                l.setStatus(LicenseStatus.EXPIRED);
+                bumpAndResign(l, "EXPIRE", "auto-expire: 已过 notAfter");
+                audit.log(null, "LICENSE_EXPIRED", l.getLicenseId() + " 到期自动停用");
+                n++;
+            }
+        }
+        if (n > 0) log.info("[license] 到期自动停用 {} 张", n);
+        return n;
+    }
+
+    /** 每日自动到期检查。 */
+    @Scheduled(fixedDelayString = "${app.license.auto-expire-interval-ms:86400000}", initialDelay = 90000)
+    public void scheduledAutoExpire() {
+        autoExpire();
     }
 
     // ---------- 签发 ----------

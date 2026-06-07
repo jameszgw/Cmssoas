@@ -46,6 +46,20 @@ public class LicenseController {
         return service.crl();
     }
 
+    /** 已签名 CRL(运营侧查看;离线分发见公开端点 /pub/crl)。 */
+    @GetMapping("/crl/signed")
+    @RequirePerm("license:view")
+    public java.util.Map<String, Object> signedCrl() {
+        return service.signedCrl();
+    }
+
+    /** 手动触发到期自动停用,返回本次停用数。 */
+    @PostMapping("/run-auto-expire")
+    @RequirePerm("license:revoke")
+    public java.util.Map<String, Object> runAutoExpire() {
+        return java.util.Map.of("expired", service.autoExpire());
+    }
+
     /** 导出 License 列表为 CSV。 */
     @GetMapping("/export.csv")
     @RequirePerm("license:view")
