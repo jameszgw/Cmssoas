@@ -63,7 +63,7 @@ cp .env.example .env        # 试用；或 cp .env.prod.example .env（生产）
 docker compose up -d --build
 ```
 - 环境变量(JWT/数据库/邮件/CORS/支付·发票渠道/智能客服大模型)见 `.env.example`、`.env.prod.example`。
-- **数据库**：H2(开发) / **PostgreSQL(生产推荐)**；MySQL 需适配(驱动 + MySQL 方言迁移)，见 [DEPLOY.md](DEPLOY.md#数据库支持)。
+- **数据库**：H2(开发) / **PostgreSQL(生产推荐)** / **MySQL 8(`profile=mysql`，已内置驱动与方言迁移)**，见 [DEPLOY.md](DEPLOY.md#数据库支持)。
 - **智能客服大模型**选型与部署(API 最省 / 本地 Ollama 离线)见 [docs/智能客服-大模型选型与部署.md](docs/智能客服-大模型选型与部署.md)。
 
 ## 界面预览

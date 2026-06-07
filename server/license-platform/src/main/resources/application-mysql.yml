@@ -1,0 +1,38 @@
+# MySQL profile：用 SPRING_PROFILES_ACTIVE=mysql 启用。
+# 库需为 utf8mb4：CREATE DATABASE cmssoas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+# Flyway 仅加载 MySQL 方言脚本(db/mysql),与 H2/PostgreSQL 完全隔离。
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://mysql:3306/cmssoas?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER:cmssoas}
+    password: ${DB_PASSWORD:cmssoas}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/mysql
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+
+management:
+  health:
+    redis:
+      enabled: true
+
+app:
+  redis:
+    enabled: ${APP_REDIS_ENABLED:true}
+  mail:
+    delivery: ${APP_MAIL_DELIVERY:smtp}
+  activation:
+    base-url: ${APP_ACTIVATION_BASE_URL:http://localhost/activate}
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost}

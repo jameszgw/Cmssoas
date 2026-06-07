@@ -101,6 +101,12 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- 可选数据库：MySQL（profile=mysql 启用，见 application-mysql.yml + db/migration/mysql） -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <!-- 可选 Redis：nonce/席位（app.redis.enabled=true 时启用） -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
