@@ -26,16 +26,19 @@ public class LicenseExpiryReminder {
     private final LicenseRepository licenseRepo;
     private final TenantRepository tenantRepo;
     private final OnboardingMailService mailService;
+    private final com.cmssoas.platform.alert.WeComNotifier weCom;
     private final int days;
     private final String fallbackTo;
 
     public LicenseExpiryReminder(LicenseRepository licenseRepo, TenantRepository tenantRepo,
                                  OnboardingMailService mailService,
+                                 com.cmssoas.platform.alert.WeComNotifier weCom,
                                  @Value("${app.license.expiry-reminder-days:30}") int days,
                                  @Value("${app.license.expiry-reminder-fallback-to:ops@cmssoas.com}") String fallbackTo) {
         this.licenseRepo = licenseRepo;
         this.tenantRepo = tenantRepo;
         this.mailService = mailService;
+        this.weCom = weCom;
         this.days = days;
         this.fallbackTo = fallbackTo;
     }
@@ -67,6 +70,10 @@ public class LicenseExpiryReminder {
             l.setExpiryReminded(true);
             licenseRepo.save(l);
             sent++;
+        }
+        if (sent > 0) {
+            weCom.sendMarkdown("## ⏳ License 到期提醒\n本轮共 **" + sent + "** 张授权即将到期（≤" + days
+                    + " 天），已发送提醒邮件，请关注续费。");
         }
         return sent;
     }

@@ -4,7 +4,18 @@ export default {
   lang: { label: 'EN' },
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
-    catalog: 'Products', plan: 'Plans', audit: 'Audit', system: 'Roles', users: 'Users',
+    catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
+  },
+  billing: {
+    title: 'Guide · Billing',
+    t1: 'Subscribe / plan change auto-creates an invoice (PENDING); amount = price × qty.',
+    t2: 'Mark as paid, then issue an invoice number (→ INVOICED).',
+    t3: 'Requires the billing:manage permission.',
+    lead: 'Auto-billing on subscription, with payment and invoicing.',
+    kPending: 'Receivable', kPaid: 'Received', kCount: 'Invoices',
+    amount: 'Amount', invoiceNo: 'Invoice No.', pay: 'Mark paid', issue: 'Issue invoice', done: 'Invoiced',
+    paidOk: 'Marked paid', issuedOk: 'Invoiced: {no}',
+    s: { PENDING: 'Pending', PAID: 'Paid', INVOICED: 'Invoiced', VOID: 'Void' },
   },
   pwd: {
     title: 'First login · Change password', lead: 'For security, please change the initial password before using the system.',

@@ -31,15 +31,18 @@ public class SubscriptionService {
     private final LicenseService licenseService;
     private final ObjectMapper mapper;
     private final com.cmssoas.platform.common.AuditWriter audit;
+    private final com.cmssoas.platform.billing.service.InvoiceService invoiceService;
 
     public SubscriptionService(SubscriptionRepository subRepo, PlanRepository planRepo,
                                LicenseService licenseService, ObjectMapper mapper,
-                               com.cmssoas.platform.common.AuditWriter audit) {
+                               com.cmssoas.platform.common.AuditWriter audit,
+                               com.cmssoas.platform.billing.service.InvoiceService invoiceService) {
         this.subRepo = subRepo;
         this.planRepo = planRepo;
         this.licenseService = licenseService;
         this.mapper = mapper;
         this.audit = audit;
+        this.invoiceService = invoiceService;
     }
 
     public List<PlanView> plans() {
@@ -79,6 +82,10 @@ public class SubscriptionService {
         s.setCreatedAt(LocalDateTime.now());
         subRepo.save(s);
 
+        // —— 自动出账 ——
+        invoiceService.bill(r.tenantCode(), r.customer(), s.getId(), plan.getCode(),
+                "SUBSCRIBE", plan.getPrice() * qty, r.startAt() + " ~ " + r.endAt());
+
         audit.log(null, "SUBSCRIPTION_CREATE",
                 r.tenantCode() + " · " + plan.getCode() + " x" + qty + " -> " + lic.licenseId());
         log.info("[subscription] 租户 {} 订阅 {} x{} -> 自动签发 {}",
@@ -101,6 +108,8 @@ public class SubscriptionService {
         String old = s.getPlanCode();
         s.setPlanCode(plan.getCode());
         subRepo.save(s);
+        invoiceService.bill(s.getTenantCode(), s.getCustomer(), s.getId(), plan.getCode(),
+                "CHANGE", plan.getPrice() * s.getQty(), "套餐变更 " + old + " → " + plan.getCode());
         audit.log(null, "SUBSCRIPTION_CHANGE", s.getTenantCode() + " · " + old + " → " + plan.getCode()
                 + "（重签 " + s.getLicenseId() + "）");
         return SubscriptionView.from(s);

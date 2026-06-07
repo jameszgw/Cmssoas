@@ -154,12 +154,11 @@
           <groupId>com.alibaba.cloud</groupId>
           <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-        <!-- 可选：服务注册发现（多实例时启用）
+        <!-- 服务注册发现：多实例拆分（nacos-discovery 已传递 loadbalancer） -->
         <dependency>
           <groupId>com.alibaba.cloud</groupId>
           <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        -->
       </dependencies>
     </profile>
   </profiles>

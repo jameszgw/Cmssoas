@@ -16,3 +16,12 @@ spring:
         password: ${NACOS_PASSWORD:nacos}
         # 配置变更自动刷新（@RefreshScope 的 Bean 生效）
         refresh-enabled: true
+      # 服务注册发现：多实例自动注册到 Nacos，供网关/其它服务按服务名负载均衡调用
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        # 逻辑拆分：签发服务 license-platform / 在线校验服务 license-edge 可用不同 spring.application.name
+        service: ${SERVICE_NAME:license-platform}

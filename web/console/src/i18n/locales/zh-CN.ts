@@ -4,7 +4,18 @@ export default {
   lang: { label: '中文' },
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
-    catalog: '产品与版本', plan: '套餐订阅', audit: '审计追溯', system: '角色权限', users: '用户管理',
+    catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
+  },
+  billing: {
+    title: '操作指引 · 计费账单',
+    t1: '订阅/套餐变更会自动出账(PENDING),金额=套餐价×数量。',
+    t2: '对账单先「收款」(→已付),再「开票」生成发票号(→已开票)。',
+    t3: '需「收款/开票」权限方可操作。',
+    lead: '订阅自动出账,支持收款与开票。',
+    kPending: '待收款', kPaid: '已收款', kCount: '账单数',
+    amount: '金额', invoiceNo: '发票号', pay: '收款', issue: '开票', done: '已开票',
+    paidOk: '已收款', issuedOk: '已开票:{no}',
+    s: { PENDING: '待支付', PAID: '已付款', INVOICED: '已开票', VOID: '已作废' },
   },
   pwd: {
     title: '首次登录 · 请修改密码', lead: '为保障安全，初始密码需修改后方可使用系统。',
