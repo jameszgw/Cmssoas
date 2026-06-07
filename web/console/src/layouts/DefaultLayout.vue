@@ -21,6 +21,7 @@ const allNavs = [
   { to: '/online', key: 'nav.online', perm: 'online' },
   { to: '/products', key: 'nav.catalog', perm: 'catalog' },
   { to: '/plans', key: 'nav.plan', perm: 'plan' },
+  { to: '/customers', key: 'nav.customer', perm: 'customer' },
   { to: '/billing', key: 'nav.billing', perm: 'billing' },
   { to: '/contracts', key: 'nav.contract', perm: 'contract' },
   { to: '/notices', key: 'nav.notice', perm: 'notice' },

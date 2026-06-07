@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
     catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
-    contract: '合同签约', notice: '须知与授权', cs: '智能客服',
+    contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理',
   },
   billing: {
     title: '操作指引 · 计费账单',
@@ -327,5 +327,24 @@ export default {
     tplPlaceholderHint: '占位符：{{customer}} 客户、{{amount}} 金额、{{plan}} 套餐、{{tenant}} 租户、{{date}} 日期',
     s: { DRAFT: '草稿', SENT: '待签署', SIGNING: '签署中', SIGNED: '已签署', VOID: '已作废' },
     ps: { PENDING: '待签', SIGNED: '已签' },
+  },
+  customer: {
+    lead: '统一客户主数据,打通 License / 合同 / 账单 / 支付 / 订阅,一处看清「客户360」。',
+    help: {
+      title: '操作指引 · 客户管理',
+      t1: '客户名称是聚合主键:与 License/账单/合同/订阅/支付的「客户」字段同名即自动归集。',
+      t2: '点客户行或「客户360」查看该客户的全景:授权、合同、账单、支付、订阅与关键指标。',
+      t3: '可维护联系人/邮箱/行业/关联租户;支持搜索与 CSV 导出。',
+      t4: '建议新建业务单据时客户名称与此处保持一致,以获得准确的 360 聚合。',
+    },
+    create: '新建客户', editTitle: '编辑客户', search: '搜索 客户/联系人/编号', view360: '客户360',
+    kTotal: '客户总数', kActive: '活跃客户', kIndustry: '覆盖行业',
+    name: '客户名称', namePh: '与业务单据中的客户名保持一致', contact: '联系人', email: '邮箱',
+    phone: '电话', industry: '行业', tenant: '关联租户', note: '备注', nameRequired: '请填写客户名称',
+    empty: '暂无客户,点击右上角新建。',
+    s: { ACTIVE: '活跃', INACTIVE: '停用' },
+    // 360
+    activeShort: '有效', mLicense: '授权数', mContract: '合同数', mPaid: '已收款', mPending: '待收款',
+    tabLicense: '授权', tabContract: '合同', tabInvoice: '账单', tabSub: '订阅', cLicId: '授权编号',
   },
 }

@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
     catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
-    contract: 'Contracts', notice: 'Notices', cs: 'AI Support',
+    contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers',
   },
   billing: {
     title: 'Guide · Billing',
@@ -326,5 +326,23 @@ export default {
     tplPlaceholderHint: 'Placeholders: {{customer}}, {{amount}}, {{plan}}, {{tenant}}, {{date}}',
     s: { DRAFT: 'Draft', SENT: 'Awaiting', SIGNING: 'Signing', SIGNED: 'Signed', VOID: 'Void' },
     ps: { PENDING: 'Pending', SIGNED: 'Signed' },
+  },
+  customer: {
+    lead: 'Unified customer master data linking Licenses / Contracts / Invoices / Payments / Subscriptions into one Customer 360.',
+    help: {
+      title: 'Guide · Customers',
+      t1: 'Customer name is the aggregation key: records whose "customer" matches are grouped automatically.',
+      t2: 'Click a row or "Customer 360" to see the full picture: licenses, contracts, invoices, payments, subscriptions and KPIs.',
+      t3: 'Maintain contact/email/industry/linked tenant; supports search and CSV export.',
+      t4: 'Keep the customer name consistent when creating business records for accurate 360 aggregation.',
+    },
+    create: 'New customer', editTitle: 'Edit customer', search: 'Search name/contact/code', view360: 'Customer 360',
+    kTotal: 'Customers', kActive: 'Active', kIndustry: 'Industries',
+    name: 'Name', namePh: 'Match the customer name used in business records', contact: 'Contact', email: 'Email',
+    phone: 'Phone', industry: 'Industry', tenant: 'Linked tenant', note: 'Note', nameRequired: 'Name is required',
+    empty: 'No customers yet. Click New to create one.',
+    s: { ACTIVE: 'Active', INACTIVE: 'Inactive' },
+    activeShort: ' active', mLicense: 'Licenses', mContract: 'Contracts', mPaid: 'Received', mPending: 'Receivable',
+    tabLicense: 'Licenses', tabContract: 'Contracts', tabInvoice: 'Invoices', tabSub: 'Subscriptions', cLicId: 'License ID',
   },
 }
