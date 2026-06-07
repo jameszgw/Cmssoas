@@ -33,6 +33,12 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       APP_REDIS_ENABLED: "true"
+      # 安全：生产务必通过 .env 覆盖 JWT 密钥
+      JWT_SECRET: ${JWT_SECRET:-cmssoas-dev-secret-please-change-in-prod-0123456789}
+      LICENSE_SIGN_ALGO: ${LICENSE_SIGN_ALGO:-ed25519}     # ed25519 | sm2(国密)
+      ALERT_WECOM_WEBHOOK: ${ALERT_WECOM_WEBHOOK:-}        # 企业微信告警机器人,留空禁用
+      PAY_PROVIDER: ${PAY_PROVIDER:-mock}                  # mock(人工确认) | wechatpay | alipay | stripe
+      EINVOICE_PROVIDER: ${EINVOICE_PROVIDER:-mock}        # mock(沙箱) | aisino | baiwang
       # 邮件：默认 log（落盘）；配置 SMTP 后改为 smtp
       APP_MAIL_DELIVERY: ${APP_MAIL_DELIVERY:-log}
       MAIL_HOST: ${MAIL_HOST:-}
