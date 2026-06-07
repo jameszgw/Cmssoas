@@ -24,6 +24,12 @@ spring:
       hibernate:
         format_sql: false
 
+  # 文件上传(在线代码加固上传 jar)
+  servlet:
+    multipart:
+      max-file-size: ${HARDEN_MAX_FILE:200MB}
+      max-request-size: ${HARDEN_MAX_REQUEST:210MB}
+
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -83,6 +89,10 @@ app:
   # ---- 电子发票(通用,不绑定渠道)。默认沙箱,换渠道改 provider ----
   einvoice:
     provider: ${EINVOICE_PROVIDER:mock}          # mock(沙箱) | aisino(航信) | baiwang(百望)
+  # ---- 在线代码加固(上传 jar→加固→下载)。与构建/打包加固并存 ----
+  harden:
+    work-dir: ${HARDEN_WORK_DIR:./var/harden}    # 上传源 jar 与加固产物存放目录
+    max-file-mb: ${HARDEN_MAX_FILE_MB:200}
 
 # ---- 可观测：Actuator + Prometheus 抓取端点 ----
 management:

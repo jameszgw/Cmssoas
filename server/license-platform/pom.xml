@@ -76,6 +76,13 @@
       <artifactId>bcprov-jdk18on</artifactId>
       <version>1.78.1</version>
     </dependency>
+    <!-- 在线代码加固：ProGuard 库内调用(混淆)。log4j-api 经 src/main/resources/log4j2.component.properties
+         强制用 log4j-core 工厂,避开 Spring 的 log4j-to-slf4j 桥接冲突(LoggerContext ClassCastException)。 -->
+    <dependency>
+      <groupId>com.guardsquare</groupId>
+      <artifactId>proguard-base</artifactId>
+      <version>7.7.0</version>
+    </dependency>
     <!-- JWT（运营后台登录鉴权） -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>

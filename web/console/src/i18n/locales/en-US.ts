@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
     catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
-    contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers', portalAdmin: 'Portal',
+    contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers', portalAdmin: 'Portal', harden: 'Hardening',
   },
   billing: {
     title: 'Guide · Billing',
@@ -381,5 +381,27 @@ export default {
     enabledOk: 'Portal enabled', resetOk: 'Access code reset', disabledOk: 'Disabled', copied: 'Copied to clipboard',
     resetConfirm: 'The old access code will stop working immediately. Continue?', disableConfirm: 'Customers will no longer be able to log in. Continue?',
     empty: 'No tenants yet.',
+  },
+  harden: {
+    lead: 'Upload jar → auto-harden → download. Coexists with build-time hardening; per-tenant default mode, per-task override.',
+    help: {
+      title: 'Guide · Code Hardening',
+      t1: 'Two coexisting modes: (1) build-time (ProGuard + class encryption, see example project); (2) online (upload jar here).',
+      t2: 'Per-tenant mode: build-only / online-only / both; online hardening is blocked when mode is build-only.',
+      t3: 'Online techniques stack: ProGuard obfuscation, class-encryption+License-bind, passphrase class-encryption; applied in order.',
+      t4: 'Run output: License-bound → java -Dharden.license=<.lic> -jar; passphrase → java -Dharden.key=<pass> -jar.',
+    },
+    cfgTitle: 'Hardening settings (per tenant)', cfgLead: 'Default mode & techniques for this tenant (tasks may override).',
+    cfgNote: 'Online hardening is allowed only when mode is ONLINE/BOTH.',
+    tenant: 'Tenant', mode: 'Mode', modeBuild: 'Build only', modeOnline: 'Online only', modeBoth: 'Both',
+    defTech: 'Default techniques',
+    newTitle: 'New online hardening', newLead: 'Upload an executable jar, pick techniques; async, then download.',
+    file: 'jar file', tech: 'Techniques', bindLic: 'Bind License', pass: 'Passphrase',
+    prefix: 'Encrypt prefix', prefixPh: 'blank = infer from Main-Class top package',
+    tObf: 'ProGuard obfuscate', tBind: 'Encrypt + License-bind', tFat: 'Passphrase encrypt',
+    submit: 'Submit', submitted: 'Submitted, processing', pickFile: 'Pick a jar file', pickTech: 'Pick at least one technique',
+    needBind: 'License-bind requires a bound License', needPass: 'Passphrase encryption requires a passphrase',
+    jobNo: 'Source / Job No.', outSize: 'Output size', download: 'Download', empty: 'No hardening jobs yet.',
+    s: { QUEUED: 'Queued', RUNNING: 'Running', DONE: 'Done', FAILED: 'Failed' },
   },
 }

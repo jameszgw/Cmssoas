@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
     catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
-    contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理', portalAdmin: '自助门户',
+    contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理', portalAdmin: '自助门户', harden: '代码加固',
   },
   billing: {
     title: '操作指引 · 计费账单',
@@ -383,5 +383,27 @@ export default {
     enabledOk: '已开通门户', resetOk: '访问码已重置', disabledOk: '已停用', copied: '已复制到剪贴板',
     resetConfirm: '重置后旧访问码立即失效,确认?', disableConfirm: '停用后客户将无法登录门户,确认?',
     empty: '暂无租户。',
+  },
+  harden: {
+    lead: '在线上传 jar → 自动加固 → 下载。与「构建/打包」加固并存,按租户设默认模式、任务可覆盖。',
+    help: {
+      title: '操作指引 · 代码加固',
+      t1: '加固有两种方式并存:① 构建/打包时(ProGuard + 类加密,见示例工程);② 平台在线(本页上传 jar)。',
+      t2: '按租户设「加固模式」:仅构建自建 / 仅平台在线 / 两者并存;模式为「仅构建」时不允许在线加固。',
+      t3: '在线加固技术可叠加:ProGuard 混淆、关键类加密+License 绑定、口令式类加密;按勾选顺序执行。',
+      t4: '产物运行:License 绑定→ java -Dharden.license=<.lic> -jar;口令式→ java -Dharden.key=<口令> -jar。',
+    },
+    cfgTitle: '加固设置(按租户)', cfgLead: '设置该租户默认加固模式与默认技术(任务可覆盖)。',
+    cfgNote: '提示:仅当模式为 ONLINE/BOTH 才允许该租户在线加固。',
+    tenant: '租户', mode: '加固模式', modeBuild: '仅构建自建', modeOnline: '仅平台在线', modeBoth: '两者并存',
+    defTech: '默认技术',
+    newTitle: '提交在线加固', newLead: '上传可执行 jar,选择加固技术,异步处理后下载产物。',
+    file: 'jar 文件', tech: '加固技术', bindLic: '绑定 License', pass: '解密口令',
+    prefix: '加密包前缀', prefixPh: '留空自动按 Main-Class 顶层包',
+    tObf: 'ProGuard 混淆', tBind: '类加密+License绑定', tFat: '口令式类加密',
+    submit: '提交加固', submitted: '已提交,异步处理中', pickFile: '请选择 jar 文件', pickTech: '请至少选择一种技术',
+    needBind: '类加密+License 绑定需填写绑定 License', needPass: '口令式加密需填写口令',
+    jobNo: '源文件 / 任务号', outSize: '产物大小', download: '下载', empty: '暂无加固任务。',
+    s: { QUEUED: '排队中', RUNNING: '处理中', DONE: '已完成', FAILED: '失败' },
   },
 }

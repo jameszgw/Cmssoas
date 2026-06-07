@@ -39,6 +39,8 @@ services:
       ALERT_WECOM_WEBHOOK: ${ALERT_WECOM_WEBHOOK:-}        # 企业微信告警机器人,留空禁用
       PAY_PROVIDER: ${PAY_PROVIDER:-mock}                  # mock(人工确认) | wechatpay | alipay | stripe
       EINVOICE_PROVIDER: ${EINVOICE_PROVIDER:-mock}        # mock(沙箱) | aisino | baiwang
+      HARDEN_WORK_DIR: ${HARDEN_WORK_DIR:-/var/lib/codeman/harden}   # 在线代码加固工作目录(持久卷)
+      HARDEN_MAX_FILE_MB: ${HARDEN_MAX_FILE_MB:-200}
       # 邮件：默认 log（落盘）；配置 SMTP 后改为 smtp
       APP_MAIL_DELIVERY: ${APP_MAIL_DELIVERY:-log}
       MAIL_HOST: ${MAIL_HOST:-}
@@ -55,6 +57,8 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
+    volumes:
+      - harden:/var/lib/codeman/harden   # 在线代码加固上传源与产物持久化
     ports:
       - "8080:8080"
 
@@ -106,3 +110,4 @@ services:
 volumes:
   pgdata:
   ollama:
+  harden:

@@ -16,6 +16,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/contracts', name: 'contracts', component: () => import('@/views/Contracts.vue') },
   { path: '/notices', name: 'notices', component: () => import('@/views/Notices.vue') },
   { path: '/cs', name: 'cs', component: () => import('@/views/CustomerService.vue') },
+  { path: '/harden', name: 'harden', component: () => import('@/views/Harden.vue') },
   { path: '/portal-admin', name: 'portalAdmin', component: () => import('@/views/PortalAdmin.vue') },
   { path: '/system/roles', name: 'roles', component: () => import('@/views/Roles.vue') },
   { path: '/system/users', name: 'users', component: () => import('@/views/Users.vue') },

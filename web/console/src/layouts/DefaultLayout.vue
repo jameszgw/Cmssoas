@@ -26,6 +26,7 @@ const allNavs = [
   { to: '/contracts', key: 'nav.contract', perm: 'contract' },
   { to: '/notices', key: 'nav.notice', perm: 'notice' },
   { to: '/cs', key: 'nav.cs', perm: 'cs' },
+  { to: '/harden', key: 'nav.harden', perm: 'harden' },
   { to: '/portal-admin', key: 'nav.portalAdmin', perm: 'tenant:portal' },
   { to: '/audit', key: 'nav.audit', perm: 'audit' },
   { to: '/system/roles', key: 'nav.system', perm: 'role:view' },

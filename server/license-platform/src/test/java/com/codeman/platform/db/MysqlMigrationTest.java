@@ -22,7 +22,7 @@ class MysqlMigrationTest {
                 .load();
         MigrateResult r = fw.migrate();
         assertTrue(r.success, "MySQL 方言迁移应成功应用");
-        assertEquals(17, r.migrationsExecuted, "应应用全部 17 个迁移");
-        assertEquals("17", fw.info().current().getVersion().getVersion(), "当前版本应为 17");
+        assertEquals(18, r.migrationsExecuted, "应应用全部 18 个迁移");
+        assertEquals("18", fw.info().current().getVersion().getVersion(), "当前版本应为 17");
     }
 }

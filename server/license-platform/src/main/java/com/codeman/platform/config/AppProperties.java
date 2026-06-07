@@ -12,12 +12,27 @@ public class AppProperties {
     private final Online online = new Online();
     private final Ai ai = new Ai();
     private final Pay pay = new Pay();
+    private final Harden harden = new Harden();
 
     public Mail getMail() { return mail; }
     public Activation getActivation() { return activation; }
     public Online getOnline() { return online; }
     public Ai getAi() { return ai; }
     public Pay getPay() { return pay; }
+    public Harden getHarden() { return harden; }
+
+    /** 在线代码加固(上传 jar→加固→下载)。与构建/打包加固并存。 */
+    public static class Harden {
+        /** 加固工作目录(存放上传源 jar 与产物)。 */
+        private String workDir = "./var/harden";
+        /** 单个上传 jar 上限(MB)。 */
+        private int maxFileMb = 200;
+
+        public String getWorkDir() { return workDir; }
+        public void setWorkDir(String v) { this.workDir = v; }
+        public int getMaxFileMb() { return maxFileMb; }
+        public void setMaxFileMb(int v) { this.maxFileMb = v; }
+    }
 
     /** 在线支付/收款(通用,不绑定渠道)。默认沙箱;换渠道改 {@code provider}。 */
     public static class Pay {
