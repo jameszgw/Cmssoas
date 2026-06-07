@@ -2,6 +2,7 @@ package com.cmssoas.platform.license.web;
 
 import com.cmssoas.platform.license.dto.LicenseDtos.*;
 import com.cmssoas.platform.license.service.LicenseService;
+import com.cmssoas.platform.license.service.LicenseExpiryReminder;
 import com.cmssoas.platform.rbac.service.RequirePerm;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -16,9 +17,11 @@ import java.util.List;
 public class LicenseController {
 
     private final LicenseService service;
+    private final LicenseExpiryReminder expiryReminder;
 
-    public LicenseController(LicenseService service) {
+    public LicenseController(LicenseService service, LicenseExpiryReminder expiryReminder) {
         this.service = service;
+        this.expiryReminder = expiryReminder;
     }
 
     @GetMapping
@@ -41,6 +44,13 @@ public class LicenseController {
     @GetMapping("/crl")
     public List<String> crl() {
         return service.crl();
+    }
+
+    /** 手动触发到期提醒扫描（经发件箱外发邮件），返回本次发送数。 */
+    @PostMapping("/run-expiry-reminder")
+    @RequirePerm("license:view")
+    public java.util.Map<String, Object> runExpiryReminder() {
+        return java.util.Map.of("sent", expiryReminder.runOnce());
     }
 
     @GetMapping("/{licenseId}")

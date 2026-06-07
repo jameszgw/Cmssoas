@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import AreaChart from '@/components/charts/AreaChart.vue'
@@ -8,11 +8,21 @@ import BarList from '@/components/charts/BarList.vue'
 import OnboardTenantDialog from '@/components/OnboardTenantDialog.vue'
 import PageHelp from '@/components/PageHelp.vue'
 import { mockTenants, planMix, trendIssue, trendRenew } from '@/api/mock'
+import { getStats, getAlerts, type OverviewStats, type OverviewAlert } from '@/api/overview'
 
 const { t } = useI18n()
 const router = useRouter()
 const recent = mockTenants.slice(0, 5)
 const showOnboard = ref(false)
+
+// 真实统计与告警（后端 /api/overview/*）
+const stats = ref<OverviewStats>({ licensesTotal: 0, licensesActive: 0, licensesExpireSoon: 0, licensesRevoked: 0, tenants: 0, subscriptions: 0, onlineInstances: 0, graceInstances: 0, seatsUsed: 0 })
+const alerts = ref<OverviewAlert[]>([])
+const alertClass: Record<string, string> = { danger: 's-exp', warning: 's-soon', info: 's-init' }
+async function loadOverview() {
+  try { [stats.value, alerts.value] = await Promise.all([getStats(), getAlerts()]) } catch { /* 未登录或无权限时忽略 */ }
+}
+onMounted(loadOverview)
 
 const modeSegs = [
   { value: 52, color: 'var(--brand)' },
@@ -45,23 +55,23 @@ const statusClass: Record<string, string> = { active: 's-active', soon: 's-soon'
     <section class="grid kpis" style="margin-bottom:1.1rem">
       <div class="card kpi">
         <div class="top"><span class="label">{{ t('kpi.tenants') }}</span><span class="ic">🏢</span></div>
-        <div class="val">1,286</div>
-        <div class="foot"><span class="delta up">▲ 6.4%</span><span class="muted">{{ t('kpi.mom') }}</span></div>
+        <div class="val data">{{ stats.tenants }}</div>
+        <div class="foot"><span class="muted">{{ t('kpi.realtime') }}</span></div>
       </div>
       <div class="card kpi">
         <div class="top"><span class="label">{{ t('kpi.active') }}</span><span class="ic">🔑</span></div>
-        <div class="val">3,572</div>
-        <div class="foot"><span class="delta up">▲ 3.1%</span><span class="muted">{{ t('kpi.mom') }}</span></div>
+        <div class="val data">{{ stats.licensesActive }}</div>
+        <div class="foot"><span class="muted">{{ t('kpi.ofTotal', { n: stats.licensesTotal }) }}</span></div>
       </div>
       <div class="card kpi">
-        <div class="top"><span class="label">{{ t('kpi.new') }}</span><span class="ic">✨</span></div>
-        <div class="val">128</div>
-        <div class="foot"><span class="delta up">▲ 18.2%</span><span class="muted">{{ t('kpi.mom') }}</span></div>
+        <div class="top"><span class="label">{{ t('kpi.subs') }}</span><span class="ic">✨</span></div>
+        <div class="val data">{{ stats.subscriptions }}</div>
+        <div class="foot"><span class="muted">{{ t('kpi.online', { n: stats.onlineInstances }) }}</span></div>
       </div>
       <div class="card kpi">
         <div class="top"><span class="label">{{ t('kpi.expire') }}</span><span class="ic">⏳</span></div>
-        <div class="val">47</div>
-        <div class="foot"><span class="delta down">▲ 9</span><span class="muted">{{ t('kpi.attention') }}</span></div>
+        <div class="val data">{{ stats.licensesExpireSoon }}</div>
+        <div class="foot"><span class="muted">{{ t('kpi.attention') }}</span></div>
       </div>
     </section>
 
@@ -135,17 +145,14 @@ const statusClass: Record<string, string> = { active: 's-active', soon: 's-soon'
       <div class="card">
         <div class="card-head"><div><h3>📌 {{ t('todo.title') }}</h3><div class="sub">{{ t('todo.sub') }}</div></div></div>
         <div class="todo">
-          <div class="item"><div class="badge b-warn">⏳</div>
-            <div><div class="ttl">{{ t('todo.t1') }}</div>
-              <div class="desc">{{ t('todo.d1') }}<span class="data">T-100481</span> · <span class="data">2026-06-29</span></div></div></div>
-          <div class="item"><div class="badge b-info">⚙️</div>
-            <div><div class="ttl">{{ t('todo.t2') }}</div><div class="desc">{{ t('todo.d2') }}</div></div></div>
-          <div class="item"><div class="badge b-warn">📡</div>
-            <div><div class="ttl">{{ t('todo.t3') }}</div>
-              <div class="desc"><span class="data">T-100455</span> {{ t('todo.d3') }}</div></div></div>
-          <div class="item"><div class="badge b-ok">✉️</div>
-            <div><div class="ttl">{{ t('todo.t4') }}</div>
-              <div class="desc"><span class="data">128</span> {{ t('todo.d4') }} <span class="data">99.2%</span></div></div></div>
+          <div v-for="(a, i) in alerts" :key="i" class="item">
+            <div class="badge" :class="a.level === 'danger' ? 'b-warn' : a.level === 'warning' ? 'b-warn' : 'b-info'">
+              {{ a.type === 'HEARTBEAT' ? '📡' : a.type === 'EXPIRED' ? '⛔' : '⏳' }}
+            </div>
+            <div><div class="ttl">{{ t('todo.a.' + a.type) }}</div>
+              <div class="desc">{{ a.message }}</div></div>
+          </div>
+          <div v-if="!alerts.length" class="faint" style="padding:1.5rem 0;text-align:center">{{ t('todo.empty') }}</div>
         </div>
       </div>
 
