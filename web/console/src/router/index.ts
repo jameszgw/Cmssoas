@@ -12,6 +12,9 @@ const routes: RouteRecordRaw[] = [
   { path: '/plans', name: 'plans', component: () => import('@/views/Plans.vue') },
   { path: '/audit', name: 'audit', component: () => import('@/views/Audit.vue') },
   { path: '/billing', name: 'billing', component: () => import('@/views/Billing.vue') },
+  { path: '/contracts', name: 'contracts', component: () => import('@/views/Contracts.vue') },
+  { path: '/notices', name: 'notices', component: () => import('@/views/Notices.vue') },
+  { path: '/cs', name: 'cs', component: () => import('@/views/CustomerService.vue') },
   { path: '/system/roles', name: 'roles', component: () => import('@/views/Roles.vue') },
   { path: '/system/users', name: 'users', component: () => import('@/views/Users.vue') },
   // 公开页：管理员激活（无顶部导航）

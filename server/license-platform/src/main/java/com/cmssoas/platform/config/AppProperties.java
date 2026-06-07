@@ -10,10 +10,47 @@ public class AppProperties {
     private final Mail mail = new Mail();
     private final Activation activation = new Activation();
     private final Online online = new Online();
+    private final Ai ai = new Ai();
 
     public Mail getMail() { return mail; }
     public Activation getActivation() { return activation; }
     public Online getOnline() { return online; }
+    public Ai getAi() { return ai; }
+
+    /**
+     * 智能客服大模型配置(通用、不绑定厂商)。统一走 OpenAI 兼容接口
+     * {base-url}/chat/completions，换厂商=改配置不改代码：
+     * 云端 DeepSeek / 通义 / 文心 / Kimi / 智谱 / OpenAI / one-api 网关，或本地 Ollama(完全离线)。
+     */
+    public static class Ai {
+        /** 是否启用智能客服。未配置 base-url 时即便启用也会优雅降级为“仅知识库提示”。 */
+        private boolean enabled = false;
+        /** OpenAI 兼容端点根地址，例：https://api.deepseek.com/v1 或 http://127.0.0.1:11434/v1(Ollama)。 */
+        private String baseUrl = "";
+        /** API Key(经 Nacos/KMS/env 注入，不落明文)；本地模型可留空。 */
+        private String apiKey = "";
+        /** 模型名，例：deepseek-chat / qwen-plus / gpt-4o-mini / llama3.1。 */
+        private String model = "deepseek-chat";
+        /** 上游请求超时(秒)。 */
+        private int timeoutSec = 60;
+        /** 单会话回传给模型的最大历史消息条数(控制成本与上下文长度)。 */
+        private int historyLimit = 12;
+
+        public boolean isEnabled() { return enabled; }
+        public void setEnabled(boolean v) { this.enabled = v; }
+        public String getBaseUrl() { return baseUrl; }
+        public void setBaseUrl(String v) { this.baseUrl = v; }
+        public String getApiKey() { return apiKey; }
+        public void setApiKey(String v) { this.apiKey = v; }
+        public String getModel() { return model; }
+        public void setModel(String v) { this.model = v; }
+        public int getTimeoutSec() { return timeoutSec; }
+        public void setTimeoutSec(int v) { this.timeoutSec = v; }
+        public int getHistoryLimit() { return historyLimit; }
+        public void setHistoryLimit(int v) { this.historyLimit = v; }
+        /** 是否具备真正可调用的上游(用于决定走模型还是降级)。 */
+        public boolean ready() { return enabled && baseUrl != null && !baseUrl.isBlank(); }
+    }
 
     public static class Mail {
         /** log | smtp */

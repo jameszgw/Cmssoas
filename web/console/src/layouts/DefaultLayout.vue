@@ -6,6 +6,8 @@ import { ElMessageBox } from 'element-plus'
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 import LangSwitcher from '@/components/LangSwitcher.vue'
 import ForcePwdDialog from '@/components/ForcePwdDialog.vue'
+import NoticeGate from '@/components/NoticeGate.vue'
+import CsWidget from '@/components/CsWidget.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const { t } = useI18n()
@@ -20,6 +22,9 @@ const allNavs = [
   { to: '/products', key: 'nav.catalog', perm: 'catalog' },
   { to: '/plans', key: 'nav.plan', perm: 'plan' },
   { to: '/billing', key: 'nav.billing', perm: 'billing' },
+  { to: '/contracts', key: 'nav.contract', perm: 'contract' },
+  { to: '/notices', key: 'nav.notice', perm: 'notice' },
+  { to: '/cs', key: 'nav.cs', perm: 'cs' },
   { to: '/audit', key: 'nav.audit', perm: 'audit' },
   { to: '/system/roles', key: 'nav.system', perm: 'role:view' },
   { to: '/system/users', key: 'nav.users', perm: 'user:view' },
@@ -80,6 +85,8 @@ async function logout() {
   </main>
 
   <ForcePwdDialog />
+  <NoticeGate />
+  <CsWidget />
 </template>
 
 <style scoped>
