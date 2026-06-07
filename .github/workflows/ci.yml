@@ -50,3 +50,40 @@ jobs:
         run: |
           npm install
           npm run build
+
+  e2e:
+    name: 端到端测试 (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 构建并后台启动后端
+        working-directory: server/license-platform
+        run: |
+          mvn -B -ntp -DskipTests package
+          nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          # 等待后端健康
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:8080/actuator/health && break || sleep 2
+          done
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装前端依赖与浏览器
+        working-directory: web/console
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+      - name: 运行 E2E
+        working-directory: web/console
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: web/console/playwright-report/
+          retention-days: 7
