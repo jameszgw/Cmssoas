@@ -172,11 +172,15 @@ jobs:
           retention-days: 7
 
   mysql:
-    name: MySQL 方言迁移校验 (MySQL 8)
+    name: MySQL 方言迁移校验 (MySQL ${{ matrix.mysql }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mysql: ["8.0", "5.7"]
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: cmssoas

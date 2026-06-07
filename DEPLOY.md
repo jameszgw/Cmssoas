@@ -34,9 +34,11 @@ docker compose up -d --build
 |---|---|---|
 | **H2** | ✅ 开发默认 | 内存库,开箱即跑(PostgreSQL 兼容模式) |
 | **PostgreSQL** | ✅ 生产推荐 | `profile=prod`(`application-prod.yml`),已验证 |
-| **MySQL 8** | ✅ 已支持(profile=mysql) | 驱动 + `application-mysql.yml` + `db/mysql` 方言脚本已内置 |
+| **MySQL 5.7 / 8.0** | ✅ 已支持(profile=mysql) | 驱动 + `application-mysql.yml` + `db/mysql` 方言脚本;CI 在 5.7 与 8.0 真机矩阵验证(5.7 已 EOL,建议 8.0) |
 
-### 使用 MySQL 8(已内置)
+> **运行环境要求**:JDK **17+(推荐 21)**;**不支持 Java 8**(Spring Boot 3.x 最低 Java 17)。
+
+### 使用 MySQL 5.7 / 8.0(已内置)
 已落地:MySQL 驱动(`mysql-connector-j`)、`application-mysql.yml`、`db/mysql/V1..V17`(由 PG/H2 脚本机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`)。Flyway 通过 `locations=classpath:db/mysql` 与 PG/H2 完全隔离。
 
 **Docker(叠加文件):**
