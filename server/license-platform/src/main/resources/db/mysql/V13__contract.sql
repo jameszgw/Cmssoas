@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V13__contract.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V13__contract.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 合同签约(电子签：自建签章留痕，哈希+时间戳存证)
 CREATE TABLE contract_template (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -7,7 +7,7 @@ CREATE TABLE contract_template (
     content_html TEXT         NOT NULL,   -- 含占位符 {{customer}} {{amount}} {{plan}} {{tenant}} {{date}}
     variables    VARCHAR(256),
     created_at   DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE contract (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -25,7 +25,7 @@ CREATE TABLE contract (
     created_at      DATETIME    NOT NULL,
     sent_at         DATETIME,
     signed_at       DATETIME
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_contract_tenant ON contract(tenant_code);
 CREATE INDEX idx_contract_status ON contract(status);
 
@@ -39,7 +39,7 @@ CREATE TABLE contract_party (
     sign_status VARCHAR(16) NOT NULL,    -- PENDING/SIGNED
     sign_hash   VARCHAR(80),             -- 签署存证哈希
     signed_at   DATETIME
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_party_contract ON contract_party(contract_id);
 
 -- 权限点

@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V3__license.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V3__license.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- License 签发与生命周期
 
 CREATE TABLE license (
@@ -24,7 +24,7 @@ CREATE TABLE license (
     lic               TEXT         NOT NULL,
     created_at        DATETIME    NOT NULL,
     updated_at        DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE license_history (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +37,7 @@ CREATE TABLE license_history (
     operator    VARCHAR(64)  NOT NULL,
     reason      VARCHAR(256),
     created_at  DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE INDEX idx_license_tenant ON license(tenant_code);
 CREATE INDEX idx_lichist_lid ON license_history(license_id);

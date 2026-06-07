@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V11__notice_consent.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V11__notice_consent.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 在线用户须知 / 用户授权(同意管理)
 CREATE TABLE notice (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE notice (
     force_ack     BOOLEAN      NOT NULL DEFAULT 0,
     effective_at  DATETIME,
     created_at    DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_notice_type_status ON notice(type, status);
 
 CREATE TABLE user_consent (
@@ -26,7 +26,7 @@ CREATE TABLE user_consent (
     ip           VARCHAR(64),
     user_agent   VARCHAR(256),
     created_at   DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_consent_subject ON user_consent(subject);
 CREATE INDEX idx_consent_notice ON user_consent(notice_id);
 

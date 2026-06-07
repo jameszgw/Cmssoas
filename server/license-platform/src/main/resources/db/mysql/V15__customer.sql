@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V15__customer.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V15__customer.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 统一客户主数据(Customer)。License/账单/合同/订阅/支付按 customer 名称聚合成「客户360」。
 CREATE TABLE customer (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +13,7 @@ CREATE TABLE customer (
     status      VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',  -- ACTIVE / INACTIVE
     note        VARCHAR(512),
     created_at  DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE UNIQUE INDEX uk_customer_code ON customer(code);
 CREATE INDEX idx_customer_name ON customer(name);
 

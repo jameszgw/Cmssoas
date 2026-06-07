@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V12__customer_service.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V12__customer_service.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 智能客服：会话 + 消息（通用 provider-agnostic，不绑定厂商）
 CREATE TABLE cs_conversation (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -9,7 +9,7 @@ CREATE TABLE cs_conversation (
     status       VARCHAR(16)  NOT NULL,   -- OPEN / ESCALATED / CLOSED
     created_at   DATETIME    NOT NULL,
     updated_at   DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_cs_conv_user ON cs_conversation(user_ref);
 CREATE INDEX idx_cs_conv_status ON cs_conversation(status);
 
@@ -19,7 +19,7 @@ CREATE TABLE cs_message (
     role            VARCHAR(16) NOT NULL,   -- user / assistant / system
     content         TEXT        NOT NULL,
     created_at      DATETIME   NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_cs_msg_conv ON cs_message(conversation_id);
 
 -- 权限点

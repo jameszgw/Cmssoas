@@ -1,38 +1,38 @@
--- [MySQL 方言] 由 db/migration/V5__catalog_plan.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V5__catalog_plan.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 产品目录 / 套餐 / 订阅
 
 CREATE TABLE product (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(32) NOT NULL UNIQUE,
     name VARCHAR(64) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE module (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_code VARCHAR(32) NOT NULL,
     code         VARCHAR(32) NOT NULL,
     name         VARCHAR(64) NOT NULL,
     sort         INT NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE feature (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     module_code VARCHAR(32) NOT NULL,
     code        VARCHAR(48) NOT NULL UNIQUE,
     name        VARCHAR(64) NOT NULL,
     sort        INT NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE app_version (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_code VARCHAR(32) NOT NULL,
     version      VARCHAR(16) NOT NULL,
     sort         INT NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE feature_version (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     feature_code VARCHAR(48) NOT NULL,
     version      VARCHAR(16) NOT NULL,
     available    BOOLEAN NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE plan (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     code          VARCHAR(32)  NOT NULL UNIQUE,
@@ -45,7 +45,7 @@ CREATE TABLE plan (
     features      VARCHAR(2000) NOT NULL,
     status        VARCHAR(16)  NOT NULL,
     sort          INT          NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE subscription (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     tenant_code VARCHAR(32)  NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE subscription (
     status      VARCHAR(16)  NOT NULL,
     license_id  VARCHAR(40),
     created_at  DATETIME    NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ===== 种子数据 =====
 INSERT INTO product(code,name) VALUES ('CMSSOAS','软件授权管理平台');

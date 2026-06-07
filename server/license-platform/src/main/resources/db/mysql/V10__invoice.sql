@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V10__invoice.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V10__invoice.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- 计费账单 / 开票
 CREATE TABLE invoice (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +16,7 @@ CREATE TABLE invoice (
     created_at      DATETIME    NOT NULL,
     paid_at         DATETIME,
     invoiced_at     DATETIME
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE INDEX idx_invoice_tenant ON invoice(tenant_code);
 CREATE INDEX idx_invoice_status ON invoice(status);
 

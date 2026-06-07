@@ -1,5 +1,5 @@
--- [MySQL 方言] 由 db/migration/V7__rbac.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0。
--- 字符集请在库级设为 utf8mb4(见 application-mysql.yml 的连接串/CREATE DATABASE)。
+-- [MySQL 方言] 由 db/migration/V7__rbac.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
 -- RBAC：权限树 / 角色 / 角色-权限(多态 mode) / 运营用户
 
 CREATE TABLE permission (
@@ -9,20 +9,20 @@ CREATE TABLE permission (
     parent_code VARCHAR(48),
     type        VARCHAR(16) NOT NULL,   -- MENU / ACTION
     sort        INT NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE ops_role (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     code        VARCHAR(32) NOT NULL UNIQUE,
     name        VARCHAR(64) NOT NULL,
     description VARCHAR(128)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE ops_role_permission (
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
     role_id   BIGINT NOT NULL,
     perm_code VARCHAR(48) NOT NULL,
     mode      VARCHAR(16) NOT NULL,   -- NONE / VIEW / EDIT / FULL
     CONSTRAINT uk_role_perm UNIQUE (role_id, perm_code)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE ops_user (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     username        VARCHAR(64) NOT NULL UNIQUE,
@@ -31,7 +31,7 @@ CREATE TABLE ops_user (
     status          VARCHAR(16) NOT NULL,
     must_change_pwd BOOLEAN NOT NULL DEFAULT 0,
     created_at      DATETIME NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 权限树种子
 INSERT INTO permission(code,name,parent_code,type,sort) VALUES
