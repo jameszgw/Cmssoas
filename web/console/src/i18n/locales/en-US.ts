@@ -127,7 +127,8 @@ export default {
   },
   kpi: {
     tenants: 'Total Tenants', active: 'Active Licenses', new: 'New This Month', expire: 'Expiring in 30d',
-    mom: 'vs last month', attention: 'renewal needed',
+    mom: 'vs last month', attention: 'renewal needed', subs: 'Subscriptions',
+    realtime: 'realtime', ofTotal: 'of {n} total', online: '{n} online',
   },
   chart: {
     trend: 'Issuance & Renewal Trend', trendSub: 'Last 12 months · count', year: '2025 — 2026',
@@ -140,11 +141,9 @@ export default {
   th: { code: 'Tenant ID', name: 'Tenant', plan: 'Plan / Version', status: 'Status', expire: 'Expires', op: 'Actions', email: 'Admin email' },
   st: { active: 'Active', soon: 'Expiring', init: 'Initializing', exp: 'Expired' },
   todo: {
-    title: 'Operations To-do', sub: 'expiry, init, heartbeat',
-    t1: '47 licenses expire within 30 days', d1: 'Latest: ',
-    t2: '3 tenants initializing', d2: 'DB / seed data / onboarding email',
-    t3: '2 instances heartbeat anomaly', d3: 'in grace period',
-    t4: 'Onboarding emails delivered today', d4: 'mails · delivery rate',
+    title: 'Operations To-do', sub: 'expiry alerts, expired, heartbeat anomalies (realtime)',
+    empty: 'No pending items',
+    a: { EXPIRE_SOON: 'License expiring soon', EXPIRED: 'License expired (unhandled)', HEARTBEAT: 'Online instance heartbeat anomaly' },
   },
   quick: {
     title: 'Quick Actions', sub: 'frequent operations',

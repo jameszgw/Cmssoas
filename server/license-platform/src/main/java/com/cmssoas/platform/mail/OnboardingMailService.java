@@ -72,6 +72,22 @@ public class OnboardingMailService {
         return true;
     }
 
+    /** 通用入队：任意邮件写入发件箱（与业务事务原子提交，异步投递+重试）。 */
+    public void enqueue(String toAddr, String subject, String html, Long tenantId) {
+        EmailOutbox o = new EmailOutbox();
+        o.setTenantId(tenantId);
+        o.setToAddr(toAddr);
+        o.setSubject(subject);
+        o.setBodyHtml(html);
+        o.setStatus("PENDING");
+        o.setAttempts(0);
+        o.setMaxAttempts(5);
+        o.setNextAttemptAt(LocalDateTime.now());
+        o.setCreatedAt(LocalDateTime.now());
+        outboxRepo.save(o);
+        log.info("[mail] 邮件已入发件箱(outbox) -> {} [{}]", toAddr, subject);
+    }
+
     /** 实际投递；失败抛异常（由 dispatcher 处理重试）。 */
     public void deliver(EmailOutbox o) throws Exception {
         if ("smtp".equalsIgnoreCase(props.getMail().getDelivery())) {

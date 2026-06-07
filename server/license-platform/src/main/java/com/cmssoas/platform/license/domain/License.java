@@ -59,6 +59,9 @@ public class License {
     @Column(name = "current_version", nullable = false)
     private int currentVersion;
 
+    @Column(name = "expiry_reminded", nullable = false)
+    private boolean expiryReminded;
+
     @Column(name = "claims_json", nullable = false, columnDefinition = "text")
     private String claimsJson;
 
@@ -115,4 +118,6 @@ public class License {
     public void setCreatedAt(LocalDateTime v) { this.createdAt = v; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime v) { this.updatedAt = v; }
+    public boolean isExpiryReminded() { return expiryReminded; }
+    public void setExpiryReminded(boolean v) { this.expiryReminded = v; }
 }

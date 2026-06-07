@@ -127,7 +127,8 @@ export default {
   },
   kpi: {
     tenants: '租户总数', active: '有效 License', new: '本月新开通', expire: '30 天内到期',
-    mom: '较上月', attention: '需关注续费',
+    mom: '较上月', attention: '需关注续费', subs: '订阅数',
+    realtime: '实时', ofTotal: '共 {n} 张', online: '在线 {n}',
   },
   chart: {
     trend: '授权签发与续期趋势', trendSub: '近 12 个月 · 单位：份', year: '2025 — 2026',
@@ -140,11 +141,9 @@ export default {
   th: { code: '租户编号', name: '租户名称', plan: '套餐 / 版本', status: '状态', expire: '到期日', op: '操作', email: '管理员邮箱' },
   st: { active: '运行中', soon: '即将到期', init: '初始化中', exp: '已过期' },
   todo: {
-    title: '运营待办', sub: '到期、初始化、异常心跳',
-    t1: '47 个授权 30 天内到期', d1: '最近一笔：',
-    t2: '3 个租户正在初始化', d2: '建库 / 种子数据 / 发送开通邮件',
-    t3: '2 个实例心跳异常', d3: '已进入宽限期',
-    t4: '今日开通邮件已送达', d4: '封 · 送达率',
+    title: '运营待办', sub: '到期预警、过期未处理、心跳异常（实时）',
+    empty: '暂无待办',
+    a: { EXPIRE_SOON: '授权即将到期', EXPIRED: '授权已过期未处理', HEARTBEAT: '在线实例心跳异常' },
   },
   quick: {
     title: '快捷操作', sub: '高频运营入口',
