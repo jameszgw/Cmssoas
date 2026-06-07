@@ -30,3 +30,40 @@
 3. **多租户平台**：租户一键开通、Flyway 初始化 DB 与种子数据、超管安全下发；"产品—模块—功能—版本"授权模型驱动签发；Vue3 运营控制台 + Spring Boot 后端。
 
 > ⚠️ 现实边界：纯软件保护无法做到绝对不可破解，本方案目标是**抬高破解成本至超过软件价值**，并以"技术 + 运营吊销/溯源 + 法律协议"构建综合防线。
+
+## 可运行实现（已落地并自测）
+
+除方案文档外，本仓库附带**可运行的参考实现**，全链路已端到端自测（见 [自测报告](docs/自测报告.md) / [Self-Test Report (EN)](docs/self-test-report-en.md)）。
+
+| 模块 | 路径 | 说明 |
+|------|------|------|
+| 运营后端 | `server/license-platform` | Spring Boot：开通/激活/MFA、License 签发与生命周期、在线授权、产品/套餐/订阅、RBAC、审计、可观测 |
+| 运营前端 | `web/console` | Vue3 + TS + Element Plus：换肤/2K-4K/中英 i18n/操作帮助 |
+| 客户端 SDK | `sdk/license-sdk` | Ed25519 / 国密 SM2 验签 + 功能/版本门禁 |
+| 代码保护示例 | `examples/protected-app` | 类加密 + 解密密钥与 License 绑定 + ProGuard 混淆 |
+| 部署/可观测 | `docker-compose.yml`、`infra/` | PostgreSQL + Redis + Prometheus + Grafana |
+
+```bash
+# 后端（默认 H2，开箱即跑；国密模式加 LICENSE_SIGN_ALGO=sm2）
+cd server/license-platform && mvn spring-boot:run        # http://localhost:8080
+# 前端（初始账号 admin / 8888）
+cd web/console && npm install && npm run dev             # http://localhost:5173
+```
+
+## 界面预览
+
+| 在线授权监控 | 角色权限（el-tree 多态选择） |
+|---|---|
+| ![在线监控](web/console/shots/st-01-在线监控.png) | ![角色权限多态树](web/console/shots/st-02-角色权限多态树.png) |
+
+| 用户管理 | 首次登录强制改密 |
+|---|---|
+| ![用户管理](web/console/shots/st-03-用户管理.png) | ![首登强制改密](web/console/shots/st-07-首登强制改密.png) |
+
+| License（超管：全操作按钮） | License（只读角色：签发/吊销按钮隐藏） |
+|---|---|
+| ![admin全按钮](web/console/shots/st-04-License-admin全按钮.png) | ![VIEWER按钮隐藏](web/console/shots/st-05-License-VIEWER按钮隐藏.png) |
+
+| 套餐订阅（订阅自动签发 License） | 总览（暗夜主题 + 英文 i18n） |
+|---|---|
+| ![套餐订阅](web/console/shots/plan-02-套餐订阅-真实-2K.png) | ![暗夜英文](web/console/shots/st-06-总览-暗夜-英文.png) |

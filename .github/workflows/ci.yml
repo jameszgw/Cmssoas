@@ -37,6 +37,47 @@ jobs:
         working-directory: examples/protected-app
         run: mvn -B -ntp -DskipTests compile
 
+  sign-smoke:
+    name: 签名链路冒烟 (Ed25519/SM2 矩阵)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        algo: [ed25519, sm2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 构建 SDK 验签 demo
+        working-directory: sdk/license-sdk
+        run: mvn -B -ntp -DskipTests package
+      - name: 构建并以 ${{ matrix.algo }} 启动后端
+        working-directory: server/license-platform
+        run: |
+          mvn -B -ntp -DskipTests package
+          LICENSE_SIGN_ALGO=${{ matrix.algo }} nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
+      - name: 端到端验签冒烟（签发 → SDK 验签）
+        run: |
+          set -e
+          B=http://localhost:8080
+          TOKEN=$(curl -s -X POST $B/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"8888"}' | sed -E 's/.*"token":"([^"]+)".*/\1/')
+          # 校验公钥算法与矩阵一致
+          EXP=$([ "${{ matrix.algo }}" = "sm2" ] && echo SM2 || echo Ed25519)
+          ALG=$(curl -s $B/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"algorithm":"([^"]+)".*/\1/')
+          echo "algo=$ALG expected=$EXP"; [ "$ALG" = "$EXP" ]
+          # 签发并验签
+          curl -s -X POST $B/api/licenses/issue -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+            -d '{"tenantCode":"T-CI","customer":"ci","edition":"ENTERPRISE","modules":["RISK","REPORT"],"features":{"REPORT.EXPORT":true},"appVersionRange":">=2.0.0 <3.0.0","notBefore":"2026-01-01","notAfter":"2099-01-01","concurrency":5}' >/dev/null
+          LID=$(curl -s $B/api/licenses -H "Authorization: Bearer $TOKEN" | grep -oE '"licenseId":"LIC-[0-9-]+"' | head -1 | cut -d'"' -f4)
+          PUB=$(curl -s $B/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"publicKeyBase64":"([^"]+)".*/\1/')
+          curl -s "$B/api/licenses/$LID/download" -H "Authorization: Bearer $TOKEN" -o ci.lic
+          java -Dstdout.encoding=UTF-8 -jar sdk/license-sdk/target/license-sdk-demo.jar check "$PUB" ci.lic REPORT.EXPORT 2.4.0
+          echo "✅ ${{ matrix.algo }} 签名链路冒烟通过"
+
   harden:
     name: 代码加固 (ProGuard 混淆)
     runs-on: ubuntu-latest
