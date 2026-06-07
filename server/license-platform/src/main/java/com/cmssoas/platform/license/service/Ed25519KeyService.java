@@ -30,18 +30,30 @@ public class Ed25519KeyService implements SignatureService {
 
     private final ObjectMapper mapper;
     private final Path keyFile;
+    private final String envPriv;
+    private final String envPub;
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
     public Ed25519KeyService(ObjectMapper mapper,
-                             @Value("${app.license.key-file:./var/keys/ed25519.json}") String keyFile) {
+                             @Value("${app.license.key-file:./var/keys/ed25519.json}") String keyFile,
+                             @Value("${app.license.ed25519-priv:}") String envPriv,
+                             @Value("${app.license.ed25519-pub:}") String envPub) {
         this.mapper = mapper;
         this.keyFile = Path.of(keyFile);
+        this.envPriv = envPriv;
+        this.envPub = envPub;
     }
 
     @PostConstruct
     void init() throws Exception {
-        if (Files.exists(keyFile)) {
+        // 优先：从外部注入（KMS/Vault/env 提供 PKCS8/X509 Base64），私钥不落盘
+        if (envPriv != null && !envPriv.isBlank() && envPub != null && !envPub.isBlank()) {
+            KeyFactory kf = KeyFactory.getInstance(ALG);
+            this.privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(envPriv.trim())));
+            this.publicKey = kf.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(envPub.trim())));
+            log.info("[license] 已从外部(KMS/env)加载 Ed25519 签名密钥（私钥不落盘），kid={}", kid());
+        } else if (Files.exists(keyFile)) {
             load();
             log.info("[license] 已加载 Ed25519 签名密钥：{}", keyFile);
         } else {

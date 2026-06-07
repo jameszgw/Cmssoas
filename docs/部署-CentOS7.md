@@ -57,5 +57,19 @@ java -jar app.jar
 - 仅内网放行 `/actuator/**`;对外启用 HTTPS(nginx 证书)。
 - 数据库主从 + 定时备份;日志/指标接入(Actuator `/actuator/prometheus` + Prometheus/Grafana,见 `infra/`)。
 
+## 6.1 多实例 + Nacos 注册发现
+- 以 `-Pnacos` 构建,`SPRING_PROFILES_ACTIVE=nacos,prod` 启动,实例自动注册到 Nacos。
+- 同一服务起多实例(不同 `--server.port` / 不同主机),nginx `upstream` 或网关按服务名负载均衡：
+  ```nginx
+  upstream cmssoas_backend { server 10.0.0.11:8080; server 10.0.0.12:8080; }
+  # location /api/ { proxy_pass http://cmssoas_backend; }
+  ```
+- **多实例一致性**：心跳 nonce 与限流计数需共享 Redis(`APP_REDIS_ENABLED=true`)。
+- **逻辑拆分(可选)**：签发/运营服务(`SERVICE_NAME=license-platform`) 与 在线校验服务(`SERVICE_NAME=license-edge`,仅暴露 `/sdk/**`)用不同服务名分别扩缩容。
+
+## 6.2 私钥与告警
+- 私钥经 KMS/Vault 注入(`APP_LICENSE_ED25519_PRIV/PUB`),私钥不落盘,详见 `docs/密钥管理-KMS.md`。
+- 到期/异常告警可推送企业微信群机器人：设置 `ALERT_WECOM_WEBHOOK`。
+
 ## 7. Docker 方式（替代裸机）
 仓库根 `docker-compose.yml` 一键起 PostgreSQL/Redis/后端/前端 + Prometheus/Grafana;CentOS7 装 docker-ce + compose 插件即可 `docker compose up -d --build`。

@@ -58,6 +58,8 @@ app:
     enabled: ${APP_REDIS_ENABLED:false}   # true 时 nonce 走 Redis（多实例水平扩展）
   sdk:
     rate-limit-per-min: ${APP_SDK_RATE_LIMIT:120}   # SDK 在线通道每 IP 每分钟限流
+  alert:
+    wecom-webhook: ${ALERT_WECOM_WEBHOOK:}          # 企业微信群机器人地址；留空则禁用
   mail:
     delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
     from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
