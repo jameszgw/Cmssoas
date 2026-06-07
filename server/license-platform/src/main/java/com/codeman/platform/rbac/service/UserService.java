@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    public static final String DEFAULT_PWD = "Cmssoas@123";
+    public static final String DEFAULT_PWD = "Codeman@123";
 
     private final OpsUserRepository userRepo;
     private final OpsRoleRepository roleRepo;

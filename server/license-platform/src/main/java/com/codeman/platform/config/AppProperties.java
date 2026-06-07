@@ -82,8 +82,8 @@ public class AppProperties {
     public static class Mail {
         /** log | smtp */
         private String delivery = "log";
-        private String from = "no-reply@cmssoas.com";
-        private String fromName = "CMSSOAS";
+        private String from = "no-reply@codeman.com";
+        private String fromName = "CODEMAN";
         private String spoolDir = "./var/mail";
 
         public String getDelivery() { return delivery; }

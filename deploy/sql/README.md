@@ -11,8 +11,8 @@
 ## 执行顺序
 1. 建库(MySQL 需 utf8mb4):
    ```sql
-   -- PostgreSQL: CREATE DATABASE cmssoas;
-   -- MySQL:      CREATE DATABASE cmssoas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+   -- PostgreSQL: CREATE DATABASE codeman;
+   -- MySQL:      CREATE DATABASE codeman CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
    ```
 2. `schema-*.sql`(对应方言)— 建表 + 系统种子。
 3. `init-admin.sql`(可选)— 创建超管与授权。**应用首次启动也会自动完成,故走应用建表时可跳过。**

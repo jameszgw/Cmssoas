@@ -9,7 +9,7 @@ export const portalReset = (code: string) => http.post(`/portal-admin/${code}/re
 export const portalDisable = (code: string) => http.post(`/portal-admin/${code}/disable`, {})
 
 /** ===== 门户侧(最终客户):独立 token,独立实例 ===== */
-const PORTAL_TOKEN = 'cmssoas.portal.token'
+const PORTAL_TOKEN = 'codeman.portal.token'
 export const getPortalToken = () => localStorage.getItem(PORTAL_TOKEN) || ''
 export const setPortalToken = (t: string) => localStorage.setItem(PORTAL_TOKEN, t)
 export const clearPortalToken = () => localStorage.removeItem(PORTAL_TOKEN)

@@ -64,7 +64,7 @@ public class SubscriptionService {
         List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
         Map<String, Object> features = readJson(plan.getFeatures());
         IssueRequest issue = new IssueRequest(
-                r.tenantCode(), r.customer(), "CMSSOAS", plan.getCode(), "HYBRID",
+                r.tenantCode(), r.customer(), "CODEMAN", plan.getCode(), "HYBRID",
                 modules, features, plan.getVersionRange(),
                 r.startAt(), r.endAt(), plan.getSeats() * qty,
                 "订阅自动签发：" + plan.getCode() + " x" + qty);

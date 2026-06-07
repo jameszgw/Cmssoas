@@ -1,5 +1,5 @@
 -- ============================================================
--- CMSSOAS 测试 / 演示数据(可选,便于试用与培训)
+-- CODEMAN 测试 / 演示数据(可选,便于试用与培训)
 -- 适用 PostgreSQL / MySQL 5.7+/8.0(均兼容的可移植写法,布尔用 TRUE/FALSE)。
 -- 前置:已执行 schema 脚本(及可选 init-admin.sql)。生产环境请勿导入。
 -- 仅含不依赖服务端签名的数据(租户/客户/产品/套餐/须知);
@@ -25,7 +25,7 @@ INSERT INTO customer(code,name,tenant_code,contact,email,phone,industry,status,n
 SELECT 'CUST-DEMO03','广州前海数字科技有限公司',NULL,'陈强','chen@qianhai-demo.com','13800000003','金融科技','ACTIVE','潜在客户',CURRENT_TIMESTAMP
 WHERE NOT EXISTS (SELECT 1 FROM customer WHERE name='广州前海数字科技有限公司');
 
--- 产品(CMSSOAS 已由 schema 种子内置,这里补一个演示产品)
+-- 产品(CODEMAN 已由 schema 种子内置,这里补一个演示产品)
 INSERT INTO product(code,name)
 SELECT 'DEMOAPP','演示业务系统'
 WHERE NOT EXISTS (SELECT 1 FROM product WHERE code='DEMOAPP');
@@ -40,7 +40,7 @@ WHERE NOT EXISTS (SELECT 1 FROM plan WHERE code='PROFESSIONAL');
 
 -- 用户须知(强制确认,登录后弹层)
 INSERT INTO notice(type,title,content_html,version,status,force_ack,effective_at,created_at)
-SELECT 'TERMS','服务条款与用户须知','<p>欢迎使用 CMSSOAS 软件授权运营平台。使用即表示您同意相关条款。</p>',1,'PUBLISHED',TRUE,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+SELECT 'TERMS','服务条款与用户须知','<p>欢迎使用 CODEMAN 软件授权运营平台。使用即表示您同意相关条款。</p>',1,'PUBLISHED',TRUE,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 WHERE NOT EXISTS (SELECT 1 FROM notice WHERE type='TERMS' AND version=1);
 INSERT INTO notice(type,title,content_html,version,status,force_ack,effective_at,created_at)
 SELECT 'PRIVACY','隐私政策','<p>我们仅收集为提供服务所必需的信息……</p>',1,'PUBLISHED',FALSE,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

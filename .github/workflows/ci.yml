@@ -183,7 +183,7 @@ jobs:
         image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: cmssoas
+          MYSQL_DATABASE: codeman
         ports:
           - "3306:3306"
         options: >-
@@ -199,7 +199,7 @@ jobs:
       - name: 在真实 MySQL 上应用 db/mysql 全量方言迁移
         working-directory: server/license-platform
         env:
-          MYSQL_TEST_URL: "jdbc:mysql://127.0.0.1:3306/cmssoas?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false"
+          MYSQL_TEST_URL: "jdbc:mysql://127.0.0.1:3306/codeman?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false"
           MYSQL_TEST_USER: root
           MYSQL_TEST_PASSWORD: root
         run: mvn -B -ntp test -Dtest=MysqlRealMigrationTest
@@ -214,7 +214,7 @@ jobs:
       - name: 生成汇总
         run: |
           {
-            echo "# CMSSOAS CI 汇总"
+            echo "# CODEMAN CI 汇总"
             echo ""
             echo "| 流水线 | 结果 |"
             echo "|---|---|"
@@ -245,11 +245,11 @@ jobs:
           path: artifacts
       - name: 打包制品 + 生成发布说明
         run: |
-          (cd artifacts && zip -r ../cmssoas-artifacts.zip . >/dev/null) || true
+          (cd artifacts && zip -r ../codeman-artifacts.zip . >/dev/null) || true
           {
-            echo "## CMSSOAS ${{ github.ref_name }} 发布摘要"
+            echo "## CODEMAN ${{ github.ref_name }} 发布摘要"
             echo ""
-            echo "本次发布聚合以下 CI 制品（详见附件 \`cmssoas-artifacts.zip\`）："
+            echo "本次发布聚合以下 CI 制品（详见附件 \`codeman-artifacts.zip\`）："
             echo "- 后端 / SDK 单元+集成测试覆盖率报告 (JaCoCo)"
             echo "- 端到端测试报告 (Playwright HTML)"
             echo "- 代码加固混淆制品 (protected-app-*-obf.jar)"
@@ -262,5 +262,5 @@ jobs:
         with:
           body_path: RELEASE_NOTES.md
           files: |
-            cmssoas-artifacts.zip
+            codeman-artifacts.zip
             artifacts/protected-app-obfuscated/*.jar

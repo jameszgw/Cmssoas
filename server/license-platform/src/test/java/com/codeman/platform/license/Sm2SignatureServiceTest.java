@@ -28,7 +28,7 @@ class Sm2SignatureServiceTest {
     void signAndVerify() throws Exception {
         Sm2SignatureService svc = newService();
         assertEquals("SM2", svc.algorithm());
-        byte[] data = "cmssoas-license-payload-国密".getBytes(StandardCharsets.UTF_8);
+        byte[] data = "codeman-license-payload-国密".getBytes(StandardCharsets.UTF_8);
         byte[] sig = svc.sign(data);
         assertTrue(svc.verify(data, sig), "合法签名应验签通过");
         assertNotNull(svc.publicKeyBase64());

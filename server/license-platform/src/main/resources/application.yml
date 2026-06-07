@@ -7,7 +7,7 @@ spring:
 
   # ---- 数据源：默认 H2 内存库（开箱即跑）。生产改 PostgreSQL ----
   datasource:
-    url: jdbc:h2:mem:cmssoas;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    url: jdbc:h2:mem:codeman;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -52,7 +52,7 @@ app:
   license:
     sign-algo: ${LICENSE_SIGN_ALGO:ed25519}   # 签名算法：ed25519（默认）| sm2（国密）
   jwt:
-    secret: ${JWT_SECRET:cmssoas-dev-secret-please-change-in-prod-0123456789}
+    secret: ${JWT_SECRET:codeman-dev-secret-please-change-in-prod-0123456789}
     ttl-hours: ${JWT_TTL_HOURS:12}
   redis:
     enabled: ${APP_REDIS_ENABLED:false}   # true 时 nonce 走 Redis（多实例水平扩展）
@@ -62,8 +62,8 @@ app:
     wecom-webhook: ${ALERT_WECOM_WEBHOOK:}          # 企业微信群机器人地址；留空则禁用
   mail:
     delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
-    from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
-    from-name: CMSSOAS
+    from: ${APP_MAIL_FROM:no-reply@codeman.com}
+    from-name: CODEMAN
     spool-dir: ./var/mail                 # delivery=log 时渲染后的邮件落盘目录
   activation:
     base-url: ${APP_ACTIVATION_BASE_URL:http://localhost:5173/activate}
@@ -100,7 +100,7 @@ management:
       enabled: false    # 默认单机内存 nonce；prod profile 再开启
   metrics:
     tags:
-      application: cmssoas   # 所有指标打上 application 标签，便于多服务区分
+      application: codeman   # 所有指标打上 application 标签，便于多服务区分
   prometheus:
     metrics:
       export:

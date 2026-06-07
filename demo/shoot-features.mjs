@@ -31,9 +31,9 @@ const browser = await chromium.launch()
 async function makeContext(theme = 'tech', lang = 'zh-CN', w = 2560, h = 1440) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1 })
   await ctx.addInitScript(([t, l, tok]) => {
-    localStorage.setItem('cmssoas.theme', t)
-    localStorage.setItem('cmssoas.locale', l)
-    localStorage.setItem('cmssoas.token', tok)
+    localStorage.setItem('codeman.theme', t)
+    localStorage.setItem('codeman.locale', l)
+    localStorage.setItem('codeman.token', tok)
   }, [theme, lang, TOKEN])
   // 路由:API/PUB 代理到后端,其余从 dist 提供(SPA 回退到 index.html)
   await ctx.route('**/*', async (route) => {
@@ -91,17 +91,17 @@ await page.waitForTimeout(500)
 
 // ---- 种子数据 ----
 // 1) 强制确认须知(用于 NoticeGate) + 隐私政策(非强制)
-const gate = await api(page, 'POST', '/api/notices', { type: 'TERMS', title: '服务条款与用户须知', contentHtml: '<p>欢迎使用 CMSSOAS 软件授权运营平台。使用本平台即表示您同意以下条款：</p><p>1. 您应妥善保管账号与密钥；</p><p>2. 平台数据按多租户隔离存储；</p><p>3. 同意记录将留存用于合规取证。</p>', forceAck: true })
+const gate = await api(page, 'POST', '/api/notices', { type: 'TERMS', title: '服务条款与用户须知', contentHtml: '<p>欢迎使用 CODEMAN 软件授权运营平台。使用本平台即表示您同意以下条款：</p><p>1. 您应妥善保管账号与密钥；</p><p>2. 平台数据按多租户隔离存储；</p><p>3. 同意记录将留存用于合规取证。</p>', forceAck: true })
 await api(page, 'POST', `/api/notices/${gate.id}/publish`, {})
 const priv = await api(page, 'POST', '/api/notices', { type: 'PRIVACY', title: '隐私政策', contentHtml: '<p>我们仅收集为提供服务所必需的信息……</p>', forceAck: false })
 await api(page, 'POST', `/api/notices/${priv.id}/publish`, {})
 // 2) 合同(已签署一份 + 待签一份)
-const ct1 = await api(page, 'POST', '/api/contracts', { customer: '北京云科信息技术有限公司', planCode: 'ENTERPRISE', amount: 88000, contentHtml: '<p>甲乙双方就 CMSSOAS 企业版软件授权服务达成如下协议：</p><p>一、授权范围……</p><p>二、服务期限：壹年……</p><p>三、合同金额：人民币 88,000 元整。</p>', parties: [{ name: '北京云科信息技术有限公司', partyRole: '甲方' }, { name: 'CMSSOAS 运营方', partyRole: '乙方' }] })
+const ct1 = await api(page, 'POST', '/api/contracts', { customer: '北京云科信息技术有限公司', planCode: 'ENTERPRISE', amount: 88000, contentHtml: '<p>甲乙双方就 CODEMAN 企业版软件授权服务达成如下协议：</p><p>一、授权范围……</p><p>二、服务期限：壹年……</p><p>三、合同金额：人民币 88,000 元整。</p>', parties: [{ name: '北京云科信息技术有限公司', partyRole: '甲方' }, { name: 'CODEMAN 运营方', partyRole: '乙方' }] })
 await api(page, 'POST', `/api/contracts/${ct1.id}/send`, {})
 const d1 = await api(page, 'GET', `/api/contracts/${ct1.id}`)
 await api(page, 'POST', `/api/contracts/${ct1.id}/sign/${d1.parties[0].id}`, {})
 await api(page, 'POST', `/api/contracts/${ct1.id}/sign/${d1.parties[1].id}`, {})
-const ct2 = await api(page, 'POST', '/api/contracts', { customer: '上海某智能制造股份有限公司', planCode: 'PROFESSIONAL', amount: 36000, contentHtml: '<p>专业版授权服务合同……</p>', parties: [{ name: '上海某智能制造股份有限公司', partyRole: '甲方' }, { name: 'CMSSOAS 运营方', partyRole: '乙方' }] })
+const ct2 = await api(page, 'POST', '/api/contracts', { customer: '上海某智能制造股份有限公司', planCode: 'PROFESSIONAL', amount: 36000, contentHtml: '<p>专业版授权服务合同……</p>', parties: [{ name: '上海某智能制造股份有限公司', partyRole: '甲方' }, { name: 'CODEMAN 运营方', partyRole: '乙方' }] })
 await api(page, 'POST', `/api/contracts/${ct2.id}/send`, {})
 
 // ---- 截图 1:强制须知确认门(NoticeGate) ----

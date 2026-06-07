@@ -20,7 +20,7 @@ public class MockPaymentProvider implements PaymentProvider {
     @Override
     public PrepayResult create(Payment p) {
         // 二维码原文(真实渠道为微信/支付宝返回的 code_url);此处用自有协议占位
-        String qr = "CMSSOAS-PAY://sandbox?no=" + p.getPaymentNo() + "&amt=" + p.getAmount();
+        String qr = "CODEMAN-PAY://sandbox?no=" + p.getPaymentNo() + "&amt=" + p.getAmount();
         String url = "/pay/" + p.getPaymentNo();
         return new PrepayResult(qr, url, "MOCK-" + p.getPaymentNo());
     }

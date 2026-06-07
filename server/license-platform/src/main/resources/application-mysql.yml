@@ -1,12 +1,12 @@
 # MySQL profile：用 SPRING_PROFILES_ACTIVE=mysql 启用。
-# 库需为 utf8mb4：CREATE DATABASE cmssoas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+# 库需为 utf8mb4：CREATE DATABASE codeman CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 # Flyway 仅加载 MySQL 方言脚本(db/mysql),与 H2/PostgreSQL 完全隔离。
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://mysql:3306/cmssoas?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false}
+    url: ${DB_URL:jdbc:mysql://mysql:3306/codeman?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER:cmssoas}
-    password: ${DB_PASSWORD:cmssoas}
+    username: ${DB_USER:codeman}
+    password: ${DB_PASSWORD:codeman}
   jpa:
     hibernate:
       ddl-auto: none

@@ -8,7 +8,7 @@ class TotpTest {
 
     @Test
     void base32RoundTrip() {
-        byte[] data = "hello-cmssoas-2026".getBytes();
+        byte[] data = "hello-codeman-2026".getBytes();
         String enc = Totp.base32Encode(data);
         assertArrayEquals(data, Totp.base32Decode(enc));
     }
@@ -20,7 +20,7 @@ class TotpTest {
         String uri = totp.otpauthUri(secret, "admin@x.com");
         assertTrue(uri.startsWith("otpauth://totp/"));
         assertTrue(uri.contains("secret=" + secret));
-        assertTrue(uri.contains("issuer=CMSSOAS"));
+        assertTrue(uri.contains("issuer=CODEMAN"));
     }
 
     @Test

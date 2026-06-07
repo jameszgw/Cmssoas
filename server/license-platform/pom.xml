@@ -14,7 +14,7 @@
   <groupId>com.codeman</groupId>
   <artifactId>license-platform</artifactId>
   <version>1.0.1</version>
-  <name>CMSSOAS License Platform</name>
+  <name>CODEMAN License Platform</name>
   <description>软件授权运营平台后端 · 租户开通与开通邮件服务</description>
 
   <licenses>

@@ -18,7 +18,7 @@ async function login() {
   try {
     const r = await portalLogin(tenantCode.value.trim(), accessCode.value.trim())
     setPortalToken(r.token)
-    localStorage.setItem('cmssoas.portal.name', r.tenantName)
+    localStorage.setItem('codeman.portal.name', r.tenantName)
     ElMessage.success(t('portal.welcome', { n: r.tenantName }))
     router.replace('/portal/home')
   } catch (e: any) {
@@ -31,7 +31,7 @@ async function login() {
   <div class="pwrap">
     <div class="ptools"><LangSwitcher /></div>
     <div class="pcard">
-      <div class="brand"><span class="logo">C</span><div><div class="bt">CMSSOAS</div><div class="bs">{{ t('portal.subtitle') }}</div></div></div>
+      <div class="brand"><span class="logo">C</span><div><div class="bt">CODEMAN</div><div class="bs">{{ t('portal.subtitle') }}</div></div></div>
       <h2>{{ t('portal.title') }}</h2>
       <p class="muted" style="font-size:.85rem;margin:.3rem 0 1.3rem">{{ t('portal.lead') }}</p>
       <el-form label-position="top" @submit.prevent>

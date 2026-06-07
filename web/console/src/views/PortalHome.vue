@@ -30,7 +30,7 @@ function logout() { clearPortalToken(); router.replace('/portal') }
 <template>
   <div class="phome">
     <header class="ptop">
-      <div class="brand"><span class="logo">C</span><span>CMSSOAS <small>{{ t('portal.subtitle') }}</small></span></div>
+      <div class="brand"><span class="logo">C</span><span>CODEMAN <small>{{ t('portal.subtitle') }}</small></span></div>
       <div class="spacer"></div>
       <ThemeSwitcher /><LangSwitcher />
       <div class="tenant" v-if="data">{{ data.tenantName }} <span class="data faint">{{ data.tenantCode }}</span></div>

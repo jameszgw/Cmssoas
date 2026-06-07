@@ -58,7 +58,7 @@ let pollTimer: number | undefined
 
 /** 由 paymentNo+amount 生成一个稳定的"二维码风格"点阵(纯视觉,沙箱演示用)。 */
 const qrCells = computed(() => {
-  const s = (payment.value?.qrContent || payment.value?.paymentNo || 'CMSSOAS')
+  const s = (payment.value?.qrContent || payment.value?.paymentNo || 'CODEMAN')
   const cells: boolean[] = []
   let h = 2166136261
   for (let i = 0; i < 21 * 21; i++) {

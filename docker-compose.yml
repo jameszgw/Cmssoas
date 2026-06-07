@@ -1,16 +1,16 @@
-# CMSSOAS 一键起：PostgreSQL + Redis + 后端(prod) + 前端(nginx)
+# CODEMAN 一键起：PostgreSQL + Redis + 后端(prod) + 前端(nginx)
 # 用法：docker compose up -d --build   然后访问 http://localhost
 services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: cmssoas
-      POSTGRES_USER: cmssoas
-      POSTGRES_PASSWORD: cmssoas
+      POSTGRES_DB: codeman
+      POSTGRES_USER: codeman
+      POSTGRES_PASSWORD: codeman
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cmssoas"]
+      test: ["CMD-SHELL", "pg_isready -U codeman"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -27,14 +27,14 @@ services:
     build: ./server/license-platform
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: jdbc:postgresql://postgres:5432/cmssoas
-      DB_USER: cmssoas
-      DB_PASSWORD: cmssoas
+      DB_URL: jdbc:postgresql://postgres:5432/codeman
+      DB_USER: codeman
+      DB_PASSWORD: codeman
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       APP_REDIS_ENABLED: "true"
       # 安全：生产务必通过 .env 覆盖 JWT 密钥
-      JWT_SECRET: ${JWT_SECRET:-cmssoas-dev-secret-please-change-in-prod-0123456789}
+      JWT_SECRET: ${JWT_SECRET:-codeman-dev-secret-please-change-in-prod-0123456789}
       LICENSE_SIGN_ALGO: ${LICENSE_SIGN_ALGO:-ed25519}     # ed25519 | sm2(国密)
       ALERT_WECOM_WEBHOOK: ${ALERT_WECOM_WEBHOOK:-}        # 企业微信告警机器人,留空禁用
       PAY_PROVIDER: ${PAY_PROVIDER:-mock}                  # mock(人工确认) | wechatpay | alipay | stripe
@@ -44,7 +44,7 @@ services:
       MAIL_HOST: ${MAIL_HOST:-}
       MAIL_USERNAME: ${MAIL_USERNAME:-}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-}
-      APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@cmssoas.com}
+      APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@codeman.com}
       APP_ACTIVATION_BASE_URL: ${APP_ACTIVATION_BASE_URL:-http://localhost/activate}
       CORS_ORIGINS: http://localhost
       # ---- 智能客服大模型(通用 OpenAI 兼容)。默认关闭;开启见下方 ollama profile 或改为云 API ----

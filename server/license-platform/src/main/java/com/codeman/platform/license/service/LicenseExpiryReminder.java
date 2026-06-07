@@ -34,7 +34,7 @@ public class LicenseExpiryReminder {
                                  OnboardingMailService mailService,
                                  com.codeman.platform.alert.WeComNotifier weCom,
                                  @Value("${app.license.expiry-reminder-days:30}") int days,
-                                 @Value("${app.license.expiry-reminder-fallback-to:ops@cmssoas.com}") String fallbackTo) {
+                                 @Value("${app.license.expiry-reminder-fallback-to:ops@codeman.com}") String fallbackTo) {
         this.licenseRepo = licenseRepo;
         this.tenantRepo = tenantRepo;
         this.mailService = mailService;
@@ -64,7 +64,7 @@ public class LicenseExpiryReminder {
                     .map(t -> t.getAdminEmail()).filter(s -> s != null && !s.isBlank())
                     .orElse(fallbackTo);
             long left = now.until(l.getNotAfter()).getDays();
-            String subject = "【CMSSOAS】License 到期提醒：" + l.getLicenseId();
+            String subject = "【CODEMAN】License 到期提醒：" + l.getLicenseId();
             String html = render(l, left);
             mailService.enqueue(to, subject, html, null);
             l.setExpiryReminded(true);

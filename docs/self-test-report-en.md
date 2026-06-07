@@ -1,4 +1,4 @@
-# CMSSOAS — Full Business-Logic Self-Test Report
+# CODEMAN — Full Business-Logic Self-Test Report
 
 > Date: 2026-06-07 · Scope: P0 core chain / P1 key features / P2 UX & edge cases · Method: live runs (curl + automated tests + Playwright screenshots)
 > Initial account: `admin / 8888` · Chinese version: [自测报告.md](自测报告.md)
@@ -38,7 +38,7 @@
 |1.9 Force password change|initial login→change→old 401/new 200 ✓|
 |1.10 Catalog/plans|4 plans, matrix v2.2/2.3/2.4, module tree ✓|
 |1.11 SM2 (Chinese crypto)|public-key=SM2, sigAlg=SM2, SDK verify + gating ✓|
-|1.12 Observability|`/actuator/prometheus` 200, application=cmssoas ✓|
+|1.12 Observability|`/actuator/prometheus` 200, application=codeman ✓|
 |1.13 Automated tests|backend 8/8, SDK 8/8, E2E 4/4 ✓|
 
 ## P2 — UX & Edge Cases (all ✓)

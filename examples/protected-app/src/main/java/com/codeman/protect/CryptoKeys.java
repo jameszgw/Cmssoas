@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class CryptoKeys {
     private CryptoKeys() {}
 
-    private static final String PRODUCT_ROOT_SECRET = "CMSSOAS::root::v1::do-not-ship-in-plaintext";
+    private static final String PRODUCT_ROOT_SECRET = "CODEMAN::root::v1::do-not-ship-in-plaintext";
 
     public static byte[] deriveKey(String licenseId, String watermark) {
         try {

@@ -1,7 +1,7 @@
 -- ============================================================
--- CMSSOAS 全量表结构 + 系统初始化数据(PostgreSQL / H2)
+-- CODEMAN 全量表结构 + 系统初始化数据(PostgreSQL / H2)
 -- 自动生成,请勿手改;由 deploy/sql/generate-schema.sh 合并 Flyway 迁移而来。
--- 生成时间: 2026-06-07 14:13:45
+-- 生成时间: 2026-06-07 14:53:22
 -- 含:全部业务表 DDL + 系统数据(权限/角色/套餐等种子)。
 -- 注:初始超管账号 admin/8888 由应用首启自动创建(或见 init-admin.sql)。
 -- ============================================================
@@ -196,13 +196,13 @@ CREATE TABLE subscription (
 );
 
 -- ===== 种子数据 =====
-INSERT INTO product(code,name) VALUES ('CMSSOAS','软件授权管理平台');
+INSERT INTO product(code,name) VALUES ('CODEMAN','软件授权管理平台');
 
 INSERT INTO module(product_code,code,name,sort) VALUES
- ('CMSSOAS','RISK','风险管理',1),
- ('CMSSOAS','REPORT','报表中心',2),
- ('CMSSOAS','AUDIT','审计',3),
- ('CMSSOAS','BI','智能分析',4);
+ ('CODEMAN','RISK','风险管理',1),
+ ('CODEMAN','REPORT','报表中心',2),
+ ('CODEMAN','AUDIT','审计',3),
+ ('CODEMAN','BI','智能分析',4);
 
 INSERT INTO feature(module_code,code,name,sort) VALUES
  ('RISK','RISK.RULES','规则引擎',1),
@@ -214,7 +214,7 @@ INSERT INTO feature(module_code,code,name,sort) VALUES
  ('BI','BI.ML','智能预测',7);
 
 INSERT INTO app_version(product_code,version,sort) VALUES
- ('CMSSOAS','v2.2',1),('CMSSOAS','v2.3',2),('CMSSOAS','v2.4',3);
+ ('CODEMAN','v2.2',1),('CODEMAN','v2.3',2),('CODEMAN','v2.4',3);
 
 INSERT INTO feature_version(feature_code,version,available) VALUES
  ('RISK.RULES','v2.2',TRUE),('RISK.RULES','v2.3',TRUE),('RISK.RULES','v2.4',TRUE),

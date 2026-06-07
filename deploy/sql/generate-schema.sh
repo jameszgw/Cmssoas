@@ -11,7 +11,7 @@ gen() {  # $1=源目录 $2=输出文件 $3=方言名
   local dir="$1" out="$2" name="$3"
   {
     echo "-- ============================================================"
-    echo "-- CMSSOAS 全量表结构 + 系统初始化数据($name)"
+    echo "-- CODEMAN 全量表结构 + 系统初始化数据($name)"
     echo "-- 自动生成,请勿手改;由 deploy/sql/generate-schema.sh 合并 Flyway 迁移而来。"
     echo "-- 生成时间: $(date '+%Y-%m-%d %H:%M:%S')"
     echo "-- 含:全部业务表 DDL + 系统数据(权限/角色/套餐等种子)。"

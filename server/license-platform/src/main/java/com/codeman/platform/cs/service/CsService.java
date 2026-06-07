@@ -157,7 +157,7 @@ public class CsService {
     /** system 护栏 + 知识库参考资料 + 历史(截断) + 当前问题。 */
     private List<ChatProvider.Msg> buildMessages(Long convId, List<KnowledgeBase.Entry> hits, String question) {
         StringBuilder sys = new StringBuilder();
-        sys.append("你是 CMSSOAS(软件授权运营平台)的智能客服。请遵守：\n")
+        sys.append("你是 CODEMAN(软件授权运营平台)的智能客服。请遵守：\n")
            .append("1) 只回答与本产品相关的问题；无关问题礼貌拒绝并引导。\n")
            .append("2) 优先依据下方【参考资料】作答；资料不足时如实说明并建议“转人工”。\n")
            .append("3) 严禁透露或编造私钥、密码、完整密钥串、密钥配置或他人隐私。\n")

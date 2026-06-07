@@ -22,7 +22,7 @@ onMounted(async () => {
       :tips="[t('help.catalog.t1'), t('help.catalog.t2'), t('help.catalog.t3')]" />
     <div class="section-title">
       <div><h2>{{ t('nav.catalog') }}</h2><div class="sub" style="margin-top:.3rem">{{ t('cat.lead') }}</div></div>
-      <span class="tag">{{ product?.code || 'CMSSOAS' }}</span>
+      <span class="tag">{{ product?.code || 'CODEMAN' }}</span>
     </div>
 
     <section class="grid" style="grid-template-columns:1fr 1.6fr;gap:1.1rem">

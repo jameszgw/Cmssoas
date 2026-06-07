@@ -33,7 +33,7 @@ export async function chatStream(
   body: { conversationId: number | null; question: string },
   h: ChatHandlers,
 ): Promise<void> {
-  const token = localStorage.getItem('cmssoas.token') || ''
+  const token = localStorage.getItem('codeman.token') || ''
   let resp: Response
   try {
     resp = await fetch('/api/cs/chat', {

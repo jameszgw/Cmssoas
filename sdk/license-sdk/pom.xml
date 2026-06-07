@@ -8,7 +8,7 @@
   <artifactId>license-sdk</artifactId>
   <version>1.0.1</version>
   <packaging>jar</packaging>
-  <name>CMSSOAS License SDK</name>
+  <name>CODEMAN License SDK</name>
   <description>客户端 License SDK：Ed25519 验签、.lic 读取、功能/版本门禁</description>
 
   <licenses>

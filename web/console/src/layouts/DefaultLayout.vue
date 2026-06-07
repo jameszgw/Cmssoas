@@ -50,7 +50,7 @@ async function logout() {
     <div class="inner">
       <div class="brand">
         <span class="logo">C</span>
-        <span>CMSSOAS<small>{{ t('brand.sub') }}</small></span>
+        <span>CODEMAN<small>{{ t('brand.sub') }}</small></span>
       </div>
       <nav class="nav">
         <router-link v-for="it in navs" :key="it.to" :to="it.to" active-class="active">

@@ -10,7 +10,7 @@ export const THEMES: { key: ThemeKey; labelKey: string; swatch: string }[] = [
 ]
 
 export const useThemeStore = defineStore('theme', () => {
-  const theme = ref<ThemeKey>((localStorage.getItem('cmssoas.theme') as ThemeKey) || 'tech')
+  const theme = ref<ThemeKey>((localStorage.getItem('codeman.theme') as ThemeKey) || 'tech')
 
   function apply(t: ThemeKey) {
     document.documentElement.dataset.theme = t
@@ -23,7 +23,7 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   watch(theme, (t) => {
-    localStorage.setItem('cmssoas.theme', t)
+    localStorage.setItem('codeman.theme', t)
     apply(t)
   }, { immediate: true })
 

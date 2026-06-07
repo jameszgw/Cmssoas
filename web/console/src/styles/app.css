@@ -1,5 +1,5 @@
 /* ============================================================
-   CMSSOAS 控制台 · 设计系统
+   CODEMAN 控制台 · 设计系统
    - 字体区分：--font-help（帮助文案） / --font-data（业务数据）
    - 换肤：html[data-theme=tech|midnight|gold]
    - 2K/4K 自适应：html{font-size:15px * var(--scale)} + rem

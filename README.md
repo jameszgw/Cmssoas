@@ -1,4 +1,4 @@
-# Cmssoas
+# Codeman
 
 [![CI](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml/badge.svg)](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml)
 ![backend tests](https://img.shields.io/badge/backend%20tests-9%2F9-brightgreen)

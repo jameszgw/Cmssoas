@@ -92,7 +92,7 @@ pipeline {
     stage('代码加固 + 镜像') {
       steps {
         dir('examples/protected-app') { sh "${MAVEN_CLI} -Pharden -DskipTests package" }
-        // 可选：docker build -t registry/cmssoas-backend:${BUILD_NUMBER} ./server/license-platform
+        // 可选：docker build -t registry/codeman-backend:${BUILD_NUMBER} ./server/license-platform
       }
       post { always { archiveArtifacts artifacts: 'examples/protected-app/target/*-obf.jar', allowEmptyArchive: true } }
     }

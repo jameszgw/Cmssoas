@@ -60,13 +60,13 @@ CREATE TABLE subscription (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ===== 种子数据 =====
-INSERT INTO product(code,name) VALUES ('CMSSOAS','软件授权管理平台');
+INSERT INTO product(code,name) VALUES ('CODEMAN','软件授权管理平台');
 
 INSERT INTO module(product_code,code,name,sort) VALUES
- ('CMSSOAS','RISK','风险管理',1),
- ('CMSSOAS','REPORT','报表中心',2),
- ('CMSSOAS','AUDIT','审计',3),
- ('CMSSOAS','BI','智能分析',4);
+ ('CODEMAN','RISK','风险管理',1),
+ ('CODEMAN','REPORT','报表中心',2),
+ ('CODEMAN','AUDIT','审计',3),
+ ('CODEMAN','BI','智能分析',4);
 
 INSERT INTO feature(module_code,code,name,sort) VALUES
  ('RISK','RISK.RULES','规则引擎',1),
@@ -78,7 +78,7 @@ INSERT INTO feature(module_code,code,name,sort) VALUES
  ('BI','BI.ML','智能预测',7);
 
 INSERT INTO app_version(product_code,version,sort) VALUES
- ('CMSSOAS','v2.2',1),('CMSSOAS','v2.3',2),('CMSSOAS','v2.4',3);
+ ('CODEMAN','v2.2',1),('CODEMAN','v2.3',2),('CODEMAN','v2.4',3);
 
 INSERT INTO feature_version(feature_code,version,available) VALUES
  ('RISK.RULES','v2.2',TRUE),('RISK.RULES','v2.3',TRUE),('RISK.RULES','v2.4',TRUE),

@@ -118,4 +118,4 @@ release:
     - echo "Release $CI_COMMIT_TAG"
   release:
     tag_name: "$CI_COMMIT_TAG"
-    description: "CMSSOAS $CI_COMMIT_TAG — 详见 docs/RELEASE-$CI_COMMIT_TAG.md"
+    description: "CODEMAN $CI_COMMIT_TAG — 详见 docs/RELEASE-$CI_COMMIT_TAG.md"

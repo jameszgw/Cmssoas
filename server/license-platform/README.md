@@ -1,4 +1,4 @@
-# CMSSOAS License Platform · 后端（租户开通与开通邮件服务）
+# CODEMAN License Platform · 后端（租户开通与开通邮件服务）
 
 Spring Boot 3 实现：`POST /api/tenants` 触发**租户开通 Saga**（建库占位 / Flyway 初始化 / 种子数据 /
 创建超管 / 生成一次性激活令牌）→ 用 **JavaMailSender + Thymeleaf** 渲染并发送**开通邮件** →

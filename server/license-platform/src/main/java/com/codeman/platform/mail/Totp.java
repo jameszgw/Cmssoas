@@ -19,7 +19,7 @@ public class Totp {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final int DIGITS = 6;
     private static final int PERIOD = 30;
-    private static final String ISSUER = "CMSSOAS";
+    private static final String ISSUER = "CODEMAN";
 
     /** 生成 20 字节随机密钥的 Base32 表示。 */
     public String generateSecret() {

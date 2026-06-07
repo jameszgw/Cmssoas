@@ -138,7 +138,7 @@ public class LicenseService {
         l.setLicenseId(nextLicenseId());
         l.setTenantCode(r.tenantCode());
         l.setCustomer(r.customer());
-        l.setProductCode(orElse(r.productCode(), "CMSSOAS"));
+        l.setProductCode(orElse(r.productCode(), "CODEMAN"));
         l.setEdition(orElse(r.edition(), "ENTERPRISE"));
         l.setMode(orElse(r.mode(), "HYBRID"));
         l.setModules(String.join(",", r.modules()));

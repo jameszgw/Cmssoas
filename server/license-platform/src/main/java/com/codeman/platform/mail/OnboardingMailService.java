@@ -33,7 +33,7 @@ public class OnboardingMailService {
 
     private static final Logger log = LoggerFactory.getLogger(OnboardingMailService.class);
     private static final DateTimeFormatter TS = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-    public static final String SUBJECT = "【CMSSOAS】您的租户已开通，请激活管理员账户";
+    public static final String SUBJECT = "【CODEMAN】您的租户已开通，请激活管理员账户";
 
     private final TemplateEngine templateEngine;
     private final ObjectProvider<JavaMailSender> mailSenderProvider;
