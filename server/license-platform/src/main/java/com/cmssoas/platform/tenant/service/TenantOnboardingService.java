@@ -36,10 +36,12 @@ public class TenantOnboardingService {
     private final OnboardingMailService mailService;
     private final AppProperties props;
     private final Totp totp;
+    private final TenantSchemaService schemaService;
 
     public TenantOnboardingService(TenantRepository tenantRepo, SysUserRepository userRepo,
                                    ActivationTokenRepository tokenRepo, AuditLogRepository auditRepo,
-                                   OnboardingMailService mailService, AppProperties props, Totp totp) {
+                                   OnboardingMailService mailService, AppProperties props, Totp totp,
+                                   TenantSchemaService schemaService) {
         this.tenantRepo = tenantRepo;
         this.userRepo = userRepo;
         this.tokenRepo = tokenRepo;
@@ -47,6 +49,7 @@ public class TenantOnboardingService {
         this.mailService = mailService;
         this.props = props;
         this.totp = totp;
+        this.schemaService = schemaService;
     }
 
     @Transactional
@@ -67,14 +70,18 @@ public class TenantOnboardingService {
         tenant = tenantRepo.save(tenant);
         audit(tenant.getId(), "TENANT_CREATED", "租户记录已创建：" + tenant.getCode());
 
-        // —— 步骤 2：资源/隔离编排（按隔离级别；此处为占位，真实环境创建库/Schema）
-        audit(tenant.getId(), "PROVISION_ISOLATION", "隔离级别：" + tenant.getIsolation());
+        // —— 步骤 2：资源/隔离编排（真实创建独立 Schema，物理隔离租户数据）
+        schemaService.createSchema(tenant.getCode());
+        audit(tenant.getId(), "PROVISION_ISOLATION",
+                "隔离级别：" + tenant.getIsolation() + "；Schema=" + schemaService.schemaOf(tenant.getCode()));
 
-        // —— 步骤 3：DB 初始化（Flyway 迁移占位；真实环境对新库执行 migrate）
-        audit(tenant.getId(), "DB_MIGRATE", "执行 Flyway 初始化至最新 schema");
+        // —— 步骤 3：DB 初始化（在租户 Schema 内建租户级业务表）
+        schemaService.migrate(tenant.getCode());
+        audit(tenant.getId(), "DB_MIGRATE", "租户 Schema 内建表完成");
 
-        // —— 步骤 4：种子数据（角色/菜单/字典/默认配置 占位）
-        audit(tenant.getId(), "SEED_DATA", "写入默认角色、菜单与字典");
+        // —— 步骤 4：种子数据（写入默认角色与配置到租户 Schema）
+        schemaService.seed(tenant.getCode(), tenant.getPlanCode());
+        audit(tenant.getId(), "SEED_DATA", "写入默认角色与配置（租户 Schema）");
 
         // —— 步骤 5：创建初始超级管理员（密码留空，待激活时自设）
         SysUser admin = new SysUser();
