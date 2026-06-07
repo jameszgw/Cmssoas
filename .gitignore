@@ -1,0 +1,18 @@
+node_modules/
+package-lock.json
+web/prototype/package.json
+dist/
+.tmp/
+*.tsbuildinfo
+
+# Java / Maven
+target/
+!**/src/**/target/
+# 邮件本地落盘（delivery=log）
+server/license-platform/var/
+dependency-reduced-pom.xml
+
+# Playwright
+web/console/playwright-report/
+web/console/test-results/
+web/console/.playwright/

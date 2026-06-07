@@ -1,0 +1,96 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: license-platform
+
+  # ---- 数据源：默认 H2 内存库（开箱即跑）。生产改 PostgreSQL ----
+  datasource:
+    url: jdbc:h2:mem:cmssoas;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true       # http://localhost:8080/h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: none      # schema 完全由 Flyway 管理（跨 H2/PG 兼容）
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # ---- 邮件（SMTP）。delivery=log 时不真正外发，仅渲染落盘+日志 ----
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+# ---- 应用自定义 ----
+app:
+  license:
+    sign-algo: ${LICENSE_SIGN_ALGO:ed25519}   # 签名算法：ed25519（默认）| sm2（国密）
+  jwt:
+    secret: ${JWT_SECRET:cmssoas-dev-secret-please-change-in-prod-0123456789}
+    ttl-hours: ${JWT_TTL_HOURS:12}
+  redis:
+    enabled: ${APP_REDIS_ENABLED:false}   # true 时 nonce 走 Redis（多实例水平扩展）
+  mail:
+    delivery: ${APP_MAIL_DELIVERY:log}   # log | smtp
+    from: ${APP_MAIL_FROM:no-reply@cmssoas.com}
+    from-name: CMSSOAS
+    spool-dir: ./var/mail                 # delivery=log 时渲染后的邮件落盘目录
+  activation:
+    base-url: ${APP_ACTIVATION_BASE_URL:http://localhost:5173/activate}
+    ttl-hours: 24
+
+# ---- 可观测：Actuator + Prometheus 抓取端点 ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    mail:
+      enabled: false    # 邮件走异步发件箱，SMTP 可选，不纳入健康探针
+    redis:
+      enabled: false    # 默认单机内存 nonce；prod profile 再开启
+  metrics:
+    tags:
+      application: cmssoas   # 所有指标打上 application 标签，便于多服务区分
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# 允许前端开发服务器跨域
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:4173
+
+logging:
+  level:
+    com.cmssoas: INFO

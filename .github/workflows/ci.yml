@@ -1,0 +1,232 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  backend:
+    name: 后端构建 (Spring Boot)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Build & test license-platform
+        working-directory: server/license-platform
+        run: mvn -B -ntp verify
+      - name: 上传后端覆盖率报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage
+          path: server/license-platform/target/site/jacoco/
+          retention-days: 7
+
+  sdk:
+    name: 客户端 SDK 构建
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Build & test license-sdk
+        working-directory: sdk/license-sdk
+        run: mvn -B -ntp install
+      - name: Build protected-app demo
+        working-directory: examples/protected-app
+        run: mvn -B -ntp -DskipTests compile
+      - name: 上传 SDK 覆盖率报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sdk-coverage
+          path: sdk/license-sdk/target/site/jacoco/
+          retention-days: 7
+
+  sign-smoke:
+    name: 签名链路冒烟 (Ed25519/SM2 矩阵)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        algo: [ed25519, sm2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 构建 SDK 验签 demo
+        working-directory: sdk/license-sdk
+        run: mvn -B -ntp -DskipTests package
+      - name: 构建并以 ${{ matrix.algo }} 启动后端
+        working-directory: server/license-platform
+        run: |
+          mvn -B -ntp -DskipTests package
+          LICENSE_SIGN_ALGO=${{ matrix.algo }} nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
+      - name: 端到端验签冒烟（签发 → SDK 验签）
+        run: |
+          set -e
+          B=http://localhost:8080
+          TOKEN=$(curl -s -X POST $B/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"8888"}' | sed -E 's/.*"token":"([^"]+)".*/\1/')
+          # 校验公钥算法与矩阵一致
+          EXP=$([ "${{ matrix.algo }}" = "sm2" ] && echo SM2 || echo Ed25519)
+          ALG=$(curl -s $B/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"algorithm":"([^"]+)".*/\1/')
+          echo "algo=$ALG expected=$EXP"; [ "$ALG" = "$EXP" ]
+          # 签发并验签
+          curl -s -X POST $B/api/licenses/issue -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+            -d '{"tenantCode":"T-CI","customer":"ci","edition":"ENTERPRISE","modules":["RISK","REPORT"],"features":{"REPORT.EXPORT":true},"appVersionRange":">=2.0.0 <3.0.0","notBefore":"2026-01-01","notAfter":"2099-01-01","concurrency":5}' >/dev/null
+          LID=$(curl -s $B/api/licenses -H "Authorization: Bearer $TOKEN" | grep -oE '"licenseId":"LIC-[0-9-]+"' | head -1 | cut -d'"' -f4)
+          PUB=$(curl -s $B/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"publicKeyBase64":"([^"]+)".*/\1/')
+          curl -s "$B/api/licenses/$LID/download" -H "Authorization: Bearer $TOKEN" -o ci.lic
+          java -Dstdout.encoding=UTF-8 -jar sdk/license-sdk/target/license-sdk-demo.jar check "$PUB" ci.lic REPORT.EXPORT 2.4.0
+          echo "✅ ${{ matrix.algo }} 签名链路冒烟通过"
+
+  harden:
+    name: 代码加固 (ProGuard 混淆)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 安装 SDK 到本地仓库
+        working-directory: sdk/license-sdk
+        run: mvn -B -ntp -DskipTests install
+      - name: 混淆打包受保护示例
+        working-directory: examples/protected-app
+        run: mvn -B -ntp -Pharden -DskipTests package
+      - name: 校验混淆生效（辅助类被改名，入口/被加载类保留）
+        working-directory: examples/protected-app
+        run: |
+          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/a.class' && echo "OK: 辅助类已混淆"
+          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/secret/SecretAlgorithm.class' && echo "OK: 被加载类保留"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: protected-app-obfuscated
+          path: examples/protected-app/target/protected-app-1.0.0-obf.jar
+          retention-days: 7
+
+  frontend:
+    name: 前端构建 (Vite/Vue3)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build console
+        working-directory: web/console
+        run: |
+          npm install
+          npm run build
+
+  e2e:
+    name: 端到端测试 (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 构建并后台启动后端
+        working-directory: server/license-platform
+        run: |
+          mvn -B -ntp -DskipTests package
+          nohup java -jar target/license-platform-1.0.0.jar > /tmp/backend.log 2>&1 &
+          # 等待后端健康
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:8080/actuator/health && break || sleep 2
+          done
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装前端依赖与浏览器
+        working-directory: web/console
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+      - name: 运行 E2E
+        working-directory: web/console
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: web/console/playwright-report/
+          retention-days: 7
+
+  # 汇总各流水线结果到一份 Job Summary（始终运行）
+  ci-summary:
+    name: CI 结果汇总
+    runs-on: ubuntu-latest
+    needs: [backend, sdk, sign-smoke, harden, frontend, e2e]
+    if: always()
+    steps:
+      - name: 生成汇总
+        run: |
+          {
+            echo "# CMSSOAS CI 汇总"
+            echo ""
+            echo "| 流水线 | 结果 |"
+            echo "|---|---|"
+            echo "| 后端构建+测试+覆盖率 | ${{ needs.backend.result }} |"
+            echo "| 客户端 SDK 测试+覆盖率 | ${{ needs.sdk.result }} |"
+            echo "| 签名链路冒烟 (Ed25519/SM2) | ${{ needs.sign-smoke.result }} |"
+            echo "| 代码加固 (ProGuard 混淆) | ${{ needs.harden.result }} |"
+            echo "| 前端构建 | ${{ needs.frontend.result }} |"
+            echo "| 端到端 (Playwright) | ${{ needs.e2e.result }} |"
+            echo ""
+            echo "**制品**：backend-coverage / sdk-coverage / playwright-report / protected-app-obfuscated（见本次运行 Artifacts）"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # 打 tag (v*) 时汇总制品并创建 Release
+  release:
+    name: 汇总发布 (tag)
+    runs-on: ubuntu-latest
+    needs: [backend, sdk, sign-smoke, harden, frontend, e2e]
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: 下载全部制品
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: 打包制品 + 生成发布说明
+        run: |
+          (cd artifacts && zip -r ../cmssoas-artifacts.zip . >/dev/null) || true
+          {
+            echo "## CMSSOAS ${{ github.ref_name }} 发布摘要"
+            echo ""
+            echo "本次发布聚合以下 CI 制品（详见附件 \`cmssoas-artifacts.zip\`）："
+            echo "- 后端 / SDK 单元+集成测试覆盖率报告 (JaCoCo)"
+            echo "- 端到端测试报告 (Playwright HTML)"
+            echo "- 代码加固混淆制品 (protected-app-*-obf.jar)"
+            echo "- 签名链路冒烟：Ed25519 与 SM2 双算法端到端验签均通过"
+            echo ""
+            echo "自测：见 docs/自测报告.md（中）/ docs/self-test-report-en.md（EN）。"
+          } > RELEASE_NOTES.md
+      - name: 创建 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: RELEASE_NOTES.md
+          files: |
+            cmssoas-artifacts.zip
+            artifacts/protected-app-obfuscated/*.jar

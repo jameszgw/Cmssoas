@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="tech">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CMSSOAS · 软件授权运营平台</title>
+<style>
+/* ============ 设计令牌：字体区分（帮助文案 vs 业务数据）============ */
+:root{
+  /* 帮助/说明/标签 —— 人文无衬线，亲和易读 */
+  --font-help: "Inter","Segoe UI","WenQuanYi Zen Hei",system-ui,-apple-system,sans-serif;
+  /* 业务数据 —— 等宽 + 表格数字对齐，编号/金额/指标一眼可扫 */
+  --font-data: "DejaVu Sans Mono",ui-monospace,"WenQuanYi Zen Hei Mono","Roboto Mono",monospace;
+  --r-sm:8px; --r:14px; --r-lg:20px; --r-xl:28px;
+  /* 2K/4K 自适应基准：随视口缩放的比例因子 */
+  --scale:1;
+}
+/* ============ 主题（换肤）============ */
+html[data-theme="tech"]{
+  --app-bg:#eaf0fa; --app-bg2:#dfe8f7;
+  --surface:#ffffff; --surface-2:#f4f7fd; --surface-3:#eef3fb;
+  --border:#e3e9f4; --border-strong:#d3dcec;
+  --text:#0f1b34; --muted:#647089; --faint:#93a0b8;
+  --brand:#2f6bff; --brand-2:#19b7ff; --accent:#7c4dff;
+  --data-ink:#103e9c;
+  --success:#15a66a; --warning:#e0930f; --danger:#e2483d;
+  --topbar:linear-gradient(100deg,#1d3a8a 0%,#2f6bff 55%,#19b7ff 100%);
+  --hero:linear-gradient(120deg,#1c388a 0%,#2f6bff 48%,#37b6ff 100%);
+  --shadow:0 18px 48px -22px rgba(28,56,138,.45); --shadow-sm:0 6px 20px -10px rgba(28,56,138,.32);
+  --ring:rgba(47,107,255,.16);
+}
+html[data-theme="midnight"]{
+  --app-bg:#070c18; --app-bg2:#0a1224;
+  --surface:#0f1830; --surface-2:#13203c; --surface-3:#17274a;
+  --border:#1f2e4d; --border-strong:#2a3c63;
+  --text:#eaf1ff; --muted:#94a6c8; --faint:#6b7ea6;
+  --brand:#5b8cff; --brand-2:#2ad6ff; --accent:#9b7bff;
+  --data-ink:#8fd0ff;
+  --success:#2bd28b; --warning:#f3b13c; --danger:#ff6a5d;
+  --topbar:linear-gradient(100deg,#0c1530 0%,#15264f 60%,#123a63 100%);
+  --hero:linear-gradient(120deg,#10204a 0%,#1d3f86 50%,#0f5e8c 100%);
+  --shadow:0 22px 60px -26px rgba(0,0,0,.7); --shadow-sm:0 10px 26px -14px rgba(0,0,0,.6);
+  --ring:rgba(91,140,255,.28);
+}
+html[data-theme="gold"]{
+  --app-bg:#f5f1e8; --app-bg2:#efe7d6;
+  --surface:#fffdf8; --surface-2:#faf5ea; --surface-3:#f4ecdb;
+  --border:#eadfc8; --border-strong:#ddcda6;
+  --text:#2a2113; --muted:#7a6a4c; --faint:#a3937a;
+  --brand:#c07a12; --brand-2:#e0a52a; --accent:#9a5b1a;
+  --data-ink:#8a5a09;
+  --success:#3f8f4f; --warning:#cc8a12; --danger:#c0492f;
+  --topbar:linear-gradient(100deg,#7a4d12 0%,#c07a12 55%,#e0a52a 100%);
+  --hero:linear-gradient(120deg,#7a4d12 0%,#bf7d18 48%,#e3ad33 100%);
+  --shadow:0 18px 48px -22px rgba(122,77,18,.4); --shadow-sm:0 6px 20px -10px rgba(122,77,18,.3);
+  --ring:rgba(192,122,18,.2);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:calc(15px * var(--scale));}
+body{
+  font-family:var(--font-help);
+  background:
+     radial-gradient(1200px 600px at 88% -8%, color-mix(in srgb,var(--brand) 12%, transparent), transparent 60%),
+     linear-gradient(180deg,var(--app-bg),var(--app-bg2));
+  color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased;
+  line-height:1.5; letter-spacing:.1px;
+}
+/* 业务数据统一类：等宽 + 表格数字 + 微调字色 */
+.data{font-family:var(--font-data);font-variant-numeric:tabular-nums;letter-spacing:0;color:var(--data-ink);font-feature-settings:"tnum" 1;}
+.help{font-family:var(--font-help);}
+.muted{color:var(--muted)} .faint{color:var(--faint)}
+
+/* ===== 顶栏（大气官网风格，顶部导航）===== */
+.topbar{position:sticky;top:0;z-index:30;background:var(--topbar);color:#fff;
+  box-shadow:0 10px 30px -16px rgba(0,0,0,.45);}
+.topbar .inner{width:100%;display:flex;align-items:center;gap:2rem;
+  padding:.85rem clamp(28px,2.6vw,80px);}
+.brand{display:flex;align-items:center;gap:.7rem;font-weight:800;font-size:1.18rem;letter-spacing:.4px;}
+.brand .logo{width:2.1rem;height:2.1rem;border-radius:9px;display:grid;place-items:center;
+  background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);font-weight:900;}
+.brand small{display:block;font-size:.62rem;font-weight:600;opacity:.8;letter-spacing:2px;margin-top:1px}
+.nav{display:flex;gap:.3rem;margin-left:1rem}
+.nav a{color:rgba(255,255,255,.86);text-decoration:none;padding:.5rem .95rem;border-radius:10px;
+  font-size:.92rem;font-weight:600;transition:.18s;white-space:nowrap}
+.nav a:hover{background:rgba(255,255,255,.14);color:#fff}
+.nav a.active{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.spacer{flex:1}
+.tools{display:flex;align-items:center;gap:.55rem}
+.pillbtn{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.14);
+  color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.42rem .8rem;
+  font-size:.82rem;font-weight:600;cursor:pointer}
+.iconbtn{width:2.2rem;height:2.2rem;border-radius:11px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer;position:relative}
+.iconbtn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#ff5b5b;box-shadow:0 0 0 2px var(--brand)}
+.avatar{width:2.2rem;height:2.2rem;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-weight:800;font-size:.9rem}
+
+/* ===== 主区 ===== */
+.wrap{width:100%;padding:1.8rem clamp(28px,2.6vw,80px) 3rem}
+
+/* Hero / 页头 */
+.hero{position:relative;overflow:hidden;border-radius:var(--r-xl);background:var(--hero);color:#fff;
+  padding:2.1rem 2.4rem;box-shadow:var(--shadow);margin-bottom:1.6rem}
+.hero::after{content:"";position:absolute;right:-60px;top:-80px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.22),transparent 62%);}
+.hero::before{content:"";position:absolute;right:160px;bottom:-120px;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.12),transparent 60%);}
+.hero h1{font-size:1.8rem;font-weight:800;letter-spacing:.3px}
+.hero p{opacity:.9;margin-top:.45rem;max-width:680px;font-size:.96rem}
+.hero .crumbs{font-size:.78rem;opacity:.82;font-weight:600;letter-spacing:.4px;margin-bottom:.7rem}
+.hero .cta{margin-top:1.3rem;display:flex;gap:.7rem}
+.btn{border:0;cursor:pointer;border-radius:12px;padding:.7rem 1.25rem;font-weight:700;font-size:.92rem;font-family:var(--font-help)}
+.btn.primary{background:#fff;color:var(--brand)}
+.btn.ghost{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.hero .stat-inline{position:absolute;right:2.4rem;bottom:1.9rem;display:flex;gap:2.2rem;text-align:right}
+.hero .stat-inline .v{font-size:1.7rem;font-weight:800}
+.hero .stat-inline .l{font-size:.74rem;opacity:.82;font-weight:600}
+
+/* 网格 */
+.grid{display:grid;gap:1.2rem}
+.kpis{grid-template-columns:repeat(4,1fr)}
+.cols-2{grid-template-columns:1.65fr 1fr}
+.cols-2b{grid-template-columns:1.5fr 1fr}
+.cols-3{grid-template-columns:1.7fr 1fr 1.15fr}
+.cols-3b{grid-template-columns:1.9fr 1fr 1fr}
+/* 横向条形（套餐分布）*/
+.bars{display:flex;flex-direction:column;gap:.95rem;margin-top:.3rem}
+.bar .bl{display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:.4rem}
+.bar .bl b{font-family:var(--font-data);color:var(--data-ink);font-variant-numeric:tabular-nums}
+.bar .track{height:.7rem;border-radius:999px;background:var(--surface-3);overflow:hidden}
+.bar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+/* 公告/快捷 */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.2rem}
+.qtile{border:1px solid var(--border);border-radius:var(--r);padding:.85rem .9rem;background:var(--surface-2);cursor:pointer;transition:.15s}
+.qtile:hover{border-color:var(--brand);box-shadow:0 8px 20px -12px var(--ring)}
+.qtile .qi{font-size:1.25rem}
+.qtile .qt{font-weight:700;font-size:.86rem;margin-top:.35rem}
+.qtile .qd{font-size:.74rem;color:var(--muted)}
+.notif{display:flex;flex-direction:column;gap:.1rem;margin-top:.9rem}
+.notif .n{display:flex;gap:.6rem;padding:.55rem .1rem;border-top:1px dashed var(--border)}
+.notif .n .nd{width:.5rem;height:.5rem;border-radius:50%;margin-top:.45rem;flex:none}
+.notif .nt{font-size:.84rem;font-weight:600}
+.notif .nm{font-size:.74rem;color:var(--faint)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-sm);padding:1.3rem 1.4rem;position:relative}
+.card h3{font-size:1.02rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.card .sub{font-size:.78rem;color:var(--muted);margin-top:.15rem;font-weight:500}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.1rem}
+.tag{font-size:.72rem;font-weight:700;padding:.28rem .6rem;border-radius:999px;
+  background:var(--surface-3);color:var(--muted)}
+
+/* KPI 卡 */
+.kpi{display:flex;flex-direction:column;gap:.55rem}
+.kpi .top{display:flex;justify-content:space-between;align-items:center}
+.kpi .label{font-size:.84rem;color:var(--muted);font-weight:600}
+.kpi .ic{width:2.4rem;height:2.4rem;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;
+  background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.kpi .val{font-size:2.05rem;font-weight:800;line-height:1}
+.kpi .foot{display:flex;align-items:center;gap:.4rem;font-size:.8rem}
+.delta{font-weight:700;padding:.16rem .45rem;border-radius:7px;font-size:.76rem}
+.delta.up{color:var(--success);background:color-mix(in srgb,var(--success) 14%,transparent)}
+.delta.down{color:var(--danger);background:color-mix(in srgb,var(--danger) 14%,transparent)}
+
+/* 图表 */
+.chart-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.6rem}
+.lg{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted);font-weight:600}
+.lg i{width:.7rem;height:.7rem;border-radius:3px;display:inline-block}
+.donut-center{position:absolute}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:.74rem;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--faint);font-weight:700;padding:.6rem .7rem;border-bottom:1px solid var(--border)}
+tbody td{padding:.78rem .7rem;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:middle}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+.t-name{font-weight:700}
+.status{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;
+  padding:.26rem .6rem;border-radius:999px}
+.status i{width:.5rem;height:.5rem;border-radius:50%}
+.s-active{color:var(--success);background:color-mix(in srgb,var(--success) 13%,transparent)} .s-active i{background:var(--success)}
+.s-soon{color:var(--warning);background:color-mix(in srgb,var(--warning) 14%,transparent)} .s-soon i{background:var(--warning)}
+.s-init{color:var(--brand);background:color-mix(in srgb,var(--brand) 13%,transparent)} .s-init i{background:var(--brand)}
+.s-exp{color:var(--danger);background:color-mix(in srgb,var(--danger) 13%,transparent)} .s-exp i{background:var(--danger)}
+.linkbtn{color:var(--brand);font-weight:700;font-size:.83rem;cursor:pointer;background:0;border:0;font-family:var(--font-help)}
+
+/* 排版规范卡（演示 帮助字体 vs 数据字体）*/
+.type-demo{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.type-box{border:1px dashed var(--border-strong);border-radius:var(--r);padding:.9rem 1rem;background:var(--surface-2)}
+.type-box .k{font-size:.72rem;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-bottom:.4rem}
+.type-box .sample-help{font-family:var(--font-help);font-size:.96rem}
+.type-box .sample-data{font-family:var(--font-data);font-size:1.15rem;color:var(--data-ink);font-variant-numeric:tabular-nums}
+.type-box .note{font-size:.74rem;color:var(--faint);margin-top:.45rem}
+
+/* 侧栏待办 */
+.todo{display:flex;flex-direction:column;gap:.2rem}
+.todo .item{display:flex;gap:.8rem;padding:.75rem .2rem;border-bottom:1px solid var(--border)}
+.todo .item:last-child{border:0}
+.todo .badge{width:2.3rem;height:2.3rem;border-radius:11px;display:grid;place-items:center;flex:none;font-size:1.05rem}
+.b-warn{background:color-mix(in srgb,var(--warning) 16%,transparent);color:var(--warning)}
+.b-info{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.b-ok{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success)}
+.todo .ttl{font-weight:700;font-size:.9rem}
+.todo .desc{font-size:.8rem;color:var(--muted)}
+
+/* 过滤条 */
+.toolbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.field{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--border);
+  border-radius:11px;padding:.55rem .85rem;font-size:.88rem;color:var(--muted)}
+.field input,.field select{border:0;background:transparent;outline:0;color:var(--text);font-family:var(--font-help);font-size:.88rem}
+.btn.solid{background:linear-gradient(100deg,var(--brand),var(--brand-2));color:#fff;box-shadow:0 10px 24px -12px var(--ring)}
+
+/* 模态：开通租户 + 邮件预览 */
+.scrim{position:fixed;inset:0;background:rgba(8,14,28,.55);backdrop-filter:blur(4px);z-index:50;display:none}
+.scrim.open{display:grid;place-items:center}
+.modal{width:min(1180px,94vw);background:var(--surface);border-radius:var(--r-xl);box-shadow:var(--shadow);
+  border:1px solid var(--border);overflow:hidden;display:grid;grid-template-columns:1.05fr 1fr}
+.modal .left{padding:1.7rem 1.8rem}
+.modal .right{background:var(--surface-2);border-left:1px solid var(--border);padding:1.7rem 1.8rem}
+.modal h2{font-size:1.25rem;font-weight:800}
+.modal .lead{color:var(--muted);font-size:.86rem;margin:.3rem 0 1.2rem}
+.form-row{margin-bottom:1rem}
+.form-row label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:.4rem}
+.input{width:100%;border:1px solid var(--border-strong);border-radius:11px;padding:.7rem .9rem;font-size:.92rem;
+  background:var(--surface);color:var(--text);font-family:var(--font-help)}
+.input.data{font-family:var(--font-data);color:var(--data-ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.hint{font-size:.74rem;color:var(--faint);margin-top:.35rem}
+.notice{display:flex;gap:.6rem;align-items:flex-start;background:color-mix(in srgb,var(--brand) 9%,transparent);
+  border:1px solid color-mix(in srgb,var(--brand) 22%,transparent);border-radius:12px;padding:.8rem .95rem;font-size:.83rem;margin-top:.4rem}
+.notice .em{font-weight:800;color:var(--brand)}
+
+/* 邮件预览卡 */
+.mail{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.mail .mhead{padding:.85rem 1.1rem;border-bottom:1px solid var(--border);font-size:.82rem}
+.mail .mhead .row{display:flex;gap:.5rem;margin:.15rem 0}
+.mail .mhead .lbl{color:var(--faint);width:3.4rem;flex:none;font-weight:700;font-size:.76rem}
+.mail .mbody{padding:0}
+.mail .mtop{background:var(--hero);color:#fff;padding:1.4rem 1.4rem;text-align:center}
+.mail .mtop .logo{width:2.6rem;height:2.6rem;border-radius:10px;background:rgba(255,255,255,.2);
+  display:inline-grid;place-items:center;font-weight:900;margin-bottom:.5rem}
+.mail .mtop h4{font-size:1.05rem;font-weight:800}
+.mail .mtop p{opacity:.9;font-size:.78rem;margin-top:.2rem}
+.mail .mcontent{padding:1.2rem 1.3rem}
+.mail .mcontent p{font-size:.84rem;color:var(--text);margin-bottom:.7rem}
+.mail .kv{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.7rem .9rem;margin:.4rem 0 .9rem}
+.mail .kv .l{display:flex;justify-content:space-between;font-size:.8rem;padding:.18rem 0}
+.mail .kv .l b{font-family:var(--font-data);color:var(--data-ink);font-variant-numeric:tabular-nums}
+.mail .mbtn{display:block;text-align:center;background:linear-gradient(100deg,var(--brand),var(--brand-2));
+  color:#fff;text-decoration:none;font-weight:800;padding:.8rem;border-radius:11px;font-size:.9rem;margin:.4rem 0}
+.mail .mnote{font-size:.72rem;color:var(--faint);text-align:center;margin-top:.5rem}
+
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:.2rem 0 1rem}
+.section-title h2{font-size:1.25rem;font-weight:800}
+.hide{display:none !important}
+.foot-note{margin-top:1.6rem;text-align:center;font-size:.78rem;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<!-- ============ 顶栏 ============ -->
+<header class="topbar">
+  <div class="inner">
+    <div class="brand">
+      <span class="logo">C</span>
+      <span>CMSSOAS<small data-i18n="brandSub">软件授权运营平台</small></span>
+    </div>
+    <nav class="nav">
+      <a class="active" data-i18n="nav.overview">运营总览</a>
+      <a data-i18n="nav.tenants">租户管理</a>
+      <a data-i18n="nav.license">License 授权</a>
+      <a data-i18n="nav.catalog">产品与版本</a>
+      <a data-i18n="nav.plan">套餐订阅</a>
+      <a data-i18n="nav.audit">审计追溯</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="tools">
+      <span class="pillbtn">🔍 <span data-i18n="search">搜索租户 / License</span></span>
+      <button class="iconbtn" title="换肤">🎨</button>
+      <button class="pillbtn" title="语言"><span data-i18n="langLabel">中文</span> ▾</button>
+      <button class="iconbtn">🔔<span class="dot"></span></button>
+      <div class="avatar">运</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="crumbs" data-i18n="crumbs">运营中心 / 运营总览</div>
+    <h1 data-i18n="hero.title">软件授权运营总览</h1>
+    <p data-i18n="hero.desc">统一管理多租户开通、License 签发与生命周期、模块功能与版本授权；支持离线与在线授权、版本历史追溯与到期预警。</p>
+    <div class="cta">
+      <button class="btn primary" data-i18n="hero.cta1">＋ 开通新租户</button>
+      <button class="btn ghost" data-i18n="hero.cta2">签发 License</button>
+    </div>
+    <div class="stat-inline">
+      <div><div class="v data">99.97%</div><div class="l" data-i18n="hero.s1">平台可用性</div></div>
+      <div><div class="v data">12,840</div><div class="l" data-i18n="hero.s2">累计签发授权</div></div>
+    </div>
+  </section>
+
+  <!-- ===== KPI ===== -->
+  <section class="grid kpis" style="margin-bottom:1.2rem">
+    <div class="card kpi">
+      <div class="top"><span class="label" data-i18n="kpi.tenants">租户总数</span><span class="ic">🏢</span></div>
+      <div class="val data">1,286</div>
+      <div class="foot"><span class="delta up">▲ 6.4%</span><span class="muted" data-i18n="kpi.mom">较上月</span></div>
+    </div>
+    <div class="card kpi">
+      <div class="top"><span class="label" data-i18n="kpi.active">有效 License</span><span class="ic">🔑</span></div>
+      <div class="val data">3,572</div>
+      <div class="foot"><span class="delta up">▲ 3.1%</span><span class="muted" data-i18n="kpi.mom">较上月</span></div>
+    </div>
+    <div class="card kpi">
+      <div class="top"><span class="label" data-i18n="kpi.new">本月新开通</span><span class="ic">✨</span></div>
+      <div class="val data">128</div>
+      <div class="foot"><span class="delta up">▲ 18.2%</span><span class="muted" data-i18n="kpi.mom">较上月</span></div>
+    </div>
+    <div class="card kpi">
+      <div class="top"><span class="label" data-i18n="kpi.expire">30 天内到期</span><span class="ic">⏳</span></div>
+      <div class="val data">47</div>
+      <div class="foot"><span class="delta down">▲ 9 个</span><span class="muted" data-i18n="kpi.attention">需关注续费</span></div>
+    </div>
+  </section>
+
+  <!-- ===== 图表行 ===== -->
+  <section class="grid cols-3" style="margin-bottom:1.2rem">
+    <!-- 面积图 -->
+    <div class="card">
+      <div class="card-head">
+        <div><h3>📈 <span data-i18n="chart.trend">授权签发与续期趋势</span></h3>
+          <div class="sub" data-i18n="chart.trendSub">近 12 个月 · 单位：份</div></div>
+        <span class="tag" data-i18n="chart.year">2025 — 2026</span>
+      </div>
+      <svg viewBox="0 0 720 240" width="100%" height="230" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="ga" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--brand)" stop-opacity=".38"/>
+            <stop offset="100%" stop-color="var(--brand)" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--brand-2)" stop-opacity=".26"/>
+            <stop offset="100%" stop-color="var(--brand-2)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g stroke="var(--border)" stroke-width="1">
+          <line x1="0" y1="40" x2="720" y2="40"/><line x1="0" y1="100" x2="720" y2="100"/>
+          <line x1="0" y1="160" x2="720" y2="160"/><line x1="0" y1="210" x2="720" y2="210"/>
+        </g>
+        <path d="M0,180 C60,168 90,150 150,150 C210,150 240,120 300,118 C360,116 390,96 450,86 C510,78 540,70 600,60 C650,52 690,46 720,42 L720,210 L0,210 Z" fill="url(#ga)"/>
+        <path d="M0,180 C60,168 90,150 150,150 C210,150 240,120 300,118 C360,116 390,96 450,86 C510,78 540,70 600,60 C650,52 690,46 720,42" fill="none" stroke="var(--brand)" stroke-width="3"/>
+        <path d="M0,200 C60,196 90,188 150,186 C210,184 240,172 300,168 C360,164 390,156 450,150 C510,144 540,140 600,132 C650,126 690,122 720,118 L720,210 L0,210 Z" fill="url(#gb)"/>
+        <path d="M0,200 C60,196 90,188 150,186 C210,184 240,172 300,168 C360,164 390,156 450,150 C510,144 540,140 600,132 C650,126 690,122 720,118" fill="none" stroke="var(--brand-2)" stroke-width="2.5" stroke-dasharray="2 0"/>
+        <circle cx="600" cy="60" r="4.5" fill="var(--brand)"/><circle cx="720" cy="42" r="4.5" fill="var(--brand)"/>
+      </svg>
+      <div class="chart-legend">
+        <span class="lg"><i style="background:var(--brand)"></i><span data-i18n="chart.issue">新签发</span></span>
+        <span class="lg"><i style="background:var(--brand-2)"></i><span data-i18n="chart.renew">续期</span></span>
+        <span class="lg muted">x 轴：<span class="data">2025-07 → 2026-06</span></span>
+      </div>
+    </div>
+    <!-- 环形图 授权模式 -->
+    <div class="card">
+      <div class="card-head"><div><h3>🧩 <span data-i18n="chart.mode">授权模式占比</span></h3>
+        <div class="sub" data-i18n="chart.modeSub">离线 / 在线 / 混合</div></div></div>
+      <div style="display:flex;align-items:center;gap:1.2rem;justify-content:center;padding:.4rem 0 .2rem">
+        <div style="position:relative;width:180px;height:180px">
+          <svg viewBox="0 0 42 42" width="180" height="180">
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--surface-3)" stroke-width="6"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--brand)" stroke-width="6"
+              stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--brand-2)" stroke-width="6"
+              stroke-dasharray="31 69" stroke-dashoffset="-27" stroke-linecap="round"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--accent)" stroke-width="6"
+              stroke-dasharray="17 83" stroke-dashoffset="-58" stroke-linecap="round"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center">
+            <div><div class="data" style="font-size:1.5rem;font-weight:800">3,572</div>
+            <div class="faint" style="font-size:.68rem" data-i18n="chart.total">授权总量</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          <span class="lg"><i style="background:var(--brand)"></i><span data-i18n="mode.hybrid">混合</span> &nbsp;<b class="data">52%</b></span>
+          <span class="lg"><i style="background:var(--brand-2)"></i><span data-i18n="mode.online">在线</span> &nbsp;<b class="data">31%</b></span>
+          <span class="lg"><i style="background:var(--accent)"></i><span data-i18n="mode.offline">离线</span> &nbsp;<b class="data">17%</b></span>
+        </div>
+      </div>
+    </div>
+    <!-- 套餐分布 横向条形 -->
+    <div class="card">
+      <div class="card-head"><div><h3>📦 <span data-i18n="chart.plan">套餐版型分布</span></h3>
+        <div class="sub" data-i18n="chart.planSub">按有效授权数</div></div></div>
+      <div class="bars">
+        <div class="bar"><div class="bl"><span data-i18n="plan.flag">旗舰版</span><b>1,486</b></div><div class="track"><div class="fill" style="width:92%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.ent">企业版</span><b>1,032</b></div><div class="track"><div class="fill" style="width:68%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.pro">专业版</span><b>724</b></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
+        <div class="bar"><div class="bl"><span data-i18n="plan.basic">基础版</span><b>330</b></div><div class="track"><div class="fill" style="width:22%"></div></div></div>
+      </div>
+      <div class="chart-legend" style="margin-top:1.1rem">
+        <span class="lg muted"><span data-i18n="chart.arpu">户均年费</span> <b class="data">¥38,200</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 表格 + 侧栏 ===== -->
+  <section class="grid cols-3b" style="margin-bottom:1.2rem">
+    <div class="card">
+      <div class="card-head">
+        <div><h3>🏢 <span data-i18n="recent.title">最近开通租户</span></h3>
+          <div class="sub" data-i18n="recent.sub">编号、版本、到期等为业务数据（等宽字体）</div></div>
+        <button class="linkbtn" data-i18n="recent.all">查看全部 →</button>
+      </div>
+      <table>
+        <thead><tr>
+          <th data-i18n="th.code">租户编号</th><th data-i18n="th.name">租户名称</th>
+          <th data-i18n="th.plan">套餐 / 版本</th><th data-i18n="th.status">状态</th>
+          <th data-i18n="th.expire">到期日</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="data">T-100482</td><td class="t-name">华东数据科技有限公司</td>
+            <td><span class="help">企业版</span> · <span class="data">v2.4.0</span></td>
+            <td><span class="status s-active"><i></i><span data-i18n="st.active">运行中</span></span></td>
+            <td class="data">2027-03-18</td><td><button class="linkbtn" data-i18n="op.detail">详情</button></td></tr>
+          <tr><td class="data">T-100481</td><td class="t-name">瑞康医疗集团</td>
+            <td><span class="help">专业版</span> · <span class="data">v2.3.1</span></td>
+            <td><span class="status s-soon"><i></i><span data-i18n="st.soon">即将到期</span></span></td>
+            <td class="data">2026-06-29</td><td><button class="linkbtn" data-i18n="op.renew">续期</button></td></tr>
+          <tr><td class="data">T-100480</td><td class="t-name">长江证券股份公司</td>
+            <td><span class="help">旗舰版</span> · <span class="data">v2.4.0</span></td>
+            <td><span class="status s-init"><i></i><span data-i18n="st.init">初始化中</span></span></td>
+            <td class="data">2027-05-30</td><td><button class="linkbtn" data-i18n="op.detail">详情</button></td></tr>
+          <tr><td class="data">T-100479</td><td class="t-name">星海智能制造</td>
+            <td><span class="help">基础版</span> · <span class="data">v2.2.0</span></td>
+            <td><span class="status s-active"><i></i><span data-i18n="st.active">运行中</span></span></td>
+            <td class="data">2026-12-11</td><td><button class="linkbtn" data-i18n="op.detail">详情</button></td></tr>
+          <tr><td class="data">T-100478</td><td class="t-name">蓝犀牛物流</td>
+            <td><span class="help">专业版</span> · <span class="data">v2.3.1</span></td>
+            <td><span class="status s-exp"><i></i><span data-i18n="st.exp">已过期</span></span></td>
+            <td class="data">2026-05-02</td><td><button class="linkbtn" data-i18n="op.renew">续期</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>📌 <span data-i18n="todo.title">运营待办</span></h3>
+        <div class="sub" data-i18n="todo.sub">到期、初始化、异常心跳</div></div></div>
+      <div class="todo">
+        <div class="item"><div class="badge b-warn">⏳</div>
+          <div><div class="ttl"><span data-i18n="todo.t1">47 个授权 30 天内到期</span></div>
+          <div class="desc"><span data-i18n="todo.d1">最近一笔：</span><span class="data">T-100481</span> · <span class="data">2026-06-29</span></div></div></div>
+        <div class="item"><div class="badge b-info">⚙️</div>
+          <div><div class="ttl" data-i18n="todo.t2">3 个租户正在初始化</div>
+          <div class="desc"><span data-i18n="todo.d2">建库 / 种子数据 / 发送开通邮件</span></div></div></div>
+        <div class="item"><div class="badge b-warn">📡</div>
+          <div><div class="ttl" data-i18n="todo.t3">2 个实例心跳异常</div>
+          <div class="desc"><span class="data">T-100455</span> <span data-i18n="todo.d3">已进入宽限期</span></div></div></div>
+        <div class="item"><div class="badge b-ok">✉️</div>
+          <div><div class="ttl" data-i18n="todo.t4">今日开通邮件已送达</div>
+          <div class="desc"><span class="data">128</span> <span data-i18n="todo.d4">封 · 送达率</span> <span class="data">99.2%</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- 快捷操作 + 公告 -->
+    <div class="card">
+      <div class="card-head"><div><h3>⚡ <span data-i18n="quick.title">快捷操作</span></h3>
+        <div class="sub" data-i18n="quick.sub">高频运营入口</div></div></div>
+      <div class="quick">
+        <div class="qtile"><div class="qi">🏢</div><div class="qt" data-i18n="quick.q1">开通租户</div><div class="qd" data-i18n="quick.d1">建库·发邮件</div></div>
+        <div class="qtile"><div class="qi">🔑</div><div class="qt" data-i18n="quick.q2">签发 License</div><div class="qd" data-i18n="quick.d2">离线 / 在线</div></div>
+        <div class="qtile"><div class="qi">🔄</div><div class="qt" data-i18n="quick.q3">批量续期</div><div class="qd" data-i18n="quick.d3">到期提醒</div></div>
+        <div class="qtile"><div class="qi">🧩</div><div class="qt" data-i18n="quick.q4">配置套餐</div><div class="qd" data-i18n="quick.d4">模块/版本</div></div>
+      </div>
+      <div class="notif">
+        <div class="n"><span class="nd" style="background:var(--brand)"></span>
+          <div><div class="nt" data-i18n="notif.t1">v2.4.0 授权策略已发布</div><div class="nm"><span class="data">2026-06-05</span> · <span data-i18n="notif.m1">支持按功能点计量</span></div></div></div>
+        <div class="n"><span class="nd" style="background:var(--success)"></span>
+          <div><div class="nt" data-i18n="notif.t2">邮件网关已切换至双通道</div><div class="nm"><span class="data">2026-06-03</span> · <span data-i18n="notif.m2">送达率提升至 99.2%</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 排版规范：帮助字体 vs 数据字体 ===== -->
+  <section class="card" style="margin-bottom:.6rem">
+    <div class="card-head"><div><h3>🔤 <span data-i18n="type.title">排版规范 · 帮助文案与业务数据分离</span></h3>
+      <div class="sub" data-i18n="type.sub">两套字体令“解释性内容”与“可扫读的业务数据”一眼可辨</div></div>
+      <span class="tag">Typography</span></div>
+    <div class="type-demo">
+      <div class="type-box">
+        <div class="k">Help · <span data-i18n="type.helpK">帮助 / 说明文案</span></div>
+        <div class="sample-help" data-i18n="type.helpSample">系统将自动初始化数据库、写入种子数据，并向管理员邮箱发送开通邀请邮件。</div>
+        <div class="note">font-family: var(--font-help) · <span data-i18n="type.helpNote">人文无衬线，亲和易读</span></div>
+      </div>
+      <div class="type-box">
+        <div class="k">Data · <span data-i18n="type.dataK">业务数据</span></div>
+        <div class="sample-data">T-100482 &nbsp; v2.4.0 &nbsp; ¥128,640.00 &nbsp; 2027-03-18</div>
+        <div class="note">font-family: var(--font-data) · tabular-nums · <span data-i18n="type.dataNote">等宽对齐，便于扫读核对</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot-note">CMSSOAS · <span data-i18n="foot">软件授权运营平台 — 自适应 2K / 4K · 多主题换肤 · 中英国际化</span></div>
+</div>
+
+<!-- ============ 模态：开通租户 + 邮件预览 ============ -->
+<div class="scrim" id="scrim">
+  <div class="modal">
+    <div class="left">
+      <h2 data-i18n="m.title">开通新租户</h2>
+      <p class="lead" data-i18n="m.lead">填写租户与管理员信息，平台将自动建库、初始化数据并创建超管账号。</p>
+      <div class="form-row"><label data-i18n="m.tname">租户名称</label>
+        <input class="input" value="华东数据科技有限公司"></div>
+      <div class="two">
+        <div class="form-row"><label data-i18n="m.tcode">租户编号（自动）</label>
+          <input class="input data" value="T-100482" readonly></div>
+        <div class="form-row"><label data-i18n="m.plan">套餐 / 版本</label>
+          <input class="input" value="企业版 · v2.4.0"></div>
+      </div>
+      <div class="form-row"><label data-i18n="m.email">管理员邮箱（接收开通邮件）</label>
+        <input class="input data" value="admin@huadong-tech.com"></div>
+      <div class="two">
+        <div class="form-row"><label data-i18n="m.iso">数据隔离级别</label>
+          <input class="input" value="共享库 · 行级隔离 (RLS)"></div>
+        <div class="form-row"><label data-i18n="m.mode">授权模式</label>
+          <input class="input" value="混合 (HYBRID)"></div>
+      </div>
+      <div class="notice">✉️ <div><span class="em" data-i18n="m.noticeEm">开通后将以邮件通知账户开通：</span>
+        <span data-i18n="m.noticeBody">向管理员邮箱发送含一次性激活链接的邀请邮件，超管首次登录需自设密码并绑定 MFA。</span></div></div>
+      <div style="display:flex;gap:.7rem;margin-top:1.3rem">
+        <button class="btn solid" data-i18n="m.submit">开通并发送邮件</button>
+        <button class="btn" style="background:var(--surface-3);color:var(--text)" data-i18n="m.cancel">取消</button>
+      </div>
+    </div>
+    <div class="right">
+      <div style="font-size:.78rem;font-weight:800;color:var(--muted);letter-spacing:.5px;margin-bottom:.7rem" data-i18n="m.preview">📧 开通邮件预览</div>
+      <div class="mail">
+        <div class="mhead">
+          <div class="row"><span class="lbl" data-i18n="mail.from">发件</span><span class="data">no-reply@cmssoas.com</span></div>
+          <div class="row"><span class="lbl" data-i18n="mail.to">收件</span><span class="data">admin@huadong-tech.com</span></div>
+          <div class="row"><span class="lbl" data-i18n="mail.subj">主题</span><span data-i18n="mail.subject">【CMSSOAS】您的租户已开通，请激活管理员账户</span></div>
+        </div>
+        <div class="mbody">
+          <div class="mtop"><div class="logo">C</div><h4 data-i18n="mail.welcome">欢迎加入 CMSSOAS</h4>
+            <p data-i18n="mail.tagline">您的软件授权运营租户已成功开通</p></div>
+          <div class="mcontent">
+            <p data-i18n="mail.hi">尊敬的管理员，您好：</p>
+            <p data-i18n="mail.p1">您所在企业的租户已完成开通与初始化，请点击下方按钮激活管理员账户并设置登录密码。</p>
+            <div class="kv">
+              <div class="l"><span data-i18n="mail.kt">租户名称</span><b>华东数据科技</b></div>
+              <div class="l"><span data-i18n="mail.kc">租户编号</span><b>T-100482</b></div>
+              <div class="l"><span data-i18n="mail.kp">套餐版本</span><b>v2.4.0</b></div>
+              <div class="l"><span data-i18n="mail.ke">链接有效期</span><b>24:00:00</b></div>
+            </div>
+            <a class="mbtn" data-i18n="mail.btn">激活管理员账户 →</a>
+            <div class="mnote" data-i18n="mail.note">为保障安全，首次登录将强制修改密码并绑定双因素认证（MFA）。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const I18N = {
+  en:{
+    brandSub:"Software Licensing Console", "nav.overview":"Overview","nav.tenants":"Tenants",
+    "nav.license":"Licensing","nav.catalog":"Products","nav.plan":"Plans","nav.audit":"Audit",
+    search:"Search tenants / licenses", langLabel:"EN", crumbs:"Operations / Overview",
+    "hero.title":"Licensing Operations Overview",
+    "hero.desc":"Unified multi-tenant onboarding, license issuance & lifecycle, module/feature & version entitlement; offline & online activation, version history and expiry alerts.",
+    "hero.cta1":"＋ Onboard Tenant","hero.cta2":"Issue License","hero.s1":"Availability","hero.s2":"Total issued",
+    "kpi.tenants":"Total Tenants","kpi.active":"Active Licenses","kpi.new":"New This Month",
+    "kpi.expire":"Expiring in 30d","kpi.mom":"vs last month","kpi.attention":"renewal needed",
+    "chart.trend":"Issuance & Renewal Trend","chart.trendSub":"Last 12 months · count","chart.year":"2025 — 2026",
+    "chart.issue":"New issuance","chart.renew":"Renewal","chart.mode":"Activation Mode Share",
+    "chart.modeSub":"Offline / Online / Hybrid","chart.total":"Total licenses",
+    "mode.hybrid":"Hybrid","mode.online":"Online","mode.offline":"Offline",
+    "chart.plan":"Plan / Edition Mix","chart.planSub":"by active licenses","chart.arpu":"Avg. annual fee",
+    "plan.flag":"Flagship","plan.ent":"Enterprise","plan.pro":"Professional","plan.basic":"Basic",
+    "quick.title":"Quick Actions","quick.sub":"frequent operations",
+    "quick.q1":"Onboard tenant","quick.d1":"DB · email","quick.q2":"Issue license","quick.d2":"offline / online",
+    "quick.q3":"Batch renew","quick.d3":"expiry alerts","quick.q4":"Configure plan","quick.d4":"module/version",
+    "notif.t1":"v2.4.0 entitlement policy released","notif.m1":"feature-level metering",
+    "notif.t2":"Mail gateway switched to dual-channel","notif.m2":"delivery rate up to 99.2%",
+    "recent.title":"Recently Onboarded Tenants","recent.sub":"IDs, versions, dates are business data (monospace)","recent.all":"View all →",
+    "th.code":"Tenant ID","th.name":"Tenant","th.plan":"Plan / Version","th.status":"Status","th.expire":"Expires",
+    "st.active":"Active","st.soon":"Expiring","st.init":"Initializing","st.exp":"Expired",
+    "op.detail":"Detail","op.renew":"Renew",
+    "todo.title":"Operations To-do","todo.sub":"expiry, init, heartbeat",
+    "todo.t1":"47 licenses expire within 30 days","todo.d1":"Latest: ","todo.t2":"3 tenants initializing",
+    "todo.d2":"DB / seed data / onboarding email","todo.t3":"2 instances heartbeat anomaly","todo.d3":"in grace period",
+    "todo.t4":"Onboarding emails delivered today","todo.d4":"mails · delivery rate",
+    "type.title":"Typography · Help text vs Business data",
+    "type.sub":"Two type families make explanatory copy and scannable data instantly distinguishable",
+    "type.helpK":"Help / guidance","type.helpSample":"The system will provision the database, seed data and email an activation invite to the admin.",
+    "type.helpNote":"humanist sans — friendly & readable","type.dataK":"Business data",
+    "type.dataNote":"monospace, aligned for scanning","foot":"Licensing Console — Responsive 2K/4K · Theming · i18n",
+    "m.title":"Onboard New Tenant","m.lead":"Provide tenant & admin info; the platform auto-provisions DB, seeds data and creates the super admin.",
+    "m.tname":"Tenant name","m.tcode":"Tenant ID (auto)","m.plan":"Plan / Version","m.email":"Admin email (receives onboarding mail)",
+    "m.iso":"Data isolation","m.mode":"Activation mode",
+    "m.noticeEm":"Account opening is notified via email: ","m.noticeBody":"a one-time activation link is sent to the admin; first login requires setting a password and binding MFA.",
+    "m.submit":"Onboard & send email","m.cancel":"Cancel","m.preview":"📧 Onboarding email preview",
+    "mail.from":"From","mail.to":"To","mail.subj":"Subject",
+    "mail.subject":"[CMSSOAS] Your tenant is ready — activate your admin account",
+    "mail.welcome":"Welcome to CMSSOAS","mail.tagline":"Your licensing operations tenant is ready",
+    "mail.hi":"Dear administrator,","mail.p1":"Your tenant has been provisioned. Click the button below to activate your admin account and set a password.",
+    "mail.kt":"Tenant","mail.kc":"Tenant ID","mail.kp":"Version","mail.ke":"Link valid for",
+    "mail.btn":"Activate admin account →","mail.note":"For security, first login enforces a password change and MFA binding."
+  }
+};
+function applyParams(){
+  const q=new URLSearchParams(location.search);
+  const theme=q.get('theme'); if(theme) document.documentElement.dataset.theme=theme;
+  const scale=q.get('scale'); if(scale) document.documentElement.style.setProperty('--scale',scale);
+  if(q.get('lang')==='en'){ document.documentElement.lang='en';
+    document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(I18N.en[k])el.textContent=I18N.en[k];});
+  }
+  if(q.get('modal')==='open') document.getElementById('scrim').classList.add('open');
+}
+applyParams();
+</script>
+</body>
+</html>
