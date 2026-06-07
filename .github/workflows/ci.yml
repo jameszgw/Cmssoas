@@ -37,6 +37,33 @@ jobs:
         working-directory: examples/protected-app
         run: mvn -B -ntp -DskipTests compile
 
+  harden:
+    name: 代码加固 (ProGuard 混淆)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: 安装 SDK 到本地仓库
+        working-directory: sdk/license-sdk
+        run: mvn -B -ntp -DskipTests install
+      - name: 混淆打包受保护示例
+        working-directory: examples/protected-app
+        run: mvn -B -ntp -Pharden -DskipTests package
+      - name: 校验混淆生效（辅助类被改名，入口/被加载类保留）
+        working-directory: examples/protected-app
+        run: |
+          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/a.class' && echo "OK: 辅助类已混淆"
+          jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/secret/SecretAlgorithm.class' && echo "OK: 被加载类保留"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: protected-app-obfuscated
+          path: examples/protected-app/target/protected-app-1.0.0-obf.jar
+          retention-days: 7
+
   frontend:
     name: 前端构建 (Vite/Vue3)
     runs-on: ubuntu-latest

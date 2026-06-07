@@ -28,4 +28,49 @@
       <version>2.17.2</version>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <!--
+      代码加固（混淆）：mvn -Pharden -DskipTests package
+      产出 target/protected-app-1.0.0-obf.jar —— 业务类名被混淆（如 CryptoKeys/EncryptedClassLoader 被改名），
+      仅保留入口 main 与被反射/类加载按名加载的 SecretAlgorithm。与「类加密 + License 绑定」叠加形成纵深防御。
+      字符串加密需 Allatori 等商用混淆器；Spring Boot 胖包加密见下方 README 的 Xjar 说明。
+    -->
+    <profile>
+      <id>harden</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.wvengen</groupId>
+            <artifactId>proguard-maven-plugin</artifactId>
+            <version>2.7.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals><goal>proguard</goal></goals>
+              </execution>
+            </executions>
+            <configuration>
+              <obfuscate>true</obfuscate>
+              <injar>${project.build.finalName}.jar</injar>
+              <outjar>${project.build.finalName}-obf.jar</outjar>
+              <options>
+                <option>-keep public class com.cmssoas.protect.ProtectedLauncher { public static void main(java.lang.String[]); }</option>
+                <option>-keep public class com.cmssoas.protect.BuildProtected { public static void main(java.lang.String[]); }</option>
+                <!-- 受保护业务类经自定义类加载器按全名加载，需保留类名与方法 -->
+                <option>-keep class com.cmssoas.protect.secret.SecretAlgorithm { *; }</option>
+                <option>-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod</option>
+                <option>-dontwarn</option>
+                <option>-dontnote</option>
+                <option>-dontoptimize</option>
+              </options>
+              <libs>
+                <lib>${java.home}/jmods/java.base.jmod</lib>
+              </libs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

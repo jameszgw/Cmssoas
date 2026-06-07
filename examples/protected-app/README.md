@@ -31,6 +31,38 @@ C. 被篡改 License          -> ⛔ 验签未通过
 - `EncryptedClassLoader.java` / `ProtectedLauncher.java` —— 运行期：验签→派生密钥→解密→加载运行
 - `proguard.pro` —— 混淆层参考配置
 
+## L1 混淆已接入构建流水线（ProGuard）
+```bash
+mvn -Pharden -DskipTests package          # 产出 target/protected-app-1.0.0-obf.jar
+jar tf target/protected-app-1.0.0-obf.jar # 观察类名
+```
+混淆前后对比（实测）：
+```
+混淆前： CryptoKeys.class  EncryptedClassLoader.class  BuildProtected.class  ProtectedLauncher.class  secret/SecretAlgorithm.class
+混淆后： a.class           b.class                     BuildProtected.class  ProtectedLauncher.class  secret/SecretAlgorithm.class
+```
+即：辅助/密钥派生类被改名为 `a/b`（抬高逆向门槛），入口 main 与被类加载器按全名加载的 `SecretAlgorithm` 保留。CI 中 `harden` job 会自动产出并校验该混淆制品。
+
+> 字符串加密（如对根密钥常量、类名字符串加密）需 Allatori/DashO 等商用混淆器。
+
+## Spring Boot 胖包加密（Xjar，可选）
+对 Spring Boot 应用，可用 Xjar 对 `BOOT-INF/classes` 整体加密，运行时以密码/密钥解密启动：
+```xml
+<!-- 第三方插件，需配置其仓库；示意 -->
+<plugin>
+  <groupId>com.github.core-lib</groupId>
+  <artifactId>xjar-maven-plugin</artifactId>
+  <version>4.0.2</version>
+  <executions>
+    <execution>
+      <goals><goal>build</goal></goals>
+      <configuration><password>${env.XJAR_PASSWORD}</password></configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+与本示例的「类级加密 + 解密密钥绑定 License」思路一致，可二选一或叠加；本仓库以可运行的自实现方案为准，Xjar 作为生产替代方案备选。
+
 ## 现实边界
 纯软件保护无法 100% 阻止逆向；本示例展示如何**显著抬高门槛**并把代码与授权强绑定。
 生产应：根密钥入 KMS/HSM、关键逻辑 Native 化、叠加商用混淆与反调试/反 dump、配合在线吊销与水印溯源（见方案 02/06）。
