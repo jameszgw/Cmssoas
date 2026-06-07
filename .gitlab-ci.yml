@@ -1,0 +1,121 @@
+# GitLab CI —— 与 GitHub Actions 等价的流水线（适配 GitLab 自建）
+# 阶段：build → test → e2e → package → release
+stages: [build, test, e2e, package, release]
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dstdout.encoding=UTF-8"
+  MAVEN_CLI: "mvn -B -ntp"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .m2/repository
+    - web/console/node_modules
+
+# ---------- build ----------
+backend-build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - cd server/license-platform && $MAVEN_CLI -DskipTests package
+  artifacts:
+    paths: ["server/license-platform/target/*.jar"]
+    expire_in: 1 week
+
+frontend-build:
+  stage: build
+  image: node:22
+  script:
+    - cd web/console && npm install && npm run build
+  artifacts:
+    paths: ["web/console/dist"]
+    expire_in: 1 week
+
+# ---------- test ----------
+backend-test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - cd server/license-platform && $MAVEN_CLI verify
+  artifacts:
+    when: always
+    paths: ["server/license-platform/target/site/jacoco"]
+    reports:
+      junit: ["server/license-platform/target/surefire-reports/TEST-*.xml"]
+    expire_in: 1 week
+
+sdk-test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - cd sdk/license-sdk && $MAVEN_CLI install
+    - cd ../../examples/protected-app && $MAVEN_CLI -DskipTests compile
+  artifacts:
+    when: always
+    paths: ["sdk/license-sdk/target/site/jacoco"]
+    reports:
+      junit: ["sdk/license-sdk/target/surefire-reports/TEST-*.xml"]
+    expire_in: 1 week
+
+# 签名链路冒烟（Ed25519 / SM2 矩阵）
+sign-smoke:
+  stage: test
+  image: maven:3.9-eclipse-temurin-21
+  parallel:
+    matrix:
+      - ALGO: [ed25519, sm2]
+  script:
+    - cd sdk/license-sdk && $MAVEN_CLI -DskipTests package && cd ../..
+    - cd server/license-platform && $MAVEN_CLI -DskipTests package
+    - LICENSE_SIGN_ALGO=$ALGO nohup java -jar target/license-platform-1.0.0.jar > /tmp/be.log 2>&1 &
+    - for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
+    - cd ../..
+    - |
+      TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"8888"}' | sed -E 's/.*"token":"([^"]+)".*/\1/')
+      EXP=$([ "$ALGO" = "sm2" ] && echo SM2 || echo Ed25519)
+      ALG=$(curl -s http://localhost:8080/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"algorithm":"([^"]+)".*/\1/')
+      test "$ALG" = "$EXP"
+      curl -s -X POST http://localhost:8080/api/licenses/issue -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"tenantCode":"T-CI","customer":"ci","edition":"ENTERPRISE","modules":["RISK","REPORT"],"features":{"REPORT.EXPORT":true},"appVersionRange":">=2.0.0 <3.0.0","notBefore":"2026-01-01","notAfter":"2099-01-01","concurrency":5}' >/dev/null
+      LID=$(curl -s http://localhost:8080/api/licenses -H "Authorization: Bearer $TOKEN" | grep -oE '"licenseId":"LIC-[0-9-]+"' | head -1 | cut -d'"' -f4)
+      PUB=$(curl -s http://localhost:8080/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"publicKeyBase64":"([^"]+)".*/\1/')
+      curl -s "http://localhost:8080/api/licenses/$LID/download" -H "Authorization: Bearer $TOKEN" -o ci.lic
+      java -jar sdk/license-sdk/target/license-sdk-demo.jar check "$PUB" ci.lic REPORT.EXPORT 2.4.0
+
+# 代码加固混淆
+harden:
+  stage: package
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - cd sdk/license-sdk && $MAVEN_CLI -DskipTests install && cd ../..
+    - cd examples/protected-app && $MAVEN_CLI -Pharden -DskipTests package
+    - jar tf target/protected-app-1.0.0-obf.jar | grep -q 'com/cmssoas/protect/a.class'
+  artifacts:
+    paths: ["examples/protected-app/target/protected-app-1.0.0-obf.jar"]
+    expire_in: 1 week
+
+# ---------- e2e ----------
+e2e:
+  stage: e2e
+  image: mcr.microsoft.com/playwright:v1.56.1-jammy
+  script:
+    # Playwright 镜像需自带 JDK21 才能跑后端；否则用单独 service。此处假定已装或改用 compose。
+    - cd server/license-platform && (nohup java -jar target/license-platform-1.0.0.jar > /tmp/be.log 2>&1 &) || true
+    - for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
+    - cd ../../web/console && npm install && npx playwright test
+  artifacts:
+    when: always
+    paths: ["web/console/playwright-report"]
+    expire_in: 1 week
+  needs: ["backend-build"]
+
+# ---------- release（打 tag 时） ----------
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v/'
+  script:
+    - echo "Release $CI_COMMIT_TAG"
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    description: "CMSSOAS $CI_COMMIT_TAG — 详见 docs/RELEASE-$CI_COMMIT_TAG.md"

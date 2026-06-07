@@ -86,6 +86,40 @@ public class SubscriptionService {
         return SubscriptionView.from(s);
     }
 
+    /** 套餐变更（升/降级）：按新套餐重签关联 License（版本+1），更新订阅。 */
+    @Transactional
+    public SubscriptionView changePlan(Long id, String newPlanCode) {
+        Subscription s = subRepo.findById(id).orElseThrow(() -> ApiException.notFound("订阅不存在"));
+        Plan plan = planRepo.findByCode(newPlanCode)
+                .orElseThrow(() -> ApiException.badRequest("套餐不存在：" + newPlanCode));
+        if (s.getLicenseId() != null) {
+            List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
+            licenseService.modify(s.getLicenseId(), new com.cmssoas.platform.license.dto.LicenseDtos.ModifyRequest(
+                    modules, readJson(plan.getFeatures()), plan.getVersionRange(),
+                    plan.getSeats() * s.getQty(), plan.getCode(), "套餐变更：" + s.getPlanCode() + " → " + plan.getCode()));
+        }
+        String old = s.getPlanCode();
+        s.setPlanCode(plan.getCode());
+        subRepo.save(s);
+        audit.log(null, "SUBSCRIPTION_CHANGE", s.getTenantCode() + " · " + old + " → " + plan.getCode()
+                + "（重签 " + s.getLicenseId() + "）");
+        return SubscriptionView.from(s);
+    }
+
+    /** 退订：吊销关联 License，订阅置 CANCELLED。 */
+    @Transactional
+    public SubscriptionView cancel(Long id) {
+        Subscription s = subRepo.findById(id).orElseThrow(() -> ApiException.notFound("订阅不存在"));
+        if (s.getLicenseId() != null) {
+            licenseService.revoke(s.getLicenseId(),
+                    new com.cmssoas.platform.license.dto.LicenseDtos.RevokeRequest("退订：" + s.getTenantCode()));
+        }
+        s.setStatus("CANCELLED");
+        subRepo.save(s);
+        audit.log(null, "SUBSCRIPTION_CANCEL", s.getTenantCode() + " · 退订并吊销 " + s.getLicenseId());
+        return SubscriptionView.from(s);
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> readJson(String s) {
         try { return s == null || s.isBlank() ? Map.of() : mapper.readValue(s, Map.class); }

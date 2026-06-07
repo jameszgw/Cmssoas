@@ -92,6 +92,11 @@ public class Sm2SignatureService implements SignatureService {
         return ALG;
     }
 
+    @Override
+    public String kid() {
+        return SignatureKeys.kidOf(publicKey.getEncoded());
+    }
+
     private void generateAndSave() throws Exception {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BC);
         kpg.initialize(new ECGenParameterSpec("sm2p256v1"));

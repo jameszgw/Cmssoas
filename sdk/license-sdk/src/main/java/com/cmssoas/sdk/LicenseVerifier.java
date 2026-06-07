@@ -40,6 +40,29 @@ public class LicenseVerifier {
      * @throws LicenseException 签名无效或格式错误（即“伪造/被篡改”）。
      */
     public LicenseClaims verify(String lic) {
+        Parsed p = parse(lic);
+        check(p.payload, p.sig, alg(p.claims), publicKeyDer);
+        return new LicenseClaims(p.claims);
+    }
+
+    /**
+     * 多公钥（kid）验签：用于密钥轮换。按 License 内 kid 选对应公钥。
+     * @param keysByKid kid -> 公钥 Base64（来自平台 /api/licenses/public-keys，JWKS 风格）。
+     */
+    public static LicenseClaims verify(String lic, Map<String, String> keysByKid) {
+        Parsed p = parse(lic);
+        Object kid = p.claims.get("kid");
+        if (kid == null) throw new LicenseException("License 缺少 kid，无法选择公钥");
+        String pub = keysByKid.get(String.valueOf(kid));
+        if (pub == null) throw new LicenseException("未知 kid：" + kid + "（无对应公钥）");
+        check(p.payload, p.sig, alg(p.claims), Base64.getDecoder().decode(pub.trim()));
+        return new LicenseClaims(p.claims);
+    }
+
+    // ---- 内部 ----
+    private record Parsed(byte[] payload, byte[] sig, Map<String, Object> claims) {}
+
+    private static Parsed parse(String lic) {
         if (lic == null) throw new LicenseException("License 为空");
         String[] parts = lic.trim().split("\\.");
         if (parts.length != 2) throw new LicenseException("License 格式错误");
@@ -50,26 +73,28 @@ public class LicenseVerifier {
         } catch (Exception e) {
             throw new LicenseException("License 编码错误", e);
         }
-
-        // 先读出声明的算法（即便被篡改，下面验签也会失败）
-        Map<String, Object> claims;
         try {
             @SuppressWarnings("unchecked")
             Map<String, Object> m = MAPPER.readValue(new String(payload, StandardCharsets.UTF_8), Map.class);
-            claims = m;
+            return new Parsed(payload, sig, m);
         } catch (Exception e) {
             throw new LicenseException("claims 解析失败", e);
         }
-        String alg = String.valueOf(claims.getOrDefault("sigAlg", "Ed25519"));
+    }
 
+    private static String alg(Map<String, Object> claims) {
+        return String.valueOf(claims.getOrDefault("sigAlg", "Ed25519"));
+    }
+
+    private static void check(byte[] payload, byte[] sig, String alg, byte[] pubDer) {
         try {
             PublicKey pk;
             Signature s;
             if ("SM2".equalsIgnoreCase(alg)) {
-                pk = KeyFactory.getInstance("EC", BC).generatePublic(new X509EncodedKeySpec(publicKeyDer));
+                pk = KeyFactory.getInstance("EC", BC).generatePublic(new X509EncodedKeySpec(pubDer));
                 s = Signature.getInstance("SM3withSM2", BC);
             } else {
-                pk = KeyFactory.getInstance("Ed25519").generatePublic(new X509EncodedKeySpec(publicKeyDer));
+                pk = KeyFactory.getInstance("Ed25519").generatePublic(new X509EncodedKeySpec(pubDer));
                 s = Signature.getInstance("Ed25519");
             }
             s.initVerify(pk);
@@ -82,6 +107,5 @@ public class LicenseVerifier {
         } catch (Exception e) {
             throw new LicenseException("验签失败", e);
         }
-        return new LicenseClaims(claims);
     }
 }

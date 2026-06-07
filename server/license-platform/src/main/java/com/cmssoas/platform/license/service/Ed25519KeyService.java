@@ -81,6 +81,11 @@ public class Ed25519KeyService implements SignatureService {
         return ALG;
     }
 
+    @Override
+    public String kid() {
+        return SignatureKeys.kidOf(publicKey.getEncoded());
+    }
+
     private void generateAndSave() throws Exception {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALG);
         KeyPair kp = kpg.generateKeyPair();

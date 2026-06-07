@@ -36,4 +36,18 @@ public class PlanController {
     public SubscriptionView subscribe(@Valid @RequestBody CreateSubscriptionRequest req) {
         return service.create(req);
     }
+
+    /** 套餐变更（升/降级）→ 重签关联 License。 */
+    @PostMapping("/subscriptions/{id}/change")
+    @RequirePerm("plan:subscribe")
+    public SubscriptionView change(@PathVariable Long id, @RequestBody java.util.Map<String, String> body) {
+        return service.changePlan(id, body.get("planCode"));
+    }
+
+    /** 退订 → 吊销关联 License。 */
+    @PostMapping("/subscriptions/{id}/cancel")
+    @RequirePerm("plan:subscribe")
+    public SubscriptionView cancel(@PathVariable Long id) {
+        return service.cancel(id);
+    }
 }
