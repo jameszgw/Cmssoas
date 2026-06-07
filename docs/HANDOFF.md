@@ -1,6 +1,7 @@
 # CODEMAN 会话交接(Handoff)
 
 > 供下一个会话快速接续。记录当前状态、架构约定、关键决策与"踩坑修复",以及候选下一步。
+> English version: [HANDOFF-en.md](HANDOFF-en.md)
 
 ## 0. 速览
 - **项目**:CODEMAN —— Spring Boot 代码保护 + License 认证 + 多租户运营平台(后端 + Vue3 控制台 + 客户端 SDK + 代码保护示例)。

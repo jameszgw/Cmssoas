@@ -5,6 +5,7 @@
 ## 本目录(运维/操作)
 - [操作说明.md](操作说明.md) — 控制台各模块操作指引
 - [帮助文档.md](帮助文档.md) — 帮助 / FAQ / 排错
+- 会话交接(接手必读):[../../docs/HANDOFF.md](../../docs/HANDOFF.md) · [English](../../docs/HANDOFF-en.md)
 - 部署说明:见 [`../README.md`](../README.md);数据库脚本:见 [`../sql/README.md`](../sql/README.md)
 
 ## 总体与架构(`docs/`)
