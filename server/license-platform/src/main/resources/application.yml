@@ -71,9 +71,9 @@ app:
   # ---- 智能客服(通用、不绑定厂商)。统一 OpenAI 兼容接口，换厂商只改这几项 ----
   ai:
     enabled: ${AI_ENABLED:false}                 # 关闭时前端客服窗仍可用，回复走“知识库降级”
-    base-url: ${AI_BASE_URL:}                     # 例: https://api.deepseek.com/v1 或 http://127.0.0.1:11434/v1(Ollama 离线)
-    api-key: ${AI_API_KEY:}                       # 经 env/Nacos/KMS 注入，不落明文；本地模型可留空
-    model: ${AI_MODEL:deepseek-chat}             # 或 qwen-plus / gpt-4o-mini / llama3.1 ...
+    base-url: ${AI_BASE_URL:http://127.0.0.1:11434/v1}   # 默认本地 Ollama(离线)；云 API 改为 https://open.bigmodel.cn/api/paas/v4 等
+    api-key: ${AI_API_KEY:}                       # 本地模型留空；云 API 经 env/Nacos/KMS 注入，不落明文
+    model: ${AI_MODEL:qwen2.5:7b-instruct}        # 云 API 改为 glm-4-flash / qwen-turbo / deepseek-chat ...
     timeout-sec: ${AI_TIMEOUT_SEC:60}
     history-limit: ${AI_HISTORY_LIMIT:12}
   # ---- 在线支付/收款(通用,不绑定渠道)。默认沙箱,换渠道改 provider ----

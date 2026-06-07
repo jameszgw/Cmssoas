@@ -41,6 +41,11 @@ services:
       APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@cmssoas.com}
       APP_ACTIVATION_BASE_URL: ${APP_ACTIVATION_BASE_URL:-http://localhost/activate}
       CORS_ORIGINS: http://localhost
+      # ---- 智能客服大模型(通用 OpenAI 兼容)。默认关闭;开启见下方 ollama profile 或改为云 API ----
+      AI_ENABLED: ${AI_ENABLED:-false}
+      AI_BASE_URL: ${AI_BASE_URL:-http://ollama:11434/v1}   # 默认指向本地 Ollama(离线);云 API 改此值如 https://api.deepseek.com/v1
+      AI_API_KEY: ${AI_API_KEY:-}                           # 本地模型留空;云 API 经 env/Nacos/KMS 注入
+      AI_MODEL: ${AI_MODEL:-qwen2.5:7b-instruct}            # 云 API 改为 glm-4-flash / qwen-turbo / deepseek-chat 等
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -53,6 +58,22 @@ services:
       - backend
     ports:
       - "80:80"
+
+  # ---- 智能客服本地大模型(离线,可选)。启用:docker compose --profile ai up -d ----
+  # 首次拉模型:docker compose exec ollama ollama pull qwen2.5:7b-instruct
+  # 并设置 AI_ENABLED=true(可写入 .env)后重启 backend。GPU 机器取消 deploy 注释。
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ai"]
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: ["gpu"]
 
   # ---- 可观测 ----
   prometheus:
@@ -78,3 +99,4 @@ services:
 
 volumes:
   pgdata:
+  ollama:
