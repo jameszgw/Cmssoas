@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
     catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
-    contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers',
+    contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers', portalAdmin: 'Portal',
   },
   billing: {
     title: 'Guide · Billing',
@@ -344,5 +344,31 @@ export default {
     s: { ACTIVE: 'Active', INACTIVE: 'Inactive' },
     activeShort: ' active', mLicense: 'Licenses', mContract: 'Contracts', mPaid: 'Received', mPending: 'Receivable',
     tabLicense: 'Licenses', tabContract: 'Contracts', tabInvoice: 'Invoices', tabSub: 'Subscriptions', cLicId: 'License ID',
+  },
+  portal: {
+    subtitle: 'Customer Self-Service', title: 'Tenant Portal Login',
+    lead: 'Enter the tenant code and access code provided by your operator to view your licenses, contracts, invoices and subscriptions.',
+    tenantCode: 'Tenant code', accessCode: 'Access code', accessPh: 'Access code from your operator',
+    required: 'Enter tenant code and access code', login: 'Sign in', loginFail: 'Login failed',
+    welcome: 'Welcome, {n}', hint: 'Ask your service operator for the access code',
+    logout: 'Sign out', myServices: 'My Services', homeLead: 'Your licenses, contracts, invoices and subscriptions (read-only).',
+    kLicense: 'Licenses', kContract: 'Contracts', kSub: 'Subscriptions', kPending: 'Payable', activeShort: ' active',
+    tabLicense: 'Licenses', tabContract: 'Contracts', tabInvoice: 'Invoices', tabSub: 'Subscriptions',
+  },
+  portalAdmin: {
+    lead: 'Enable self-service portal per tenant: generate an access code; customers log in with tenant code + access code.',
+    help: {
+      title: 'Guide · Self-Service Portal',
+      t1: 'Click Enable to generate an access code; customers log in at the portal URL with tenant code + access code.',
+      t2: 'Copy puts the tenant code / access code / portal URL on the clipboard to send to the customer.',
+      t3: 'Reset issues a new access code (old one invalidated); Disable closes the tenant portal.',
+      t4: 'The portal is read-only; customers only see their own tenant data, strictly isolated.',
+    },
+    portalUrl: 'Portal URL', status: 'Portal', on: 'Enabled', off: 'Disabled',
+    kTenants: 'Tenants', kEnabled: 'Enabled', kDisabled: 'Disabled',
+    enable: 'Enable', reset: 'Reset code', disable: 'Disable', copy: 'Copy',
+    enabledOk: 'Portal enabled', resetOk: 'Access code reset', disabledOk: 'Disabled', copied: 'Copied to clipboard',
+    resetConfirm: 'The old access code will stop working immediately. Continue?', disableConfirm: 'Customers will no longer be able to log in. Continue?',
+    empty: 'No tenants yet.',
   },
 }

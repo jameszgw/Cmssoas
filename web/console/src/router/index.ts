@@ -16,10 +16,14 @@ const routes: RouteRecordRaw[] = [
   { path: '/contracts', name: 'contracts', component: () => import('@/views/Contracts.vue') },
   { path: '/notices', name: 'notices', component: () => import('@/views/Notices.vue') },
   { path: '/cs', name: 'cs', component: () => import('@/views/CustomerService.vue') },
+  { path: '/portal-admin', name: 'portalAdmin', component: () => import('@/views/PortalAdmin.vue') },
   { path: '/system/roles', name: 'roles', component: () => import('@/views/Roles.vue') },
   { path: '/system/users', name: 'users', component: () => import('@/views/Users.vue') },
   // 公开页：管理员激活（无顶部导航）
   { path: '/activate/:token', name: 'activate', meta: { public: true }, component: () => import('@/views/Activate.vue') },
+  // 公开页：租户自助门户（最终客户）
+  { path: '/portal', name: 'portal', meta: { public: true }, component: () => import('@/views/Portal.vue') },
+  { path: '/portal/home', name: 'portalHome', meta: { public: true }, component: () => import('@/views/PortalHome.vue') },
 ]
 
 export const router = createRouter({

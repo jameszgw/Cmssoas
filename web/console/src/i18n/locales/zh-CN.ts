@@ -5,7 +5,7 @@ export default {
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
     catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
-    contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理',
+    contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理', portalAdmin: '自助门户',
   },
   billing: {
     title: '操作指引 · 计费账单',
@@ -346,5 +346,31 @@ export default {
     // 360
     activeShort: '有效', mLicense: '授权数', mContract: '合同数', mPaid: '已收款', mPending: '待收款',
     tabLicense: '授权', tabContract: '合同', tabInvoice: '账单', tabSub: '订阅', cLicId: '授权编号',
+  },
+  portal: {
+    subtitle: '客户自助门户', title: '租户自助门户登录',
+    lead: '输入运营方提供的租户编号与访问码,查看您的授权、合同、账单与订阅。',
+    tenantCode: '租户编号', accessCode: '访问码', accessPh: '运营方提供的访问码',
+    required: '请输入租户编号与访问码', login: '登 录', loginFail: '登录失败',
+    welcome: '欢迎,{n}', hint: '访问码请向您的服务运营方索取',
+    logout: '退出', myServices: '我的服务', homeLead: '本租户的授权、合同、账单与订阅一览(只读)。',
+    kLicense: '我的授权', kContract: '我的合同', kSub: '我的订阅', kPending: '待支付', activeShort: '有效',
+    tabLicense: '授权', tabContract: '合同', tabInvoice: '账单', tabSub: '订阅',
+  },
+  portalAdmin: {
+    lead: '为租户开通自助门户:生成访问码,客户凭「租户编号 + 访问码」登录只读门户。',
+    help: {
+      title: '操作指引 · 自助门户',
+      t1: '点「开通」为租户生成访问码;客户访问门户地址,用租户编号+访问码登录。',
+      t2: '「复制」可一键复制租户编号/访问码/门户地址,发送给客户。',
+      t3: '「重置」生成新访问码(旧码失效);「停用」关闭该租户门户。',
+      t4: '门户为只读,客户仅能查看本租户的授权/合同/账单/订阅,数据严格隔离。',
+    },
+    portalUrl: '门户地址', status: '门户状态', on: '已开通', off: '未开通',
+    kTenants: '租户总数', kEnabled: '已开通', kDisabled: '未开通',
+    enable: '开通', reset: '重置访问码', disable: '停用', copy: '复制',
+    enabledOk: '已开通门户', resetOk: '访问码已重置', disabledOk: '已停用', copied: '已复制到剪贴板',
+    resetConfirm: '重置后旧访问码立即失效,确认?', disableConfirm: '停用后客户将无法登录门户,确认?',
+    empty: '暂无租户。',
   },
 }
