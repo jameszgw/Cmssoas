@@ -76,6 +76,10 @@ app:
     model: ${AI_MODEL:deepseek-chat}             # 或 qwen-plus / gpt-4o-mini / llama3.1 ...
     timeout-sec: ${AI_TIMEOUT_SEC:60}
     history-limit: ${AI_HISTORY_LIMIT:12}
+  # ---- 在线支付/收款(通用,不绑定渠道)。默认沙箱,换渠道改 provider ----
+  pay:
+    provider: ${PAY_PROVIDER:mock}               # mock(沙箱) | wechatpay | alipay | stripe
+    notify-base-url: ${PAY_NOTIFY_BASE_URL:}     # 真实渠道异步回调可达的公网根地址
 
 # ---- 可观测：Actuator + Prometheus 抓取端点 ----
 management:

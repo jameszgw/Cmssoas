@@ -10,12 +10,14 @@ export default {
   billing: {
     title: '操作指引 · 计费账单',
     t1: '订阅/套餐变更会自动出账(PENDING),金额=套餐价×数量。',
-    t2: '对账单先「收款」(→已付),再「开票」生成发票号(→已开票)。',
-    t3: '需「收款/开票」权限方可操作。',
-    lead: '订阅自动出账,支持收款与开票。',
+    t2: '对账单点「收款」发起扫码支付,渠道回调或沙箱「模拟支付」后自动置为已付,再「开票」生成发票号。',
+    t3: '支付通用、不绑定渠道:默认沙箱可离线跑全闭环,生产改 app.pay.provider 接微信/支付宝/Stripe。需「收款/开票」权限。',
+    lead: '订阅自动出账,支持在线扫码收款与开票。',
     kPending: '待收款', kPaid: '已收款', kCount: '账单数',
     amount: '金额', invoiceNo: '发票号', pay: '收款', issue: '开票', done: '已开票',
     paidOk: '已收款', issuedOk: '已开票:{no}',
+    collect: '收款', scanTitle: '扫码收款', scanHint: '请使用支付 App 扫码完成支付',
+    waiting: '等待支付结果…', payOk: '支付成功', simulatePay: '模拟支付成功',
     s: { PENDING: '待支付', PAID: '已付款', INVOICED: '已开票', VOID: '已作废' },
   },
   pwd: {

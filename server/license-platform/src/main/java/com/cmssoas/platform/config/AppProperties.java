@@ -11,11 +11,26 @@ public class AppProperties {
     private final Activation activation = new Activation();
     private final Online online = new Online();
     private final Ai ai = new Ai();
+    private final Pay pay = new Pay();
 
     public Mail getMail() { return mail; }
     public Activation getActivation() { return activation; }
     public Online getOnline() { return online; }
     public Ai getAi() { return ai; }
+    public Pay getPay() { return pay; }
+
+    /** 在线支付/收款(通用,不绑定渠道)。默认沙箱;换渠道改 {@code provider}。 */
+    public static class Pay {
+        /** 当前启用渠道:mock(沙箱) | wechatpay | alipay | stripe。 */
+        private String provider = "mock";
+        /** 异步回调可达的公网根地址(真实渠道用于回填 notify_url)。 */
+        private String notifyBaseUrl = "";
+
+        public String getProvider() { return provider; }
+        public void setProvider(String v) { this.provider = v; }
+        public String getNotifyBaseUrl() { return notifyBaseUrl; }
+        public void setNotifyBaseUrl(String v) { this.notifyBaseUrl = v; }
+    }
 
     /**
      * 智能客服大模型配置(通用、不绑定厂商)。统一走 OpenAI 兼容接口

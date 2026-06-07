@@ -10,12 +10,14 @@ export default {
   billing: {
     title: 'Guide · Billing',
     t1: 'Subscribe / plan change auto-creates an invoice (PENDING); amount = price × qty.',
-    t2: 'Mark as paid, then issue an invoice number (→ INVOICED).',
-    t3: 'Requires the billing:manage permission.',
-    lead: 'Auto-billing on subscription, with payment and invoicing.',
+    t2: 'Click Collect to start QR payment; on gateway callback or sandbox "Simulate pay" it auto-marks paid, then issue an invoice number.',
+    t3: 'Payment is vendor-agnostic: sandbox runs the full loop offline; in prod set app.pay.provider for WeChat/Alipay/Stripe. Requires billing:manage.',
+    lead: 'Auto-billing on subscription, with online QR payment and invoicing.',
     kPending: 'Receivable', kPaid: 'Received', kCount: 'Invoices',
     amount: 'Amount', invoiceNo: 'Invoice No.', pay: 'Mark paid', issue: 'Issue invoice', done: 'Invoiced',
     paidOk: 'Marked paid', issuedOk: 'Invoiced: {no}',
+    collect: 'Collect', scanTitle: 'Scan to pay', scanHint: 'Scan with your payment app to pay',
+    waiting: 'Waiting for payment…', payOk: 'Payment successful', simulatePay: 'Simulate pay',
     s: { PENDING: 'Pending', PAID: 'Paid', INVOICED: 'Invoiced', VOID: 'Void' },
   },
   pwd: {
