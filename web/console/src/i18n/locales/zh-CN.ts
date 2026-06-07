@@ -127,7 +127,7 @@ export default {
   common: {
     search: '搜索租户 / License', viewAll: '查看全部', detail: '详情', renew: '续期',
     cancel: '取消', confirm: '确定', all: '全部', keyword: '关键字', status: '状态',
-    plan: '套餐', reset: '重置',
+    plan: '套餐', reset: '重置', exportCsv: '导出 CSV', fail: '操作失败',
   },
   hero: {
     crumbs: '运营中心 / 运营总览',

@@ -127,7 +127,7 @@ export default {
   common: {
     search: 'Search tenants / licenses', viewAll: 'View all', detail: 'Detail', renew: 'Renew',
     cancel: 'Cancel', confirm: 'Confirm', all: 'All', keyword: 'Keyword', status: 'Status',
-    plan: 'Plan', reset: 'Reset',
+    plan: 'Plan', reset: 'Reset', exportCsv: 'Export CSV', fail: 'Operation failed',
   },
   hero: {
     crumbs: 'Operations / Overview',

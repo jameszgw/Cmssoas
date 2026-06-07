@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import PageHelp from '@/components/PageHelp.vue'
 import { useAuthStore } from '@/stores/auth'
+import { downloadFile } from '@/api/request'
 import { listInvoices, payInvoice, issueInvoice, type Invoice } from '@/api/billing'
 
 const { t } = useI18n()
@@ -26,6 +27,7 @@ async function load() {
 }
 onMounted(load)
 
+function exportCsv() { downloadFile('/invoices/export.csv', 'invoices.csv') }
 async function pay(row: Invoice) {
   try { await payInvoice(row.id); ElMessage.success(t('billing.paidOk')); load() }
   catch (e: any) { ElMessage.error(e?.response?.data?.message || t('common.fail')) }
@@ -41,6 +43,7 @@ async function issue(row: Invoice) {
     <PageHelp id="billing" :title="t('billing.title')" :tips="[t('billing.t1'), t('billing.t2'), t('billing.t3')]" />
     <div class="section-title">
       <div><h2>{{ t('nav.billing') }}</h2><div class="sub" style="margin-top:.3rem">{{ t('billing.lead') }}</div></div>
+      <el-button @click="exportCsv">⬇ {{ t('common.exportCsv') }}</el-button>
     </div>
 
     <section class="grid kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.1rem">

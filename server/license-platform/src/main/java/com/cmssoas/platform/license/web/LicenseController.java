@@ -46,6 +46,18 @@ public class LicenseController {
         return service.crl();
     }
 
+    /** 导出 License 列表为 CSV。 */
+    @GetMapping("/export.csv")
+    @RequirePerm("license:view")
+    public org.springframework.http.ResponseEntity<byte[]> exportCsv() {
+        var rows = service.list().stream().map(l -> java.util.List.<Object>of(
+                l.licenseId(), l.tenantCode(), l.customer(), l.edition(), l.status(),
+                l.notAfter(), l.version(), l.appVersionRange())).toList();
+        return com.cmssoas.platform.common.CsvUtil.response("licenses.csv",
+                java.util.List.of("licenseId", "tenantCode", "customer", "edition", "status", "notAfter", "version", "appVersionRange"),
+                rows);
+    }
+
     /** 手动触发到期提醒扫描（经发件箱外发邮件），返回本次发送数。 */
     @PostMapping("/run-expiry-reminder")
     @RequirePerm("license:view")

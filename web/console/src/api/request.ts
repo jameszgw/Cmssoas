@@ -23,3 +23,16 @@ http.interceptors.response.use(
     return Promise.reject(err)
   },
 )
+
+/** 带鉴权的文件下载（CSV / .lic 等）：以 blob 拉取后触发浏览器下载，避免 window.open 丢失 JWT。 */
+export async function downloadFile(path: string, filename: string) {
+  const resp = await http.get(path, { responseType: 'blob' }) as unknown as Blob
+  const url = URL.createObjectURL(resp)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
+}
