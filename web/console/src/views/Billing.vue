@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import PageHelp from '@/components/PageHelp.vue'
 import { useAuthStore } from '@/stores/auth'
 import { downloadFile } from '@/api/request'
-import { listInvoices, issueInvoice, createPayment, getPayment, sandboxConfirm, type Invoice, type Payment } from '@/api/billing'
+import { listInvoices, createPayment, getPayment, sandboxConfirm, applyEInvoice, type Invoice, type Payment, type TaxInvoice } from '@/api/billing'
 
 const { t } = useI18n()
 const auth = useAuthStore()
@@ -28,9 +28,26 @@ async function load() {
 onMounted(load)
 
 function exportCsv() { downloadFile('/invoices/export.csv', 'invoices.csv') }
-async function issue(row: Invoice) {
-  try { const r = await issueInvoice(row.id); ElMessage.success(t('billing.issuedOk', { no: r.invoiceNo })); load() }
+
+// ---- 开具正规电子发票 ----
+const invDlg = ref(false)
+const invTarget = ref<Invoice | null>(null)
+const invForm = ref({ title: '', taxNo: '', type: 'NORMAL', email: '' })
+const issued = ref<TaxInvoice | null>(null)
+const issuing = ref(false)
+function openInvoice(row: Invoice) {
+  invTarget.value = row; issued.value = null
+  invForm.value = { title: row.customer || '', taxNo: '', type: 'NORMAL', email: '' }
+  invDlg.value = true
+}
+async function submitInvoice() {
+  if (!invTarget.value) return
+  if (!invForm.value.title.trim()) { ElMessage.warning(t('billing.titleRequired')); return }
+  if (invForm.value.type === 'SPECIAL' && !invForm.value.taxNo.trim()) { ElMessage.warning(t('billing.taxNoRequired')); return }
+  issuing.value = true
+  try { issued.value = await applyEInvoice(invTarget.value.id, { ...invForm.value }); ElMessage.success(t('billing.issuedDone')); load() }
   catch (e: any) { ElMessage.error(e?.response?.data?.message || t('common.fail')) }
+  finally { issuing.value = false }
 }
 
 // ---- 在线收款(扫码支付,通用渠道,默认沙箱)----
@@ -123,7 +140,7 @@ function closePay() { payDlg.value = false; stopPoll() }
         <el-table-column :label="t('th.op')" width="150">
           <template #default="{ row }">
             <button v-if="row.status === 'PENDING'" class="linkbtn" :disabled="!canManage()" @click="collect(row)">{{ t('billing.collect') }}</button>
-            <button v-if="row.status === 'PAID'" class="linkbtn" :disabled="!canManage()" @click="issue(row)">{{ t('billing.issue') }}</button>
+            <button v-if="row.status === 'PAID'" class="linkbtn" :disabled="!canManage()" @click="openInvoice(row)">{{ t('billing.issue') }}</button>
             <span v-if="row.status === 'INVOICED'" class="faint">{{ t('billing.done') }}</span>
           </template>
         </el-table-column>
@@ -160,6 +177,36 @@ function closePay() { payDlg.value = false; stopPoll() }
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 开具正规电子发票 -->
+    <el-dialog v-model="invDlg" :title="t('billing.eInvoiceTitle')" width="480px">
+      <div v-if="!issued">
+        <el-form label-width="86px">
+          <el-form-item :label="t('billing.invType')">
+            <el-radio-group v-model="invForm.type">
+              <el-radio-button value="NORMAL">{{ t('billing.normal') }}</el-radio-button>
+              <el-radio-button value="SPECIAL">{{ t('billing.special') }}</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item :label="t('billing.invTitle')"><el-input v-model="invForm.title" :placeholder="t('billing.invTitlePh')" /></el-form-item>
+          <el-form-item :label="t('billing.taxNo')"><el-input v-model="invForm.taxNo" :placeholder="invForm.type === 'SPECIAL' ? t('billing.taxNoReq') : t('billing.taxNoOpt')" /></el-form-item>
+          <el-form-item :label="t('billing.invEmail')"><el-input v-model="invForm.email" placeholder="email" /></el-form-item>
+          <div class="faint" style="font-size:.74rem">{{ t('billing.eInvoiceHint') }}</div>
+        </el-form>
+      </div>
+      <div v-else class="einv-ok">
+        <div class="ok-ic">🧾</div>
+        <div class="ok-t">{{ t('billing.issuedDone') }}</div>
+        <div class="kv"><span class="faint">{{ t('billing.invType') }}</span><span>{{ issued.type === 'SPECIAL' ? t('billing.special') : t('billing.normal') }}</span></div>
+        <div class="kv"><span class="faint">{{ t('billing.invCode') }}</span><span class="data">{{ issued.invoiceCode }}</span></div>
+        <div class="kv"><span class="faint">{{ t('billing.invSerial') }}</span><span class="data">{{ issued.invoiceSerial }}</span></div>
+        <div class="kv"><span class="faint">PDF</span><span class="data faint">{{ issued.pdfUrl }}</span></div>
+      </div>
+      <template #footer>
+        <el-button @click="invDlg = false">{{ issued ? t('common.confirm') : t('common.cancel') }}</el-button>
+        <el-button v-if="!issued" type="primary" :loading="issuing" @click="submitInvoice">{{ t('billing.doIssue') }}</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,4 +227,9 @@ function closePay() { payDlg.value = false; stopPoll() }
 .paid-ok .ok-ic{width:3.6rem;height:3.6rem;border-radius:50%;display:grid;place-items:center;font-size:2rem;color:#fff;
   background:var(--success);box-shadow:0 10px 24px -10px var(--success)}
 .paid-ok .ok-t{font-weight:800;font-size:1.05rem;color:var(--success)}
+.einv-ok{text-align:center}
+.einv-ok .ok-ic{font-size:2.4rem}
+.einv-ok .ok-t{font-weight:800;font-size:1.05rem;color:var(--success);margin:.3rem 0 .9rem}
+.einv-ok .kv{display:flex;justify-content:space-between;gap:1rem;padding:.32rem .4rem;font-size:.84rem;border-bottom:1px dashed var(--border)}
+.einv-ok .kv:last-child{border:0}
 </style>

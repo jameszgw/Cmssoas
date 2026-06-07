@@ -18,6 +18,11 @@ export default {
     paidOk: 'Marked paid', issuedOk: 'Invoiced: {no}',
     collect: 'Collect', scanTitle: 'Scan to pay', scanHint: 'Scan with your payment app to pay',
     waiting: 'Waiting for payment…', payOk: 'Payment successful', simulatePay: 'Simulate pay',
+    eInvoiceTitle: 'Issue e-invoice', invType: 'Type', normal: 'VAT normal', special: 'VAT special',
+    invTitle: 'Invoice title', invTitlePh: 'Buyer name', taxNo: 'Tax No.', taxNoReq: 'Required for special', taxNoOpt: 'Optional (required for special)',
+    invEmail: 'Recipient email', eInvoiceHint: 'Vendor-agnostic: sandbox by default; set app.einvoice.provider for Aisino/Baiwang/tax platforms in prod.',
+    doIssue: 'Issue', issuedDone: 'Invoice issued', invCode: 'Invoice code', invSerial: 'Invoice serial',
+    titleRequired: 'Invoice title is required', taxNoRequired: 'Tax No. is required for special invoices',
     s: { PENDING: 'Pending', PAID: 'Paid', INVOICED: 'Invoiced', VOID: 'Void' },
   },
   pwd: {

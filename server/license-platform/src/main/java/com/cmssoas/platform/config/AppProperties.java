@@ -32,6 +32,18 @@ public class AppProperties {
         public void setNotifyBaseUrl(String v) { this.notifyBaseUrl = v; }
     }
 
+    private final EInvoice einvoice = new EInvoice();
+    public EInvoice getEinvoice() { return einvoice; }
+
+    /** 电子发票(通用,不绑定渠道)。默认沙箱;换渠道改 {@code provider}。 */
+    public static class EInvoice {
+        /** 当前启用渠道:mock(沙箱) | aisino(航信) | baiwang(百望) ...。 */
+        private String provider = "mock";
+
+        public String getProvider() { return provider; }
+        public void setProvider(String v) { this.provider = v; }
+    }
+
     /**
      * 智能客服大模型配置(通用、不绑定厂商)。统一走 OpenAI 兼容接口
      * {base-url}/chat/completions，换厂商=改配置不改代码：

@@ -23,3 +23,14 @@ export const issueInvoice = (id: number): Promise<Invoice> => http.post(`/invoic
 export const createPayment = (invoiceId: number): Promise<Payment> => http.post('/payments', { invoiceId })
 export const getPayment = (id: number): Promise<Payment> => http.get(`/payments/${id}`)
 export const sandboxConfirm = (id: number): Promise<Payment> => http.post(`/payments/${id}/sandbox-confirm`, {})
+
+/** 正规税务发票(电子发票)。 */
+export interface TaxInvoice {
+  id: number; invoiceId: number; title: string; taxNo: string | null; type: string
+  email: string | null; amount: number; status: string
+  invoiceCode: string | null; invoiceSerial: string | null; pdfUrl: string | null
+  provider: string | null; createdAt: string; issuedAt: string | null
+}
+export interface EInvoiceReq { title: string; taxNo?: string; type: string; email?: string }
+export const applyEInvoice = (invoiceId: number, b: EInvoiceReq): Promise<TaxInvoice> =>
+  http.post(`/invoices/${invoiceId}/e-invoice`, b)

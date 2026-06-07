@@ -18,6 +18,11 @@ export default {
     paidOk: '已收款', issuedOk: '已开票:{no}',
     collect: '收款', scanTitle: '扫码收款', scanHint: '请使用支付 App 扫码完成支付',
     waiting: '等待支付结果…', payOk: '支付成功', simulatePay: '模拟支付成功',
+    eInvoiceTitle: '开具电子发票', invType: '票种', normal: '增值税普票', special: '增值税专票',
+    invTitle: '发票抬头', invTitlePh: '购方名称', taxNo: '税号', taxNoReq: '专票必填', taxNoOpt: '选填(专票必填)',
+    invEmail: '收票邮箱', eInvoiceHint: '通用、不绑定渠道:默认沙箱开具,生产改 app.einvoice.provider 接航信/百望/税务平台。',
+    doIssue: '确认开票', issuedDone: '开票成功', invCode: '发票代码', invSerial: '发票号码',
+    titleRequired: '请填写发票抬头', taxNoRequired: '专用发票必须填写税号',
     s: { PENDING: '待支付', PAID: '已付款', INVOICED: '已开票', VOID: '已作废' },
   },
   pwd: {
