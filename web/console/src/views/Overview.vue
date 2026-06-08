@@ -193,7 +193,7 @@ const statusClass: Record<string, string> = { active: 's-active', soon: 's-soon'
       </div>
     </section>
 
-    <div class="foot-note">CMSSOAS · {{ t('foot') }}</div>
+    <div class="foot-note">CODEMAN · {{ t('foot') }}</div>
 
     <OnboardTenantDialog v-model="showOnboard" />
   </div>

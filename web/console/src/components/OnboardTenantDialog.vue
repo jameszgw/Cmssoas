@@ -101,7 +101,7 @@ async function submit() {
         <div class="ptitle">📧 {{ t('m.preview') }}</div>
         <div class="mail">
           <div class="mhead">
-            <div class="row"><span class="lbl">{{ t('mail.from') }}</span><span class="data">no-reply@cmssoas.com</span></div>
+            <div class="row"><span class="lbl">{{ t('mail.from') }}</span><span class="data">no-reply@codeman.com</span></div>
             <div class="row"><span class="lbl">{{ t('mail.to') }}</span><span class="data">{{ form.email }}</span></div>
             <div class="row"><span class="lbl">{{ t('mail.subj') }}</span><span>{{ t('mail.subject') }}</span></div>
           </div>

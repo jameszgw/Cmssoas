@@ -18,8 +18,8 @@ for (const s of shots){
   const ctx = await browser.newContext({ viewport:{ width:s.w, height:s.h }, deviceScaleFactor:1 })
   // 预置 localStorage 以应用主题/语言
   await ctx.addInitScript(([t,l]) => {
-    localStorage.setItem('cmssoas.theme', t)
-    localStorage.setItem('cmssoas.locale', l)
+    localStorage.setItem('codeman.theme', t)
+    localStorage.setItem('codeman.locale', l)
   }, [s.theme, s.lang])
   const page = await ctx.newPage()
   await page.goto(base + s.path, { waitUntil:'networkidle' })
@@ -32,7 +32,7 @@ for (const s of shots){
 // 开通租户对话框（点击开通按钮）
 {
   const ctx = await browser.newContext({ viewport:{ width:2560, height:1440 }, deviceScaleFactor:1 })
-  await ctx.addInitScript(() => { localStorage.setItem('cmssoas.theme','tech'); localStorage.setItem('cmssoas.locale','zh-CN') })
+  await ctx.addInitScript(() => { localStorage.setItem('codeman.theme','tech'); localStorage.setItem('codeman.locale','zh-CN') })
   const page = await ctx.newPage()
   await page.goto(base + '/tenants', { waitUntil:'networkidle' })
   await page.getByText('开通租户', { exact:false }).first().click()

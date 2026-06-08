@@ -1,8 +1,8 @@
 {
-  "name": "cmssoas-console",
+  "name": "codeman-console",
   "version": "1.0.0",
   "private": true,
-  "description": "CMSSOAS 软件授权运营平台 · 前端控制台",
+  "description": "CODEMAN 软件授权运营平台 · 前端控制台",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -16,3 +16,7 @@ dependency-reduced-pom.xml
 web/console/playwright-report/
 web/console/test-results/
 web/console/.playwright/
+
+# 本地环境变量(含密钥),勿提交;模板见 .env.example
+.env
+.env.local

@@ -6,6 +6,8 @@ import { ElMessageBox } from 'element-plus'
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 import LangSwitcher from '@/components/LangSwitcher.vue'
 import ForcePwdDialog from '@/components/ForcePwdDialog.vue'
+import NoticeGate from '@/components/NoticeGate.vue'
+import CsWidget from '@/components/CsWidget.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const { t } = useI18n()
@@ -19,7 +21,13 @@ const allNavs = [
   { to: '/online', key: 'nav.online', perm: 'online' },
   { to: '/products', key: 'nav.catalog', perm: 'catalog' },
   { to: '/plans', key: 'nav.plan', perm: 'plan' },
+  { to: '/customers', key: 'nav.customer', perm: 'customer' },
   { to: '/billing', key: 'nav.billing', perm: 'billing' },
+  { to: '/contracts', key: 'nav.contract', perm: 'contract' },
+  { to: '/notices', key: 'nav.notice', perm: 'notice' },
+  { to: '/cs', key: 'nav.cs', perm: 'cs' },
+  { to: '/harden', key: 'nav.harden', perm: 'harden' },
+  { to: '/portal-admin', key: 'nav.portalAdmin', perm: 'tenant:portal' },
   { to: '/audit', key: 'nav.audit', perm: 'audit' },
   { to: '/system/roles', key: 'nav.system', perm: 'role:view' },
   { to: '/system/users', key: 'nav.users', perm: 'user:view' },
@@ -43,7 +51,7 @@ async function logout() {
     <div class="inner">
       <div class="brand">
         <span class="logo">C</span>
-        <span>CMSSOAS<small>{{ t('brand.sub') }}</small></span>
+        <span>CODEMAN<small>{{ t('brand.sub') }}</small></span>
       </div>
       <nav class="nav">
         <router-link v-for="it in navs" :key="it.to" :to="it.to" active-class="active">
@@ -80,6 +88,8 @@ async function logout() {
   </main>
 
   <ForcePwdDialog />
+  <NoticeGate />
+  <CsWidget />
 </template>
 
 <style scoped>

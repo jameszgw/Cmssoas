@@ -7,7 +7,7 @@ export const http = axios.create({
 })
 
 http.interceptors.request.use((cfg) => {
-  const token = localStorage.getItem('cmssoas.token')
+  const token = localStorage.getItem('codeman.token')
   if (token) cfg.headers.Authorization = `Bearer ${token}`
   return cfg
 })
@@ -16,7 +16,7 @@ http.interceptors.response.use(
   (resp) => resp.data,
   (err) => {
     if (err?.response?.status === 401 && !location.pathname.startsWith('/login')) {
-      localStorage.removeItem('cmssoas.token')
+      localStorage.removeItem('codeman.token')
       const redirect = encodeURIComponent(location.pathname + location.search)
       location.href = '/login?redirect=' + redirect
     }

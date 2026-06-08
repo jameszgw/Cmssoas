@@ -1,0 +1,37 @@
+# MySQL 叠加文件:在基础 compose 上改用 MySQL(profile=mysql)。
+# 用法:
+#   docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console
+# 说明:base 的 backend 仍声明依赖 postgres,显式列出服务可避免无关组件;postgres 不被使用。
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: codeman
+      MYSQL_USER: codeman
+      MYSQL_PASSWORD: codeman
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -ucodeman -pcodeman || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "3306:3306"
+
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: mysql
+      DB_URL: jdbc:mysql://mysql:3306/codeman?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+      DB_USER: codeman
+      DB_PASSWORD: codeman
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysqldata:

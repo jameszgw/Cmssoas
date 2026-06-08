@@ -34,7 +34,7 @@ License 的安全基石是**非对称密码学**：
   "licenseVersion": 3,            // 该 License 的修订版本号（历史追溯）
   "tenantId": "T-10086",          // 所属租户
   "customer": "XX银行",            // 客户信息
-  "productCode": "CMSSOAS",       // 产品
+  "productCode": "CODEMAN",       // 产品
   "edition": "ENTERPRISE",        // 版本/版型
   "mode": "OFFLINE",              // OFFLINE | ONLINE | HYBRID
   "issuedAt": "2026-06-06T10:00:00Z",

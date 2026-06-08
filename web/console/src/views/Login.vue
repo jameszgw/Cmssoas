@@ -33,7 +33,7 @@ async function submit() {
 <template>
   <div class="auth">
     <header class="bar">
-      <div class="brand"><span class="logo">C</span>CMSSOAS</div>
+      <div class="brand"><span class="logo">C</span>CODEMAN</div>
       <div class="tools"><ThemeSwitcher /><LangSwitcher /></div>
     </header>
 

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 const props = defineProps<{ id: string; title: string; tips: string[] }>()
-const KEY = 'cmssoas.help.' + props.id
+const KEY = 'codeman.help.' + props.id
 const open = ref(localStorage.getItem(KEY) !== '0')
 function close() { open.value = false; localStorage.setItem(KEY, '0') }
 function reopen() { open.value = true; localStorage.removeItem(KEY) }

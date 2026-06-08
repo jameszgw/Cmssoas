@@ -1,4 +1,4 @@
-# CMSSOAS License SDK（客户端）
+# CODEMAN License SDK（客户端）
 
 嵌入被保护 Spring Boot 应用的轻量库：**Ed25519 验签** + `.lic` 读取 + **功能/版本/有效期门禁**。
 客户端只持有公钥，**无法伪造合法 License**；没有合法授权则核心功能被拒绝（fail-closed）。

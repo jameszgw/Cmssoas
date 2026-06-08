@@ -4,12 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cmssoas</groupId>
+  <groupId>com.codeman</groupId>
   <artifactId>protected-app</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
-  <name>CMSSOAS Protected App Demo</name>
+  <name>CODEMAN Protected App Demo</name>
   <description>代码保护演示：类加密 + 解密密钥与 License 绑定（复用 license-sdk 验签）</description>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License v3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
@@ -18,9 +26,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.cmssoas</groupId>
+      <groupId>com.codeman</groupId>
       <artifactId>license-sdk</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -32,7 +40,7 @@
   <profiles>
     <!--
       代码加固（混淆）：mvn -Pharden -DskipTests package
-      产出 target/protected-app-1.0.0-obf.jar —— 业务类名被混淆（如 CryptoKeys/EncryptedClassLoader 被改名），
+      产出 target/protected-app-1.0.1-obf.jar —— 业务类名被混淆（如 CryptoKeys/EncryptedClassLoader 被改名），
       仅保留入口 main 与被反射/类加载按名加载的 SecretAlgorithm。与「类加密 + License 绑定」叠加形成纵深防御。
       字符串加密需 Allatori 等商用混淆器；Spring Boot 胖包加密见下方 README 的 Xjar 说明。
     -->
@@ -55,10 +63,10 @@
               <injar>${project.build.finalName}.jar</injar>
               <outjar>${project.build.finalName}-obf.jar</outjar>
               <options>
-                <option>-keep public class com.cmssoas.protect.ProtectedLauncher { public static void main(java.lang.String[]); }</option>
-                <option>-keep public class com.cmssoas.protect.BuildProtected { public static void main(java.lang.String[]); }</option>
+                <option>-keep public class com.codeman.protect.ProtectedLauncher { public static void main(java.lang.String[]); }</option>
+                <option>-keep public class com.codeman.protect.BuildProtected { public static void main(java.lang.String[]); }</option>
                 <!-- 受保护业务类经自定义类加载器按全名加载，需保留类名与方法 -->
-                <option>-keep class com.cmssoas.protect.secret.SecretAlgorithm { *; }</option>
+                <option>-keep class com.codeman.protect.secret.SecretAlgorithm { *; }</option>
                 <option>-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod</option>
                 <option>-dontwarn</option>
                 <option>-dontnote</option>

@@ -8,7 +8,8 @@ import { useAuthStore } from '@/stores/auth'
 import { downloadFile } from '@/api/request'
 import {
   listLicenses, issueLicense, renewLicense, revokeLicense, licenseHistory,
-  type LicenseView, type HistoryView,
+  getSignedCrl, runAutoExpire,
+  type LicenseView, type HistoryView, type SignedCrl,
 } from '@/api/license'
 
 const { t } = useI18n()
@@ -91,6 +92,25 @@ function onDownload(row: LicenseView) {
   downloadFile(`/licenses/${row.licenseId}/download`, `${row.licenseId}.lic`)
 }
 
+// ---- 吊销分发(CRL) + 到期自动停用 ----
+const crlDlg = ref(false)
+const crl = ref<SignedCrl | null>(null)
+const crlLoading = ref(false)
+const pubCrlUrl = computed(() => location.origin + '/pub/crl')
+const pubKeysUrl = computed(() => location.origin + '/pub/license/public-keys')
+async function openCrl() {
+  crlDlg.value = true; crl.value = null; crlLoading.value = true
+  try { crl.value = await getSignedCrl() } catch (e: any) { ElMessage.error(e?.response?.data?.message || t('common.fail')) }
+  finally { crlLoading.value = false }
+}
+async function doAutoExpire() {
+  try {
+    await ElMessageBox.confirm(t('lic.autoExpireConfirm'), t('lic.autoExpire'), { type: 'warning' })
+    const r = await runAutoExpire(); ElMessage.success(t('lic.autoExpireOk', { n: r.expired })); load()
+  } catch (e: any) { if (e !== 'cancel') ElMessage.error(e?.response?.data?.message || t('common.fail')) }
+}
+async function copyText(s: string) { try { await navigator.clipboard.writeText(s); ElMessage.success(t('lic.copied')) } catch { /* ignore */ } }
+
 // ---------- 历史 + diff ----------
 const histOpen = ref(false)
 const histId = ref('')
@@ -136,6 +156,8 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         <div class="sub" style="margin-top:.3rem">{{ t('lic.lead') }}</div>
       </div>
       <el-button @click="exportCsv">⬇ {{ t('common.exportCsv') }}</el-button>
+      <el-button @click="openCrl">🚫 {{ t('lic.crl') }}</el-button>
+      <el-button v-if="auth.has('license:revoke')" @click="doAutoExpire">⏰ {{ t('lic.autoExpire') }}</el-button>
       <el-button v-if="auth.has('license:issue')" type="primary" size="large" @click="issueOpen = true">{{ t('lic.issue') }}</el-button>
     </div>
 
@@ -263,10 +285,44 @@ const opTag: Record<string, string> = { ISSUE: 's-init', RENEW: 's-active', MODI
         </div>
       </div>
     </el-drawer>
+
+    <!-- 吊销分发 CRL -->
+    <el-dialog v-model="crlDlg" :title="t('lic.crlTitle')" width="600px">
+      <div v-loading="crlLoading">
+        <p class="muted" style="font-size:.83rem;margin-bottom:.9rem">{{ t('lic.crlLead') }}</p>
+        <div v-if="crl">
+          <div class="crl-kv"><span class="faint">{{ t('lic.crlCount') }}</span><span class="data">{{ crl.count }}</span></div>
+          <div class="crl-kv"><span class="faint">kid</span><span class="data">{{ crl.kid }}</span></div>
+          <div class="crl-kv"><span class="faint">{{ t('lic.crlAlg') }}</span><span class="data">{{ crl.sigAlg }}</span></div>
+          <div class="crl-kv"><span class="faint">{{ t('lic.crlIssuedAt') }}</span><span class="data">{{ crl.issuedAt.slice(0,19).replace('T',' ') }}</span></div>
+          <div class="crl-kv"><span class="faint">{{ t('lic.crlSig') }}</span><span class="data faint" style="word-break:break-all;max-width:380px">{{ crl.signature.slice(0,48) }}…</span></div>
+
+          <div v-if="crl.revoked.length" class="crl-list">
+            <div v-for="r in crl.revoked" :key="r.licenseId" class="crl-item">
+              <span class="data">{{ r.licenseId }}</span>
+              <span class="faint">{{ r.revokedAt ? r.revokedAt.slice(0,19).replace('T',' ') : '—' }}</span>
+            </div>
+          </div>
+          <div v-else class="faint" style="text-align:center;padding:1rem 0">{{ t('lic.crlEmpty') }}</div>
+
+          <div class="crl-urls">
+            <div class="crl-url"><span class="faint">{{ t('lic.crlPubUrl') }}</span><code>{{ pubCrlUrl }}</code><button class="linkbtn" @click="copyText(pubCrlUrl)">{{ t('portalAdmin.copy') }}</button></div>
+            <div class="crl-url"><span class="faint">{{ t('lic.crlKeysUrl') }}</span><code>{{ pubKeysUrl }}</code><button class="linkbtn" @click="copyText(pubKeysUrl)">{{ t('portalAdmin.copy') }}</button></div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <style scoped>
+.crl-kv{display:flex;justify-content:space-between;gap:1rem;padding:.32rem .3rem;font-size:.84rem;border-bottom:1px dashed var(--border)}
+.crl-list{margin:.8rem 0;max-height:200px;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.crl-item{display:flex;justify-content:space-between;padding:.4rem .7rem;font-size:.82rem;border-bottom:1px solid var(--border)}
+.crl-item:last-child{border:0}
+.crl-urls{margin-top:.8rem;display:flex;flex-direction:column;gap:.5rem}
+.crl-url{display:flex;align-items:center;gap:.6rem;font-size:.8rem}
+.crl-url code{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:.2rem .5rem;flex:1;font-family:var(--font-data)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
 .notice{display:flex;gap:.6rem;align-items:flex-start;background:color-mix(in srgb,var(--brand) 9%,transparent);
   border:1px solid color-mix(in srgb,var(--brand) 22%,transparent);border-radius:12px;padding:.7rem .9rem;font-size:.82rem;margin-top:.4rem}

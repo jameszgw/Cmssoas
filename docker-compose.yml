@@ -1,16 +1,16 @@
-# CMSSOAS 一键起：PostgreSQL + Redis + 后端(prod) + 前端(nginx)
+# CODEMAN 一键起：PostgreSQL + Redis + 后端(prod) + 前端(nginx)
 # 用法：docker compose up -d --build   然后访问 http://localhost
 services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: cmssoas
-      POSTGRES_USER: cmssoas
-      POSTGRES_PASSWORD: cmssoas
+      POSTGRES_DB: codeman
+      POSTGRES_USER: codeman
+      POSTGRES_PASSWORD: codeman
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cmssoas"]
+      test: ["CMD-SHELL", "pg_isready -U codeman"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -27,23 +27,38 @@ services:
     build: ./server/license-platform
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: jdbc:postgresql://postgres:5432/cmssoas
-      DB_USER: cmssoas
-      DB_PASSWORD: cmssoas
+      DB_URL: jdbc:postgresql://postgres:5432/codeman
+      DB_USER: codeman
+      DB_PASSWORD: codeman
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       APP_REDIS_ENABLED: "true"
+      # 安全：生产务必通过 .env 覆盖 JWT 密钥
+      JWT_SECRET: ${JWT_SECRET:-codeman-dev-secret-please-change-in-prod-0123456789}
+      LICENSE_SIGN_ALGO: ${LICENSE_SIGN_ALGO:-ed25519}     # ed25519 | sm2(国密)
+      ALERT_WECOM_WEBHOOK: ${ALERT_WECOM_WEBHOOK:-}        # 企业微信告警机器人,留空禁用
+      PAY_PROVIDER: ${PAY_PROVIDER:-mock}                  # mock(人工确认) | wechatpay | alipay | stripe
+      EINVOICE_PROVIDER: ${EINVOICE_PROVIDER:-mock}        # mock(沙箱) | aisino | baiwang
+      HARDEN_WORK_DIR: ${HARDEN_WORK_DIR:-/var/lib/codeman/harden}   # 在线代码加固工作目录(持久卷)
+      HARDEN_MAX_FILE_MB: ${HARDEN_MAX_FILE_MB:-200}
       # 邮件：默认 log（落盘）；配置 SMTP 后改为 smtp
       APP_MAIL_DELIVERY: ${APP_MAIL_DELIVERY:-log}
       MAIL_HOST: ${MAIL_HOST:-}
       MAIL_USERNAME: ${MAIL_USERNAME:-}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-}
-      APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@cmssoas.com}
+      APP_MAIL_FROM: ${APP_MAIL_FROM:-no-reply@codeman.com}
       APP_ACTIVATION_BASE_URL: ${APP_ACTIVATION_BASE_URL:-http://localhost/activate}
       CORS_ORIGINS: http://localhost
+      # ---- 智能客服大模型(通用 OpenAI 兼容)。默认关闭;开启见下方 ollama profile 或改为云 API ----
+      AI_ENABLED: ${AI_ENABLED:-false}
+      AI_BASE_URL: ${AI_BASE_URL:-http://ollama:11434/v1}   # 默认指向本地 Ollama(离线);云 API 改此值如 https://api.deepseek.com/v1
+      AI_API_KEY: ${AI_API_KEY:-}                           # 本地模型留空;云 API 经 env/Nacos/KMS 注入
+      AI_MODEL: ${AI_MODEL:-qwen2.5:7b-instruct}            # 云 API 改为 glm-4-flash / qwen-turbo / deepseek-chat 等
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
+    volumes:
+      - harden:/var/lib/codeman/harden   # 在线代码加固上传源与产物持久化
     ports:
       - "8080:8080"
 
@@ -53,6 +68,22 @@ services:
       - backend
     ports:
       - "80:80"
+
+  # ---- 智能客服本地大模型(离线,可选)。启用:docker compose --profile ai up -d ----
+  # 首次拉模型:docker compose exec ollama ollama pull qwen2.5:7b-instruct
+  # 并设置 AI_ENABLED=true(可写入 .env)后重启 backend。GPU 机器取消 deploy 注释。
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ai"]
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: ["gpu"]
 
   # ---- 可观测 ----
   prometheus:
@@ -78,3 +109,5 @@ services:
 
 volumes:
   pgdata:
+  ollama:
+  harden:

@@ -53,3 +53,12 @@ export const revokeLicense = (id: string, reason?: string): Promise<LicenseDetai
   http.post(`/licenses/${id}/revoke`, { reason })
 export const licenseHistory = (id: string): Promise<HistoryView[]> => http.get(`/licenses/${id}/history`)
 export const downloadUrl = (id: string) => `/api/licenses/${id}/download`
+
+/** 已签名吊销名单(CRL)。 */
+export interface SignedCrl {
+  issuedAt: string; kid: string; sigAlg: string; count: number
+  revoked: { licenseId: string; revokedAt: string | null }[]
+  payloadB64: string; signature: string
+}
+export const getSignedCrl = (): Promise<SignedCrl> => http.get('/licenses/crl/signed')
+export const runAutoExpire = (): Promise<{ expired: number }> => http.post('/licenses/run-auto-expire', {})

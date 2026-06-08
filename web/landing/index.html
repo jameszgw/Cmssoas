@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CODEMAN · Spring Boot 代码保护 + License 认证 + 多租户运营平台</title>
+<meta name="description" content="CODEMAN —— 面向 Spring Boot 交付物的一体化解决方案：防逆向代码保护、离线/在线 License 认证、多租户运营平台。含智能客服、在线代码加固、支付收款、电子发票、客户360、自助门户。Spring Boot 3.5 · Java 21 · Vue3 · MySQL/PostgreSQL。" />
+<style>
+  :root{
+    --bg:#0a0e1a; --bg2:#0f1628; --card:#121a30; --card2:#16203a;
+    --line:#22304f; --txt:#e8edf7; --mut:#9fb0cd; --dim:#6f80a0;
+    --acc:#4f8cff; --acc2:#7c4dff; --ok:#23c483; --warn:#ffb547;
+    --grad:linear-gradient(120deg,#4f8cff 0%,#7c4dff 60%,#23c483 120%);
+    --radius:16px; --max:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--txt);background:radial-gradient(1200px 700px at 80% -10%,rgba(124,77,255,.18),transparent 60%),
+    radial-gradient(900px 600px at 0% 0%,rgba(79,140,255,.16),transparent 55%),var(--bg);}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  /* nav */
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+    background:rgba(10,14,26,.72);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;gap:18px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px;font-size:20px}
+  .logo{width:30px;height:30px;border-radius:8px;background:var(--grad);display:grid;place-items:center;
+    font-weight:900;color:#fff;font-size:16px;box-shadow:0 6px 18px rgba(79,140,255,.4)}
+  nav .sp{flex:1}
+  nav .lk{color:var(--mut);font-size:14px;padding:6px 10px;border-radius:8px;transition:.2s}
+  nav .lk:hover{color:#fff;background:rgba(255,255,255,.06)}
+  .btn{display:inline-block;padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:.2s;cursor:pointer;border:1px solid transparent}
+  .btn.p{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(124,77,255,.35)}
+  .btn.p:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(124,77,255,.5)}
+  .btn.g{border-color:var(--line);color:var(--txt);background:rgba(255,255,255,.03)}
+  .btn.g:hover{border-color:var(--acc);color:#fff}
+  /* hero */
+  .hero{padding:84px 0 56px;text-align:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);
+    border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 14px;border-radius:999px;margin-bottom:26px}
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+  h1{font-size:clamp(34px,6vw,60px);line-height:1.1;margin:0 0 18px;font-weight:900;letter-spacing:-.5px}
+  h1 .gr{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:clamp(16px,2.4vw,20px);color:var(--mut);max-width:760px;margin:0 auto 14px}
+  .sub2{color:var(--dim);font-size:15px;max-width:680px;margin:0 auto 32px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .badge{font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:8px;padding:5px 12px;background:rgba(255,255,255,.02)}
+  .badge b{color:var(--txt)}
+  /* section */
+  section{padding:64px 0}
+  .eyebrow{text-align:center;color:var(--acc);font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+  h2{text-align:center;font-size:clamp(26px,4vw,38px);margin:0 0 12px;font-weight:850}
+  .lead{text-align:center;color:var(--mut);max-width:680px;margin:0 auto 44px}
+  /* three pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pillar{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:var(--radius);padding:28px 24px;transition:.25s}
+  .pillar:hover{transform:translateY(-4px);border-color:var(--acc)}
+  .pillar .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:24px;margin-bottom:16px;
+    background:rgba(79,140,255,.12);border:1px solid var(--line)}
+  .pillar h3{margin:0 0 8px;font-size:20px}
+  .pillar p{margin:0;color:var(--mut);font-size:14.5px}
+  /* feature grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;transition:.2s}
+  .card:hover{border-color:var(--acc2);background:var(--card2)}
+  .card .t{display:flex;align-items:center;gap:10px;font-weight:750;font-size:16px;margin-bottom:8px}
+  .card .t .e{font-size:20px}
+  .card p{margin:0;color:var(--mut);font-size:14px}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .step .n{width:30px;height:30px;border-radius:8px;background:var(--grad);color:#fff;font-weight:800;display:grid;place-items:center;margin-bottom:12px}
+  .step h4{margin:0 0 6px;font-size:16px}
+  .step p{margin:0;color:var(--mut);font-size:13.5px}
+  /* code */
+  .code{max-width:760px;margin:30px auto 0;background:#0b1020;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .code .bar{display:flex;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+  .code .bar i{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .code pre{margin:0;padding:18px 20px;overflow:auto;font:13.5px/1.7 "SF Mono",Menlo,Consolas,monospace;color:#cfe0ff}
+  .code .c{color:#5f7299}.code .k{color:#7c4dff}.code .s{color:#23c483}
+  /* tech strip */
+  .tech{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .tech span{font-size:13px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:rgba(255,255,255,.02)}
+  /* edge note */
+  .edge{max-width:820px;margin:0 auto;background:rgba(255,181,71,.07);border:1px solid rgba(255,181,71,.3);
+    border-radius:14px;padding:20px 24px;color:#ffd9a0;font-size:14.5px}
+  .edge b{color:#ffb547}
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-size:13.5px}
+  .foot{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+  .foot a{color:var(--mut)}.foot a:hover{color:#fff}
+  @media(max-width:860px){.pillars,.grid,.steps{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.pillars,.grid,.steps{grid-template-columns:1fr}nav .lk{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand"><span class="logo">C</span>CODEMAN</div>
+      <span class="sp"></span>
+      <a class="lk" href="#pillars">三大子系统</a>
+      <a class="lk" href="#features">功能矩阵</a>
+      <a class="lk" href="#start">快速开始</a>
+      <a class="lk" href="#tech">技术栈</a>
+      <a class="btn g" href="../../docs/使用手册-从部署到应用.md">使用手册</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="pill"><span class="dot"></span>v1.0.1 · Spring Boot 3.5 · CI 全绿 · 开箱即跑</div>
+    <h1>让每一份 <span class="gr">Spring Boot 交付物</span><br/>可保护、可授权、可运营</h1>
+    <p class="sub">CODEMAN 是一套覆盖<b style="color:#e8edf7">防逆向代码保护</b>、<b style="color:#e8edf7">离线/在线 License 认证</b>、<b style="color:#e8edf7">多租户运营平台</b>的一体化解决方案——从混淆加密到授权签发，从客户开通到收款开票，一个平台全闭环。</p>
+    <p class="sub2">含 Vue3 运营控制台 + Spring Boot 后端 + 客户端 SDK + 代码保护示例，全链路端到端自测。</p>
+    <div class="cta">
+      <a class="btn p" href="#start">⚡ 5 分钟跑起来</a>
+      <a class="btn g" href="../../docs/使用手册-从部署到应用.md">📖 完整使用手册</a>
+    </div>
+    <div class="badges">
+      <span class="badge"><b>Spring Boot</b> 3.5</span>
+      <span class="badge"><b>Java</b> 21</span>
+      <span class="badge"><b>Vue3</b> + TS</span>
+      <span class="badge"><b>MySQL</b> 5.7 / 8.0</span>
+      <span class="badge"><b>PostgreSQL</b></span>
+      <span class="badge"><b>签名</b> Ed25519 · 国密 SM2</span>
+      <span class="badge"><b>License</b> GPL-3.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="wrap">
+    <div class="eyebrow">Core</div>
+    <h2>三大子系统</h2>
+    <p class="lead">技术保护 + 授权认证 + 运营平台，构建"技术 + 运营吊销/溯源 + 法律协议"的综合防线。</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="ic">🛡️</div>
+        <h3>代码保护</h3>
+        <p>ProGuard 混淆 + 类加密套壳 + 关键逻辑原生化 + 反调试/反 dump；<b style="color:#cdd9f0">解密密钥依赖合法 License 派生</b>，破解成本陡增。</p>
+      </div>
+      <div class="pillar">
+        <div class="ic">🔑</div>
+        <h3>License 认证</h3>
+        <p>Ed25519 / 国密 SM2 非对称签名（私钥不出域）；离线 .lic 绑定 + 在线心跳/吊销/浮动席位/宽限期；完整生命周期与签名 CRL。</p>
+      </div>
+      <div class="pillar">
+        <div class="ic">🏢</div>
+        <h3>多租户运营</h3>
+        <p>租户一键开通、Flyway 初始化 DB 与种子数据、超管安全下发；"产品—模块—功能—版本"授权模型驱动签发。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background:linear-gradient(180deg,transparent,rgba(124,77,255,.04),transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Platform</div>
+    <h2>不止保护，更是完整运营闭环</h2>
+    <p class="lead">从客户进来到回款开票，运营所需能力全部内置——并以"通用·不绑定厂商·可降级"的 Provider 抽象，随时切换真实渠道。</p>
+    <div class="grid">
+      <div class="card"><div class="t"><span class="e">🤖</span>智能客服</div><p>OpenAI 兼容接入（GLM-4-Flash / 通义 / DeepSeek / 本地 Ollama），未配置自动降级知识库召回，SSE 流式。</p></div>
+      <div class="card"><div class="t"><span class="e">📦</span>在线代码加固</div><p>上传 jar → 选择混淆/类加密+License/口令加密 → 下载产物。与"构建/打包"模式并存，运营平台可切换。</p></div>
+      <div class="card"><div class="t"><span class="e">💳</span>支付收款</div><p>账单 → 人工确认到账 → 自动核销；Provider 抽象，可对接微信/支付宝/Stripe。</p></div>
+      <div class="card"><div class="t"><span class="e">🧾</span>电子发票</div><p>开票申请与状态跟踪，预留航信/百望等真实渠道适配。</p></div>
+      <div class="card"><div class="t"><span class="e">👤</span>客户 360</div><p>客户主数据 + 关联租户/License/订阅/账单/合同的全景视图。</p></div>
+      <div class="card"><div class="t"><span class="e">🚪</span>自助门户</div><p>租户自助登录查看授权、续期与账单，减轻运营负担。</p></div>
+      <div class="card"><div class="t"><span class="e">📝</span>合同签约</div><p>自建电子签 + 哈希存证，合同生命周期可追溯。</p></div>
+      <div class="card"><div class="t"><span class="e">📋</span>须知授权</div><p>须知发布 + 用户授权同意留痕，合规可查。</p></div>
+      <div class="card"><div class="t"><span class="e">🔐</span>RBAC + 审计</div><p>多态权限树、按钮级权限、首登强制改密、MFA、操作审计、邮件 outbox。</p></div>
+      <div class="card"><div class="t"><span class="e">📊</span>可观测</div><p>Actuator + Prometheus + Grafana，在线授权实时监控大盘。</p></div>
+      <div class="card"><div class="t"><span class="e">🗄️</span>多数据库</div><p>H2 开发 / PostgreSQL 生产 / MySQL 5.7·8.0（CI 真机矩阵验证），Flyway 双方言脚本。</p></div>
+      <div class="card"><div class="t"><span class="e">🌐</span>国际化换肤</div><p>Vue3 + Element Plus，中英 i18n、暗夜/明亮主题、2K–4K 自适应、内置操作帮助。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section id="start">
+  <div class="wrap">
+    <div class="eyebrow">Get Started</div>
+    <h2>5 分钟，从部署到应用</h2>
+    <p class="lead">默认 H2 开箱即跑，初始账号 <b style="color:#e8edf7">admin / 8888</b>；生产一键容器化。</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h4>启动后端</h4><p>默认 H2，无需安装数据库，一条命令拉起服务。</p></div>
+      <div class="step"><div class="n">2</div><h4>启动前端</h4><p>Vue3 控制台 npm 安装即跑，浏览器登录运营台。</p></div>
+      <div class="step"><div class="n">3</div><h4>开通与签发</h4><p>开通租户、配置产品套餐、签发 License、上传 jar 加固。</p></div>
+      <div class="step"><div class="n">4</div><h4>容器化上线</h4><p>复制 .env 模板，docker compose 一键部署生产环境。</p></div>
+    </div>
+    <div class="code">
+      <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+<pre><span class="c"># 后端（默认 H2，开箱即跑；国密模式加 LICENSE_SIGN_ALGO=sm2）</span>
+<span class="k">cd</span> server/license-platform &amp;&amp; mvn spring-boot:run        <span class="c"># http://localhost:8080</span>
+
+<span class="c"># 前端（初始账号 admin / 8888）</span>
+<span class="k">cd</span> web/console &amp;&amp; npm install &amp;&amp; npm run dev             <span class="c"># http://localhost:5173</span>
+
+<span class="c"># 生产一键容器化</span>
+cp .env.example .env        <span class="c"># 试用；或 cp .env.prod.example .env（生产）</span>
+docker compose up -d --build</pre>
+    </div>
+    <p style="text-align:center;margin-top:26px">
+      <a class="btn p" href="../../docs/使用手册-从部署到应用.md">查看完整使用手册（从部署到应用）→</a>
+    </p>
+  </div>
+</section>
+
+<!-- TECH -->
+<section id="tech" style="background:linear-gradient(180deg,transparent,rgba(79,140,255,.04),transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Stack</div>
+    <h2>现代、稳定、可演进的技术栈</h2>
+    <p class="lead">企业级框架与可替换的渠道抽象，长期可维护。</p>
+    <div class="tech">
+      <span>Spring Boot 3.5</span><span>Java 21</span><span>Maven</span><span>Flyway</span>
+      <span>JPA</span><span>PostgreSQL</span><span>MySQL 5.7 / 8.0</span><span>H2</span>
+      <span>Redis</span><span>Vue 3</span><span>TypeScript</span><span>Element Plus</span>
+      <span>Vite</span><span>Pinia</span><span>vue-i18n</span><span>Ed25519</span>
+      <span>国密 SM2</span><span>ProGuard</span><span>AES-256-GCM</span><span>OpenAI 兼容 / Ollama</span>
+      <span>Prometheus</span><span>Grafana</span><span>Docker Compose</span>
+    </div>
+    <div style="margin-top:44px">
+      <div class="edge">
+        ⚠️ <b>现实边界声明</b>：纯软件保护无法做到绝对不可破解。CODEMAN 的目标是<b>把破解成本抬高到超过软件价值</b>，并以"技术防护 + 运营吊销/溯源 + 法律协议"构建综合防线，而非承诺"不可破解"。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align:center">
+  <div class="wrap">
+    <h2>现在就把你的交付物，变成可运营的产品</h2>
+    <p class="lead">克隆仓库，按使用手册从部署到应用一步步上线。</p>
+    <div class="cta">
+      <a class="btn p" href="../../docs/使用手册-从部署到应用.md">📖 使用手册</a>
+      <a class="btn g" href="../../README.md">📂 项目说明</a>
+      <a class="btn g" href="../../docs/HANDOFF.md">🧭 架构与决策</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand" style="font-size:16px"><span class="logo" style="width:24px;height:24px;font-size:13px">C</span>CODEMAN</div>
+    <div>Spring Boot 代码保护 + License 认证 + 多租户运营平台 · v1.0.1</div>
+    <div>
+      <a href="../../docs/使用手册-从部署到应用.md">使用手册</a> ·
+      <a href="../../deploy/README.md">部署</a> ·
+      <a href="../../docs/02-代码保护方案.md">代码保护</a> ·
+      <a href="../../docs/03-License认证方案.md">License</a> ·
+      <span style="color:var(--dim)">License: GPL-3.0</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

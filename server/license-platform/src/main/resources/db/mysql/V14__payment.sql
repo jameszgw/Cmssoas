@@ -1,0 +1,24 @@
+-- [MySQL 方言] 由 db/migration/V14__payment.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
+-- 在线支付/收款(通用 PaymentProvider 抽象,默认沙箱;预留微信支付/支付宝/Stripe)
+CREATE TABLE payment (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    payment_no      VARCHAR(40)  NOT NULL,   -- 本系统支付单号
+    invoice_id      BIGINT       NOT NULL,
+    tenant_code     VARCHAR(32),
+    customer        VARCHAR(128),
+    amount          INT          NOT NULL,
+    currency        VARCHAR(8)   NOT NULL DEFAULT 'CNY',
+    channel         VARCHAR(16)  NOT NULL,   -- MOCK / WECHATPAY / ALIPAY / STRIPE
+    status          VARCHAR(16)  NOT NULL,   -- CREATED / PAID / FAILED / CLOSED
+    qr_content      VARCHAR(512),            -- 扫码支付内容(二维码原文)
+    pay_url         VARCHAR(512),            -- 收银台/支付跳转链接
+    provider_txn_id VARCHAR(64),             -- 渠道交易号
+    created_at      DATETIME    NOT NULL,
+    paid_at         DATETIME
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE INDEX idx_payment_invoice ON payment(invoice_id);
+CREATE INDEX idx_payment_no ON payment(payment_no);
+CREATE INDEX idx_payment_status ON payment(status);
+
+-- 复用 billing 权限:发起收款=billing:manage,查询=billing:view,异步回调公开。

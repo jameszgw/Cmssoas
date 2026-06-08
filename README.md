@@ -1,4 +1,4 @@
-# Cmssoas
+# Codeman
 
 [![CI](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml/badge.svg)](https://github.com/jameszgw/cmssoas/actions/workflows/ci.yml)
 ![backend tests](https://img.shields.io/badge/backend%20tests-9%2F9-brightgreen)
@@ -15,6 +15,11 @@
 
 ## 方案文档（`docs/`）
 
+> 🎉 **官宣页（可直接浏览器打开）**：[web/landing/index.html](web/landing/index.html) —— 产品总览、三大子系统、功能矩阵、快速开始。
+> 📖 **使用手册（从部署到应用）**：[docs/使用手册-从部署到应用.md](docs/使用手册-从部署到应用.md) —— 部署、初始化、逐模块操作、SDK 接入、运维全流程。
+>
+> 🧭 **会话交接 / 接手必读**：[docs/HANDOFF.md](docs/HANDOFF.md)（中文) · [docs/HANDOFF-en.md](docs/HANDOFF-en.md)（English）——当前状态、架构约定、关键决策、待办。
+>
 > 👉 **主文档（推荐先读）**：[00-完整解决方案（分步骤·含前后端）](docs/00-完整解决方案(分步骤·含前后端).md)
 > 按 20 个实施步骤推进，**每步统一含【设计思路 / 技术选型对比 / 潜在风险 / 应对措施】并标注前端/后端落点**。
 > 下列 01–07 为各专题的细节附录。
@@ -56,6 +61,16 @@ cd server/license-platform && mvn spring-boot:run        # http://localhost:8080
 # 前端（初始账号 admin / 8888）
 cd web/console && npm install && npm run dev             # http://localhost:5173
 ```
+
+一键容器化（生产）：复制环境模板后启动——
+```bash
+cp .env.example .env        # 试用；或 cp .env.prod.example .env（生产）
+docker compose up -d --build
+```
+- 环境变量(JWT/数据库/邮件/CORS/支付·发票渠道/智能客服大模型)见 `.env.example`、`.env.prod.example`。
+- **数据库**：H2(开发) / **PostgreSQL(生产推荐)** / **MySQL 5.7 · 8.0(`profile=mysql`，CI 真机矩阵验证)**，见 [DEPLOY.md](DEPLOY.md#数据库支持)。
+- **运行环境**：JDK **17+(推荐 21)**;不支持 Java 8(Spring Boot 3.x 要求 Java 17+)。
+- **智能客服大模型**选型与部署(API 最省 / 本地 Ollama 离线)见 [docs/智能客服-大模型选型与部署.md](docs/智能客服-大模型选型与部署.md)。
 
 ## 界面预览
 

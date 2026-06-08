@@ -1,0 +1,38 @@
+-- [MySQL 方言] 由 db/migration/V11__notice_consent.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 字符集在建表处显式 utf8mb4,兼容 MySQL 5.7/8.0(不依赖库级默认字符集)。
+-- 在线用户须知 / 用户授权(同意管理)
+CREATE TABLE notice (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    type          VARCHAR(16)  NOT NULL,   -- TERMS / PRIVACY / NOTICE / ANNOUNCEMENT
+    title         VARCHAR(160) NOT NULL,
+    content_html  TEXT         NOT NULL,
+    version       INT          NOT NULL DEFAULT 1,
+    status        VARCHAR(16)  NOT NULL,   -- DRAFT / PUBLISHED / ARCHIVED
+    force_ack     BOOLEAN      NOT NULL DEFAULT 0,
+    effective_at  DATETIME,
+    created_at    DATETIME    NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE INDEX idx_notice_type_status ON notice(type, status);
+
+CREATE TABLE user_consent (
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_code  VARCHAR(32),
+    subject      VARCHAR(128) NOT NULL,    -- 同意主体(运营账号/邮箱/手机号)
+    notice_id    BIGINT       NOT NULL,
+    notice_type  VARCHAR(16)  NOT NULL,
+    version      INT          NOT NULL,
+    action       VARCHAR(16)  NOT NULL,    -- GRANTED / REVOKED
+    channel      VARCHAR(16)  NOT NULL,    -- WEB / EMAIL / API
+    ip           VARCHAR(64),
+    user_agent   VARCHAR(256),
+    created_at   DATETIME    NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE INDEX idx_consent_subject ON user_consent(subject);
+CREATE INDEX idx_consent_notice ON user_consent(notice_id);
+
+-- 权限点
+INSERT INTO permission(code,name,parent_code,type,sort) VALUES
+ ('notice','须知与授权',NULL,'MENU',10),
+ ('notice:view','查看须知/授权','notice','ACTION',1),
+ ('notice:edit','编辑/发布须知','notice','ACTION',2),
+ ('consent:view','查看授权记录','notice','ACTION',3);

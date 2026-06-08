@@ -1,10 +1,10 @@
 # 生产 profile：PostgreSQL + Redis + SMTP（用 SPRING_PROFILES_ACTIVE=prod 启用）
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://postgres:5432/cmssoas}
+    url: ${DB_URL:jdbc:postgresql://postgres:5432/codeman}
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USER:cmssoas}
-    password: ${DB_PASSWORD:cmssoas}
+    username: ${DB_USER:codeman}
+    password: ${DB_PASSWORD:codeman}
   jpa:
     hibernate:
       ddl-auto: none

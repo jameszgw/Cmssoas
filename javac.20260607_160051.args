@@ -1,0 +1,4 @@
+-d
+/tmp/sample/out
+/tmp/sample/src/demo/HelloApp.java
+/tmp/sample/src/demo/Secret.java

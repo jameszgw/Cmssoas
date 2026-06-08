@@ -46,7 +46,7 @@ pipeline {
               dir('server/license-platform') { sh "${MAVEN_CLI} -DskipTests package" }
               sh '''
                 cd server/license-platform
-                LICENSE_SIGN_ALGO=$ALGO nohup java -jar target/license-platform-1.0.0.jar > /tmp/be-$ALGO.log 2>&1 &
+                LICENSE_SIGN_ALGO=$ALGO nohup java -jar target/license-platform-1.0.1.jar > /tmp/be-$ALGO.log 2>&1 &
                 echo $! > /tmp/be-$ALGO.pid
                 for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
                 cd ../..
@@ -76,7 +76,7 @@ pipeline {
       steps {
         sh '''
           cd server/license-platform
-          nohup java -jar target/license-platform-1.0.0.jar > /tmp/be-e2e.log 2>&1 &
+          nohup java -jar target/license-platform-1.0.1.jar > /tmp/be-e2e.log 2>&1 &
           echo $! > /tmp/be-e2e.pid
           for i in $(seq 1 60); do curl -sf http://localhost:8080/actuator/health && break || sleep 2; done
           cd ../../web/console
@@ -92,7 +92,7 @@ pipeline {
     stage('代码加固 + 镜像') {
       steps {
         dir('examples/protected-app') { sh "${MAVEN_CLI} -Pharden -DskipTests package" }
-        // 可选：docker build -t registry/cmssoas-backend:${BUILD_NUMBER} ./server/license-platform
+        // 可选：docker build -t registry/codeman-backend:${BUILD_NUMBER} ./server/license-platform
       }
       post { always { archiveArtifacts artifacts: 'examples/protected-app/target/*-obf.jar', allowEmptyArchive: true } }
     }
@@ -100,6 +100,6 @@ pipeline {
 
   post {
     success { echo 'CI 通过：后端/SDK/签名冒烟/前端/E2E/加固 全部成功' }
-    always  { sh 'pkill -f license-platform-1.0.0.jar || true' }
+    always  { sh 'pkill -f license-platform-1.0.1.jar || true' }
   }
 }
