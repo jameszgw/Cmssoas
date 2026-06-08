@@ -16,7 +16,7 @@
 ## 方案文档（`docs/`）
 
 > 🎉 **官宣页（可直接浏览器打开）**：[web/landing/index.html](web/landing/index.html) —— 产品总览、三大子系统、功能矩阵、快速开始。
-> 🧭 **操作帮助中心（HTML，按流程 / 按模块，可搜索）**：[web/landing/help.html](web/landing/help.html) —— 全功能逐步操作、所需权限、提示与常见问题。
+> 🧭 **操作帮助中心（HTML，按流程 / 按模块，可搜索）**：[web/landing/help.html](web/landing/help.html)（中文）· [help-en.html](web/landing/help-en.html)（EN）—— 全功能逐步操作、所需权限/参数、提示与常见问题；已内嵌控制台顶栏「❔ 帮助中心」。
 > 📖 **使用手册（从部署到应用）**：[docs/使用手册-从部署到应用.md](docs/使用手册-从部署到应用.md) —— 部署、初始化、逐模块操作、SDK 接入、运维全流程。
 >
 > 🧭 **会话交接 / 接手必读**：[docs/HANDOFF.md](docs/HANDOFF.md)（中文) · [docs/HANDOFF-en.md](docs/HANDOFF-en.md)（English）——当前状态、架构约定、关键决策、待办。

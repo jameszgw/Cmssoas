@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CODEMAN Help Center · By Workflow / By Module (per-function detail)</title>
+<meta name="description" content="CODEMAN full operational help: navigate by workflow (steps cross-linked to the exact feature) or by module (broken down to each function, with preconditions/postconditions, required system & user parameters, permission, entry and step-by-step operations)." />
+<style>
+  :root{
+    --bg:#0a0e1a; --panel:#0f1628; --card:#121a30; --card2:#16203a;
+    --line:#22304f; --txt:#e8edf7; --mut:#9fb0cd; --dim:#6f80a0;
+    --acc:#4f8cff; --acc2:#7c4dff; --ok:#23c483; --warn:#ffb547; --bad:#ff6b6b;
+    --grad:linear-gradient(120deg,#4f8cff 0%,#7c4dff 60%,#23c483 120%);
+    --side:300px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.14),transparent 60%),var(--bg)}
+  a{color:var(--acc);text-decoration:none}
+  code,kbd{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.86em;background:rgba(124,77,255,.14);
+    border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+  header{position:sticky;top:0;z-index:30;height:60px;display:flex;align-items:center;gap:16px;padding:0 20px;
+    background:rgba(10,14,26,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+  .logo{width:28px;height:28px;border-radius:7px;background:var(--grad);display:grid;place-items:center;font-weight:900;color:#fff}
+  header .sp{flex:1}
+  header a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+  header a.lk:hover{color:#fff;background:rgba(255,255,255,.06)}
+  #search{background:var(--card);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:8px 12px;width:240px;font-size:14px;outline:none}
+  #search:focus{border-color:var(--acc)}
+  .layout{display:flex;min-height:calc(100vh - 60px)}
+  aside{width:var(--side);flex:0 0 var(--side);border-right:1px solid var(--line);
+    position:sticky;top:60px;height:calc(100vh - 60px);overflow:auto;padding:16px 12px}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px}
+  .tabs button{flex:1;border:0;background:transparent;color:var(--mut);font-weight:700;font-size:13.5px;
+    padding:8px;border-radius:7px;cursor:pointer;transition:.2s}
+  .tabs button.on{background:var(--grad);color:#fff}
+  .navgrp{margin-bottom:10px}
+  .navgrp h4{margin:14px 8px 6px;font-size:11.5px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+  .navlink{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;color:var(--mut);
+    font-size:14px;cursor:pointer;transition:.15s}
+  .navlink:hover{background:rgba(255,255,255,.05);color:#fff}
+  .navlink.active{background:rgba(79,140,255,.16);color:#fff;border-left:2px solid var(--acc)}
+  .navlink .e{width:18px;text-align:center}
+  .subnav{margin:2px 0 6px 10px;border-left:1px solid var(--line);padding-left:6px;display:none}
+  .subnav.show{display:block}
+  .sublink{display:block;padding:4px 8px;border-radius:6px;color:var(--dim);font-size:12.7px;cursor:pointer}
+  .sublink:hover{background:rgba(255,255,255,.05);color:#cfe0ff}
+  main{flex:1;min-width:0;padding:30px 40px 90px;max-width:960px}
+  .crumbs{color:var(--dim);font-size:13px;margin-bottom:6px}
+  h1{font-size:28px;margin:0 0 6px;font-weight:850}
+  h1 .gr{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .intro{color:var(--mut);margin:0 0 22px;font-size:15px}
+  section.doc{display:none;animation:fade .25s ease}
+  section.doc.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.sec{font-size:20px;margin:30px 0 4px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  h2.sec .e{font-size:22px}
+  h2.sec:first-of-type{border-top:0;padding-top:0;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+  .tag{font-size:12px;border-radius:7px;padding:4px 10px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+  .tag.perm{color:#bcd0ff;border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.1)}
+  .desc{color:var(--mut);margin:0 0 14px}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:0 0 14px}
+  ol.steps>li{position:relative;padding:10px 0 12px 44px;border-bottom:1px dashed rgba(34,48,79,.7)}
+  ol.steps>li:last-child{border-bottom:0}
+  ol.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;
+    width:28px;height:28px;border-radius:8px;background:var(--grad);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
+  ol.steps>li b{color:var(--txt)}
+  ol.steps>li .h{color:var(--mut)}
+  .see{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:12.5px;
+    border:1px solid rgba(79,140,255,.4);background:rgba(79,140,255,.08);color:#bcd0ff;border-radius:999px;padding:3px 10px;cursor:pointer}
+  .see:hover{background:rgba(79,140,255,.18);color:#fff}
+  .seewrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+  .fn{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;scroll-margin-top:74px}
+  .fn:target,.fn.flash{border-color:var(--acc);box-shadow:0 0 0 2px rgba(79,140,255,.25)}
+  .fnh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;font-size:17px;font-weight:800}
+  .fnh .num{width:24px;height:24px;border-radius:7px;background:rgba(124,77,255,.18);border:1px solid var(--line);
+    color:#d8c6ff;font-size:12px;font-weight:800;display:grid;place-items:center}
+  .ep{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;color:#9fe0c4;background:#0b1020;
+    border:1px solid var(--line);border-radius:7px;padding:4px 10px;display:inline-block;margin:2px 0 10px}
+  .ep .m{color:#ffb547;font-weight:700}
+  .blk{margin:10px 0}
+  .blk .lab{font-weight:800;font-size:12.5px;letter-spacing:.5px;color:var(--dim);text-transform:uppercase;margin-bottom:5px}
+  ul.tick,ul.dash{margin:0;padding-left:2px;list-style:none}
+  ul.tick li,ul.dash li{position:relative;padding:3px 0 3px 20px;color:var(--mut);font-size:14px}
+  ul.tick li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+  ul.dash li::before{content:"→";position:absolute;left:0;color:var(--acc)}
+  ol.mini{margin:0;padding-left:20px;color:var(--mut)}
+  ol.mini li{padding:2px 0;font-size:14px}
+  ol.mini li b{color:var(--txt)}
+  table.params{border-collapse:collapse;width:100%;margin:6px 0;font-size:13px}
+  table.params th,table.params td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  table.params th{background:var(--card2);color:var(--txt);white-space:nowrap}
+  table.params td{color:var(--mut)}
+  table.params td.n{color:#cfe0ff;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;white-space:nowrap}
+  .req{color:var(--bad);font-weight:700}.opt{color:var(--dim)}
+  .note{border-radius:9px;padding:9px 14px;margin:9px 0;font-size:13.5px;border:1px solid var(--line)}
+  .note .lab{font-weight:800;margin-right:6px}
+  .note.tip{background:rgba(35,196,131,.08);border-color:rgba(35,196,131,.3);color:#bdf0da}.note.tip .lab{color:var(--ok)}
+  .note.warn{background:rgba(255,181,71,.08);border-color:rgba(255,181,71,.3);color:#ffe0b0}.note.warn .lab{color:var(--warn)}
+  .note.faq{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.3);color:#ffd2d2}.note.faq .lab{color:var(--bad)}
+  pre{background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:13px 15px;overflow:auto;
+    font:12.5px/1.6 "SF Mono",Menlo,Consolas,monospace;color:#cfe0ff;margin:10px 0}
+  pre .c{color:#5f7299}
+  table.ref{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  table.ref th{background:var(--card2)}table.ref td{color:var(--mut)}
+  .pager{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+  .pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--mut);transition:.2s}
+  .pager a:hover{border-color:var(--acc);color:#fff}.pager a.n{text-align:right}
+  .pager small{display:block;color:var(--dim);font-size:11.5px}
+  .nohit{color:var(--dim);padding:40px 0;text-align:center}
+  .menubtn{display:none;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 12px;cursor:pointer}
+  @media(max-width:880px){
+    aside{position:fixed;left:0;top:60px;z-index:40;background:var(--panel);transform:translateX(-105%);transition:.25s;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    aside.open{transform:none}
+    main{padding:24px 16px 60px}.menubtn{display:inline-block}#search{width:130px}header .lk{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="menubtn" id="menubtn">☰</button>
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN Help Center</a>
+  <span class="sp"></span>
+  <input id="search" type="search" placeholder="Search feature / action / param…" autocomplete="off" />
+  <a class="lk" href="help.html">中文</a>
+  <a class="lk" href="index.html">Landing</a>
+</header>
+
+<div class="layout">
+  <aside id="aside">
+    <div class="tabs">
+      <button id="tabFlow" class="on" data-mode="flow">By Workflow</button>
+      <button id="tabMod" data-mode="mod">By Module</button>
+    </div>
+    <nav id="nav"></nav>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ===== Data model (mirror of help.html, English) ===== */
+const MOD = [
+{ id:"m-tenant", e:"🏢", t:"Tenant Management", intro:"Onboard, activate, renew and isolation config; each tenant gets an isolated space.", perm:"tenant",
+  functions:[
+   { fid:"fn-tenant-onboard", name:"Onboard Tenant", perm:"tenant:onboard", ep:["POST","/api/tenants"],
+     entry:"Console → Tenant Management → “Onboard” dialog (Tenants.vue)",
+     pre:["Account holds <code>tenant:onboard</code>","Tenant name is unique"],
+     params:[
+       {n:"name",t:"String",r:1,d:"Tenant name"},
+       {n:"email",t:"String",r:1,d:"Admin email (receives activation mail; must be valid)"},
+       {n:"plan",t:"String",r:0,d:"Plan: Basic/Professional/Enterprise/Flagship"},
+       {n:"version",t:"String",r:0,d:"Product version, default v2.4.0"},
+       {n:"isolation",t:"String",r:0,d:"Shared DB · RLS (default) / dedicated Schema / dedicated Database"},
+       {n:"mode",t:"String",r:0,d:"License mode HYBRID (default) / ONLINE / OFFLINE"},
+     ],
+     steps:["Fill name, admin email; pick plan, version, isolation and mode.","Preview the onboarding email on the right, then submit.","System generates a tenant code (e.g. <code>T-100482</code>) and returns mail result."],
+     post:["Creates tenant (INITIALIZING→ACTIVE), isolated Schema, runs Flyway, seeds default roles.","Creates SUPER_ADMIN (pending) + MFA secret + one-time activation token.","Sends onboarding email async; audit <code>TENANT_CREATED</code>."],
+     notes:[{k:"faq",t:"Email not received? Check SMTP (<code>APP_MAIL_*</code>) and the outbox; the admin can also activate directly via the activation link."}] },
+   { fid:"fn-tenant-list", name:"Tenant List", perm:"tenant:view", ep:["GET","/api/tenants"],
+     entry:"Console → Tenant Management (main table)", params:[], pre:[],
+     steps:["View all tenants: code/name/email/plan/status/expiry.","Status: active / soon (suspended) / init / exp (failed)."], post:[] },
+   { fid:"fn-tenant-settings", name:"View Isolation Settings", perm:"tenant:view", ep:["GET","/api/tenants/{code}/settings"],
+     entry:"Console → tenant row → settings/detail",
+     params:[{n:"code",t:"Path",r:1,d:"Tenant code"}], pre:["Tenant code exists"],
+     steps:["View the tenant Schema name, settings and role count."], post:[] },
+   { fid:"fn-tenant-activate", name:"Activate Account (customer · public)", perm:"public (token-validated)", ep:["GET/POST","/api/activation/{token}"],
+     entry:"Customer opens activation page <code>/activate/:token</code> (Activate.vue)",
+     pre:["Activation token valid & not expired","Admin in PENDING_ACTIVATION"],
+     params:[{n:"password",t:"String",r:1,d:"Admin password, length 8–64"},{n:"mfaCode",t:"String",r:0,d:"Optional MFA code; binds MFA if provided"}],
+     steps:["GET activation info (tenant/email/MFA QR otpauth).","Set password, optionally scan & bind MFA.","POST to activate."],
+     post:["Password hashed; admin → ACTIVE; optional MFA bound; audit <code>ADMIN_ACTIVATED</code>."] },
+  ]},
+
+{ id:"m-license", e:"🔑", t:"License Authorization", intro:"Issue/renew/modify/revoke/download/export/auto-expire/reminder/CRL/keys/verify; Ed25519 default, SM2 optional.", perm:"license",
+  functions:[
+   { fid:"fn-license-issue", name:"Issue License", perm:"license:issue", ep:["POST","/api/licenses/issue"],
+     entry:"Console → License → “Issue” (Licensing.vue)",
+     pre:["Holds <code>license:issue</code>","Tenant exists","<code>notAfter</code> after <code>notBefore</code>"],
+     params:[
+       {n:"tenantCode",t:"String",r:1,d:"Tenant code"},
+       {n:"customer",t:"String",r:1,d:"Customer name"},
+       {n:"productCode",t:"String",r:0,d:"Product, default CODEMAN"},
+       {n:"edition",t:"String",r:0,d:"BASIC/PROFESSIONAL/ENTERPRISE/FLAGSHIP, default ENTERPRISE"},
+       {n:"mode",t:"String",r:0,d:"OFFLINE/ONLINE/HYBRID, default HYBRID"},
+       {n:"modules",t:"List",r:1,d:"Modules, e.g. RISK/REPORT/AUDIT/BI/DATA"},
+       {n:"features",t:"Map",r:0,d:"Flags/quotas, e.g. {\"REPORT.EXPORT\":true,\"MAX_USERS\":2000}"},
+       {n:"appVersionRange",t:"String",r:0,d:"SemVer range, e.g. >=2.0.0 <3.0.0"},
+       {n:"notBefore / notAfter",t:"Date",r:1,d:"Valid-from / valid-until (ISO)"},
+       {n:"concurrency",t:"Integer",r:0,d:"Concurrent seats, default 1"},
+       {n:"reason",t:"String",r:0,d:"Audit reason"},
+     ],
+     steps:["Pick tenant/customer/edition/mode; select modules & feature flags.","Set version range, validity dates and seats.","Submit; server signs with private key to produce <code>.lic</code>."],
+     post:["License status=ACTIVE, version=1, watermark generated.","claimsJson signed with Ed25519 (kid+signature stored); history opType=ISSUE; audit <code>LICENSE_ISSUED</code>."],
+     notes:[{k:"warn",t:"Private key never leaves the server; clients verify with the public key only. Algorithm set by <code>LICENSE_SIGN_ALGO</code> (ed25519/sm2)."}] },
+   { fid:"fn-license-renew", name:"Renew", perm:"license:renew", ep:["POST","/api/licenses/{id}/renew"],
+     entry:"License list → row action “Renew”",
+     pre:["License exists & ACTIVE","new notAfter after current notBefore"],
+     params:[{n:"notAfter",t:"Date",r:1,d:"New expiry date"},{n:"reason",t:"String",r:0,d:"Audit reason"}],
+     steps:["Dialog pre-fills current expiry; set the new date.","Submit; license re-signed, version +1."],
+     post:["notAfter updated; version bumped; re-signed; history RENEW; audit <code>LICENSE_RENEWED</code>."] },
+   { fid:"fn-license-modify", name:"Modify (modules/features/seats/edition)", perm:"license:issue", ep:["POST","/api/licenses/{id}/modify"],
+     entry:"License list → row action “Modify”", pre:["License exists & ACTIVE"],
+     params:[{n:"modules",t:"List",r:0,d:"New modules"},{n:"features",t:"Map",r:0,d:"New flags"},
+       {n:"appVersionRange",t:"String",r:0,d:"New version range"},{n:"concurrency",t:"Integer",r:0,d:"New seats"},
+       {n:"edition",t:"String",r:0,d:"New edition"},{n:"reason",t:"String",r:0,d:"Audit reason"}],
+     steps:["Fill only the fields to change.","Submit; re-signed with new content, version +1."],
+     post:["Provided fields updated; version bumped; re-signed; history MODIFY; audit <code>LICENSE_MODIFIED</code>."] },
+   { fid:"fn-license-revoke", name:"Revoke", perm:"license:revoke", ep:["POST","/api/licenses/{id}/revoke"],
+     entry:"License list → row action “Revoke” (warning confirm)", pre:["License exists & ACTIVE"],
+     params:[{n:"reason",t:"String",r:0,d:"Revocation reason"}],
+     steps:["Confirm and enter a reason.","Submit; status → REVOKED and enters CRL."],
+     post:["status=REVOKED; added to CRL; version bumped & re-signed; history REVOKE; offline SDK rejects via CRL."] },
+   { fid:"fn-license-list", name:"List / Detail / History", perm:"license:view / public (detail·history)",
+     ep:["GET","/api/licenses · /{id} · /{id}/history"],
+     entry:"Console → License (table + detail drawer)", params:[], pre:[],
+     steps:["List shows ID/tenant/customer/edition/status/expiry/version.","Detail includes claimsJson & signature; history shows each version’s opType (ISSUE/RENEW/MODIFY/REVOKE/EXPIRE), operator and reason."], post:[] },
+   { fid:"fn-license-download", name:"Download .lic / Export CSV", perm:"license:view",
+     ep:["GET","/api/licenses/{id}/download · /export.csv"],
+     entry:"License row “Download” / list “Export CSV”", params:[], pre:["Download requires JWT (blob download token fix applied)"],
+     steps:["“Download” fetches <code>{licenseId}.lic</code> for the customer.","“Export CSV” exports the license ledger."], post:[] },
+   { fid:"fn-license-expire", name:"Auto-expire / Expiry Reminder", perm:"license:revoke / license:view",
+     ep:["POST","/api/licenses/run-auto-expire · /run-expiry-reminder"],
+     entry:"Manual buttons in console; daily scheduled job", params:[], pre:[],
+     steps:["Auto-expire: ACTIVE licenses with notAfter<today → EXPIRED (re-signed, history EXPIRE), returns count.","Reminder: emails near-expiry licenses not yet reminded, sets expiryReminded=true."],
+     post:["Runs daily via @Scheduled; can also trigger instantly via buttons."] },
+   { fid:"fn-license-pub", name:"Public Keys / Signed CRL / Verify (public)", perm:"public (/pub/**)",
+     ep:["GET/POST","/pub/license/public-keys · /pub/crl · /api/licenses/verify"],
+     entry:"Called by client SDK, no login", params:[{n:"lic",t:"String",r:0,d:"verify: pass .lic text, returns valid/claims"}], pre:[],
+     steps:["public-keys: JWKS-style with kid for rotation.","CRL: payloadB64+signature; SDK verifies then rejects listed licenses.","verify: server validates signature and returns parsed claims."], post:[] },
+  ]},
+
+{ id:"m-online", e:"📡", t:"Online Monitoring", intro:"Observe SDK instances, heartbeats, seats, grace; plus SDK activate/heartbeat/release channel.", perm:"online",
+  functions:[
+   { fid:"fn-online-instances", name:"Instances / Seats / Stats", perm:"online:view",
+     ep:["GET","/api/online/instances · /seats · /stats"],
+     entry:"Console → Online Monitoring (Online.vue, 5s polling)", params:[], pre:[],
+     steps:["Instance table: licenseId/instanceId/machineCode/IP/state/activatedAt/lastHeartbeat.","State: online / grace (stale but <24h) / offline / released.","Seats: used/total (used = ACTIVE with heartbeat in grace); stat cards: online/grace/used seats."], post:[] },
+   { fid:"fn-online-sdk", name:"SDK channel: activate / heartbeat / deactivate", perm:"SDK (mTLS+signing advised)",
+     ep:["POST","/sdk/activate · /sdk/heartbeat · /sdk/deactivate"],
+     entry:"Called by the client SDK, not a console action",
+     pre:["License exists, ACTIVE, not revoked/expired","Activate needs free seats>0 (else 409)","Heartbeat nonce must be unique (anti-replay)"],
+     params:[{n:"licenseId / instanceId",t:"String",r:1,d:"License & instance unique IDs (e.g. host+PID)"},
+       {n:"machineCode",t:"String",r:0,d:"Machine fingerprint (activate)"},
+       {n:"nonce",t:"String",r:1,d:"One-time random for heartbeat (anti-replay)"},
+       {n:"ts",t:"Long",r:0,d:"Client timestamp (optional, for time check)"}],
+     steps:["activate: returns signed authSnapshot (offline grace), heartbeatSec, graceSec, seat usage.","heartbeat: reports every heartbeatSec; returns OK/REVOKED/EXPIRED/REPLAY.","deactivate: releases the instance → RELEASED, seat reclaimed."],
+     post:["Writes/updates LicenseInstance; nonce stored in NonceGuard (Redis when <code>APP_REDIS_ENABLED=true</code>); audits instance events."] },
+  ]},
+
+{ id:"m-catalog", e:"📦", t:"Product / Plan / Subscription", intro:"Product-module-feature-version matrix; plan pricing; subscriptions auto-issue licenses and bill.", perm:"catalog / plan",
+  functions:[
+   { fid:"fn-catalog-products", name:"Product Matrix / Feature-Version Availability", perm:"catalog:view",
+     ep:["GET","/api/catalog/products · /api/catalog/matrix"],
+     entry:"Console → Products & Versions (Products.vue)", params:[], pre:[],
+     steps:["Left: product (CODEMAN) → modules (RISK/REPORT/AUDIT/BI/DATA) → features.","Right: feature × version (v2.2/v2.3/v2.4) availability matrix."], post:[] },
+   { fid:"fn-plan-list", name:"Plan List", perm:"plan:view", ep:["GET","/api/plans"],
+     entry:"Console → Plans & Subscriptions (Plans.vue, plan cards)", params:[], pre:[],
+     steps:["View plans: code/name/price/version range/seats/modules.","Seed: Basic ¥19800·2 / Professional ¥49800·5 / Enterprise ¥99800·20 / Flagship ¥198000·50 seats."], post:[] },
+   { fid:"fn-sub-create", name:"Create Subscription (auto-issue + auto-bill)", perm:"plan:subscribe", ep:["POST","/api/subscriptions"],
+     entry:"Plan card → “Subscribe” dialog", pre:["Plan exists","endAt after startAt"],
+     params:[{n:"tenantCode",t:"String",r:1,d:"Tenant code"},{n:"customer",t:"String",r:1,d:"Customer name"},
+       {n:"planCode",t:"String",r:1,d:"BASIC/PROFESSIONAL/ENTERPRISE/FLAGSHIP"},{n:"qty",t:"Integer",r:0,d:"Quantity, default 1"},
+       {n:"startAt / endAt",t:"Date",r:1,d:"Subscription start/end"}],
+     steps:["Pick a plan from a card, fill tenant/customer/qty/dates.","Submit to create the subscription."],
+     post:["Subscription status=ACTIVE; auto-issues License (seats=plan.seats×qty, dates from subscription); auto-bills Invoice (amount=price×qty, type=SUBSCRIBE); audit <code>SUBSCRIPTION_CREATE</code>."] },
+   { fid:"fn-sub-change", name:"Change Plan / Cancel Subscription", perm:"plan:subscribe",
+     ep:["POST","/api/subscriptions/{id}/change · /cancel"],
+     entry:"Subscription list → row action", pre:["Subscription exists"],
+     params:[{n:"planCode",t:"String",r:0,d:"change: new plan code"}],
+     steps:["Change: linked License re-issued for the new plan (modules/seats updated, version +1) with price delta billing.","Cancel: subscription → CANCELLED, linked License revoked (enters CRL)."],
+     post:["Audit <code>SUBSCRIPTION_CHANGE</code> / <code>SUBSCRIPTION_CANCEL</code>."] },
+  ]},
+
+{ id:"m-customer", e:"👤", t:"Customer (360)", intro:"Customer master data + a 360 view aggregating licenses/contracts/invoices/payments/subscriptions.", perm:"customer",
+  functions:[
+   { fid:"fn-customer-crud", name:"Create / Edit Customer", perm:"customer:edit", ep:["POST/PUT","/api/customers · /{id}"],
+     entry:"Console → Customers → new/edit (Customers.vue)", pre:["Holds <code>customer:edit</code>"],
+     params:[{n:"name",t:"String",r:1,d:"Customer name (≤128; immutable after create)"},
+       {n:"tenantCode",t:"String",r:0,d:"Linked tenant code T-xxxxxx"},
+       {n:"contact / email / phone",t:"String",r:0,d:"Contact / email / phone"},
+       {n:"industry",t:"String",r:0,d:"Industry"},{n:"status",t:"Enum",r:0,d:"ACTIVE / INACTIVE, default ACTIVE"},
+       {n:"note",t:"String",r:0,d:"Note (≤512)"}],
+     steps:["Fill customer info and submit.","On edit, name is locked; status can be toggled."],
+     post:["Writes/updates customer master data."] },
+   { fid:"fn-customer-360", name:"Customer 360 (aggregated)", perm:"customer:view", ep:["GET","/api/customers/{id}/overview"],
+     entry:"Click a customer row → 360 drawer (5 tabs)", params:[{n:"id",t:"Path",r:1,d:"Customer ID"}], pre:[],
+     steps:["KPIs: licenses/active, contracts/signed amount, invoices/paid/pending, subscriptions, payments.","Tabs: Licenses / Contracts / Invoices / Subscriptions / Payments."], post:[] },
+   { fid:"fn-customer-export", name:"Export CSV", perm:"customer:view", ep:["GET","/api/customers/export.csv"],
+     entry:"Customer list → “Export CSV”", params:[], pre:[],
+     steps:["Columns: code/name/contact/email/phone/industry/status/createdAt."], post:[] },
+  ]},
+
+{ id:"m-billing", e:"💳", t:"Billing (Collect + Invoice)", intro:"Bill → QR collection (manual confirm by default) → e-invoice; providers are swappable.", perm:"billing",
+  functions:[
+   { fid:"fn-bill-list", name:"Invoices / Tax-invoices / Export", perm:"billing:view",
+     ep:["GET","/api/invoices · /tax-invoices/all · /export.csv"],
+     entry:"Console → Billing (Billing.vue, with KPIs)", params:[], pre:[],
+     steps:["Bills with KPIs (pending/paid/count).","View all tax invoices; export bills CSV."], post:[] },
+   { fid:"fn-bill-payment", name:"Start Collection / Poll / Sandbox Confirm", perm:"billing:manage (start·sandbox) / billing:view (poll)",
+     ep:["POST/GET","/api/payments · /{id} · /{id}/sandbox-confirm"],
+     entry:"Bill row → “Collect” dialog (QR / pay link)",
+     pre:["Start: bill status=PENDING","Sandbox confirm: MOCK channel only"],
+     params:[{n:"invoiceId",t:"Long",r:1,d:"Bill to collect"}],
+     steps:["Start: creates Payment(CREATED) + QR qrContent/payUrl (MOCK default).","Frontend polls status every 1.5s.","Sandbox: click “✅ Simulate paid” to mark paid (MOCK only)."],
+     post:["On success Payment→PAID and the linked bill→PAID."],
+     notes:[{k:"tip",t:"For real channels set <code>app.pay.provider</code> (PAY_PROVIDER); callbacks use the public endpoint below. No business code change."}] },
+   { fid:"fn-bill-notify", name:"Payment Callback (public · async)", perm:"public (provider signature)", ep:["POST","/pub/payments/notify/{channel}"],
+     entry:"Called back by the payment provider, no login", pre:["Provider signature verified"],
+     params:[{n:"channel",t:"Path",r:1,d:"MOCK/WECHATPAY/ALIPAY/STRIPE"}],
+     steps:["Provider callback → Provider.verifyNotify.","If valid: Payment→PAID, linked bill→PAID; else returns FAIL."],
+     post:["Idempotent: already-PAID is not reprocessed."] },
+   { fid:"fn-bill-pay-issue", name:"Manual Pay / Mark Invoiced (standalone)", perm:"billing:manage",
+     ep:["POST","/api/invoices/{id}/pay · /{id}/issue"],
+     entry:"Bill row actions", pre:["Pay: bill=PENDING","Issue no.: bill=PAID"], params:[],
+     steps:["pay: manually confirm received, bill→PAID (paidAt set).","issue: generate invoice no. <code>INV-…</code> for a paid bill, bill→INVOICED."],
+     post:["Only pending can be paid; only paid can be invoiced (else error)."] },
+   { fid:"fn-bill-einvoice", name:"Apply E-Invoice", perm:"billing:manage", ep:["POST","/api/invoices/{id}/e-invoice"],
+     entry:"Bill row → “Invoice” dialog", pre:["Bill exists","taxNo required when type=SPECIAL"],
+     params:[{n:"title",t:"String",r:1,d:"Invoice title (≤160)"},{n:"type",t:"Enum",r:0,d:"NORMAL (default) / SPECIAL"},
+       {n:"taxNo",t:"String",r:0,d:"Tax number (required for SPECIAL)"},{n:"email",t:"String",r:0,d:"Delivery email"}],
+     steps:["Pick normal/special VAT, fill title, (special) tax no., email.","Submit the invoice request."],
+     post:["Creates TaxInvoice (ISSUING→ISSUED) with code/serial/PDF. mock by default; production set <code>app.einvoice.provider</code> (EINVOICE_PROVIDER)."] },
+  ]},
+
+{ id:"m-contract", e:"📝", t:"Contract e-Sign", intro:"Template fill → draft → send (frozen snapshot + SHA-256 evidence) → sign party-by-party → effective (auto-bill if amount>0).", perm:"contract",
+  functions:[
+   { fid:"fn-contract-create", name:"Create Contract (draft)", perm:"contract:edit", ep:["POST","/api/contracts"],
+     entry:"Console → Contracts → “New” (Contracts.vue)",
+     pre:["customer non-blank","contentHtml required when no templateId","at least 1 party"],
+     params:[{n:"customer",t:"String",r:1,d:"Customer name"},{n:"templateId",t:"Long",r:0,d:"Template (auto-fills placeholders)"},
+       {n:"contentHtml",t:"HTML",r:0,d:"Body, required without template"},{n:"title",t:"String",r:0,d:"Title (default “{customer} service contract”)"},
+       {n:"amount",t:"Number",r:0,d:"Amount (>0 auto-bills after full signing)"},
+       {n:"planCode / tenantCode / subscriptionId",t:"-",r:0,d:"Optional links"},
+       {n:"parties[]",t:"Array",r:1,d:"Signers: name(req)/partyRole/email/phone"}],
+     steps:["Choose template or type body; fill customer and amount.","Add signers (name/role/email).","Submit to create draft (DRAFT, parties PENDING)."],
+     post:["Template placeholders {{customer}}/{{amount}}/{{plan}}/{{tenant}}/{{date}} are rendered."] },
+   { fid:"fn-contract-send", name:"Send for Signing", perm:"contract:edit", ep:["POST","/api/contracts/{id}/send"],
+     entry:"Contract detail → “Send” (draft only)", pre:["Contract=DRAFT","≥1 party"], params:[],
+     steps:["Click “Send”."],
+     post:["status→SENT; contract no. <code>HT-…</code>; contentHash=SHA-256(body) frozen snapshot (tamper-proof)."] },
+   { fid:"fn-contract-sign", name:"Sign (per party)", perm:"contract:sign", ep:["POST","/api/contracts/{id}/sign/{partyId}"],
+     entry:"Contract detail → a party “Sign”", pre:["Contract=SENT or SIGNING","party signStatus=PENDING (no re-sign)"],
+     params:[{n:"partyId",t:"Path",r:1,d:"Party ID"}],
+     steps:["Sign each party in turn."],
+     post:["Party→SIGNED, signHash=SHA-256(contentHash|name|time); when all signed contract→SIGNED; if amount>0 auto-bill (type=CONTRACT); otherwise partial = SIGNING."] },
+   { fid:"fn-contract-void", name:"Void / Templates / Export", perm:"contract:edit / contract:view",
+     ep:["POST/GET","/api/contracts/{id}/void · /templates · /export.csv"],
+     entry:"Contract row action / template mgmt / list export", pre:["Void: contract not SIGNED"],
+     params:[{n:"tpl: name",t:"String",r:1,d:"Template name"},{n:"tpl: contentHtml",t:"HTML",r:1,d:"Template body (may contain placeholders)"},
+       {n:"tpl: variables",t:"String",r:0,d:"Placeholder list, default customer,amount,plan,tenant,date"}],
+     steps:["Void unsigned contracts (signed cannot be voided).","Create templates for reuse.","Export contracts CSV (incl. contentHash)."], post:[] },
+  ]},
+
+{ id:"m-notice", e:"📋", t:"Notice & Consent", intro:"Versioned publishing of terms/privacy/announcements + consent/revoke audit trail (subject/version/channel/IP/time).", perm:"notice / consent",
+  functions:[
+   { fid:"fn-notice-crud", name:"Create / Edit Notice", perm:"notice:edit", ep:["POST/PUT","/api/notices · /{id}"],
+     entry:"Console → Notices → new/edit (Notices.vue)", pre:["Edit only for DRAFT (published needs a new version)"],
+     params:[{n:"type",t:"Enum",r:1,d:"TERMS/PRIVACY/NOTICE/ANNOUNCEMENT"},{n:"title",t:"String",r:1,d:"Title (≤160)"},
+       {n:"contentHtml",t:"HTML",r:1,d:"Body"},{n:"forceAck",t:"Boolean",r:0,d:"Force confirmation after login, default false"}],
+     steps:["Choose type, fill title & body, optionally enable force-ack.","Save as draft (version = max same-type +1)."],
+     post:["Creates DRAFT; effectiveAt set on publish."] },
+   { fid:"fn-notice-publish", name:"Publish Notice", perm:"notice:edit", ep:["POST","/api/notices/{id}/publish"],
+     entry:"Notice row → “Publish” (draft only)", pre:["Notice=DRAFT"], params:[],
+     steps:["Click “Publish”."],
+     post:["status→PUBLISHED, effectiveAt set; prior PUBLISHED of same type→ARCHIVED (one active per type); audit “{type} v{n} published”."] },
+   { fid:"fn-notice-ack", name:"Pending / Acknowledge (logged-in)", perm:"logged-in user", ep:["GET/POST","/api/notices/pending · /{id}/ack"],
+     entry:"Auto modal after login (force-ack notices)", pre:["Notice PUBLISHED & forceAck=true & user not yet GRANTED"], params:[],
+     steps:["After login fetch pending list → modal.","Tick “I have read and agree” → ack."],
+     post:["Writes UserConsent (subject=user, GRANTED, channel=WEB, records IP/UA/version); audit CONSENT_GRANTED."] },
+   { fid:"fn-notice-pub", name:"Public: active / consent / revoke", perm:"public (/pub/**)",
+     ep:["GET/POST","/pub/notices/active · /pub/consents · /pub/consents/revoke"],
+     entry:"Public policy page / external portal form", pre:[],
+     params:[{n:"type",t:"Query",r:0,d:"active: notice type"},{n:"noticeId",t:"Long",r:1,d:"consent/revoke: notice ID"},
+       {n:"subject",t:"String",r:1,d:"Subject (username/email)"},{n:"channel",t:"String",r:1,d:"WEB/EMAIL/API"}],
+     steps:["active: current PUBLISHED notice.","consents: record GRANTED.","revoke: record REVOKED."],
+     post:["IP/UA recorded for all."] },
+   { fid:"fn-notice-consents", name:"Consent Records / Export", perm:"consent:view",
+     ep:["GET","/api/notices/consents · /consents/export.csv"],
+     entry:"Console → Notices → “Consents” tab", params:[], pre:[],
+     steps:["View consent/revoke trail (subject/type/version/action/channel/IP/time).","Export CSV for evidence."], post:[] },
+  ]},
+
+{ id:"m-cs", e:"🤖", t:"AI Customer Service", intro:"Knowledge-base streaming Q&A (OpenAI-compatible); degrades gracefully without an LLM; escalation & audit.", perm:"cs",
+  functions:[
+   { fid:"fn-cs-chat", name:"Chat (SSE) / Status / Escalate", perm:"cs:use",
+     ep:["GET/POST","/api/cs/status · /api/cs/chat · /api/cs/{id}/escalate"],
+     entry:"Bottom-right floating widget (CsWidget.vue / CustomerService.vue)", pre:["Holds <code>cs:use</code>"],
+     params:[{n:"question",t:"String",r:1,d:"User question"},{n:"conversationId",t:"Long",r:0,d:"new conversation if empty"}],
+     steps:["Ask → SSE: event meta (conversationId) → delta (incremental text) → done.","status shows ready/model/kbSize; can “escalate”."],
+     post:["Without an LLM (<code>AI_ENABLED=false</code>) it degrades to KB recall (faq.md)."],
+     notes:[{k:"warn",t:"System prompt enforces safeguards: product-only answers, no secret/PII leakage, no write operations."}] },
+   { fid:"fn-cs-history", name:"My Conversations / Messages / All (audit)", perm:"cs:use (own) / cs:view (all)",
+     ep:["GET","/api/cs/conversations/mine · /{id}/messages · /api/cs/conversations"],
+     entry:"Console → AI Service (conversation list)", params:[], pre:[],
+     steps:["View own conversations & messages (role: user/assistant/system).","cs:view can audit all conversations."], post:[] },
+  ]},
+
+{ id:"m-harden", e:"📦", t:"Online Code Hardening", intro:"Per-tenant mode; upload jar → choose techniques → async harden → download; coexists with build-time hardening.", perm:"harden",
+  functions:[
+   { fid:"fn-harden-config", name:"Hardening Settings (per tenant)", perm:"harden:config (save) / harden:view (read)",
+     ep:["GET/PUT","/api/harden/config · /configs · (PUT)/config"],
+     entry:"Console → Hardening → “Settings” (Harden.vue)", pre:["Save needs <code>harden:config</code>"],
+     params:[{n:"tenantCode",t:"String",r:0,d:"Tenant (empty=platform-wide)"},
+       {n:"mode",t:"Enum",r:1,d:"BUILD (CI only) / ONLINE (platform only) / BOTH"},
+       {n:"obfuscate",t:"Boolean",r:0,d:"Default ProGuard obfuscation"},
+       {n:"encryptBind",t:"Boolean",r:0,d:"Default class-encrypt + License binding"},
+       {n:"fatjarEncrypt",t:"Boolean",r:0,d:"Default passphrase class-encrypt"}],
+     steps:["Choose mode & default techniques → save."],
+     post:["When a tenant is BUILD, online jobs are rejected."] },
+   { fid:"fn-harden-submit", name:"Submit Online Hardening (upload jar)", perm:"harden:run", ep:["POST","/api/harden/jobs (multipart)"],
+     entry:"Console → Hardening → “Submit”", pre:["Tenant mode ≠ BUILD",".jar ≤ <code>HARDEN_MAX_FILE_MB</code> (default 200)"],
+     params:[{n:"file",t:"File",r:1,d:"Executable jar (multipart)"},
+       {n:"techniques",t:"CSV",r:0,d:"OBFUSCATE,ENCRYPT_BIND,FATJAR_ENCRYPT (in order)"},
+       {n:"bindLicense",t:"String",r:0,d:"License ID for ENCRYPT_BIND"},
+       {n:"passphrase",t:"String",r:0,d:"Passphrase for FATJAR_ENCRYPT"},
+       {n:"encryptPrefix",t:"String",r:0,d:"Package prefix to encrypt (auto-inferred if omitted)"},
+       {n:"tenantCode",t:"String",r:0,d:"Tenant code"}],
+     steps:["Upload jar, select techniques.","ENCRYPT_BIND: enter License ID; FATJAR_ENCRYPT: enter passphrase; optionally a package prefix.","Submit → async pipeline QUEUED→RUNNING→DONE/FAILED."],
+     post:["Key derivation: ENCRYPT_BIND from .lic content, FATJAR_ENCRYPT from passphrase (SHA-256); processed by a 2-thread pool."] },
+   { fid:"fn-harden-jobs", name:"Jobs / Detail / Download", perm:"harden:view",
+     ep:["GET","/api/harden/jobs · /{id} · /{id}/download"],
+     entry:"Console → Hardening → jobs table", params:[], pre:["Download requires DONE"],
+     steps:["View jobs: jobNo/source/techniques/status/output size.","Download artifact <code>hardened-{source}</code>."],
+     post:[],
+     notes:[{k:"tip",t:"Run artifact: <code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code> (bound) or <code>java -Dharden.key=&lt;pass&gt; -jar x.jar</code> (passphrase); HARDEN_LICENSE/HARDEN_KEY env vars also supported."},
+       {k:"faq",t:"Stuck/failed? Ensure the jar is executable, under the size limit, and <code>HARDEN_WORK_DIR</code> is writable."}] },
+  ]},
+
+{ id:"m-portal", e:"🚪", t:"Tenant Self-service Portal", intro:"Ops enables an access code; customers log in with tenant code + access code to view their authorizations read-only.", perm:"tenant:portal",
+  functions:[
+   { fid:"fn-portal-admin", name:"Portal Admin (enable/reset/disable)", perm:"tenant:portal (enable·reset·disable) / tenant:view (list)",
+     ep:["GET/POST","/api/portal-admin · /{tenantCode}/enable · /reset · /disable"],
+     entry:"Console → Self-service Portal (PortalAdmin.vue)", pre:["Holds <code>tenant:portal</code>"],
+     params:[{n:"tenantCode",t:"Path",r:1,d:"Target tenant code"}],
+     steps:["“Enable” generates an 8-char access code (alnum, excludes 0/1/I/O).","“Copy” copies tenant code + access code + portal URL.","“Reset” the code or “Disable” the portal."],
+     post:["Enable/reset/disable audited as PORTAL_ENABLE/RESET/DISABLE."] },
+   { fid:"fn-portal-login", name:"Portal Login / Overview (customer · public)", perm:"public (portal token)",
+     ep:["POST/GET","/pub/portal/login · /pub/portal/overview"],
+     entry:"Customer opens <code>/portal</code> (Portal.vue → PortalHome.vue)",
+     pre:["Tenant exists & portal enabled","access code matches"],
+     params:[{n:"tenantCode",t:"String",r:1,d:"Tenant code"},{n:"accessCode",t:"String",r:1,d:"Access code"}],
+     steps:["Log in with code+access code → issues a role=TENANT_PORTAL token (localStorage <code>codeman.portal.token</code>).","Overview shows KPIs and licenses/contracts/invoices/subscriptions read-only (strictly tenant-scoped)."],
+     post:["Missing/invalid token → 401; the portal exposes no write operations."] },
+  ]},
+
+{ id:"m-rbac", e:"🔐", t:"Roles & Users", intro:"Polymorphic permission tree (NONE/VIEW/EDIT/FULL) + user lifecycle + login/change-password.", perm:"role:view / user:view",
+  functions:[
+   { fid:"fn-rbac-roles", name:"Permission Tree / Roles / Set Permissions", perm:"read: none / set: super-admin",
+     ep:["GET/PUT","/api/rbac/permissions · /roles · /roles/{id} · (PUT)/roles/{id}/permissions"],
+     entry:"Console → Roles (Roles.vue)", pre:["Setting permissions: super-admin check"],
+     params:[{n:"items",t:"{code,mode}[]",r:1,d:"mode ∈ NONE/VIEW/EDIT/FULL"}],
+     steps:["Select a role → pick none/view/edit/full per tree node.","Parent cascades to unset children → save."],
+     post:["New permissions auto-granted to super-admin; VIEWER read-only by default; NONE = not stored; audit ROLE_PERM_UPDATE."] },
+   { fid:"fn-rbac-users", name:"User Management (create/reset/toggle)", perm:"user:view (list) / user:edit (write)",
+     ep:["GET/POST","/api/users · /{id}/reset-password · /{id}/toggle"],
+     entry:"Console → Users (Users.vue)", pre:["Writes need <code>user:edit</code>"],
+     params:[{n:"username",t:"String",r:1,d:"Username (unique, 1–64)"},{n:"roleId",t:"Long",r:1,d:"Role ID"},
+       {n:"password",t:"String",r:0,d:"Initial password, default <code>Codeman@123</code> if blank"}],
+     steps:["Create user: assign role and optional initial password.","Reset password, enable/disable account."],
+     post:["Create & reset set mustChangePwd=true (forced change on first login); built-in admin cannot be disabled; audit USER_CREATE/RESET_PWD/TOGGLE."] },
+   { fid:"fn-rbac-auth", name:"Login / Me / Change Password", perm:"none (authenticated)",
+     ep:["POST/GET","/api/auth/login · /api/auth/me · /api/auth/change-password"],
+     entry:"Login page (Login.vue) / forced change-password modal", pre:["Login: account status=ACTIVE"],
+     params:[{n:"username / password",t:"String",r:1,d:"Login credentials"},{n:"oldPassword / newPassword",t:"String",r:1,d:"Change (new 6–64)"}],
+     steps:["Login returns token + role + effective permissions (with mode) + mustChangePwd.","If mustChangePwd, change before proceeding."],
+     post:["JWT lifetime <code>JWT_TTL_HOURS</code> (default 12h); <code>JWT_SECRET</code> must be changed in production."] },
+  ]},
+
+{ id:"m-audit", e:"🧾", t:"Audit Log", intro:"Immutable trail of key operations, searchable and exportable.", perm:"audit:view",
+  functions:[
+   { fid:"fn-audit", name:"View / Search / Export Audit", perm:"audit:view", ep:["GET","/api/audit · /audit/export.csv"],
+     entry:"Console → Audit (Audit.vue)", params:[{n:"keyword",t:"Query",r:0,d:"Fuzzy search by action/detail/actor"}], pre:[],
+     steps:["List shows latest 200 by time desc.","Keyword search; export CSV (createdAt/actor/action/tenantId/detail)."],
+     post:["All writes are recorded via AuditWriter; logs are immutable."] },
+  ]},
+
+{ id:"m-sdk", e:"🧩", t:"SDK & Code Protection", intro:"Client side: public-key verify + feature/version gating + online channel + build-time protection.", perm:"client integration",
+  functions:[
+   { fid:"fn-sdk-verify", name:"SDK Verify & Gating", perm:"client", ep:["-","sdk/license-sdk"],
+     entry:"Integrate the SDK into the customer app", pre:["Holds the platform public key (<code>/pub/license/public-keys</code> by kid)"], params:[],
+     steps:["Verify <code>.lic</code> signature with the public key; check validity, CRL, feature flags and version range (SemVer).","Online mode uses the SDK channel (see Online Monitoring · SDK channel)."],
+     post:["Private key never leaves the server; the client never holds it."],
+     notes:[{k:"tip",t:"Design: <a href='../../docs/02-代码保护方案.md'>Code Protection</a>, <a href='../../docs/03-License认证方案.md'>License Authentication</a>."}] },
+   { fid:"fn-sdk-build", name:"Build-time Code Protection", perm:"CI/CD", ep:["-","examples/protected-app"],
+     entry:"Build pipeline <code>mvn -Pharden</code>", pre:[], params:[],
+     steps:["ProGuard obfuscation: <code>cd examples/protected-app &amp;&amp; mvn -Pharden</code>.","<code>BuildProtected</code> encrypts critical classes; the decryption key is derived from & bound to the License.","<code>demo.sh</code> shows valid / wrong-key / tampered cases."],
+     post:["Coexists with platform online hardening, switchable per tenant (see Online Code Hardening)."] },
+  ]},
+
+{ id:"m-ai", e:"🧠", t:"LLM Integration", intro:"AI service is OpenAI-compatible; switch vendors by changing 3 .env values.", perm:"config",
+  functions:[
+   { fid:"fn-ai-config", name:"LLM Configuration", perm:"ops config", ep:["-","application.yml / .env (app.ai.*)"],
+     entry:".env / application.yml", pre:["Reachable model service"],
+     params:[{n:"AI_ENABLED",t:"Boolean",r:0,d:"Enable LLM (default false → KB fallback)"},
+       {n:"AI_BASE_URL",t:"URL",r:0,d:"OpenAI-compatible endpoint, default local Ollama"},
+       {n:"AI_API_KEY",t:"String",r:0,d:"Cloud API key (not needed for local Ollama)"},
+       {n:"AI_MODEL",t:"String",r:0,d:"Model ID, e.g. glm-4-flash/deepseek-chat/qwen2.5:7b-instruct"},
+       {n:"AI_TIMEOUT_SEC / AI_HISTORY_LIMIT",t:"Int",r:0,d:"Timeout (default 60) / history size (default 12)"}],
+     steps:[], post:[],
+     notes:[{k:"tip",t:"Example below; selection/cost see <a href='../../docs/智能客服-大模型选型与部署.md'>LLM selection & deployment</a>. Local model via Docker: <code>docker compose --profile ai up -d</code> then <code>ollama pull</code>."}],
+     code:`# Zhipu GLM-4-Flash (often free)
+AI_ENABLED=true
+AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+AI_API_KEY=***
+AI_MODEL=glm-4-flash
+
+# Local Ollama (offline)
+AI_ENABLED=true
+AI_BASE_URL=http://ollama:11434/v1
+AI_MODEL=qwen2.5:7b-instruct` },
+  ]},
+
+{ id:"m-ref", e:"📚", t:"Appendix: Vars/Ports/Endpoints", intro:"Quick reference of env vars, public endpoints and ports.", perm:"reference",
+  functions:[
+   { fid:"fn-ref", name:"Quick Reference", perm:"-", ep:["-","-"], entry:"-", params:[], pre:[], steps:[], post:[],
+     html:`
+     <div class="blk"><div class="lab">Key environment variables</div>
+     <table class="ref"><tr><th>Variable</th><th>Description</th></tr>
+     <tr><td><code>JWT_SECRET</code> / <code>JWT_TTL_HOURS</code></td><td>JWT secret (change in prod) / lifetime (default 12h)</td></tr>
+     <tr><td><code>LICENSE_SIGN_ALGO</code></td><td>Signature algorithm ed25519 / sm2</td></tr>
+     <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td>prod / mysql</td></tr>
+     <tr><td><code>DB_URL/DB_USER/DB_PASSWORD</code></td><td>Database connection</td></tr>
+     <tr><td><code>APP_REDIS_ENABLED</code></td><td>Multi-instance heartbeat nonce via Redis</td></tr>
+     <tr><td><code>APP_MAIL_*</code> / <code>CORS_ORIGINS</code></td><td>Mail / CORS</td></tr>
+     <tr><td><code>PAY_PROVIDER</code> / <code>EINVOICE_PROVIDER</code></td><td>Payment / invoice channel</td></tr>
+     <tr><td><code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code></td><td>AI customer service</td></tr>
+     <tr><td><code>HARDEN_WORK_DIR/HARDEN_MAX_FILE_MB</code></td><td>Hardening work dir / limit (default 200MB)</td></tr>
+     <tr><td><code>ALERT_WECOM_WEBHOOK</code></td><td>WeCom alert</td></tr></table></div>
+     <div class="blk"><div class="lab">Public endpoints (/pub/**, no login)</div>
+     <table class="ref"><tr><th>Endpoint</th><th>Purpose</th></tr>
+     <tr><td><code>/pub/notices/active</code> · <code>/pub/consents[/revoke]</code></td><td>Notice / consent / revoke</td></tr>
+     <tr><td><code>/pub/payments/notify/{channel}</code></td><td>Payment callback</td></tr>
+     <tr><td><code>/pub/portal/login|overview</code></td><td>Tenant portal</td></tr>
+     <tr><td><code>/pub/crl</code> · <code>/pub/license/public-keys</code></td><td>CRL / public keys</td></tr>
+     <tr><td><code>/api/activation/{token}</code></td><td>Tenant activation</td></tr>
+     <tr><td><code>/sdk/activate|heartbeat|deactivate</code></td><td>SDK online channel</td></tr></table></div>
+     <div class="blk"><div class="lab">Ports</div>
+     <table class="ref"><tr><th>Service</th><th>Port</th></tr>
+     <tr><td>Console</td><td>80 (Docker) / 5173 (dev)</td></tr>
+     <tr><td>Backend</td><td>8080</td></tr>
+     <tr><td>PostgreSQL / MySQL / Redis</td><td>5432 / 3306 / 6379</td></tr>
+     <tr><td>Prometheus / Grafana / Ollama</td><td>9090 / 3000 / 11434</td></tr></table></div>` },
+  ]},
+];
+
+const FLOW = [
+{ id:"f-deploy", e:"🚀", t:"Workflow 1 · Deploy from scratch", intro:"For ops: get the platform running and initialized.",
+  blocks:[
+   {h:"① Prepare environment", pre:["JDK 17+ (21 recommended; Java 8 not supported; skippable with containers)","Database: H2 for trial / PostgreSQL 16 or MySQL 5.7·8.0 (utf8mb4) for prod","(Multi-instance) Redis 7"]},
+   {h:"② Option A · Docker Compose (recommended)", steps:[
+     {b:"Copy env template", d:"Trial <code>cp .env.example .env</code>; prod <code>cp .env.prod.example .env</code> and change JWT/DB/SMTP/channel secrets."},
+     {b:"One-command start", d:"<code>docker compose up -d --build</code>."},
+     {b:"(Optional) MySQL", d:"<code>docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console</code>."},
+     {b:"Access", d:"Console <code>http://localhost</code> · backend <code>:8080</code> · Prometheus <code>:9090</code> · Grafana <code>:3000</code>."},
+   ]},
+   {h:"③ Option B · Bare metal (systemd+nginx)", steps:[
+     {b:"Configure env file", d:"<code>cp deploy/codeman-backend.env.example /etc/codeman/backend.env</code> and edit DB/secrets."},
+     {b:"Install service", d:"<code>sudo bash deploy/install.sh</code> → <code>systemctl status codeman-backend</code>. See docs/部署-CentOS7.md."},
+   ]},
+   {h:"④ Option C · Local dev", steps:[
+     {b:"Backend (H2 default)", d:"<code>cd server/license-platform &amp;&amp; mvn spring-boot:run</code> (:8080)."},
+     {b:"Frontend", d:"<code>cd web/console &amp;&amp; npm install &amp;&amp; npm run dev</code> (:5173)."},
+   ]},
+   {h:"⑤ Schema creation", steps:[
+     {b:"Flyway auto (recommended)", d:"App startup auto-creates tables and seeds system data."},
+     {b:"Plain SQL", d:"Run <code>deploy/sql/schema-&lt;dialect&gt;.sql → init-admin.sql → test-data.sql</code> and set <code>SPRING_FLYWAY_ENABLED=false</code>."},
+   ]},
+   {h:"⑥ First login & init", steps:[
+     {b:"Log in", d:"Use <code>admin / 8888</code>."},
+     {b:"Forced change", d:"Must change the password on first login.", see:[{go:"fn-rbac-auth",label:"Login/Change pwd"}]},
+     {b:"Confirm notices (if any)", d:"Tick “I have read and agree”.", see:[{go:"fn-notice-ack",label:"Notice ack"}]},
+     {b:"Users & permissions", d:"Create member accounts; review role permissions.", see:[{go:"fn-rbac-users",label:"Users"},{go:"fn-rbac-roles",label:"Roles"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"H2 is in-memory (wiped on restart) — never for production; always change <code>JWT_SECRET</code> and channel secrets in prod."}] },
+
+{ id:"f-onboard", e:"🤝", t:"Workflow 2 · Onboard a customer & issue authorization", intro:"The core business line: turn a customer into an authorized, verifiable tenant.",
+  blocks:[
+   {h:"① Maintain product & plan", steps:[
+     {b:"Product/module/feature/version", d:"Maintain the product & availability matrix.", see:[{go:"fn-catalog-products",label:"Product matrix"}]},
+     {b:"Plan pricing", d:"Define price/seats/modules/version range.", see:[{go:"fn-plan-list",label:"Plans"}]},
+   ]},
+   {h:"② Onboard tenant", steps:[
+     {b:"Create tenant", d:"Name/admin email/plan; system builds an isolated Schema and sends an activation email.", see:[{go:"fn-tenant-onboard",label:"Onboard"}]},
+     {b:"Customer activates", d:"Admin activates via email, sets password, optionally binds MFA.", see:[{go:"fn-tenant-activate",label:"Activate"}]},
+   ]},
+   {h:"③ Deliver authorization (two ways)", steps:[
+     {b:"Issue License directly", d:"Pick product/edition/modules/validity/seats → produce .lic.", see:[{go:"fn-license-issue",label:"Issue License"}]},
+     {b:"or Create subscription (auto-issue + bill)", d:"One-step by plan.", see:[{go:"fn-sub-create",label:"Create subscription"}]},
+     {b:"Download/export", d:"Deliver the .lic; export the ledger.", see:[{go:"fn-license-download",label:"Download/Export"}]},
+   ]},
+   {h:"④ Client integration & monitoring", steps:[
+     {b:"Integrate SDK verify", d:"Public-key verify + feature/version gating.", see:[{go:"fn-sdk-verify",label:"SDK verify"}]},
+     {b:"(Online) SDK channel", d:"Activate/heartbeat/release.", see:[{go:"fn-online-sdk",label:"SDK channel"}]},
+     {b:"Ops monitoring", d:"Watch instances, heartbeats, seats.", see:[{go:"fn-online-instances",label:"Monitoring"}]},
+   ]},
+  ],
+  notes:[{k:"faq",t:"Customer reports “License invalid”? Check: matching public-key kid/algorithm, not expired/revoked (check CRL), feature/version in range, clock not rolled back."}] },
+
+{ id:"f-harden", e:"🛡️", t:"Workflow 3 · Code protection & hardening delivery", intro:"Two coexisting paths, switchable per tenant by ops.",
+  blocks:[
+   {h:"① Set hardening mode (per tenant)", steps:[
+     {b:"Mode & default techniques", d:"Build-only / online-only / both.", see:[{go:"fn-harden-config",label:"Settings"}]},
+   ]},
+   {h:"② Path A · Platform online hardening", steps:[
+     {b:"Upload jar & choose techniques", d:"ProGuard / class-encrypt+License / passphrase.", see:[{go:"fn-harden-submit",label:"Submit"}]},
+     {b:"Download & run", d:"Run with <code>-Dharden.license</code> or <code>-Dharden.key</code>.", see:[{go:"fn-harden-jobs",label:"Jobs/Download"}]},
+   ]},
+   {h:"③ Path B · Build-time self hardening", steps:[
+     {b:"Pipeline hardening", d:"<code>mvn -Pharden</code> + class-encrypt bound to License.", see:[{go:"fn-sdk-build",label:"Build-time"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"When a tenant is set to BUILD-only, the platform rejects its online hardening jobs."}] },
+
+{ id:"f-billing", e:"💰", t:"Workflow 4 · Revenue collection loop", intro:"Bill → collect (manual confirm) → invoice.",
+  blocks:[
+   {h:"① Billing", steps:[{b:"Auto-bill", d:"Subscriptions or effective contracts (amount>0) create a PENDING bill.", see:[{go:"fn-sub-create",label:"Subscription bill"},{go:"fn-contract-sign",label:"Contract bill"}]}]},
+   {h:"② Collect (manual confirm by default)", steps:[
+     {b:"Start QR collection", d:"Generate a QR for a PENDING bill.", see:[{go:"fn-bill-payment",label:"Start collection"}]},
+     {b:"Confirm receipt", d:"Sandbox-simulate, or finance manually confirms then pay.", see:[{go:"fn-bill-pay-issue",label:"Manual pay"}]},
+   ]},
+   {h:"③ Invoicing", steps:[{b:"Issue e-invoice", d:"Normal/special VAT, title, tax no., email → code/serial/PDF.", see:[{go:"fn-bill-einvoice",label:"Apply invoice"}]}]},
+  ],
+  notes:[{k:"tip",t:"For real payment/invoice channels set <code>PAY_PROVIDER</code>/<code>EINVOICE_PROVIDER</code>; the workflow stays the same."}] },
+
+{ id:"f-compliance", e:"📝", t:"Workflow 5 · Contracts & compliance", intro:"Notice publishing and contract e-sign with evidence.",
+  blocks:[
+   {h:"① Notice & consent", steps:[
+     {b:"Publish notice", d:"Draft → publish (archive old), optionally force-ack.", see:[{go:"fn-notice-crud",label:"Create notice"},{go:"fn-notice-publish",label:"Publish"}]},
+     {b:"Evidence trail", d:"View consent/revoke records and export.", see:[{go:"fn-notice-consents",label:"Consent records"}]},
+   ]},
+   {h:"② Contract e-sign", steps:[
+     {b:"Create draft", d:"Template or manual body + add signers.", see:[{go:"fn-contract-create",label:"Create contract"}]},
+     {b:"Send", d:"Frozen snapshot + SHA-256 evidence.", see:[{go:"fn-contract-send",label:"Send"}]},
+     {b:"Sign → effective", d:"All signed → effective; amount>0 auto-bills.", see:[{go:"fn-contract-sign",label:"Sign"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"Self-built e-sign + hash evidence; for CA seals integrate vendors like e-sign providers (abstraction reserved)."}] },
+
+{ id:"f-selfservice", e:"🚪", t:"Workflow 6 · Self-service & support", intro:"Customers self-check authorizations + AI support.",
+  blocks:[
+   {h:"① Enable portal", steps:[{b:"Enable & deliver credentials", d:"Generate an access code, copy code+access code+URL.", see:[{go:"fn-portal-admin",label:"Portal admin"}]}]},
+   {h:"② Customer uses the portal", steps:[{b:"Log in read-only", d:"Customer logs in to /portal with code+access code.", see:[{go:"fn-portal-login",label:"Portal login"}]}]},
+   {h:"③ AI support", steps:[
+     {b:"Chat", d:"Floating widget, KB streaming answers, escalate.", see:[{go:"fn-cs-chat",label:"Chat"}]},
+     {b:"(Optional) connect an LLM", d:"Set AI_* to use GLM/Qwen/DeepSeek/Ollama.", see:[{go:"fn-ai-config",label:"LLM config"}]},
+   ]},
+  ] },
+
+{ id:"f-ops", e:"🔧", t:"Workflow 7 · Day-2 operations", intro:"Monitoring / backup / keys / upgrade.",
+  blocks:[
+   {h:"① Monitoring & alerts", steps:[
+     {b:"Metrics & dashboards", d:"Prometheus scrapes <code>/actuator/prometheus</code> + Grafana boards."},
+     {b:"Live board", d:"Watch instances/seats in real time.", see:[{go:"fn-online-instances",label:"Monitoring"}]},
+     {b:"Alerts", d:"Set <code>ALERT_WECOM_WEBHOOK</code> for WeCom."},
+   ]},
+   {h:"② Backup", pre:["Regular pg_dump/mysqldump + PITR","Redis sentinel/cluster (optional)","Hardening dir HARDEN_WORK_DIR on a persistent volume"]},
+   {h:"③ Keys", steps:[{b:"No plaintext", d:"Private key, JWT_SECRET, channel secrets injected via env/Nacos/KMS (docs/密钥管理-KMS.md)."}]},
+   {h:"④ Multi-instance & upgrade", steps:[
+     {b:"Scale out", d:"<code>APP_REDIS_ENABLED=true</code> routes heartbeat nonce via Redis."},
+     {b:"License expiry governance", d:"Daily auto-expire + reminders.", see:[{go:"fn-license-expire",label:"Auto-expire/Reminder"}]},
+     {b:"DB upgrade", d:"Edit Flyway migration (+ db/mysql dialect) → generate-schema.sh → CI real-DB matrix."},
+   ]},
+  ] },
+];
+
+/* ===== Render engine (identical to help.html) ===== */
+const main=document.getElementById('main'), nav=document.getElementById('nav');
+let mode='flow';
+const FNMAP={}; MOD.forEach(m=>m.functions.forEach(f=>FNMAP[f.fid]=m.id));
+function renderFn(f,idx){
+  let h=`<div class="fn" id="${f.fid}">`;
+  h+=`<div class="fnh"><span class="num">${idx}</span>${f.name}`;
+  if(f.perm) h+=` <span class="tag perm">perm ${f.perm}</span>`;
+  h+=`</div>`;
+  if(f.ep && f.ep[0]!=='-') h+=`<div class="ep"><span class="m">${f.ep[0]}</span> ${f.ep[1]}</div>`;
+  if(f.html){ h+=f.html; h+=`</div>`; return h; }
+  if(f.entry && f.entry!=='-') h+=`<div class="blk"><div class="lab">Entry</div><div class="desc" style="margin:0">${f.entry}</div></div>`;
+  if(f.pre&&f.pre.length) h+=`<div class="blk"><div class="lab">Preconditions</div><ul class="tick">${f.pre.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  if(f.params&&f.params.length){
+    h+=`<div class="blk"><div class="lab">Parameters</div><table class="params"><tr><th>Param</th><th>Type</th><th>Req.</th><th>Description</th></tr>`;
+    h+=f.params.map(p=>`<tr><td class="n">${p.n}</td><td>${p.t}</td><td>${p.r?'<span class="req">required</span>':'<span class="opt">optional</span>'}</td><td>${p.d}</td></tr>`).join('');
+    h+=`</table></div>`;
+  }
+  if(f.steps&&f.steps.length) h+=`<div class="blk"><div class="lab">Steps</div><ol class="mini">${f.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
+  if(f.post&&f.post.length) h+=`<div class="blk"><div class="lab">Result / Postconditions</div><ul class="dash">${f.post.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  if(f.code) h+=`<pre>${f.code.replace(/^# .*/gm,m=>`<span class="c">${m}</span>`)}</pre>`;
+  if(f.notes) h+=f.notes.map(n=>`<div class="note ${n.k}"><span class="lab">${n.k==='tip'?'Tip':n.k==='warn'?'Note':'FAQ'}</span>${n.t}</div>`).join('');
+  h+=`</div>`; return h;
+}
+function renderMod(m){
+  let h=`<div class="crumbs">Module / ${m.t}</div><h1>${m.e} ${m.t}</h1><p class="intro">${m.intro}</p>`;
+  m.functions.forEach((f,i)=>h+=renderFn(f,i+1));
+  return h;
+}
+function renderFlow(f){
+  const title=f.t.replace(/^Workflow \d+ · /,'');
+  let h=`<div class="crumbs">Workflow / ${title}</div><h1>${f.e} <span class="gr">${title}</span></h1><p class="intro">${f.intro}</p>`;
+  f.blocks.forEach(b=>{
+    h+=`<h2 class="sec">${b.h}</h2>`;
+    if(b.pre) h+=`<ul class="tick">${b.pre.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    if(b.steps){
+      h+=`<ol class="steps">`+b.steps.map(s=>{
+        let li=`<li><b>${s.b}</b> <span class="h">${s.d}</span>`;
+        if(s.see) li+=`<div class="seewrap">`+s.see.map(x=>`<span class="see" data-go="${x.go}">🔗 ${x.label}</span>`).join('')+`</div>`;
+        return li+`</li>`;
+      }).join('')+`</ol>`;
+    }
+  });
+  if(f.notes) h+=f.notes.map(n=>`<div class="note ${n.k}"><span class="lab">${n.k==='tip'?'Tip':n.k==='warn'?'Note':'FAQ'}</span>${n.t}</div>`).join('');
+  return h;
+}
+function allDocs(){return FLOW.concat(MOD);}
+function pager(d){
+  const list=FLOW.some(x=>x.id===d.id)?FLOW:MOD, i=list.findIndex(x=>x.id===d.id), prev=list[i-1], next=list[i+1];
+  return `<div class="pager">${prev?`<a data-go="${prev.id}"><small>← Prev</small>${prev.e} ${prev.t}</a>`:`<span style="flex:1"></span>`}${next?`<a class="n" data-go="${next.id}"><small>Next →</small>${next.e} ${next.t}</a>`:`<span style="flex:1"></span>`}</div>`;
+}
+function renderDocs(){
+  main.innerHTML = FLOW.map(f=>`<section class="doc" id="${f.id}">${renderFlow(f)}${pager(f)}</section>`).join('')
+    + MOD.map(m=>`<section class="doc" id="${m.id}">${renderMod(m)}${pager(m)}</section>`).join('');
+}
+function renderNav(){
+  const list=mode==='flow'?FLOW:MOD, title=mode==='flow'?'By Workflow':'By Module';
+  nav.innerHTML=`<div class="navgrp"><h4>${title}</h4>`+list.map(d=>{
+    let sub='';
+    if(mode==='mod'&&d.functions) sub=`<div class="subnav" id="sub-${d.id}">`+d.functions.map(f=>`<span class="sublink" data-go="${f.fid}">${f.name}</span>`).join('')+`</div>`;
+    return `<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>${sub}`;
+  }).join('')+`</div>`;
+}
+function show(target){
+  let docId=target, anchor=null;
+  if(FNMAP[target]){docId=FNMAP[target];anchor=target;}
+  const inFlow=FLOW.some(x=>x.id===docId);
+  if((inFlow&&mode!=='flow')||(!inFlow&&mode!=='mod')){mode=inFlow?'flow':'mod';setTab();renderNav();}
+  document.querySelectorAll('section.doc').forEach(s=>s.classList.toggle('show',s.id===docId));
+  document.querySelectorAll('.navlink').forEach(n=>n.classList.toggle('active',n.dataset.go===docId));
+  document.querySelectorAll('.subnav').forEach(s=>s.classList.toggle('show',s.id==='sub-'+docId));
+  if(anchor){
+    const el=document.getElementById(anchor);
+    if(el){el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);}
+    history.replaceState(null,'','#'+anchor);
+  }else{window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'','#'+docId);}
+  closeAside();
+}
+function setTab(){document.getElementById('tabFlow').classList.toggle('on',mode==='flow');document.getElementById('tabMod').classList.toggle('on',mode==='mod');}
+document.getElementById('tabFlow').onclick=()=>{mode='flow';setTab();renderNav();show(FLOW[0].id);};
+document.getElementById('tabMod').onclick=()=>{mode='mod';setTab();renderNav();show(MOD[0].id);};
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();show(g.dataset.go);}});
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  if(!q){renderNav();return;}
+  const hits=[];
+  FLOW.forEach(f=>{if((f.t+JSON.stringify(f.blocks)).toLowerCase().includes(q))hits.push({go:f.id,e:f.e,t:f.t,sub:'Workflow'});});
+  MOD.forEach(m=>{
+    m.functions.forEach(f=>{if((f.name+JSON.stringify(f.params||[])+JSON.stringify(f.steps||[])+(f.entry||'')).toLowerCase().includes(q))hits.push({go:f.fid,e:m.e,t:f.name,sub:m.t});});
+    if(m.t.toLowerCase().includes(q))hits.push({go:m.id,e:m.e,t:m.t,sub:'Module'});
+  });
+  nav.innerHTML=`<div class="navgrp"><h4>Results (${hits.length})</h4>`+(hits.length?hits.map(h=>`<div class="navlink" data-go="${h.go}"><span class="e">${h.e}</span><span>${h.t} <span style="color:var(--dim);font-size:11px">· ${h.sub}</span></span></div>`).join(''):`<div class="nohit">No match</div>`)+`</div>`;
+});
+const aside=document.getElementById('aside');
+document.getElementById('menubtn').onclick=()=>aside.classList.toggle('open');
+function closeAside(){if(window.innerWidth<=880)aside.classList.remove('open');}
+renderDocs();renderNav();
+const start=(location.hash||'').slice(1);
+show((FNMAP[start]||allDocs().some(d=>d.id===start))?start:FLOW[0].id);
+</script>
+</body>
+</html>

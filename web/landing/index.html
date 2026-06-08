@@ -106,6 +106,7 @@
       <a class="lk" href="#pillars">三大子系统</a>
       <a class="lk" href="#features">功能矩阵</a>
       <a class="lk" href="#start">快速开始</a>
+      <a class="lk" href="#gallery">界面预览</a>
       <a class="lk" href="#tech">技术栈</a>
       <a class="lk" href="help.html">操作帮助</a>
       <a class="btn g" href="../../docs/使用手册-从部署到应用.md">使用手册</a>
@@ -215,6 +216,88 @@ docker compose up -d --build</pre>
     </p>
   </div>
 </section>
+
+<!-- GALLERY · 功能截图 -->
+<style>
+  .gal-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 26px}
+  .gal-tab{font-size:13px;color:var(--mut);border:1px solid var(--line);background:rgba(255,255,255,.02);
+    border-radius:999px;padding:6px 14px;cursor:pointer;transition:.18s}
+  .gal-tab:hover{color:#fff;border-color:var(--acc)}
+  .gal-tab.on{background:var(--grad);color:#fff;border-color:transparent}
+  .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .gal-fig{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:.2s}
+  .gal-fig:hover{transform:translateY(-3px);border-color:var(--acc2);box-shadow:0 16px 40px -20px rgba(124,77,255,.6)}
+  .gal-fig a{display:block}
+  .gal-fig img{width:100%;height:172px;object-fit:cover;object-position:top;display:block;background:#0b1020}
+  .gal-fig figcaption{padding:10px 14px;font-size:13px;color:var(--mut)}
+  .gal-fig figcaption b{color:var(--txt);display:block;font-size:13.5px;margin-bottom:1px}
+  @media(max-width:860px){.gal-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.gal-grid{grid-template-columns:1fr}}
+</style>
+<section id="gallery">
+  <div class="wrap">
+    <div class="eyebrow">Screens</div>
+    <h2>功能截图 · 按模块预览</h2>
+    <p class="lead">均来自可运行控制台的真实界面（中英 i18n · 多主题 · 2K/4K）。点击图片查看大图。</p>
+    <div class="gal-tabs" id="galTabs"></div>
+    <div class="gal-grid" id="galGrid"></div>
+  </div>
+</section>
+<script>
+  const SHOT='../console/shots/';
+  const GAL=[
+    {c:'总览',f:'app-01-总览-科技蓝-2K.png',t:'运营总览',d:'科技蓝主题'},
+    {c:'总览',f:'app-02-总览-暗夜-2K.png',t:'运营总览',d:'暗夜主题'},
+    {c:'总览',f:'st-06-总览-暗夜-英文.png',t:'Overview',d:'English · dark'},
+    {c:'总览',f:'ops-01-总览-真实统计与告警.png',t:'总览',d:'真实统计与告警'},
+    {c:'租户',f:'app-04-租户管理-2K.png',t:'租户管理',d:'列表与状态'},
+    {c:'租户',f:'app-07-开通租户与邮件-2K.png',t:'开通租户',d:'实时邮件预览'},
+    {c:'租户',f:'act-01-激活页-科技蓝-2K.png',t:'账户激活',d:'设密码 + MFA'},
+    {c:'租户',f:'act-04-激活成功-2K.png',t:'激活成功',d:'引导登录'},
+    {c:'License',f:'lic-02-签发向导-2K.png',t:'License 签发',d:'模块/功能/有效期'},
+    {c:'License',f:'lic-03-版本历史diff-2K.png',t:'版本历史',d:'逐版本 diff'},
+    {c:'License',f:'feat-15-吊销名单CRL.png',t:'吊销名单 CRL',d:'签名分发'},
+    {c:'License',f:'biz-02-License含导出.png',t:'License 列表',d:'下载 / 导出'},
+    {c:'在线监控',f:'on-01-在线监控-科技蓝-2K.png',t:'在线监控',d:'实例/心跳/席位'},
+    {c:'在线监控',f:'on-02-在线监控-暗夜-2K.png',t:'在线监控',d:'暗夜主题'},
+    {c:'产品套餐',f:'plan-01-产品矩阵-真实-2K.png',t:'产品矩阵',d:'模块×版本'},
+    {c:'产品套餐',f:'plan-02-套餐订阅-真实-2K.png',t:'套餐订阅',d:'定价与席位'},
+    {c:'产品套餐',f:'plan-03-订阅自动签发-2K.png',t:'订阅自动签发',d:'一步到位'},
+    {c:'客户360',f:'feat-11-客户管理.png',t:'客户管理',d:'主数据'},
+    {c:'客户360',f:'feat-12-客户360.png',t:'客户360',d:'全景聚合'},
+    {c:'计费发票',f:'biz-01-计费账单与开票.png',t:'计费账单',d:'出账与开票'},
+    {c:'计费发票',f:'feat-09-扫码收款.png',t:'扫码收款',d:'二维码'},
+    {c:'计费发票',f:'feat-10-支付成功.png',t:'支付成功',d:'到账核销'},
+    {c:'计费发票',f:'feat-14-电子发票.png',t:'电子发票',d:'普票/专票'},
+    {c:'合同',f:'feat-06-合同列表.png',t:'合同列表',d:'状态流转'},
+    {c:'合同',f:'feat-07-合同详情存证.png',t:'合同存证',d:'SHA-256 快照'},
+    {c:'须知授权',f:'feat-01-须知强制确认门.png',t:'强制确认门',d:'登录前同意'},
+    {c:'须知授权',f:'feat-02-须知管理.png',t:'须知管理',d:'版本化发布'},
+    {c:'须知授权',f:'feat-03-授权记录.png',t:'授权记录',d:'同意/撤回留痕'},
+    {c:'智能客服',f:'feat-05-智能客服流式对话.png',t:'智能客服',d:'流式对话'},
+    {c:'智能客服',f:'feat-04-智能客服会话审计.png',t:'会话审计',d:'全量可查'},
+    {c:'自助门户',f:'feat-13-门户开通管理.png',t:'门户开通',d:'访问码'},
+    {c:'自助门户',f:'feat-16-门户登录.png',t:'门户登录',d:'编号+访问码'},
+    {c:'自助门户',f:'feat-17-门户首页.png',t:'门户首页',d:'只读授权视图'},
+    {c:'权限用户',f:'rbac-02-角色权限多态树-2K.png',t:'角色权限',d:'多态权限树'},
+    {c:'权限用户',f:'rbac-03-用户管理-2K.png',t:'用户管理',d:'建号/启停'},
+    {c:'权限用户',f:'rbac-04-首登强制改密-2K.png',t:'首登改密',d:'强制安全'},
+    {c:'审计',f:'biz-03-审计含导出.png',t:'审计日志',d:'搜索 / 导出'},
+    {c:'审计',f:'cat-03-审计追溯-2K.png',t:'审计追溯',d:'操作留痕'},
+  ];
+  (function(){
+    const cats=['全部',...[...new Set(GAL.map(g=>g.c))]];
+    const tabs=document.getElementById('galTabs'), grid=document.getElementById('galGrid');
+    let cur='全部';
+    function draw(){
+      tabs.innerHTML=cats.map(c=>`<span class="gal-tab${c===cur?' on':''}" data-c="${c}">${c}</span>`).join('');
+      const items=cur==='全部'?GAL:GAL.filter(g=>g.c===cur);
+      grid.innerHTML=items.map(g=>`<figure class="gal-fig"><a href="${SHOT}${g.f}" target="_blank" rel="noopener"><img loading="lazy" src="${SHOT}${g.f}" alt="${g.t}"></a><figcaption><b>${g.t}</b>${g.d} · ${g.c}</figcaption></figure>`).join('');
+    }
+    tabs.addEventListener('click',e=>{const x=e.target.closest('[data-c]');if(x){cur=x.dataset.c;draw();}});
+    draw();
+  })();
+</script>
 
 <!-- TECH -->
 <section id="tech" style="background:linear-gradient(180deg,transparent,rgba(79,140,255,.04),transparent)">

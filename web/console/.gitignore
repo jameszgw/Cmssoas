@@ -1,0 +1,4 @@
+# 由 scripts/sync-help.mjs 在 predev/prebuild 自动生成(单一事实来源在 web/landing/)
+public/help.html
+public/help-en.html
+public/landing.html

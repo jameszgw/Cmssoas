@@ -10,9 +10,14 @@ import NoticeGate from '@/components/NoticeGate.vue'
 import CsWidget from '@/components/CsWidget.vue'
 import { useAuthStore } from '@/stores/auth'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const router = useRouter()
 const auth = useAuthStore()
+
+// 帮助中心(静态页,随前端发布到 public/);按当前语言选择中/英版本
+const helpUrl = computed(
+  () => `${import.meta.env.BASE_URL}${String(locale.value).startsWith('en') ? 'help-en.html' : 'help.html'}`,
+)
 
 const allNavs = [
   { to: '/overview', key: 'nav.overview', perm: 'overview' },
@@ -61,6 +66,7 @@ async function logout() {
       <div class="spacer"></div>
       <div class="tools">
         <span class="pillbtn hidden-md-and-down">🔍 {{ t('common.search') }}</span>
+        <a class="iconbtn" :href="helpUrl" target="_blank" rel="noopener" :title="t('common.help')">❔</a>
         <ThemeSwitcher />
         <LangSwitcher />
         <button class="iconbtn">🔔<span class="dot"></span></button>
@@ -105,7 +111,7 @@ async function logout() {
 .spacer{flex:1}
 .tools{display:flex;align-items:center;gap:.55rem}
 .pillbtn{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.42rem .8rem;font-size:.82rem;font-weight:600;cursor:pointer}
-.iconbtn{width:2.2rem;height:2.2rem;border-radius:11px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer;position:relative;font-size:1rem}
+.iconbtn{width:2.2rem;height:2.2rem;border-radius:11px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer;position:relative;font-size:1rem;text-decoration:none}
 .iconbtn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#ff5b5b}
 .userbox{display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.2rem .3rem;border-radius:10px}
 .userbox:hover{background:rgba(255,255,255,.12)}

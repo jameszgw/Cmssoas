@@ -133,6 +133,7 @@ export default {
     s: { online: '在线', grace: '宽限期', offline: '离线', released: '已释放' },
   },
   common: {
+    help: '帮助中心',
     search: '搜索租户 / License', viewAll: '查看全部', detail: '详情', renew: '续期',
     cancel: '取消', confirm: '确定', all: '全部', keyword: '关键字', status: '状态',
     plan: '套餐', reset: '重置', exportCsv: '导出 CSV', fail: '操作失败',

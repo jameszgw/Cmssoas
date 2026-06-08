@@ -133,6 +133,7 @@ export default {
     s: { online: 'Online', grace: 'Grace', offline: 'Offline', released: 'Released' },
   },
   common: {
+    help: 'Help Center',
     search: 'Search tenants / licenses', viewAll: 'View all', detail: 'Detail', renew: 'Renew',
     cancel: 'Cancel', confirm: 'Confirm', all: 'All', keyword: 'Keyword', status: 'Status',
     plan: 'Plan', reset: 'Reset', exportCsv: 'Export CSV', fail: 'Operation failed',
