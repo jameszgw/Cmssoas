@@ -15,6 +15,9 @@
 
 ## 方案文档（`docs/`）
 
+> 🎉 **官宣页（可直接浏览器打开）**：[web/landing/index.html](web/landing/index.html) —— 产品总览、三大子系统、功能矩阵、快速开始。
+> 📖 **使用手册（从部署到应用）**：[docs/使用手册-从部署到应用.md](docs/使用手册-从部署到应用.md) —— 部署、初始化、逐模块操作、SDK 接入、运维全流程。
+>
 > 🧭 **会话交接 / 接手必读**：[docs/HANDOFF.md](docs/HANDOFF.md)（中文) · [docs/HANDOFF-en.md](docs/HANDOFF-en.md)（English）——当前状态、架构约定、关键决策、待办。
 >
 > 👉 **主文档（推荐先读）**：[00-完整解决方案（分步骤·含前后端）](docs/00-完整解决方案(分步骤·含前后端).md)
