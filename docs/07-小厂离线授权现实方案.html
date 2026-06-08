@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07 · 小厂离线授权现实方案（替代硬件指纹绑定） · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="07-小厂离线授权现实方案.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 07 · 小厂离线授权现实方案（替代硬件指纹绑定）</div>
+<h1 id="h303720c2b720">07 · 小厂离线授权现实方案（替代硬件指纹绑定）</h1>
+<blockquote><p>针对反馈："离线靠硬件指纹绑定 <code>.lic</code>，对小厂不现实。" 本文给出<strong>为什么不现实</strong>，以及一套<strong>按投入从低到高、可落地</strong>的替代方案，供中小团队按软件价值与客户环境分级选用。</p>
+</blockquote>
+<hr>
+<h2 id="h312e20e4b8ba">1. 为什么"硬件指纹绑定"对小厂不现实</h2>
+<div class="tbl"><table><thead><tr><th>痛点</th><th>说明</th></tr></thead><tbody><tr><td><strong>人工流程重</strong></td><td>"采集指纹 → 客户回传 → 人工签发 → 回传 → 客户导入" 每客户/每机器/每次硬件变更都要走一遍。小厂没有专职 License 运维，签发即人肉客服。</td></tr><tr><td><strong>云/容器无稳定指纹</strong></td><td>自动扩缩容、镜像复制、虚机迁移、K8s 重调度都会让硬件 ID 漂移，授权频繁失效。现代部署越来越"无硬件"。</td></tr><tr><td><strong>跨平台 native 维护贵</strong></td><td>指纹采集要覆盖 Windows / 各家 Linux / 麒麟 / 统信，native 编译与适配对小团队是持续负担。</td></tr><tr><td><strong>客户体验差、抵触锁机</strong></td><td>B2B 客户讨厌被"绑死在某台机器"，迁移困难、扩容受阻，直接影响满意度与续费。</td></tr><tr><td><strong>支持成本爆炸</strong></td><td>换块硬盘、加块网卡就失效 → 紧急工单淹没小团队，得不偿失。</td></tr></tbody></table></div>
+<blockquote><p><strong>结论</strong>：硬件指纹是"高价值软件 + 涉密离线"才值得的重投入。小厂应优先选下面<strong>更轻</strong>的方案，把硬绑定作为可选项而非默认。</p>
+</blockquote>
+<hr>
+<h2 id="h322e20e69bbf">2. 替代方案总览（决策矩阵）</h2>
+<div class="tbl"><table><thead><tr><th>方案</th><th>是否绑机器</th><th>是否需联网</th><th>厂商运维成本</th><th>防复制能力</th><th>适用</th></tr></thead><tbody><tr><td><strong>T0 签名期限 License（不绑机）</strong></td><td>否</td><td>否</td><td>极低</td><td>弱（靠水印+合同+遥测）</td><td>客户少、信任高、按客户/项目计价、涉密内网</td></tr><tr><td><strong>T1 软节点锁（installationId）</strong></td><td>软绑（随机ID，非硬件）</td><td>否（可选联网去重）</td><td>低</td><td>中（防随手复制）</td><td>想要"一份一机"但怕硬件运维</td></tr><tr><td><strong>T2 在线自助激活 + 离线运行</strong> ⭐</td><td>软绑</td><td>仅激活/续租时一次</td><td>低（自动化，无人工）</td><td>强（在线去重/限激活数/可吊销）</td><td>客户有外网，平时可离线运行</td></tr><tr><td><strong>T3 用现成/开源自托管 Licensing</strong> ⭐</td><td>取决于配置</td><td>取决于配置</td><td>低（不自研）</td><td>强</td><td>想几天上线、不想自研签发/激活/后台</td></tr></tbody></table></div>
+<blockquote><p>⭐ 推荐小厂默认从 <strong>T0</strong> 起步，需要防复制时上 <strong>T2</strong> 或直接 <strong>T3</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="h332e20543020">3. T0 · 签名期限 License（不绑机器，最常用）</h2>
+<p><strong>思路</strong>：License 只签 <code>客户 + 模块 + 功能 + 版本范围 + 有效期 + 唯一水印</code>，<strong>不绑定任何机器</strong>。 防伪造靠<strong>非对称签名</strong>（私钥不出域）；防滥用靠<strong>有效期（到期必续）+ 水印溯源 + 合同 + 可选遥测</strong>。</p>
+<pre><code>{
+  "licenseId":"LIC-...", "licenseVersion":1,
+  "customer":"XX公司", "productCode":"CODEMAN", "edition":"PRO",
+  "modules":["RISK","REPORT"], "features":{"REPORT.EXPORT":true,"MAX_USERS":100},
+  "appVersionRange":"&gt;=2.0.0 &lt;3.0.0",
+  "notBefore":"2026-06-06", "notAfter":"2027-06-06",
+  "watermark":"WM-7f3a..."        // 客户唯一水印，泄露可溯源
+  // 注意：无 machineCode
+}</code></pre>
+<ul>
+<li><strong>签发零人工</strong>：可在控制台一键生成，甚至随订单自动生成 <code>.lic</code> 邮件发出。</li>
+<li><strong>客户体验最好</strong>：随便部署、随便迁移、云容器无感。</li>
+<li><strong>到期续签</strong>即天然的"再次授权"节点，是小厂主要的商业抓手。</li>
+</ul>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>一份 License 被复制到多处部署</td><td>①唯一<strong>水印</strong>：泄露包可溯源到客户，配合合同追责；②<strong>有效期</strong>强制周期性回到厂商续费；③可选<strong>轻量遥测</strong>：应用偶尔上报部署数/客户标识，后台发现异常多副本即预警</td></tr><tr><td>无法实时停用</td><td>靠到期不续 + 法律手段；如需实时吊销，升级到 T2</td></tr></tbody></table></div>
+<blockquote><p>这是<strong>绝大多数小厂 B2B/私有化的现实选择</strong>：成本最低、客户最舒服，用商业+法律+水印兜住技术上的"可复制"。</p>
+</blockquote>
+<hr>
+<h2 id="h342e20543120">4. T1 · 软节点锁（installationId，不碰硬件）</h2>
+<p><strong>思路</strong>：首次启动随机生成 <code>installationId</code>（UUID），加密存到本地数据目录/配置；激活时把 License <strong>绑定 installationId</strong> 而非硬件。</p>
+<pre><code>首次启动 → 生成 installationId(随机) → 存本地(加密)
+签发/激活 → License 绑定该 installationId
+启动校验 → 验签 ∧ 本地 installationId == License 中绑定值 ∧ 有效期
+换机/迁移 → 客户自助“反激活”释放 → 新环境重新激活(限次数)</code></pre>
+<ul>
+<li>比硬件指纹<strong>友好得多</strong>：云容器只要<strong>持久化一个文件</strong>即可稳定；无需 native 采集、无跨平台编译。</li>
+<li>适合"想要一份授权对应一个安装实例、但不愿碰硬件运维"的场景。</li>
+</ul>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>复制整个安装目录 → 复制 installationId</td><td>纯离线无法根治；配合<strong>水印 + 有效期</strong>；如可联网，用 T2 的"在线去重"（同一 installationId 多地并发上报即告警/拒绝）</td></tr><tr><td>客户误删数据目录致 ID 丢失</td><td>自助重新激活（限次）+ 备份提示</td></tr></tbody></table></div>
+<hr>
+<h2 id="h352e20543220">5. T2 · 在线自助激活 + 离线运行 ⭐（强烈推荐）</h2>
+<p><strong>核心：把"人工签发"变成"自动激活服务"，干掉小厂最大的人力痛点；激活后可离线运行。</strong></p>
+<pre><code>厂商发放 license key（一串激活码，对应一笔订单/套餐）
+        │
+客户在应用中填入 license key
+        │  ① 联网一次：POST /activate { licenseKey, installationId }
+        ▼
+轻量激活服务（一台小 VPS / Serverless 即可）
+   - 校验 key 有效 &amp; 未超激活数（如 1 key 限 3 次激活）
+   - 绑定 installationId，自动用私钥签发 License 快照
+        │  ② 返回签名 License（缓存本地）
+        ▼
+客户应用：之后【离线运行】，凭本地缓存的签名 License 工作
+        │
+（可选）每隔 N 天联网“续租”一次刷新；长期不联网 → 宽限期后降级
+换机：客户自助“反激活”释放名额 → 新机重新激活</code></pre>
+<p><strong>为什么适合小厂</strong></p>
+<ul>
+<li><strong>无人工</strong>：激活/签发/换机全自动，客户自助，厂商零介入。</li>
+<li><strong>轻量</strong>：一台便宜 VPS 或云函数 + 一个小数据库即可承载激活，无需常驻心跳。</li>
+<li><strong>防复制强</strong>：在线限激活次数 + 同一 key 去重 + 可远程吊销。</li>
+<li><strong>离线运行</strong>：激活后断网也能跑（适合客户内网/不稳定网络），只在激活/续租时短暂联网。</li>
+</ul>
+<p><strong>与在线心跳模式的区别</strong>：T2 不要求持续心跳，只在"激活/续租"时联网，介于纯离线与纯在线之间，运维与体验平衡最好。</p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>激活服务宕机致客户无法激活</td><td>服务无状态 + 便宜多实例；激活是低频操作，容忍短暂排队；保留 T0 离线签发兜底</td></tr><tr><td>客户完全无外网</td><td>提供"离线激活码"通道：客户导出 installationId 文本，厂商网页生成离线 License（半自动），即退化为 T1/T0</td></tr><tr><td>滥用激活名额</td><td>每 key 限激活次数 + 反激活回收 + 异常并发告警</td></tr><tr><td>续租期网络不稳</td><td>宽限期（如 72h~30d）内继续运行，不误伤生产</td></tr></tbody></table></div>
+<hr>
+<h2 id="h362e20543320">6. T3 · 直接用现成 / 开源自托管 Licensing（降本利器）</h2>
+<p>小厂<strong>不必自研</strong>签发引擎、激活服务、吊销、管理后台——这些自研工作量巨大。可直接用成熟方案：</p>
+<div class="tbl"><table><thead><tr><th>方案</th><th>形态</th><th>特点</th><th>适合</th></tr></thead><tbody><tr><td><strong>Keygen</strong> (keygen.sh)</td><td>开源，可<strong>自托管</strong>，也有云版</td><td>License/激活/机器管理/吊销/分发 API 齐全，REST 易集成 Java</td><td>想自控数据又不想自研 ⭐</td></tr><tr><td>Cryptolens</td><td>SaaS + SDK</td><td>成熟、含离线激活、防篡改</td><td>快速上线、可接受 SaaS</td></tr><tr><td>LicenseSpring</td><td>SaaS</td><td>功能全、管理后台现成</td><td>预算充足、要省事</td></tr><tr><td>自建（本仓库 01–06 方案）</td><td>自研</td><td>完全可控、可深度定制</td><td>软件价值高、长期投入</td></tr></tbody></table></div>
+<ul>
+<li><strong>建议</strong>：小厂起步用 <strong>Keygen 自托管</strong>（数据自控、合规友好）或 SaaS，几天集成上线；待规模/价值上来再考虑自研（迁移到 01–06 方案）。</li>
+<li><strong>风险/应对</strong>：</li>
+<ul>
+<li>依赖第三方/数据出境 → 选<strong>可自托管开源（Keygen）</strong>规避；</li>
+<li>订阅成本 → 早期成本远低于自研人力；</li>
+<li>锁定 → 抽象一层 <code>LicenseProvider</code> 接口，便于未来切换到自研。</li>
+</ul>
+</ul>
+<hr>
+<h2 id="h372e20e7bb99">7. 给小厂的推荐决策路径</h2>
+<pre><code>客户少 / 信任高 / 涉密内网 / 按客户计价
+        └──▶ T0 签名期限 License（不绑机）+ 水印 + 合同        【首选，零运维】
+
+需要“防随手复制”但客户有外网
+        └──▶ T2 在线自助激活 + 离线运行                       【推荐，自动化无人工】
+
+不想自研签发/激活/后台，想几天上线
+        └──▶ T3 Keygen 自托管 / SaaS                          【最省事】
+
+软件价值很高 / 强涉密离线 / 愿意重投入
+        └──▶ 才考虑硬件指纹绑定（01–06 完整方案的可选增强）     【最后才上】</code></pre>
+<p><strong>一句话</strong>：小厂离线授权应以 <strong>T0（签名期限，不绑机）</strong> 为默认，需要防复制时上 <strong>T2（自助激活）</strong> 或 <strong>T3（现成方案）</strong>；硬件指纹是高价值/涉密场景的可选增强，<strong>不要默认上</strong>。</p>
+<hr>
+<h2 id="h382e20e9809a">8. 通用底线（无论选哪个 Tier）</h2>
+<ul>
+<li><strong>永远用非对称签名</strong>：私钥不出域，客户端只验签，杜绝伪造（成本几乎为零，必做）。</li>
+<li><strong>永远打唯一水印</strong>：泄露可溯源 + 合同追责，是最便宜的"防复制"。</li>
+<li><strong>永远设有效期</strong>：到期续签是商业抓手，也是技术上的周期性"重新授权"。</li>
+<li><strong>失败策略</strong>：离线/网络异常给<strong>宽限期</strong>，宁可短期放行也别误伤客户生产。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/07-小厂离线授权现实方案.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

@@ -6,7 +6,8 @@
 - [操作说明.md](操作说明.md) — 控制台各模块操作指引
 - [帮助文档.md](帮助文档.md) — 帮助 / FAQ / 排错
 - 完整使用手册(从部署到应用):[../../docs/使用手册-从部署到应用.md](../../docs/使用手册-从部署到应用.md)
-- 操作帮助中心(HTML,按流程/按模块,可搜索):[../../web/landing/help.html](../../web/landing/help.html)
+- 文档中心(HTML,全部 md 网页版):[../../docs/index.html](../../docs/index.html)
+- 操作帮助中心(HTML,按流程/按模块,可搜索):[../../web/landing/help.html](../../web/landing/help.html) · [English](../../web/landing/help-en.html)
 - 官宣页(浏览器打开):[../../web/landing/index.html](../../web/landing/index.html)
 - 会话交接(接手必读):[../../docs/HANDOFF.md](../../docs/HANDOFF.md) · [English](../../docs/HANDOFF-en.md)
 - 部署说明:见 [`../README.md`](../README.md);数据库脚本:见 [`../sql/README.md`](../sql/README.md)

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功能说明：客户主数据 / 自助门户 / 电子发票 / License 续费吊销闭环 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="功能-客户主数据_自助门户_电子发票_License闭环.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 功能说明：客户主数据 / 自助门户 / 电子发票 / License 续费吊销闭环</div>
+<h1 id="he58a9fe883bd">功能说明：客户主数据 / 自助门户 / 电子发票 / License 续费吊销闭环</h1>
+<p>本批补齐四项核心业务能力,沿用平台一贯设计(统一鉴权/审计、provider-agnostic 默认沙箱、多租户隔离、 页面级浅色功能简介 + PageHelp、中英 i18n、CSV 导出)。迁移 V15–V17。</p>
+<hr>
+<h2 id="he291a120e7bb">② 统一客户主数据 + 客户360</h2>
+<ul>
+<li>数据:<code>customer</code>(code/name/contact/email/phone/industry/status/tenant_code)。</li>
+<li>客户360:以<strong>客户名称</strong>聚合 License/合同/账单/支付/订阅(各实体 customer 字段),输出全景与 KPI</li>
+</ul>
+<p>  (授权数/有效、合同数、已收款、待收款、订阅数等)——打通原先散落的客户视角。</p>
+<ul>
+<li>接口:<code>/api/customers</code> CRUD、<code>/{id}/overview</code>、<code>export.csv</code>。权限 <code>customer:view|edit</code>。</li>
+<li>前端:客户列表/搜索/新建编辑 + 客户360 抽屉(KPI + 授权/合同/账单/订阅多 tab)。</li>
+</ul>
+<h2 id="he291a220e7a7">③ 租户自助门户</h2>
+<ul>
+<li>面向<strong>最终客户</strong>的只读门户,独立于运营后台。</li>
+<li>运营侧:为租户「开通」生成访问码(<code>tenant:portal</code>),可复制(租户编号+访问码+门户地址)/重置/停用。</li>
+<li>门户侧(公开):<code>/pub/portal/login</code>(租户编号 + 访问码)签发<strong>门户专用 JWT</strong>(role=TENANT_PORTAL);</li>
+</ul>
+<p>  <code>/pub/portal/overview</code> 仅返回<strong>本租户</strong>的 License/合同/账单/订阅 + KPI,严格隔离;token 在控制器内自校验。</p>
+<ul>
+<li>前端:公开 <code>Portal</code> 登录页 + <code>PortalHome</code>(独立 token 存储,不与运营后台冲突);运营 <code>PortalAdmin</code> 管理页。</li>
+</ul>
+<h2 id="he291a320e6ad">④ 正规税务发票(电子发票)</h2>
+<ul>
+<li>通用 <code>EInvoiceProvider</code> 抽象,默认 <code>MockEInvoiceProvider</code>(沙箱生成发票代码/号码/PDF);</li>
+</ul>
+<p>  生产改 <code>app.einvoice.provider</code> 接航信/百望/税务开放平台,业务层不变。</p>
+<ul>
+<li>流程:<strong>已收款(PAID)账单</strong> → 申请开票(抬头/税号/普票或专票/邮箱)→ 渠道开具 → 账单置</li>
+</ul>
+<p>  <strong>INVOICED</strong>,发票号取<strong>真实发票号码</strong>;专票强制税号。</p>
+<ul>
+<li>接口:<code>/api/invoices/{id}/e-invoice</code>、<code>/{id}/tax-invoices</code>、<code>/tax-invoices/all</code>。权限 <code>billing:manage|view</code>。</li>
+<li>前端:Billing「开票」升级为电子发票弹层(票种/抬头/税号/邮箱 → 发票代码/号码/PDF)。</li>
+</ul>
+<h2 id="he291a4204c69">⑤ License 续费 / 吊销分发闭环</h2>
+<ul>
+<li>续费/变更/吊销已具备;本次补齐<strong>离线分发与到期自动化</strong>:</li>
+<ul>
+<li><strong>签名 CRL</strong>:<code>GET /pub/crl</code>(公开)返回<strong>已签名</strong>吊销名单</li>
+</ul>
+</ul>
+<p>    <code>{issuedAt,kid,sigAlg,count,revoked[],payloadB64,signature}</code>;离线 SDK 拉取后用公钥(按 kid)验签,     据此拒绝已吊销 License。<code>GET /pub/license/public-keys</code> 公开公钥集(JWKS 风格)。</p>
+<ul>
+<li><strong>到期自动停用</strong>:每日定时(<code>app.license.auto-expire-interval-ms</code>)将过期 ACTIVE → EXPIRED 并重签;</li>
+</ul>
+<p>    亦可手动 <code>POST /api/licenses/run-auto-expire</code>(<code>license:revoke</code>)。</p>
+<ul>
+<li>在线通道(SDK)已对 REVOKED/EXPIRED 实时拒绝(<code>OnlineService</code>)。</li>
+<li>前端:Licensing 工具条新增「吊销名单」(查看签名 CRL + 公开分发地址 + 复制)与「到期停用」。</li>
+</ul>
+<hr>
+<h2 id="he8bf81e7a7bb">迁移与配置</h2>
+<ul>
+<li><code>V15__customer.sql</code> / <code>V16__tenant_portal.sql</code> / <code>V17__tax_invoice.sql</code>(权限点随启动授予 SUPER_ADMIN)。</li>
+<li>配置:<code>app.einvoice.provider</code>(mock|aisino|baiwang)、<code>app.license.auto-expire-interval-ms</code>。</li>
+</ul>
+<h2 id="he6b58be8af95">测试</h2>
+<p>全套 24/24 通过,新增:</p>
+<ul>
+<li><code>CustomerIntegrationTest</code>(创建/重名/360 聚合)</li>
+<li><code>PortalIntegrationTest</code>(开通→登录→隔离全景;错码/无token/缺租户防护)</li>
+<li><code>TaxInvoiceIntegrationTest</code>(开具→账单已开票;专票缺税号 400)</li>
+<li><code>LicenseLifecycleIntegrationTest</code>(吊销→<strong>公开签名 CRL 验签通过</strong>;到期自动停用)</li>
+</ul>
+<h2 id="he688aae59bbe">截图</h2>
+<p><code>web/console/shots/feat-11 ~ feat-16</code>:客户360、自助门户登录/首页、门户开通管理、电子发票、吊销名单 CRL。</p>
+<h2 id="he7958ce99da2">界面截图</h2>
+<p><img src="../web/console/shots/feat-11-客户管理.png" alt="客户管理" loading="lazy"> <em>客户主数据维护</em></p>
+<p><img src="../web/console/shots/feat-12-客户360.png" alt="客户360" loading="lazy"> <em>客户360：按客户聚合 License/合同/账单/订阅</em></p>
+<p><img src="../web/console/shots/feat-13-门户开通管理.png" alt="门户开通管理" loading="lazy"> <em>运营为租户开通自助门户并生成访问码</em></p>
+<p><img src="../web/console/shots/feat-16-门户登录.png" alt="门户登录" loading="lazy"> <em>客户用「租户编号 + 访问码」登录门户</em></p>
+<p><img src="../web/console/shots/feat-17-门户首页.png" alt="门户首页" loading="lazy"> <em>租户自助门户首页（只读授权视图）</em></p>
+<p><img src="../web/console/shots/feat-15-吊销名单CRL.png" alt="吊销名单CRL" loading="lazy"> <em>签名吊销名单 CRL</em></p>
+
+<div class="docfoot">本页由 <code>docs/功能-客户主数据_自助门户_电子发票_License闭环.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

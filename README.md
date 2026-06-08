@@ -15,6 +15,7 @@
 
 ## 方案文档（`docs/`）
 
+> 📚 **文档中心（HTML，UTF-8，全部 md 的网页版）**：[docs/index.html](docs/index.html) —— 设计方案/功能说明/部署/验收文档的网页版，与帮助中心互链；由 `node scripts/build-docs.mjs` 生成。
 > 🎉 **官宣页（可直接浏览器打开）**：[web/landing/index.html](web/landing/index.html) —— 产品总览、三大子系统、功能矩阵、快速开始。
 > 🧭 **操作帮助中心（HTML，按流程 / 按模块，可搜索）**：[web/landing/help.html](web/landing/help.html)（中文）· [help-en.html](web/landing/help-en.html)（EN）—— 全功能逐步操作、所需权限/参数、提示与常见问题；已内嵌控制台顶栏「❔ 帮助中心」。
 > 📖 **使用手册（从部署到应用）**：[docs/使用手册-从部署到应用.md](docs/使用手册-从部署到应用.md) —— 部署、初始化、逐模块操作、SDK 接入、运维全流程。

@@ -136,8 +136,9 @@
   <span class="sp"></span>
   <input id="search" type="search" placeholder="搜索功能 / 操作 / 参数…" autocomplete="off" />
   <a class="lk" href="help-en.html">EN</a>
+  <a class="lk" href="../../docs/index.html">📚 文档</a>
   <a class="lk" href="index.html">官宣页</a>
-  <a class="lk" href="../../docs/使用手册-从部署到应用.md">手册(MD)</a>
+  <a class="lk" href="../../docs/使用手册-从部署到应用.html">手册</a>
 </header>
 
 <div class="layout">
@@ -608,7 +609,7 @@ const MOD = [
      params:[],
      steps:["用公钥验 <code>.lic</code> 签名;校验有效期、CRL、功能开关与版本范围(SemVer)。","在线模式接 SDK 通道(见 在线监控 · SDK 通道)。"],
      post:["私钥不出域,客户端不持私钥。"],
-     notes:[{k:"tip",t:"设计详见 <a href='../../docs/02-代码保护方案.md'>代码保护方案</a>、<a href='../../docs/03-License认证方案.md'>License 认证方案</a>。"}] },
+     notes:[{k:"tip",t:"设计详见 <a href='../../docs/02-代码保护方案.html'>代码保护方案</a>、<a href='../../docs/03-License认证方案.html'>License 认证方案</a>。"}] },
    { fid:"fn-sdk-build", name:"构建时代码保护", perm:"CI/CD",
      ep:["-","examples/protected-app"],
      entry:"构建流水线 <code>mvn -Pharden</code>",
@@ -633,7 +634,7 @@ const MOD = [
      ],
      steps:[],
      post:[],
-     notes:[{k:"tip",t:"示例见下;选型/成本对比见 <a href='../../docs/智能客服-大模型选型与部署.md'>智能客服-大模型选型与部署</a>。Docker 启本地模型:<code>docker compose --profile ai up -d</code> 后 <code>ollama pull</code>。"}],
+     notes:[{k:"tip",t:"示例见下;选型/成本对比见 <a href='../../docs/智能客服-大模型选型与部署.html'>智能客服-大模型选型与部署</a>。Docker 启本地模型:<code>docker compose --profile ai up -d</code> 后 <code>ollama pull</code>。"}],
      code:`# 智谱 GLM-4-Flash(常免费)
 AI_ENABLED=true
 AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4

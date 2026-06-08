@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 · 实施路线图与风险总览 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="06-实施路线图与风险总览.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 06 · 实施路线图与风险总览</div>
+<h1 id="h303620c2b720">06 · 实施路线图与风险总览</h1>
+<hr>
+<h2 id="h312e20e58886">1. 分阶段实施路线图</h2>
+<h3 id="he998b6e6aeb5">阶段一：MVP（4–6 周）—— 跑通"签发→验证"主链路</h3>
+<ul>
+<li>后端：License 签名/验签（Ed25519）、claims 模型、离线 <code>.lic</code> 签发、KMS 接入（先 SoftHSM）。</li>
+<li>SDK：硬件指纹、公钥验签、离线校验、功能门禁注解、有效期/版本校验。</li>
+<li>平台：最简租户/套餐/License 签发界面 + 历史记录。</li>
+<li>代码保护：ProGuard 混淆 + Xjar/ClassFinal 套壳跑通 1 个示例应用。</li>
+<li><strong>里程碑</strong>：一个被保护的 Spring Boot 应用，凭离线 License 在绑定机器上运行，换机失效。</li>
+</ul>
+<h3 id="he998b6e6aeb5">阶段二：在线 + 运营化（4–6 周）</h3>
+<ul>
+<li>在线激活/心跳/CRL/并发席位/宽限期；可信时间与回拨检测。</li>
+<li>平台：产品-模块-功能-版本矩阵、套餐编排、订阅、License 生命周期（续期/变更/吊销）、版本 diff、审计。</li>
+<li>多租户：租户开通 Saga、Flyway 初始化、超管下发、PG RLS。</li>
+<li>前端控制台：开通向导、License 管理、历史追溯、运营大盘。</li>
+<li><strong>里程碑</strong>：可在控制台完成"开通租户→配置授权→签发→在线吊销生效"。</li>
+</ul>
+<h3 id="he998b6e6aeb5">阶段三：加固与信创（4–6 周）</h3>
+<ul>
+<li>关键逻辑 JNI Native 化 + OLLVM；反调试/反 dump/完整性自校验；解密密钥依赖 License。</li>
+<li>生产 KMS/HSM，国密 SM2/SM3 适配；mTLS。</li>
+<li>GraalVM native-image 试点核心模块。</li>
+<li>高可用、监控告警、私有化离线交付包。</li>
+<li><strong>里程碑</strong>：通过内部红队渗透测试，破解成本评估达标。</li>
+</ul>
+<h3 id="he998b6e6aeb5">阶段四：运营完善（持续）</h3>
+<ul>
+<li>计费/订单对接、到期预警自动化、批量签发、自助续费、水印溯源、数据大盘完善。</li>
+</ul>
+<hr>
+<h2 id="h322e20e585a8">2. 全局风险总览矩阵</h2>
+<div class="tbl"><table><thead><tr><th>#</th><th>类别</th><th>风险</th><th>等级</th><th>应对措施</th><th>责任域</th></tr></thead><tbody><tr><td>1</td><td>防逆向</td><td>字节码可反编译</td><td>高</td><td>混淆+加密+Native+在线校验纵深；核心逻辑原生化</td><td>02</td></tr><tr><td>2</td><td>防逆向</td><td>内存 dump 脱壳</td><td>高</td><td>反 dump agent + Native + 明文不驻留 + GraalVM</td><td>02</td></tr><tr><td>3</td><td>防逆向</td><td>patch 验签绕过</td><td>高</td><td>校验 Native + 完整性自校验 + 多点冗余 + 密钥依赖 License</td><td>02/03</td></tr><tr><td>4</td><td>License</td><td>伪造 License</td><td>高</td><td>非对称签名，私钥不出域</td><td>03/05</td></tr><tr><td>5</td><td>License</td><td>篡改 claims</td><td>中</td><td>签名覆盖全字段</td><td>03</td></tr><tr><td>6</td><td>License</td><td>一码多机</td><td>中</td><td>指纹绑定 + 在线席位 + 水印</td><td>03</td></tr><tr><td>7</td><td>License</td><td>时间回拨</td><td>中</td><td>可信时间 + highWaterMark + 单调计量</td><td>03</td></tr><tr><td>8</td><td>License</td><td>心跳重放/抓包伪造</td><td>中</td><td>nonce + mTLS + 响应签名</td><td>03/05</td></tr><tr><td>9</td><td>在线</td><td>断网致生产停摆</td><td>高</td><td>宽限期 fail-open + 离线兜底 + 服务高可用</td><td>03/05</td></tr><tr><td>10</td><td>密钥</td><td>私钥泄露</td><td>极高</td><td>KMS/HSM + 分级 + 轮换 + 应急重签 + 异常告警</td><td>05</td></tr><tr><td>11</td><td>多租户</td><td>跨租户越权</td><td>高</td><td>应用拦截 + PG RLS 双保险 + 安全测试</td><td>04</td></tr><tr><td>12</td><td>多租户</td><td>半初始化脏数据</td><td>中</td><td>Saga + 幂等 + 回滚补偿</td><td>04</td></tr><tr><td>13</td><td>多租户</td><td>超管密码泄露</td><td>高</td><td>邀请自设密 + 强制改密 + MFA + 不落明文</td><td>04</td></tr><tr><td>14</td><td>运营</td><td>到期未续致中断</td><td>中</td><td>预警 + 续期宽限 + 平滑降级</td><td>03/04</td></tr><tr><td>15</td><td>运营</td><td>误吊销/误变更</td><td>中</td><td>二次确认 + 审批 + 历史可回看</td><td>04</td></tr><tr><td>16</td><td>兼容</td><td>Spring 混淆运行失败</td><td>中</td><td>keep 白名单 + 只混淆核心包 + 冒烟测试</td><td>02</td></tr><tr><td>17</td><td>兼容</td><td>云/容器无硬件指纹</td><td>中</td><td>实例 ID/激活码替代 + 在线席位</td><td>03</td></tr><tr><td>18</td><td>合规</td><td>信创/国密要求</td><td>中</td><td>SM2/SM3 + 国密 HSM + 国产化适配</td><td>03/05</td></tr></tbody></table></div>
+<hr>
+<h2 id="h332e20e5baa6">3. 度量与验收</h2>
+<div class="tbl"><table><thead><tr><th>指标</th><th>目标</th></tr></thead><tbody><tr><td>破解成本</td><td>红队评估"绕过 License 并稳定运行"工作量 &gt; 软件价值阈值</td></tr><tr><td>误杀率</td><td>合法客户因防护误判停服事件 = 0（宽限期内）</td></tr><tr><td>签发性能</td><td>单次签发 &lt; 200ms；批量 1000 张 &lt; 1min</td></tr><tr><td>心跳容量</td><td>单实例 ≥ 5k QPS；可水平扩展</td></tr><tr><td>可用性</td><td>License Server 99.9%+；断网客户宽限期内无感</td></tr><tr><td>追溯</td><td>任一 License 可还原全部历史版本与操作人</td></tr></tbody></table></div>
+<hr>
+<h2 id="h342e20e78eb0">4. 现实边界声明（重要）</h2>
+<ul>
+<li><strong>没有绝对安全</strong>：纯软件保护只能"抬高门槛 + 提高发现/追责能力"，无法 100% 阻止逆向。</li>
+<li><strong>综合防线</strong>：技术（代码保护+License）+ 运营（在线吊销+水印溯源）+ 法律（授权协议+合同）三位一体。</li>
+<li><strong>成本权衡</strong>：防护强度与开发/适配/性能成本正相关，应按软件价值与客户环境分级实施（如内网涉密重离线+强加固，SaaS 重在线+席位）。</li>
+<li><strong>持续对抗</strong>：破解与防护是持续博弈，需保留升级能力（密钥轮换、防护策略热更新、版本迭代）。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/06-实施路线图与风险总览.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

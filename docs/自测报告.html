@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODEMAN 全量业务逻辑自测报告 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="自测报告.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / CODEMAN 全量业务逻辑自测报告</div>
+<h1 id="h434f44454d41">CODEMAN 全量业务逻辑自测报告</h1>
+<blockquote><p>测试日期：2026-06-07 · 范围：P0 核心主链路 / P1 重要功能 / P2 体验与边界 · 方式：逐项实跑（curl + 自动化测试 + Playwright 截图） 初始账号：<code>admin / 8888</code></p>
+</blockquote>
+<h2 id="he7bb93e8aeba">结论速览</h2>
+<ul>
+<li><strong>P0 核心主链路 9/9 通过</strong>；<strong>P1 重要功能 13/13 通过</strong>；<strong>P2 体验与边界 全部通过</strong>。</li>
+<li>自动化测试：后端 8/8、SDK 8/8、E2E 4/4。</li>
+<li>自测中发现并修复 <strong>1 个真实回归</strong>（激活接口被鉴权过滤器误拦），已补专项回归用例防止复发。</li>
+<li>3 处测试脚本误报（CRL 漏带 token、版本字段名、用户被先停用再登录），核对后确认产品逻辑正确。</li>
+</ul>
+<hr>
+<h2 id="h503020e6a0b8">P0 核心主链路（9/9 ✓）</h2>
+<div class="tbl"><table><thead><tr><th>用例</th><th>步骤要点</th><th>结果</th></tr></thead><tbody><tr><td>0.1 环境/健康</td><td>起后端，<code>/actuator/health</code></td><td>UP ✓</td></tr><tr><td>0.2 登录鉴权</td><td>admin/8888；错误密码；无/带 token 访问 <code>/api/licenses</code></td><td>发 JWT；错误/无 token→401；带 token→200 ✓</td></tr><tr><td>0.3 接口级权限</td><td>VIEWER token 调 view / issue</td><td>view→200，issue→<strong>403</strong>，admin→200 ✓</td></tr><tr><td>0.4 License 签发</td><td><code>POST /api/licenses/issue</code></td><td>返回 licenseId + 签名 .lic（payload.sig）✓</td></tr><tr><td>0.5 吊销+CRL</td><td><code>revoke</code> → 查状态/CRL/心跳</td><td>REVOKED；进 CRL；心跳→REVOKED（实时）✓</td></tr><tr><td>0.6 并发席位</td><td>并发=2，激活 3 个实例</td><td>前 2 成功，第 3→<strong>409</strong> ✓</td></tr><tr><td>0.7 心跳防重放</td><td>同一 nonce 二次心跳</td><td>首次 OK，重放→<strong>REPLAY</strong> ✓</td></tr><tr><td>0.8 订阅自动签发</td><td>企业版×2 订阅</td><td>自动签发，concurrency=<strong>40</strong>（席位20×2）✓</td></tr><tr><td>0.9 SDK 门禁</td><td>已授权/未授权/越版本/篡改</td><td>放行 / 拒绝 / 拒绝 / 验签失败 ✓</td></tr></tbody></table></div>
+<h2 id="h503120e9878d">P1 重要功能（13/13 ✓）</h2>
+<div class="tbl"><table><thead><tr><th>用例</th><th>结果</th></tr></thead><tbody><tr><td>1.1 租户开通 + 邮件 outbox</td><td>emailSent=true（入队）→ 异步落盘 ✓</td></tr><tr><td>1.2 一次性激活 + MFA</td><td><strong>公开</strong>激活、设密+MFA 绑定、token 一次性失效 ✓（修复后）</td></tr><tr><td>1.3 生命周期 + 历史 diff</td><td>续期版本→2，历史含多版本可 diff ✓</td></tr><tr><td>1.4 公钥/算法</td><td>Ed25519 ✓</td></tr><tr><td>1.5 宽限期回收</td><td>停止心跳→定时回收→在线 0、状态 offline ✓</td></tr><tr><td>1.6 在线监控</td><td>在线/宽限/席位 KPI + 实例表（截图①）✓</td></tr><tr><td>1.7 角色多态权限</td><td>PUT 落库（license:issue=EDIT）（截图②）✓</td></tr><tr><td>1.8 用户管理</td><td>建用户(mustChange)/重置/启停、admin 不可停（截图③）✓</td></tr><tr><td>1.9 首登强制改密</td><td>初始登录→改密→旧 401/新 200（截图⑦）✓</td></tr><tr><td>1.10 产品矩阵/套餐</td><td>4 套餐、矩阵 v2.2/2.3/2.4、模块树 ✓</td></tr><tr><td>1.11 国密 SM2</td><td>公钥=SM2、sigAlg=SM2、SDK 验签 + 门禁 ✓</td></tr><tr><td>1.12 可观测</td><td><code>/actuator/prometheus</code> 200、含 application=codeman ✓</td></tr><tr><td>1.13 自动化测试</td><td>后端 8/8、SDK 8/8、E2E 4/4 ✓</td></tr></tbody></table></div>
+<h2 id="h503220e4bd93">P2 体验与边界（全部 ✓）</h2>
+<div class="tbl"><table><thead><tr><th>用例</th><th>结果</th></tr></thead><tbody><tr><td>2.1 换肤/2K-4K/i18n</td><td>暗夜 + 英文正常（截图⑥）✓</td></tr><tr><td>2.2 字体区分/操作帮助</td><td>业务数据等宽、PageHelp/HelpTip/tooltip ✓</td></tr><tr><td>2.3 代码保护 demo</td><td>合法运行 / 换证解密失败 / 篡改验签失败 / 明文移除 ✓</td></tr><tr><td>2.4 混淆 harden</td><td>辅助类→a.class，入口/被加载类保留 ✓</td></tr><tr><td>2.5 按钮级权限</td><td>VIEWER 无 签发/续期/吊销 按钮（截图④ admin vs ⑤ VIEWER）✓</td></tr><tr><td>2.6 边界异常</td><td>缺参→400、未知 License→404、席位释放复用、吊销后激活→403 ✓</td></tr><tr><td>2.7 Docker compose</td><td><code>docker compose config</code> 校验通过（沙箱无守护进程，不实跑容器）✓</td></tr></tbody></table></div>
+<hr>
+<h2 id="hf09f94a720e8">🔧 自测发现并修复的缺陷</h2>
+<p><strong>现象</strong>：加入 JWT 鉴权后，租户管理员点击开通邮件中的激活链接访问 <code>/api/activation/{token}</code> 返回 <code>401 需要登录</code>——但管理员此时尚无账号，激活流程被阻断。 <strong>根因</strong>：<code>JwtAuthFilter</code> 拦截所有 <code>/api/**</code>（仅放行 <code>/api/auth/login</code>），漏放行激活接口。 <strong>修复</strong>：过滤器放行 <code>/api/activation/**</code>（提交 <code>7f5a35f</code>）。 <strong>回归用例</strong>：<code>AuthIntegrationTest.activationEndpointIsPublic</code> —— 无 token 访问激活接口不得返回 401。</p>
+<hr>
+<h2 id="he585b3e994ae">关键截图</h2>
+<div class="tbl"><table><thead><tr><th>#</th><th>说明</th><th>文件</th></tr></thead><tbody><tr><td>①</td><td>在线监控（KPI + 实例表 + 席位用量）</td><td><code>web/console/shots/st-01-在线监控.png</code></td></tr><tr><td>②</td><td>角色权限：el-tree 多态选择（无/只读/编辑/完全 + 级联）</td><td><code>web/console/shots/st-02-角色权限多态树.png</code></td></tr><tr><td>③</td><td>用户管理（角色分配 / 重置 / 启停 / 待改密）</td><td><code>web/console/shots/st-03-用户管理.png</code></td></tr><tr><td>④</td><td>License（admin：签发 + 下载/历史/续期/吊销 全按钮）</td><td><code>web/console/shots/st-04-License-admin全按钮.png</code></td></tr><tr><td>⑤</td><td>License（VIEWER：签发/续期/吊销 按钮隐藏）</td><td><code>web/console/shots/st-05-License-VIEWER按钮隐藏.png</code></td></tr><tr><td>⑥</td><td>总览（暗夜主题 + 英文 i18n）</td><td><code>web/console/shots/st-06-总览-暗夜-英文.png</code></td></tr><tr><td>⑦</td><td>首次登录强制修改密码（不可关闭）</td><td><code>web/console/shots/st-07-首登强制改密.png</code></td></tr></tbody></table></div>
+<hr>
+<h2 id="h76312e3120e5">v1.1 增量自测（环境适配 + 缺口补齐）</h2>
+<div class="tbl"><table><thead><tr><th>用例</th><th>结果</th></tr></thead><tbody><tr><td>多租户真隔离</td><td>开通甲/乙 → 各自 Schema(T_100483/T_100484)，plan/数据互不可见，种子角色=3 ✓（<code>TenantSchemaServiceTest</code>）</td></tr><tr><td>订阅升级重签</td><td>PROFESSIONAL→ENTERPRISE：License 重签 edition=ENTERPRISE、version=2、concurrency=20 ✓</td></tr><tr><td>订阅退订</td><td>关联 License → REVOKED ✓</td></tr><tr><td>总览真实统计</td><td><code>/api/overview/stats</code> 返回真实计数；前端 KPI=租户1/有效2/订阅0/到期1 ✓</td></tr><tr><td>到期告警</td><td><code>/api/overview/alerts</code> 触发 EXPIRE_SOON ✓</td></tr><tr><td>到期提醒邮件</td><td>仅近到期 1 张入发件箱并异步落盘；再次触发去重 sent=0 ✓</td></tr><tr><td>密钥轮换 kid/JWKS</td><td><code>/api/licenses/public-keys</code> 含 kid；License 带同 kid；SDK 按 kid 验签 ✓（<code>KidRotationTest</code>）</td></tr><tr><td>SDK 通道限流</td><td>130 次/分钟突发 → 10×429 ✓</td></tr><tr><td>国密 SM2 + Ed25519</td><td>CI <code>sign-smoke</code> 双矩阵端到端验签通过 ✓</td></tr></tbody></table></div>
+<blockquote><p>v1.1 复测汇总：后端 <strong>10/10</strong>、SDK <strong>9/9</strong>、E2E <strong>7/7</strong>。</p>
+</blockquote>
+<h2 id="he5a48de8b791">复跑方式</h2>
+<pre><code># 后端单测/集成（含全栈鉴权、权限拦截、TOTP、SM2）
+cd server/license-platform &amp;&amp; mvn test            # 8/8
+# SDK 单测（SemVer / Ed25519 验签 / SM2 验签 / 防篡改）
+cd sdk/license-sdk &amp;&amp; mvn test                     # 8/8
+# 端到端（登录/鉴权/多态权限树）
+cd web/console &amp;&amp; npm install &amp;&amp; npx playwright test  # 4/4（需后端在 :8080）
+# 国密模式
+LICENSE_SIGN_ALGO=sm2 java -jar server/license-platform/target/license-platform-1.0.1.jar
+# 代码保护演示 / 混淆
+cd examples/protected-app &amp;&amp; bash demo.sh &amp;&amp; mvn -Pharden -DskipTests package</code></pre>
+<h2 id="he5b7b2e79fa5">已知环境约束</h2>
+<ul>
+<li>沙箱无 Docker 守护进程 → 2.7 仅做 <code>docker compose config</code> 配置校验。</li>
+<li>邮件 <code>delivery=log</code> → 1.1 验证渲染落盘而非真实外发。</li>
+<li>控制台 JVM 默认非 UTF-8 → SDK demo 中文显示为 <code>?</code>（加 <code>-Dstdout.encoding=UTF-8</code> 正常），不影响逻辑判定。</li>
+</ul>
+<h2 id="he7958ce99da2">界面截图（自测留痕）</h2>
+<p><img src="../web/console/shots/rbac-02-角色权限多态树-2K.png" alt="角色权限多态树" loading="lazy"> <em>RBAC：多态权限树（无/只读/编辑/完全）</em></p>
+<p><img src="../web/console/shots/lic-02-签发向导-2K.png" alt="License 签发向导" loading="lazy"> <em>License 签发向导</em></p>
+<p><img src="../web/console/shots/lic-03-版本历史diff-2K.png" alt="版本历史 diff" loading="lazy"> <em>License 版本历史 diff</em></p>
+<p><img src="../web/console/shots/on-01-在线监控-科技蓝-2K.png" alt="在线监控" loading="lazy"> <em>在线授权监控（实例 / 心跳 / 席位）</em></p>
+<p><img src="../web/console/shots/biz-01-计费账单与开票.png" alt="计费账单与开票" loading="lazy"> <em>计费账单与开票</em></p>
+
+<div class="docfoot">本页由 <code>docs/自测报告.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

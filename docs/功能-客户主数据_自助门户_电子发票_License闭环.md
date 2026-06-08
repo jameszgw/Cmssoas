@@ -52,3 +52,23 @@
 
 ## 截图
 `web/console/shots/feat-11 ~ feat-16`:客户360、自助门户登录/首页、门户开通管理、电子发票、吊销名单 CRL。
+
+## 界面截图
+
+![客户管理](../web/console/shots/feat-11-客户管理.png)
+*客户主数据维护*
+
+![客户360](../web/console/shots/feat-12-客户360.png)
+*客户360：按客户聚合 License/合同/账单/订阅*
+
+![门户开通管理](../web/console/shots/feat-13-门户开通管理.png)
+*运营为租户开通自助门户并生成访问码*
+
+![门户登录](../web/console/shots/feat-16-门户登录.png)
+*客户用「租户编号 + 访问码」登录门户*
+
+![门户首页](../web/console/shots/feat-17-门户首页.png)
+*租户自助门户首页（只读授权视图）*
+
+![吊销名单CRL](../web/console/shots/feat-15-吊销名单CRL.png)
+*签名吊销名单 CRL*

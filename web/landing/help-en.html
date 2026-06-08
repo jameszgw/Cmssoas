@@ -129,6 +129,7 @@
   <span class="sp"></span>
   <input id="search" type="search" placeholder="Search feature / action / param…" autocomplete="off" />
   <a class="lk" href="help.html">中文</a>
+  <a class="lk" href="../../docs/index.html">📚 Docs</a>
   <a class="lk" href="index.html">Landing</a>
 </header>
 
@@ -486,7 +487,7 @@ const MOD = [
      entry:"Integrate the SDK into the customer app", pre:["Holds the platform public key (<code>/pub/license/public-keys</code> by kid)"], params:[],
      steps:["Verify <code>.lic</code> signature with the public key; check validity, CRL, feature flags and version range (SemVer).","Online mode uses the SDK channel (see Online Monitoring · SDK channel)."],
      post:["Private key never leaves the server; the client never holds it."],
-     notes:[{k:"tip",t:"Design: <a href='../../docs/02-代码保护方案.md'>Code Protection</a>, <a href='../../docs/03-License认证方案.md'>License Authentication</a>."}] },
+     notes:[{k:"tip",t:"Design: <a href='../../docs/02-代码保护方案.html'>Code Protection</a>, <a href='../../docs/03-License认证方案.html'>License Authentication</a>."}] },
    { fid:"fn-sdk-build", name:"Build-time Code Protection", perm:"CI/CD", ep:["-","examples/protected-app"],
      entry:"Build pipeline <code>mvn -Pharden</code>", pre:[], params:[],
      steps:["ProGuard obfuscation: <code>cd examples/protected-app &amp;&amp; mvn -Pharden</code>.","<code>BuildProtected</code> encrypts critical classes; the decryption key is derived from & bound to the License.","<code>demo.sh</code> shows valid / wrong-key / tampered cases."],
@@ -503,7 +504,7 @@ const MOD = [
        {n:"AI_MODEL",t:"String",r:0,d:"Model ID, e.g. glm-4-flash/deepseek-chat/qwen2.5:7b-instruct"},
        {n:"AI_TIMEOUT_SEC / AI_HISTORY_LIMIT",t:"Int",r:0,d:"Timeout (default 60) / history size (default 12)"}],
      steps:[], post:[],
-     notes:[{k:"tip",t:"Example below; selection/cost see <a href='../../docs/智能客服-大模型选型与部署.md'>LLM selection & deployment</a>. Local model via Docker: <code>docker compose --profile ai up -d</code> then <code>ollama pull</code>."}],
+     notes:[{k:"tip",t:"Example below; selection/cost see <a href='../../docs/智能客服-大模型选型与部署.html'>LLM selection & deployment</a>. Local model via Docker: <code>docker compose --profile ai up -d</code> then <code>ollama pull</code>."}],
      code:`# Zhipu GLM-4-Flash (often free)
 AI_ENABLED=true
 AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4

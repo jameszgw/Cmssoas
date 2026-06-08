@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功能说明：在线支付 / 收款闭环(通用 · 不绑定渠道) · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="功能-在线支付收款.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 功能说明：在线支付 / 收款闭环(通用 · 不绑定渠道)</div>
+<h1 id="he58a9fe883bd">功能说明：在线支付 / 收款闭环(通用 · 不绑定渠道)</h1>
+<p>补齐"计费账单"的商业闭环:从待支付账单<strong>发起扫码收款 → 渠道异步回调/沙箱模拟支付 → 账单自动收款(PAID)</strong>, 全程<strong>幂等</strong>。沿用平台一贯的"provider-agnostic + 可降级"思路:<code>PaymentProvider</code> 薄抽象,默认沙箱离线可跑, 生产换渠道只改配置不改代码。</p>
+<h2 id="he695b0e68dae">数据模型 / 迁移</h2>
+<p><code>V14__payment.sql</code> 新增 <code>payment</code> 表(payment_no/invoice_id/amount/channel/status/qr_content/pay_url/provider_txn_id/…)。 复用 billing 权限,无新增权限点。</p>
+<h2 id="he6b581e7a88b">流程</h2>
+<ol>
+<li>「计费账单」对 <strong>PENDING</strong> 账单点「收款」→ <code>POST /api/payments {invoiceId}</code> 创建支付单并向渠道下单,返回二维码内容/收银台链接。</li>
+<li>前端弹出<strong>扫码收款</strong>窗(金额、二维码、轮询状态)。</li>
+<li>真实渠道异步回调 <code>POST /pub/payments/notify/{channel}</code>(公开,验签在 Provider 内)→ 校验通过置支付单 PAID;</li>
+</ol>
+<p>   或沙箱点「模拟支付成功」<code>POST /api/payments/{id}/sandbox-confirm</code>。</p>
+<ol>
+<li>支付成功 → <strong>联动账单收款</strong>(Invoice PENDING→PAID,幂等),前端轮询到 PAID 显示成功并刷新。</li>
+<li>之后可继续「开票」生成发票号。</li>
+</ol>
+<h2 id="he9809ae794a8">通用化设计</h2>
+<ul>
+<li>抽象 <code>PaymentProvider { channel, sandbox, create, verifyNotify }</code>;默认实现 <code>MockPaymentProvider</code>(沙箱)。</li>
+<li>配置驱动:</li>
+</ul>
+<pre><code>  app:
+    pay:
+      provider: ${PAY_PROVIDER:mock}            # mock(沙箱) | wechatpay | alipay | stripe
+      notify-base-url: ${PAY_NOTIFY_BASE_URL:}  # 真实渠道异步回调可达的公网根地址</code></pre>
+<ul>
+<li>接微信支付/支付宝/Stripe:新增一个 <code>PaymentProvider</code> 实现(在 <code>create</code> 调用渠道下单 API、在 <code>verifyNotify</code> 验签),</li>
+</ul>
+<p>  把 <code>app.pay.provider</code> 切到对应 channel 即可,<strong>业务编排 <code>PaymentService</code> 与前端无需改动</strong>。</p>
+<h2 id="he5b982e7ad89">幂等与安全</h2>
+<ul>
+<li><code>markPaid</code> 对已 PAID 支付单直接返回;账单仅在仍 PENDING 时收款,回调重复投递安全。</li>
+<li>回调路径 <code>/pub/payments/**</code> 公开但<strong>验签在 Provider 内</strong>;生产需保证 <code>notify-base-url</code> 公网可达 + 渠道证书/密钥经 env/Nacos/KMS 注入。</li>
+</ul>
+<h2 id="he68ea5e58fa3">接口</h2>
+<div class="tbl"><table><thead><tr><th>方法</th><th>路径</th><th>权限</th><th>说明</th></tr></thead><tbody><tr><td>POST</td><td><code>/api/payments</code></td><td>billing:manage</td><td>对账单发起收款,返回二维码/收银台</td></tr><tr><td>GET</td><td><code>/api/payments/{id}</code></td><td>billing:view</td><td>查询支付单(前端轮询)</td></tr><tr><td>GET</td><td><code>/api/payments</code></td><td>billing:view</td><td>支付单列表</td></tr><tr><td>POST</td><td><code>/api/payments/{id}/sandbox-confirm</code></td><td>billing:manage</td><td>沙箱模拟支付成功</td></tr><tr><td>POST</td><td><code>/pub/payments/notify/{channel}</code></td><td>公开(验签)</td><td>渠道异步回调</td></tr></tbody></table></div>
+<h2 id="he88194e8b083">联调与测试</h2>
+<ul>
+<li>沙箱默认即可跑通全闭环(无需联网/账号)。真实渠道按上文新增 Provider。</li>
+<li>自动化:<code>PaymentIntegrationTest</code>(发起→模拟支付→账单收款→幂等;公开回调放行)。</li>
+<li>功能截图:<code>web/console/shots/feat-09-扫码收款.png</code>、<code>feat-10-支付成功.png</code>。</li>
+</ul>
+<h2 id="he7958ce99da2">界面截图</h2>
+<p><img src="../web/console/shots/biz-01-计费账单与开票.png" alt="计费账单与开票" loading="lazy"> <em>计费账单：出账、收款与开票一览</em></p>
+<p><img src="../web/console/shots/feat-09-扫码收款.png" alt="扫码收款" loading="lazy"> <em>发起扫码收款（二维码 / 支付链接）</em></p>
+<p><img src="../web/console/shots/feat-10-支付成功.png" alt="支付成功" loading="lazy"> <em>客户支付后到账核销</em></p>
+<p><img src="../web/console/shots/feat-14-电子发票.png" alt="电子发票" loading="lazy"> <em>对已收款账单开具电子发票（普票 / 专票）</em></p>
+
+<div class="docfoot">本页由 <code>docs/功能-在线支付收款.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

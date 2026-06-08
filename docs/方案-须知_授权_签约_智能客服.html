@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实施方案：在线用户须知 / 用户授权 / 合同签约 / 智能客服 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="方案-须知_授权_签约_智能客服.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 实施方案：在线用户须知 / 用户授权 / 合同签约 / 智能客服</div>
+<h1 id="he5ae9ee696bd">实施方案：在线用户须知 / 用户授权 / 合同签约 / 智能客服</h1>
+<blockquote><p>面向下一步工作的设计方案。复用现有架构:Spring Boot 后端 + Vue3 控制台 + 多租户(Schema 隔离) + RBAC + Flyway + Nacos/CentOS 部署 + 发件箱(outbox) + 审计。每项均含:目标场景 / 数据模型 / 流程 / 接口 / 前端 / 选型 / 集成点 / 合规风险 / 工作量。</p>
+</blockquote>
+<h2 id="he680bbe8a788">总览与集成原则</h2>
+<ul>
+<li><strong>统一鉴权</strong>:新接口纳入 JWT + <code>@RequirePerm</code>;面向租户管理员/最终用户的公开页(须知阅读、签署、客服)走专用放行(类比已有 <code>/api/activation/**</code>)。</li>
+<li><strong>统一审计</strong>:所有“同意 / 签署 / 撤回 / 客服会话”写入 <code>audit_log</code>(<code>AuditWriter</code>)。</li>
+<li><strong>统一通知</strong>:邮件复用 <code>outbox</code>(异步+重试);可叠加企业微信 webhook。</li>
+<li><strong>统一前端</strong>:复用换肤/i18n/PageHelp/操作帮助/blob 下载。</li>
+<li><strong>多租户</strong>:协议版本、合同、客服会话均带 <code>tenant_code</code>,隔离查询。</li>
+</ul>
+<hr>
+<h2 id="he4b880e38081">一、在线用户须知(服务条款 / 公告 / 用户协议展示)</h2>
+<p><strong>目标</strong>:集中管理“用户须知 / 服务条款 / 隐私政策 / 公告”,支持富文本、版本化;在首次登录或版本更新时强制阅读确认。与“用户授权”配对(须知=内容,授权=同意记录)。</p>
+<div class="tbl"><table><thead><tr><th>项</th><th>设计</th></tr></thead><tbody><tr><td>数据模型</td><td><code>notice(id, type[TERMS/PRIVACY/NOTICE/ANNOUNCEMENT], title, content_html, version, status[DRAFT/PUBLISHED/ARCHIVED], effective_at, force_ack, created_at)</code></td></tr><tr><td>后端接口</td><td><code>GET /api/notices</code>(管理列表)、<code>POST/PUT /api/notices</code>(编辑,<code>notice:edit</code>)、<code>POST /api/notices/{id}/publish</code>;公开:<code>GET /pub/notices/active?type=</code>(取当前生效版本)</td></tr><tr><td>前端</td><td>管理后台“须知管理”页(富文本编辑器,如 wangEditor/Quill);用户侧弹层/独立页展示,<code>force_ack=true</code> 时阻断使用直至确认</td></tr><tr><td>选型</td><td>富文本:Quill(轻量);版本:每次发布生成新 version,旧版归档保留可追溯</td></tr><tr><td>集成点</td><td>登录后/激活后校验“是否已确认当前生效版本”,未确认→弹须知(复用 ForcePwdDialog 的阻断模式)</td></tr><tr><td>合规</td><td>内容版本不可变;留存历史版本与生效时间,满足“以用户当时同意的版本为准”</td></tr><tr><td>工作量</td><td><strong>S(1–2 天)</strong>,与“用户授权”合并开发更高效</td></tr></tbody></table></div>
+<hr>
+<h2 id="he4ba8ce38081">二、用户授权(同意管理 Consent)</h2>
+<p><strong>目标</strong>:记录“谁、何时、对哪个协议版本、以何方式”表示同意/撤回(服务条款、隐私政策、数据处理、营销推送等),可查询、可撤回、可导出,满足合规(个保法/GDPR 思路)。</p>
+<blockquote><p>备注:若“用户授权”指<strong>第三方 OAuth 授权登录</strong>(微信/企业微信扫码登录),见文末“变体”。本节按<strong>协议同意/数据授权</strong>实现。</p>
+</blockquote>
+<div class="tbl"><table><thead><tr><th>项</th><th>设计</th></tr></thead><tbody><tr><td>数据模型</td><td><code>user_consent(id, tenant_code, subject[用户标识], notice_id, notice_type, version, action[GRANTED/REVOKED], channel[WEB/EMAIL/API], ip, user_agent, created_at)</code></td></tr><tr><td>后端接口</td><td><code>POST /pub/consents</code>(提交同意:notice_id+version)、<code>POST /pub/consents/revoke</code>、<code>GET /api/consents</code>(管理查询,<code>consent:view</code>)、<code>GET /api/consents/export.csv</code>(复用 CsvUtil)</td></tr><tr><td>前端</td><td>须知弹层底部“我已阅读并同意”勾选→提交同意;个人中心“我的授权”可查看/撤回</td></tr><tr><td>集成点</td><td>与“须知 force_ack”联动:确认即写 consent;激活流程纳入隐私同意;营销同意作为发信前置校验</td></tr><tr><td>合规</td><td>记录 IP/UA/版本/时间(已有审计风格);撤回后停止对应数据处理/营销;导出供取证</td></tr><tr><td>风险</td><td>主体标识:租户管理员用 <code>ops_user</code>,最终用户需明确主体口径(邮箱/手机号)</td></tr><tr><td>工作量</td><td><strong>S–M(2–3 天)</strong></td></tr></tbody></table></div>
+<hr>
+<h2 id="he4b889e38081">三、合同签约(电子签)</h2>
+<p><strong>目标</strong>:基于订阅/套餐自动生成合同,发起多方电子签署,签署完成后存证归档;与订阅/账单/License 闭环。</p>
+<p><strong>选型对比</strong>:</p>
+<div class="tbl"><table><thead><tr><th>方案</th><th>说明</th><th>适用</th></tr></thead><tbody><tr><td><strong>第三方合规电子签</strong>(e签宝 / 法大大 / DocuSign)</td><td>API 对接,具备 CA 实名 + 数字证书 + 可信时间戳 + 司法存证,<strong>法律效力最强</strong></td><td><strong>推荐</strong>(对外正式合同)</td></tr><tr><td>自建签章</td><td>PDF 模板套打 + 自有证书签名(BC,可复用 SM2)+ RFC3161 时间戳 + 哈希存证</td><td>内部留痕/低成本,法律效力弱于第三方</td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th>项</th><th>设计</th></tr></thead><tbody><tr><td>数据模型</td><td><code>contract_template(id, name, content_html/pdf, variables)</code>;<code>contract(id, no, tenant_code, customer, subscription_id, template_id, amount, status[DRAFT/SENT/SIGNING/SIGNED/VOID], provider, provider_flow_id, file_id, created_at, signed_at)</code>;<code>contract_party(contract_id, name, role, email/phone, sign_status, signed_at)</code></td></tr><tr><td>流程</td><td>订阅创建→按模板生成合同(填充租户/套餐/金额/期限)→发起签署(第三方:创建签署流程,返回签署链接;短信/扫码)→各方签字→回调更新状态→存证(哈希+时间戳)→归档(File/对象存储)→联动账单/License</td></tr><tr><td>后端接口</td><td><code>POST /api/contracts</code>(生成,<code>contract:edit</code>)、<code>POST /api/contracts/{id}/send</code>(发起签署)、<code>POST /api/contracts/callback</code>(第三方回调,验签放行)、<code>GET /api/contracts</code>、下载 PDF(blob)</td></tr><tr><td>前端</td><td>“合同管理”页:模板、合同列表、状态流转、发起签署、下载;签署方走第三方页面或内嵌签署组件</td></tr><tr><td>集成点</td><td>订阅→合同→签署完成→自动出账/激活 License;退订→合同作废</td></tr><tr><td>合规</td><td>实名认证、CA 证书、可信时间戳、防篡改哈希、签署轨迹存证;原文不可改</td></tr><tr><td>风险</td><td>第三方依赖网络出网(CentOS 网络策略需放行其域名 + 回调地址公网可达);需账号与计费</td></tr><tr><td>工作量</td><td>自建 <strong>M(3–5 天)</strong>;第三方 <strong>M–L(5–8 天,含联调与回调)</strong></td></tr></tbody></table></div>
+<hr>
+<h2 id="he59b9be38081">四、智能客服(通用、不绑定厂商、简单)</h2>
+<p><strong>目标</strong>:控制台/官网内嵌 AI 客服,回答产品/授权/订阅/账单问题;命中知识库(文档/FAQ)作答;支持流式与转人工。<strong>核心原则:provider-agnostic + 极简</strong>——不绑定任何特定大模型厂商,换厂商只改配置不改代码。</p>
+<p><strong>通用化设计(关键)</strong>:</p>
+<ul>
+<li><strong>统一走 OpenAI 兼容接口</strong>(<code>POST {base-url}/v1/chat/completions</code>,<code>stream:true</code>)。这是事实标准——<strong>OpenAI、DeepSeek、通义千问、文心一言、Kimi、智谱、本地 Ollama、以及 one-api/new-api 网关</strong>几乎都兼容;Claude 也可经 one-api 等网关以同一接口接入。</li>
+<li><strong>一个薄抽象 <code>ChatProvider</code> + 一个默认实现</strong>(OpenAI 兼容,纯 HTTP,无需任何厂商 SDK)。后端用 <code>java.net.http.HttpClient</code> 直接调,零额外依赖。</li>
+<li><strong>配置驱动(Nacos/env)</strong>,换厂商=改三项配置:</li>
+</ul>
+<pre><code>  ai:
+    base-url: ${AI_BASE_URL:https://api.deepseek.com}   # 任意 OpenAI 兼容端点/本地 Ollama: http://127.0.0.1:11434/v1
+    api-key:  ${AI_API_KEY:}                            # 本地模型可留空
+    model:    ${AI_MODEL:deepseek-chat}                 # 或 qwen-plus / gpt-4o-mini / llama3.1 ...</code></pre>
+<ul>
+<li><strong>简单 RAG</strong>:<code>docs/</code> + FAQ 关键词召回(初版 BM25/关键词即可,后续可选向量检索),拼进 system 提示。<strong>不引入向量库等重组件</strong>。</li>
+<li><strong>流式</strong>:后端读上游 SSE,转发为自己的 SSE 给前端聊天窗。</li>
+<li><strong>会话</strong>:多轮历史后端维护(每次回传)。</li>
+<li><strong>(可选,默认关闭)函数调用</strong>查实时数据:OpenAI 兼容的 <code>tools</code>/function calling,把 <code>get_license_status</code> / <code>get_subscription</code> 等暴露为只读函数;<strong>不同厂商对 function calling 支持不一,故默认关闭,先做“知识库问答”最简形态</strong>,需要时再开。</li>
+</ul>
+<div class="tbl"><table><thead><tr><th>项</th><th>设计</th></tr></thead><tbody><tr><td>数据模型</td><td><code>cs_conversation(id, tenant_code, user_ref, status[OPEN/ESCALATED/CLOSED], created_at)</code>;<code>cs_message(id, conversation_id, role[user/assistant], content, created_at)</code></td></tr><tr><td>后端接口</td><td><code>POST /api/cs/chat</code>(SSE 流式)、<code>POST /api/cs/escalate</code>(转人工)、<code>GET /api/cs/conversations</code>(审计)</td></tr><tr><td>抽象</td><td><code>interface ChatProvider { stream(systemPrompt, history, onToken) }</code> + <code>OpenAiCompatProvider</code>(HTTP)</td></tr><tr><td>前端</td><td>右下角悬浮客服窗(输入框/流式渲染/“转人工”);复用现有 UI 风格与 i18n</td></tr><tr><td>安全/脱敏</td><td>不外发私钥/密码/完整密钥串/敏感 PII;<code>AI_API_KEY</code> 经 Nacos/KMS 注入;出网经 CentOS 网络策略放行所配 base-url(或全程内网走自建/Ollama,<strong>可完全不出公网</strong>)</td></tr><tr><td>护栏</td><td>系统提示限定“仅回答本产品相关”;限流(复用 SdkRateLimit 思路);AI 不执行任何写操作</td></tr><tr><td>审计</td><td>会话与消息留存</td></tr><tr><td>工作量</td><td><strong>S–M(2–4 天)</strong>:HTTP provider + 关键词召回 + SSE + 前端窗 + 护栏(比厂商 SDK 方案更简单)</td></tr></tbody></table></div>
+<p><strong>最简实现示意(后端,无厂商 SDK)</strong>:</p>
+<pre><code>POST {AI_BASE_URL}/v1/chat/completions
+Authorization: Bearer {AI_API_KEY}
+{ "model": "{AI_MODEL}", "stream": true,
+  "messages": [ {role:system, 含知识库召回片段+产品须知}, ...history, {role:user, 用户问题} ] }
+→ 读取上游 SSE(data: {choices[].delta.content}) → 转发为本服务 SSE → 前端逐字渲染</code></pre>
+<blockquote><p>优点:零厂商锁定、零额外 SDK 依赖、可对接云端任一兼容厂商或<strong>本地 Ollama 完全内网离线</strong>;后续要更强能力(工具调用/思考)再按所选厂商增量开启。</p>
+</blockquote>
+<hr>
+<h2 id="he5ae9ee696bd">实施优先级与工作量</h2>
+<div class="tbl"><table><thead><tr><th>优先级</th><th>项</th><th>价值</th><th>工作量</th><th>依赖</th></tr></thead><tbody><tr><td>P0</td><td>须知 + 用户授权(同意)</td><td>合规刚需,改造小</td><td>S–M</td><td>无(合并做)</td></tr><tr><td>P1</td><td>智能客服</td><td>体验/降本,亮点</td><td>M–L</td><td>ANTHROPIC_API_KEY + 出网</td></tr><tr><td>P1</td><td>合同签约</td><td>商业闭环</td><td>M(自建)/L(第三方)</td><td>第三方账号/出网/回调公网</td></tr></tbody></table></div>
+<p>建议顺序:<strong>① 须知+授权 → ② 智能客服 → ③ 合同签约</strong>(签约第三方联调最重,放最后)。</p>
+<h2 id="he585b1e680a7">共性:安全 / 合规 / 部署</h2>
+<ul>
+<li>密钥(Anthropic、电子签、短信)统一入 Nacos/KMS,不落明文(见 <code>docs/密钥管理-KMS.md</code>)。</li>
+<li>出网:CentOS 网络策略放行第三方域名与回调;回调地址需公网可达 + 验签。</li>
+<li>隐私:同意/合同/会话留存最小化、可导出、可删除(配合撤回)。</li>
+<li>复用:审计、outbox 邮件、CSV 导出、blob 下载、RBAC、i18n、换肤。</li>
+</ul>
+<h2 id="he58f98e4bd93">变体:用户授权 = 第三方 OAuth 登录(可选)</h2>
+<p>若“用户授权”指扫码登录(微信/企业微信),则:<code>POST /pub/oauth/{provider}/callback</code> 换取用户信息 → 绑定/创建账号 → 签发 JWT;与现有登录并存。与上文“同意管理”不冲突,可叠加。</p>
+
+<div class="docfoot">本页由 <code>docs/方案-须知_授权_签约_智能客服.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

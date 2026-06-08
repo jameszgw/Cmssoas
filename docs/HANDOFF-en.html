@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODEMAN Session Handoff (English) · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="HANDOFF-en.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / CODEMAN Session Handoff (English)</div>
+<h1 id="h434f44454d41">CODEMAN Session Handoff (English)</h1>
+<blockquote><p>For the next session to resume quickly. Mirrors <code>docs/HANDOFF.md</code> (中文). Captures current state, conventions, key decisions, gotcha-fixes, and candidate next steps.</p>
+</blockquote>
+<h2 id="h302e20544c3b">0. TL;DR</h2>
+<ul>
+<li><strong>Project</strong>: CODEMAN — Spring Boot code protection + License authentication + multi-tenant operations platform (backend + Vue3 console + client SDK + code-protection demo).</li>
+<li><strong>Dev branch</strong>: <code>claude/loving-einstein-Pp4cA</code> (work only here; <strong>never</strong> touch <code>main</code>). GitHub repo slug stays <code>jameszgw/cmssoas</code> (<strong>not renamed</strong>; README badges keep this slug).</li>
+<li><strong>Latest commit</strong>: <code>0c4ad69</code> (handoff); last feature <code>63830a4</code> (online code hardening). CI fully green (run #56, 11 jobs success; tag job skipped is expected).</li>
+<li><strong>Stack/versions</strong>: Spring Boot <strong>3.5.0</strong>, Java <strong>21</strong> (Java 8 NOT supported), Maven; Vue3+TS+Element Plus+vite; groupId/base package <strong>com.codeman</strong>; version <strong>1.0.1</strong>; license <strong>GPLv3</strong>.</li>
+<li><strong>Databases</strong>: H2 (dev default, <code>MODE=PostgreSQL</code>) / PostgreSQL (prod, <code>profile=prod</code>) / MySQL 5.7·8.0 (<code>profile=mysql</code>, <code>db/mysql</code> dialect scripts, validated by CI real-DB matrix).</li>
+<li><strong>Initial account</strong>: <code>admin / 8888</code> (forced change on first login); default new-user password <code>Codeman@123</code>.</li>
+<li><strong>Build</strong>: backend <code>cd server/license-platform &amp;&amp; mvn test</code> (full); frontend <code>cd web/console &amp;&amp; npm run build</code>.</li>
+</ul>
+<h2 id="h312e204e616d">1. Naming/branding (rename fully done)</h2>
+<ul>
+<li>Java packages/coords <code>com.codeman.*</code>; groupId <code>com.codeman</code>; three modules version <code>1.0.1</code>.</li>
+<li>Brand <code>CODEMAN</code>; DB name <code>codeman</code>; mail domain <code>@codeman.com</code>; JWT default secret <code>codeman-dev-...</code>; frontend localStorage keys <code>codeman.*</code> (token/theme/locale/portal/help); npm package <code>codeman-console</code>.</li>
+<li><strong>Only exception</strong>: GitHub repo URL stays <code>jameszgw/cmssoas</code> (README badges kept); working dir path stays <code>/home/user/Cmssoas</code> (cannot change).</li>
+<li>Zero <code>cmssoas/CMSSOAS/Cmssoas</code> left (LICENSE is the GPLv3 text, untouched).</li>
+</ul>
+<h2 id="h322e2044656c">2. Delivered modules (<code>com.codeman.platform.*</code>)</h2>
+<p>overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke·<strong>signed CRL</strong>·auto-expire; Ed25519+SM2) / online (SDK channel) / catalog (product·plan·subscription) / <strong>customer (master data + Customer 360)</strong> / billing (<strong>payment collect (manual confirm)</strong> + <strong>e-invoice</strong>) / <strong>contract (self-built e-sign, hash evidence)</strong> / <strong>notice (notice + consent)</strong> / <strong>cs (AI support, OpenAI-compatible, graceful degrade)</strong> / <strong>portal (tenant self-service)</strong> / <strong>harden (online code hardening)</strong> / rbac / mail (outbox) / alert / common.</p>
+<ul>
+<li>Console menus (permission codes): overview, tenant, license, online, catalog, plan, <strong>customer</strong>, billing, <strong>contract</strong>, <strong>notice</strong>, <strong>cs</strong>, <strong>harden</strong>, <strong>tenant:portal</strong>, audit, role:view, user:view.</li>
+<li>Public pages (no ops auth): <code>/activate/:token</code>, <code>/portal</code> + <code>/portal/home</code>.</li>
+<li>Public backend endpoints (<code>/pub/**</code>, bypass JwtAuthFilter): <code>/pub/notices/active</code>, <code>/pub/consents</code>, <code>/pub/payments/notify/{channel}</code>, <code>/pub/portal/login|overview</code>, <code>/pub/crl</code>, <code>/pub/license/public-keys</code>.</li>
+</ul>
+<h2 id="h332e204d6967">3. Migrations</h2>
+<ul>
+<li>PG/H2: <code>server/.../db/migration/V1..V18</code>. MySQL dialect: <code>server/.../db/mysql/V1..V18</code> (transform: <code>IDENTITY→AUTO_INCREMENT</code>, <code>TIMESTAMP→DATETIME</code>, boolean default <code>1/0</code>, per-table <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>).</li>
+<li><strong>When adding a migration</strong>: ① add <code>Vn</code> under <code>db/migration</code>; ② add same-numbered MySQL dialect under <code>db/mysql</code>; ③ run <code>bash deploy/sql/generate-schema.sh</code> to regenerate <code>deploy/sql/schema-*.sql</code>; ④ bump the migration-count assertions in <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> (currently <strong>18</strong>).</li>
+<li>Recent: V15 customer, V16 tenant_portal, V17 tax_invoice, V18 harden.</li>
+</ul>
+<h2 id="h342e2050726f">4. Provider abstraction pattern (core idiom: vendor-agnostic + degradable)</h2>
+<ul>
+<li>AI support: <code>ChatProvider</code>+<code>OpenAiCompatProvider</code> (pure JDK HttpClient, SSE); without <code>app.ai.*</code> it degrades to keyword KB (<code>knowledge/faq.md</code>). Set <code>AI_BASE_URL/AI_API_KEY/AI_MODEL</code> to use GLM-4-Flash/Qwen/DeepSeek/Ollama.</li>
+<li>Payment: <code>PaymentProvider</code>+<code>MockPaymentProvider</code> (default manual confirm; <code>app.pay.provider</code>).</li>
+<li>E-invoice: <code>EInvoiceProvider</code>+<code>MockEInvoiceProvider</code> (<code>app.einvoice.provider</code>).</li>
+<li>Hardening: <code>HardenProvider</code> (OBFUSCATE=ProGuard in-process; ENCRYPT_BIND=class encrypt + License; FATJAR_ENCRYPT=class encrypt + passphrase). Reserved for Allatori/ClassFinal/Xjar.</li>
+</ul>
+<h2 id="h352e204f6e6c">5. Online code hardening (most recent big feature)</h2>
+<ul>
+<li>Coexists with build-time hardening (<code>examples/protected-app</code>, <code>mvn -Pharden</code>); per-tenant <code>HardenConfig</code> (BUILD/ONLINE/BOTH) + per-task override; BUILD mode rejects online jobs.</li>
+<li>Flow: <code>POST /api/harden/jobs</code> (multipart upload) → async pipeline (selected techniques in order) → <code>GET /api/harden/jobs/{id}/download</code>. Config <code>app.harden.work-dir</code> (compose mounts named volume <code>harden</code>), <code>spring.servlet.multipart</code>.</li>
+<li>Injects pure-JDK <code>com.codeman.platform.harden.runtime.HardenLauncher/HardenClassLoader</code> (AES-256-GCM decrypt-on-load; key = SHA-256: LICENSE_BIND from bound License <code>.lic</code> text, PASSPHRASE from passphrase).</li>
+<li>Run output: <code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code> (bound) / <code>java -Dharden.key=&lt;pass&gt; -jar x.jar</code> (passphrase).</li>
+<li><strong>Gotcha fixes</strong>: proguard-base brings log4j-core which clashes with Spring's log4j-to-slf4j → added <code>src/main/resources/log4j2.component.properties</code> forcing <code>Log4jContextFactory</code>; ProGuard library jars limited to <code>java.base/java.logging</code> (avoid huge java.desktop hang); <code>HardenService.run</code> catches <code>Throwable</code> (prevent Error silently hanging a job).</li>
+</ul>
+<h2 id="h362e20546573">6. Tests &amp; CI</h2>
+<ul>
+<li>Backend <code>mvn test</code>: ~27 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
+<li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
+<li><strong>Real-run technique in sandbox</strong> (no persistent <code>&amp;</code>): use the Bash tool with <code>run_in_background:true</code> to run <code>java -jar</code>; wait with <code>until grep "Tomcat started on port 8080" log</code>; inspect CI via <code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> (when list output is too large, save to file and parse with python).</li>
+</ul>
+<h2 id="h372e204b6e6f">7. Known limits / candidate TODOs (not done)</h2>
+<ul>
+<li>Hardening: default ProGuard keep-rules are conservative (generic jars); strong obfuscation needs user keep-rules; full fat-jar (BOOT-INF/lib) encryption not done (currently encrypts business classes by package prefix). Xjar/Allatori/ClassFinal adapters <strong>reserved, unimplemented</strong>.</li>
+<li>Payment/e-sign/e-invoice: default mock/manual/sandbox; real channels (WeChat Pay/Alipay/Stripe, Aisino/Baiwang, e-sign vendors) adapters unimplemented (abstractions in place).</li>
+<li>Other candidates: usage metering/billing, revenue reconciliation reports, human-agent support console, real KMS/HSM, HA/backup-restore/blue-green, PostgreSQL real-DB CI (currently only MySQL matrix).</li>
+<li>Ops: <code>tag v*</code> push blocked by env (HTTP 403) — user must tag via GitHub UI; no PR created (not requested).</li>
+</ul>
+<h2 id="h382e20436f6e">8. Constraints (throughout)</h2>
+<ul>
+<li>Private keys never plaintext (inject via env/Nacos/KMS); AI support never sends secrets/PII.</li>
+<li>Develop &amp; push only on <code>claude/loving-einstein-Pp4cA</code>; <code>git push -u origin &lt;branch&gt;</code>, retry on network failure with 2/4/8/16s backoff; <strong>no PR, no tag</strong> unless explicitly asked.</li>
+<li>Docs: <code>docs/</code> (features/design) + <code>deploy/</code> (deploy/ops/help); keep README/DEPLOY/deploy indexes in sync; code &amp; migrations carry Chinese comments.</li>
+</ul>
+<h2 id="h392e204b6579">9. Key paths</h2>
+<ul>
+<li>Backend: <code>server/license-platform</code> (<code>src/main/java/com/codeman/platform/&lt;module&gt;</code>, <code>src/main/resources/{application*.yml,db/migration,db/mysql,knowledge,log4j2.component.properties}</code>).</li>
+<li>Frontend: <code>web/console/src/{views,api,layouts/DefaultLayout.vue,router/index.ts,i18n/locales/{zh-CN,en-US}.ts,components}</code>; screenshots <code>web/console/shots/</code>.</li>
+<li>SDK/demo: <code>sdk/license-sdk</code>, <code>examples/protected-app</code> (ProGuard <code>proguard.pro</code> + <code>-Pharden</code>).</li>
+<li>Docs: <code>docs/功能-*.md</code>, <code>docs/智能客服-大模型选型与部署.md</code>, <code>docs/02-代码保护方案.md</code>; <code>deploy/README.md</code>, <code>deploy/sql/*</code>, <code>deploy/docs/*</code>; <code>.env.example</code>, <code>.env.prod.example</code>, <code>docker-compose.yml</code>, <code>docker-compose.mysql.yml</code>.</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/HANDOFF-en.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

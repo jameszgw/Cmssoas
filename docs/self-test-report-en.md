@@ -78,3 +78,20 @@ cd examples/protected-app && bash demo.sh && mvn -Pharden -DskipTests package   
 - No Docker daemon in sandbox → 2.7 only validates `docker compose config`.
 - Mail `delivery=log` → 1.1 verifies rendered spool instead of real send.
 - Console JVM defaults to non-UTF-8 → SDK demo Chinese shows as `?` (add `-Dstdout.encoding=UTF-8`); does not affect pass/fail.
+
+## Screenshots (self-test evidence)
+
+![RBAC polymorphic permission tree](../web/console/shots/rbac-02-角色权限多态树-2K.png)
+*RBAC: polymorphic permission tree (none/view/edit/full)*
+
+![License issue wizard](../web/console/shots/lic-02-签发向导-2K.png)
+*License issue wizard*
+
+![License version history diff](../web/console/shots/lic-03-版本历史diff-2K.png)
+*License version history diff*
+
+![Online monitoring](../web/console/shots/on-01-在线监控-科技蓝-2K.png)
+*Online authorization monitoring (instances / heartbeat / seats)*
+
+![Billing & invoicing](../web/console/shots/biz-01-计费账单与开票.png)
+*Billing & e-invoicing*

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 · 多租户运营平台（前后端） · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="04-多租户运营平台.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 04 · 多租户运营平台（前后端）</div>
+<h1 id="h303420c2b720">04 · 多租户运营平台（前后端）</h1>
+<blockquote><p>目标：提供租户开通、DB 与初始数据自动化初始化、初始超管账号下发；以"产品—模块—功能—版本"为核心的可运营授权模型，驱动 License 签发。含后端服务与前端控制台。</p>
+</blockquote>
+<hr>
+<h2 id="h312e20e7a79f">1. 租户隔离策略选型</h2>
+<div class="tbl"><table><thead><tr><th>策略</th><th>隔离级别</th><th>成本</th><th>弹性</th><th>适用</th></tr></thead><tbody><tr><td><strong>独立数据库</strong>（DB per tenant）</td><td>最高（物理隔离）</td><td>高（实例多、运维重）</td><td>差（千租户难管）</td><td>强合规/大客户/私有化</td></tr><tr><td><strong>共享库独立 Schema</strong>（Schema per tenant）</td><td>中高</td><td>中</td><td>中</td><td>数十~数百租户</td></tr><tr><td><strong>共享库共享表 + tenant_id</strong>（Discriminator/行级）</td><td>逻辑隔离</td><td>低</td><td><strong>最好</strong></td><td>海量中小租户 SaaS</td></tr></tbody></table></div>
+<blockquote><p><strong>结论（推荐分层策略）</strong>：</p>
+<ul>
+<li><strong>运营平台自身</strong>：共享库 + <code>tenant_id</code> 行级隔离（PostgreSQL <strong>RLS 行级安全</strong>兜底防越权）。</li>
+<li><strong>被授权客户的业务系统</strong>：多为<strong>私有化独立部署 / 独立库</strong>（每个客户独立环境）。</li>
+<li>平台支持<strong>可配置隔离级别</strong>：大客户可选独立 Schema/独立库，中小客户走共享行级，兼顾成本与合规。</li>
+</ul>
+</blockquote>
+<h3 id="h312e3120e8a1">1.1 行级隔离实现</h3>
+<ul>
+<li>全局 <code>TenantContext</code>（ThreadLocal / Reactor Context）保存当前租户。</li>
+<li>登录/请求入口的拦截器解析 JWT 中 <code>tenantId</code> 注入上下文。</li>
+<li>MyBatis-Plus <strong>多租户插件</strong>自动给 SQL 追加 <code>tenant_id = ?</code>。</li>
+<li><strong>PG RLS</strong> 作为数据库层兜底：即使应用层漏判，数据库也拒绝跨租户读取（双保险）。</li>
+</ul>
+<hr>
+<h2 id="h322e20e7a79f">2. 租户开通与初始化流程</h2>
+<pre><code>运营/客户自助下单
+   │
+   ▼
+① 创建租户记录(tenant: 状态=INITIALIZING)
+   │
+   ▼
+② 资源编排（按隔离级别）
+   ├─ 共享行级：无需建库，仅写 tenant 记录
+   ├─ 独立 Schema：CREATE SCHEMA t_xxx
+   └─ 独立库：申请实例/库
+   │
+   ▼
+③ 执行 Flyway 迁移（版本化建表）—— 幂等、可重试
+   │
+   ▼
+④ 种子数据 seed（字典、默认角色、菜单、默认配置）
+   │
+   ▼
+⑤ 创建初始超管账号
+   ├─ 用户名规则 + 随机强密码（或邀请链接）
+   ├─ 密码 BCrypt/Argon2 加盐存储
+   ├─ 标记 mustChangePassword=true（首登强制改密）
+   └─ 安全下发：邮件/短信一次性链接（不明文落库/日志）
+   │
+   ▼
+⑥ 绑定套餐/授权 → 生成首张 License（调用 03 文档签发）
+   │
+   ▼
+⑦ 租户状态=ACTIVE，发送开通通知
+   │
+   ▼
+失败任一步 → 回滚/补偿（Saga），状态=FAILED，可重试</code></pre>
+<h3 id="h322e3120e585">2.1 关键设计</h3>
+<ul>
+<li><strong>幂等与可重试</strong>：开通是分布式动作，用<strong>Saga/状态机</strong>编排，每步幂等，失败可断点续做，避免半初始化租户。</li>
+<li><strong>DB 初始化</strong>：Flyway 脚本纳入版本控制（<code>V1__init.sql</code>、<code>V2__add_xxx.sql</code>），新租户始终建到最新 schema；存量租户随平台升级统一迁移。</li>
+<li><strong>超管账号安全</strong>：</li>
+<ul>
+<li>绝不在数据库/日志中存明文密码；</li>
+<li>推荐<strong>邀请激活链接</strong>（一次性、限时）由客户本人设密，优于系统生成密码；</li>
+<li>首登强制改密 + 强制绑定 MFA（TOTP）；</li>
+<li>超管操作全程审计。</li>
+</ul>
+<li><strong>租户配额</strong>：开通即写入资源配额（用户数、存储、QPS），与 License <code>features</code> 一致。</li>
+</ul>
+<hr>
+<h2 id="h332e20e68e88">3. 授权模型：产品—模块—功能—版本</h2>
+<pre><code>Product(产品)
+  └── Module(模块)            例：风控、报表、审计
+        └── Feature(功能点)    例：REPORT.EXPORT、RISK.REALTIME
+        └── Quota(配额项)      例：MAX_USERS、MAX_QPS
+Version(版本)                  例：v2.0、v2.1（功能随版本演进）
+Plan/SKU(套餐)                 = 模块/功能/配额/版本范围的组合 + 价格
+Subscription(订阅)            租户 ↔ 套餐 的购买关系（含周期、数量）
+License                        由 Subscription 生成（03 文档），下发给客户</code></pre>
+<ul>
+<li><strong>功能矩阵</strong>：<code>Feature × Version</code> 决定"某功能在某版本是否存在/可用"，支持<strong>按版本授权</strong>（如 EXPORT 仅 v2.1+ 提供）。</li>
+<li><strong>套餐编排</strong>：运营在控制台用"勾选模块/功能/配额 + 选版本范围 + 定价"组装 SKU，支持基础版/专业版/企业版分层与加购包。</li>
+<li><strong>授权 → License</strong>：订阅生效后，系统把套餐解析为 License 的 <code>modules/features/appVersionRange/concurrency</code>，调用签发引擎生成 License。变更套餐 → 重签 License（版本+1，见 03 文档 §7）。</li>
+</ul>
+<hr>
+<h2 id="h342e20e695b0">4. 数据模型（核心表 ER）</h2>
+<pre><code>tenant(租户)
+  id, code, name, isolation_level, db_ref, status, plan_id, created_at ...
+
+tenant_admin / sys_user(用户)
+  id, tenant_id, username, password_hash, must_change_pwd, mfa_secret, status, role_id ...
+
+sys_role / sys_permission / role_permission   —— RBAC
+
+product / module / feature / app_version
+  feature(id, module_id, code, name)
+  app_version(id, product_id, version, released_at)
+  feature_version_map(feature_id, version_id, available)   —— 版本功能矩阵
+
+plan(套餐)                id, product_id, name, price, version_range
+plan_item(套餐项)         plan_id, feature_id | quota_key, quota_value
+
+subscription(订阅)        id, tenant_id, plan_id, qty, start_at, end_at, status
+
+license(授权)             id, license_id, tenant_id, subscription_id,
+                          current_version, mode, machine_code, status,
+                          not_before, not_after, watermark ...
+license_history(历史)     id, license_id, version, claims_json, signature,
+                          operator, op_type, reason, order_ref, created_at  ——【历史追溯】
+
+activation(在线激活)      id, license_id, instance_id, machine_code, last_heartbeat, status
+crl(吊销列表)             license_id, reason, revoked_at
+usage_metric(用量)        license_id, metric, value, period
+audit_log(审计)           actor, tenant_id, action, target, ip, detail, created_at
+order(订单)/contract(合同)（可选，对接计费）</code></pre>
+<blockquote><p><code>license_history</code> 是<strong>历史追溯</strong>的核心：每次变更保存完整 claims 快照与签名，支持版本回看与 diff；<code>audit_log</code> 记录所有运营动作。</p>
+</blockquote>
+<hr>
+<h2 id="h352e20e5908e">5. 后端架构</h2>
+<pre><code>license-platform (Spring Boot 3.x)
+├── module-auth        运营后台登录、RBAC、JWT、MFA
+├── module-tenant      租户开通/初始化/Saga 编排/配额
+├── module-catalog     产品/模块/功能/版本/功能矩阵
+├── module-plan        套餐/订阅/计费对接
+├── module-license     签发引擎(调 KMS 签名)/生命周期/版本历史/CRL
+├── module-online      激活/心跳/并发席位(Redis)/可信时间/响应签名
+├── module-stats       用量计量、统计大盘数据
+├── module-audit       审计日志(不可变)
+├── common-tenant      TenantContext + MyBatis 多租户拦截 + PG RLS
+└── infra              KMS/HSM 适配、消息(到期预警)、缓存、定时任务</code></pre>
+<ul>
+<li><strong>签发引擎</strong>：组装 claims → 调 KMS/HSM 签名（私钥不出域）→ 落 <code>license</code>+<code>license_history</code> → 产出 <code>.lic</code>/在线快照。</li>
+<li><strong>在线服务</strong>：高并发心跳，Redis 维护活跃实例与席位，CRL 缓存；与签发分离部署，可独立扩缩容。</li>
+<li><strong>定时任务</strong>：到期扫描预警、过期置态、用量归集、长期未心跳实例回收席位。</li>
+<li><strong>安全</strong>：运营后台接口 RBAC + 操作审计；SDK 通道 mTLS；敏感配置加密。</li>
+</ul>
+<h3 id="h352e3120e585">5.1 关键 API（示意）</h3>
+<pre><code># 运营后台（前端调用，JWT + RBAC）
+POST /api/tenants                 开通租户
+POST /api/plans                   创建套餐
+POST /api/subscriptions           创建订阅
+POST /api/licenses/issue          签发 License
+POST /api/licenses/{id}/renew     续期（版本+1）
+POST /api/licenses/{id}/modify    变更（版本+1）
+POST /api/licenses/{id}/revoke    吊销（入 CRL）
+GET  /api/licenses/{id}/history   历史版本列表 + diff
+GET  /api/stats/dashboard         运营大盘
+
+# SDK 通道（客户端调用，mTLS + 签名）
+POST /sdk/activate                激活
+POST /sdk/heartbeat               心跳（返回签名快照）
+GET  /sdk/crl                     吊销检查
+GET  /sdk/time                    可信时间</code></pre>
+<hr>
+<h2 id="h362e20e5898d">6. 前端架构（运营管理控制台）</h2>
+<pre><code>license-console (Vue3 + TS + Vite + Pinia + Element Plus / Ant Design Vue)
+├── 登录/权限       账号密码 + MFA，按钮级权限(RBAC)
+├── 租户管理        开通向导、列表、状态、配额、初始化进度
+├── 产品目录        产品/模块/功能/版本、版本功能矩阵编辑
+├── 套餐管理        SKU 编排（勾选模块/功能/配额+版本+定价）
+├── 订阅管理        下单/续费/变更/退订
+├── License 管理    签发向导、列表、详情
+│     ├── 生命周期   续期/变更/吊销/暂停
+│     ├── 版本历史   版本列表 + 任意两版 diff（高亮变化）   ←【历史追溯】
+│     └── 下载/重发  .lic 文件、激活码
+├── 在线监控        激活实例、在线席位、心跳异常、地理分布
+├── 运营大盘        ECharts：授权数/到期分布/用量趋势/收入
+└── 审计中心        操作审计查询、导出</code></pre>
+<ul>
+<li><strong>开通向导</strong>：分步表单（租户信息→隔离级别→套餐→超管设置→确认），实时展示初始化进度（轮询/WebSocket）。</li>
+<li><strong>历史追溯页</strong>：时间线 + 版本快照 + diff 视图，满足"用户进行管理及历史追溯，包括版本号"。</li>
+<li><strong>国际化/主题</strong>：i18n + 暗色主题，适配政企信创环境（可换国产浏览器/麒麟）。</li>
+</ul>
+<hr>
+<h2 id="h372e20e6bd9c">7. 潜在风险与应对</h2>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>租户间数据越权</td><td>应用层多租户拦截 + 数据库 <strong>PG RLS</strong> 双保险；安全测试覆盖跨租户用例</td></tr><tr><td>半初始化租户（脏数据）</td><td>Saga 状态机 + 每步幂等 + 失败回滚/补偿 + 重试</td></tr><tr><td>超管密码泄露</td><td>邀请链接自设密 + 首登强制改密 + MFA + 不落明文/日志 + 审计</td></tr><tr><td>存量租户 schema 升级风险</td><td>Flyway 灰度迁移 + 备份 + 演练回滚 + 维护窗口</td></tr><tr><td>授权与 License 不一致</td><td>套餐→License 单一映射来源，变更即重签；定时对账</td></tr><tr><td>海量心跳压力</td><td>在线服务独立扩缩容 + Redis + 心跳间隔可调 + 限流</td></tr><tr><td>计费/订单对接复杂</td><td>订阅与计费解耦，预留接口对接现有计费/合同系统</td></tr><tr><td>运营误操作（错误吊销/变更）</td><td>二次确认 + 操作审计 + 可回看历史版本 + 关键操作审批流</td></tr><tr><td>私有化客户无外网</td><td>控制台支持<strong>离线签发</strong>导出 .lic，纯离线运营子集</td></tr><tr><td>大客户要求物理隔离</td><td>可配置隔离级别（独立 Schema/库），按客户分级</td></tr></tbody></table></div>
+<hr>
+<h2 id="h382e20e4b88e">8. 与前两份文档的衔接</h2>
+<ul>
+<li>平台<strong>签发</strong>的 License 即 03 文档定义的签名结构；</li>
+<li>客户拿到的被保护交付物由 02 文档的流水线产出，内置 License SDK；</li>
+<li>平台的"产品/模块/功能/版本"模型直接映射到 License 的 <code>modules/features/appVersionRange</code>，实现"配置即授权、授权即生效"。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/04-多租户运营平台.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODEMAN 使用手册 —— 从部署到应用(完整版) · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="使用手册-从部署到应用.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / CODEMAN 使用手册 —— 从部署到应用(完整版)</div>
+<h1 id="h434f44454d41">CODEMAN 使用手册 —— 从部署到应用(完整版)</h1>
+<blockquote><p>软件授权运营平台:代码保护 + License 认证 + 多租户运营。本手册覆盖<strong>环境准备 → 部署 → 初始化 → 各功能操作 → SDK 接入 → 运维</strong>全流程。 配套:<a href="../deploy/README.md">部署目录 deploy/</a> · <a href=".">功能文档 docs/</a> · <a href="HANDOFF.html">会话交接 HANDOFF</a>。初始账号 <strong>admin / 8888</strong>(首登强制改密)。</p>
+</blockquote>
+<hr>
+<h2 id="he79baee5bd95">目录</h2>
+<ol>
+<li>产品概览与架构</li>
+<li>环境要求</li>
+<li>部署(Docker / 裸机 / 纯 SQL 初始化)</li>
+<li>数据库选择(H2 / PostgreSQL / MySQL)</li>
+<li>首次登录与系统初始化</li>
+<li>角色权限与用户管理</li>
+<li>业务操作(逐模块)</li>
+<li>客户端 SDK 接入与代码保护</li>
+<li>智能客服大模型接入</li>
+<li>运维(备份 / 监控 / 密钥 / 升级)</li>
+<li>附录:环境变量 / 权限点 / 公开端点 / 端口</li>
+</ol>
+<hr>
+<h2 id="h312e20e4baa7">1. 产品概览与架构</h2>
+<ul>
+<li><strong>三大子系统</strong>:代码保护(混淆+加密+License 绑定)、License 认证(Ed25519/国密 SM2、离线+在线)、多租户运营平台(Vue3 控制台 + Spring Boot 后端)。</li>
+<li><strong>组成</strong>:<code>server/license-platform</code>(后端)、<code>web/console</code>(运营控制台)、<code>sdk/license-sdk</code>(客户端验签)、<code>examples/protected-app</code>(代码保护示例)。</li>
+<li><strong>端到端</strong>:运营方在控制台开通租户/签发 License → 客户集成 SDK 验签与门禁 → 在线通道心跳/吊销 → 计费/合同/发票闭环 → 客户自助门户查看。</li>
+<li><strong>技术栈</strong>:Spring Boot 3.5 / Java 21 / Flyway / JPA;Vue3 + TS + Element Plus + Vite;PostgreSQL·MySQL·H2 + Redis;Prometheus + Grafana。</li>
+</ul>
+<h2 id="h322e20e78eaf">2. 环境要求</h2>
+<div class="tbl"><table><thead><tr><th>项</th><th>要求</th></tr></thead><tbody><tr><td>JDK</td><td><strong>17+(推荐 21)</strong>;<strong>不支持 Java 8</strong></td></tr><tr><td>数据库</td><td>H2(开发) / PostgreSQL 16(生产推荐) / MySQL 5.7·8.0(库须 utf8mb4)</td></tr><tr><td>缓存</td><td>Redis 7(多实例 nonce 防重放;单机可不启用)</td></tr><tr><td>构建</td><td>Maven 3.9+;Node 20+(前端)</td></tr><tr><td>容器</td><td>Docker + Docker Compose(可选,推荐)</td></tr></tbody></table></div>
+<h2 id="h332e20e983a8">3. 部署</h2>
+<h3 id="h332e3120446f">3.1 Docker Compose(推荐,一键)</h3>
+<pre><code>cp .env.example .env          # 试用;生产用 cp .env.prod.example .env 并改密钥/SMTP/数据库
+docker compose up -d --build
+# 控制台 http://localhost   后端 http://localhost:8080   账号 admin/8888
+# 监控 Prometheus :9090 / Grafana :3000(admin/admin)</code></pre>
+<ul>
+<li>用 <strong>MySQL</strong>:<code>docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console</code></li>
+<li>启用<strong>本地大模型(智能客服)</strong>:<code>docker compose --profile ai up -d</code> → <code>docker compose exec ollama ollama pull qwen2.5:7b-instruct</code> → <code>.env</code> 设 <code>AI_ENABLED=true</code> 重启 backend。</li>
+</ul>
+<h3 id="h332e3220e8a3">3.2 裸机(CentOS systemd + nginx)</h3>
+<pre><code>cp deploy/codeman-backend.env.example /etc/codeman/backend.env   # 改数据库/密钥
+sudo bash deploy/install.sh                                      # 装 systemd 服务 + nginx 反代
+systemctl status codeman-backend</code></pre>
+<p>详见 <code>docs/部署-CentOS7.md</code>。</p>
+<h3 id="h332e3320e69c">3.3 本地开发(无需 Docker)</h3>
+<pre><code>cd server/license-platform &amp;&amp; mvn spring-boot:run      # :8080(默认 H2,开箱即跑)
+cd web/console &amp;&amp; npm install &amp;&amp; npm run dev           # :5173(代理到 :8080)</code></pre>
+<h2 id="h342e20e695b0">4. 数据库选择</h2>
+<ul>
+<li><strong>H2</strong>:开发默认,内存库,重启即清空。</li>
+<li><strong>PostgreSQL</strong>:生产推荐,<code>SPRING_PROFILES_ACTIVE=prod</code> + <code>DB_URL/DB_USER/DB_PASSWORD</code>。</li>
+<li><strong>MySQL 5.7/8.0</strong>:<code>SPRING_PROFILES_ACTIVE=mysql</code>,库须 <code>utf8mb4</code>;连接串 <code>characterEncoding=UTF-8</code>(非 utf8mb4)。</li>
+<li><strong>建表两法</strong>:① 应用启动 Flyway 自动建表 + 写系统种子(推荐);② 纯 SQL:执行 <code>deploy/sql/schema-&lt;dialect&gt;.sql</code> → <code>init-admin.sql</code>(可选)→ <code>test-data.sql</code>(可选),并设 <code>SPRING_FLYWAY_ENABLED=false</code>。</li>
+<li>详见 <code>deploy/sql/README.md</code> 与 <code>DEPLOY.md#数据库支持</code>。</li>
+</ul>
+<h2 id="h352e20e9a696">5. 首次登录与系统初始化</h2>
+<ol>
+<li>打开控制台 → 用 <strong>admin / 8888</strong> 登录 → 按提示<strong>修改初始密码</strong>。</li>
+<li>若存在「强制确认」须知,登录后弹层,勾选「我已阅读并同意」方可继续。</li>
+<li>应用首启会自动:建表、写权限/角色/套餐种子、创建超管 admin 并授予全部权限。</li>
+<li>建议:在「角色权限」核对权限,在「用户管理」为成员建号。</li>
+</ol>
+<h2 id="h362e20e8a792">6. 角色权限与用户管理</h2>
+<ul>
+<li><strong>角色权限</strong>:权限树支持「无 / 只读 / 编辑 / 完全」多态;新增权限自动授予超管;VIEWER 默认只读。</li>
+<li><strong>用户管理</strong>:新建用户指定角色,初始密码默认 <code>Codeman@123</code>(可自定义);重置密码 / 启停;新用户首登强制改密。</li>
+</ul>
+<h2 id="h372e20e4b89a">7. 业务操作(逐模块)</h2>
+<blockquote><p>每页内置 💡 操作指引与浅色功能简介;业务数据用等宽字体、与说明文案区分。</p>
+</blockquote>
+<h3 id="h372e3120e7a7">7.1 租户管理</h3>
+<p>开通租户(名称/管理员邮箱/套餐)→ 系统建租户独立 Schema 并发开通邮件(发件箱异步)→ 管理员凭邮件激活、设密码、(可选)绑定 MFA。支持续期、查看隔离配置。</p>
+<h3 id="h372e32204c69">7.2 License 授权(全生命周期)</h3>
+<ul>
+<li><strong>签发</strong>:选产品/版型/模块/有效期/并发 → 服务端私钥签名生成 <code>.lic</code>(Ed25519 默认 / 国密 SM2)。</li>
+<li><strong>续期 / 变更 / 吊销</strong>:操作即重签并记版本历史(diff 可查)。</li>
+<li><strong>下载 <code>.lic</code></strong>;<strong>导出 CSV</strong>。</li>
+<li><strong>吊销名单(CRL)</strong>:查看已签名 CRL 与公开分发地址 <code>/pub/crl</code>、公钥集 <code>/pub/license/public-keys</code>(离线客户端按 kid 验签后拒绝已吊销)。</li>
+<li><strong>到期停用</strong>:手动触发或每日自动将过期 License 置 EXPIRED。</li>
+</ul>
+<h3 id="h372e3320e59c">7.3 在线监控</h3>
+<p>查看 SDK 在线实例、心跳、席位占用、断网宽限期与席位释放。</p>
+<h3 id="h372e3420e4ba">7.4 产品与版本 / 套餐订阅</h3>
+<p>维护产品矩阵与套餐(价格/席位/模块/功能点/版本范围);创建订阅 → 自动出账(账单 PENDING),可联动签发。</p>
+<h3 id="h372e3520e5ae">7.5 客户管理(客户360)</h3>
+<p>维护客户主数据;点「客户360」按客户名称聚合其 License/合同/账单/支付/订阅与关键指标。</p>
+<h3 id="h372e3620e8ae">7.6 计费账单(收款 + 开票)</h3>
+<ul>
+<li>订阅/合同自动出账。</li>
+<li><strong>收款</strong>:发起扫码收款 → 客户支付后财务核对到账,点「确认到账(人工)」完成(默认人工确认;可接微信/支付宝/Stripe,改 <code>app.pay.provider</code>)。</li>
+<li><strong>开票</strong>:对已收款账单开具<strong>电子发票</strong>(普票/专票、抬头、税号、邮箱)→ 生成发票代码/号码/PDF;账单转「已开票」。默认沙箱,生产改 <code>app.einvoice.provider</code> 接航信/百望。</li>
+</ul>
+<h3 id="h372e3720e590">7.7 合同签约(自建电子签)</h3>
+<p>选模板(占位符自动填充)或手填 → 新建草稿 → 「发起签署」(内容定稿快照 + SHA-256 存证)→ 各方逐一签署 → 全部签署后合同生效并存证归档,金额&gt;0 自动出账。可作废未签署合同;导出 CSV。</p>
+<h3 id="h372e3820e9a1">7.8 须知与授权</h3>
+<p>「须知管理」新建草稿(条款/隐私/公告)→ 发布(内容定稿、旧版归档);可设「强制确认」。「授权记录」查看同意/撤回(主体/版本/渠道/IP/时间),导出 CSV 取证。公开页 <code>/pub/notices/active</code>、<code>/pub/consents</code>。</p>
+<h3 id="h372e3920e699">7.9 智能客服</h3>
+<p>控制台右下角悬浮窗对话;基于产品知识库(FAQ)作答,支持流式与「转人工」;通用不绑厂商,未接大模型时降级为知识库匹配。本页可审计全部会话。</p>
+<h3 id="h372e313020e5">7.10 在线代码加固</h3>
+<ul>
+<li>与「构建/打包」加固并存;「加固设置」按租户选模式(仅构建自建 / 仅平台在线 / 两者并存)+ 默认技术。</li>
+<li>「提交在线加固」上传可执行 jar,勾选技术(ProGuard 混淆 / 类加密+License 绑定 / 口令式类加密)→ 异步处理 → 下载产物。</li>
+<li>运行产物:<code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code>(License 绑定)/ <code>java -Dharden.key=&lt;口令&gt; -jar x.jar</code>(口令式)。</li>
+</ul>
+<h3 id="h372e313120e7">7.11 租户自助门户(面向最终客户)</h3>
+<p>运营在「自助门户」为租户「开通」生成访问码并复制凭证;客户访问门户地址 <code>/portal</code>,用「租户编号 + 访问码」登录,<strong>只读</strong>查看本租户 License/合同/账单/订阅(严格隔离)。</p>
+<h2 id="h382e20e5aea2">8. 客户端 SDK 接入与代码保护</h2>
+<ul>
+<li><strong>SDK 验签</strong>:<code>sdk/license-sdk</code> 用公钥验 <code>.lic</code> 签名 + 功能/版本门禁(SemVer)。私钥不出域。</li>
+<li><strong>构建时代码保护</strong>:<code>examples/protected-app</code>,<code>mvn -Pharden</code> 做 ProGuard 混淆;<code>BuildProtected</code> 加密关键类、解密密钥与 License 绑定(<code>demo.sh</code> 演示合法/错钥/篡改)。</li>
+<li><strong>在线加固</strong>:见 7.10(平台上传加固,无需自建流水线)。</li>
+<li>设计详见 <code>docs/02-代码保护方案.md</code>、<code>docs/03-License认证方案.md</code>。</li>
+</ul>
+<h2 id="h392e20e699ba">9. 智能客服大模型接入</h2>
+<p>通用 OpenAI 兼容,换厂商只改 <code>.env</code> 三项:</p>
+<pre><code># 智谱 GLM-4-Flash(常免费)
+AI_ENABLED=true AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4 AI_API_KEY=*** AI_MODEL=glm-4-flash
+# 本地 Ollama(离线)
+AI_ENABLED=true AI_BASE_URL=http://ollama:11434/v1 AI_MODEL=qwen2.5:7b-instruct</code></pre>
+<p>选型/部署/成本对比详见 <code>docs/智能客服-大模型选型与部署.md</code>。</p>
+<h2 id="h31302e20e8bf">10. 运维</h2>
+<ul>
+<li><strong>备份</strong>:PostgreSQL/MySQL 定期 <code>pg_dump</code>/<code>mysqldump</code> + PITR;Redis 哨兵/集群(可选);加固产物目录 <code>app.harden.work-dir</code> 用持久卷。</li>
+<li><strong>监控</strong>:Actuator + Prometheus(<code>/actuator/prometheus</code>)+ Grafana(预置看板 <code>infra/grafana</code>)。</li>
+<li><strong>密钥</strong>:私钥与 <code>JWT_SECRET</code>、各渠道密钥经 env/Nacos/KMS 注入,不落明文(见 <code>docs/密钥管理-KMS.md</code>)。</li>
+<li><strong>多实例</strong>:<code>APP_REDIS_ENABLED=true</code> 时心跳 nonce 走 Redis,可水平扩展;签发与在线校验可分离部署。</li>
+<li><strong>升级</strong>:改 Flyway 迁移(同时补 <code>db/mysql</code> 方言)→ <code>bash deploy/sql/generate-schema.sh</code> 重生成 schema → CI 真机矩阵验证(PG/MySQL 5.7·8.0)。</li>
+</ul>
+<h2 id="h31312e20e999">11. 附录</h2>
+<h3 id="h31312e3120e5">11.1 关键环境变量(见 <code>.env.example</code> / <code>.env.prod.example</code>)</h3>
+<p><code>JWT_SECRET</code>、<code>LICENSE_SIGN_ALGO</code>(ed25519/sm2)、<code>DB_URL/DB_USER/DB_PASSWORD</code>、<code>SPRING_PROFILES_ACTIVE</code>(prod/mysql)、<code>APP_REDIS_ENABLED</code>、<code>APP_MAIL_*</code>、<code>CORS_ORIGINS</code>、<code>PAY_PROVIDER</code>、<code>EINVOICE_PROVIDER</code>、<code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code>、<code>HARDEN_WORK_DIR/HARDEN_MAX_FILE_MB</code>、<code>ALERT_WECOM_WEBHOOK</code>。</p>
+<h3 id="h31312e3220e6">11.2 权限点(菜单)</h3>
+<p>overview / tenant / license / online / catalog / plan / customer / billing / contract / notice / cs / harden / tenant:portal(自助门户) / audit / role:view / user:view(各含 :view/:edit 等子权限)。</p>
+<h3 id="h31312e3320e5">11.3 公开端点(无需登录,<code>/pub/**</code>)</h3>
+<p><code>/pub/notices/active</code>、<code>/pub/consents</code>(同意/撤回)、<code>/pub/payments/notify/{channel}</code>(支付回调)、<code>/pub/portal/login|overview</code>(租户门户)、<code>/pub/crl</code>(签名吊销名单)、<code>/pub/license/public-keys</code>(公钥集);激活页 <code>/api/activation/**</code>。</p>
+<h3 id="h31312e3420e7">11.4 端口</h3>
+<p>控制台 80(Docker)/5173(dev);后端 8080;PostgreSQL 5432;MySQL 3306;Redis 6379;Prometheus 9090;Grafana 3000;Ollama 11434。</p>
+<hr>
+<blockquote><p>更多:总体方案 <code>docs/01-总体方案与架构.md</code>;功能专题 <code>docs/功能-*.md</code>;运维操作/FAQ <code>deploy/docs/操作说明.md</code> · <code>deploy/docs/帮助文档.md</code>。</p>
+</blockquote>
+
+<div class="docfoot">本页由 <code>docs/使用手册-从部署到应用.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

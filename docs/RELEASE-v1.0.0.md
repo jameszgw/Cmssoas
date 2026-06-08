@@ -47,3 +47,14 @@ LICENSE_SIGN_ALGO=sm2 java -jar server/license-platform/target/license-platform-
 
 ## 校验和
 > 由 CI `release` 流水线在生成 Release 时附带制品；如需手动校验，可对附件执行 `sha256sum`。
+
+## 界面预览
+
+![运营总览](../web/console/shots/app-01-总览-科技蓝-2K.png)
+*运营总览（科技蓝主题）*
+
+![套餐订阅](../web/console/shots/plan-02-套餐订阅-真实-2K.png)
+*套餐订阅（订阅自动签发 License）*
+
+![License 版本历史 diff](../web/console/shots/lic-03-版本历史diff-2K.png)
+*License 全生命周期：版本历史 diff*

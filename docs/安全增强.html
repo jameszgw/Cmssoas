@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安全增强：密钥轮换 / SDK 通道 mTLS / 限流防刷 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="安全增强.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 安全增强：密钥轮换 / SDK 通道 mTLS / 限流防刷</div>
+<h1 id="he5ae89e585a8">安全增强：密钥轮换 / SDK 通道 mTLS / 限流防刷</h1>
+<h2 id="h312e20e5af86">1. 密钥轮换（多 kid / JWKS）——已落地</h2>
+<ul>
+<li>每张 License 的声明含 <code>sigAlg</code>(算法) 与 <code>kid</code>(密钥标识,由公钥 SHA-256 派生)。</li>
+<li>平台暴露 JWKS 风格公钥集：<code>GET /api/licenses/public-keys</code> → <code>[{kid, algorithm, publicKeyBase64}]</code>。</li>
+<li>SDK 按 kid 选公钥验签：<code>LicenseVerifier.verify(lic, Map&lt;kid, pubBase64&gt;)</code>(见 <code>KidRotationTest</code>)。</li>
+</ul>
+<p><strong>轮换流程（无停机）：</strong></p>
+<ol>
+<li>生成新密钥对(新 kid),与旧密钥<strong>并存</strong>;<code>/api/licenses/public-keys</code> 同时发布新旧公钥。</li>
+<li>签发服务切到新私钥(新签 License 带新 kid);旧 License 仍可用旧公钥验签。</li>
+<li>待旧 License 全部过期/续期后,从 JWKS 下线旧公钥。</li>
+</ol>
+<blockquote><p>当前实现：单活跃密钥 + kid + JWKS 端点 + SDK 多公钥验签能力(轮换基础设施齐备)。 生产：私钥托管 KMS/HSM,按上面流程并存多 kid;客户端定期刷新 JWKS 缓存。</p>
+</blockquote>
+<h2 id="h322e2053444b">2. SDK 通道限流/防刷——已落地</h2>
+<ul>
+<li><code>SdkRateLimitFilter</code> 对 <code>/sdk/**</code> 按客户端 IP 每分钟固定窗口计数,超限返回 <code>429 + Retry-After</code>。</li>
+<li>配置：<code>app.sdk.rate-limit-per-min</code>(默认 120,环境变量 <code>APP_SDK_RATE_LIMIT</code>)。</li>
+<li>多实例生产应换 Redis 计数(<code>INCR</code> + <code>EXPIRE</code>),与 nonce 同一 Redis。</li>
+<li>实测：130 次/分钟突发心跳触发 10 次 429。</li>
+</ul>
+<h2 id="h332e2053444b">3. SDK 通道 mTLS——配置指引（部署期启用）</h2>
+<p>SDK 在线通道(<code>/sdk/activate</code>、<code>/sdk/heartbeat</code>)建议启用双向 TLS,确保只有持客户端证书的合法客户端可接入。</p>
+<p><strong>方式 A：在网关/nginx 终止 mTLS（推荐）</strong></p>
+<pre><code>server {
+    listen 443 ssl;
+    ssl_certificate     /etc/nginx/cert/server.crt;
+    ssl_certificate_key /etc/nginx/cert/server.key;
+    ssl_client_certificate /etc/nginx/cert/client-ca.crt;  # 签发客户端证书的 CA
+    ssl_verify_client on;                                   # 强制校验客户端证书
+    location /sdk/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header X-SSL-Client-Verify $ssl_client_verify;
+        proxy_set_header X-SSL-Client-DN     $ssl_client_s_dn;
+    }
+}</code></pre>
+<p><strong>方式 B：Spring Boot 直接启用 mTLS</strong>（<code>application-mtls.yml</code>，按需引入）</p>
+<pre><code>server:
+  ssl:
+    enabled: true
+    key-store: classpath:server-keystore.p12
+    key-store-password: ${SSL_KEYSTORE_PWD}
+    key-store-type: PKCS12
+    client-auth: need               # 强制客户端证书
+    trust-store: classpath:client-truststore.p12
+    trust-store-password: ${SSL_TRUSTSTORE_PWD}</code></pre>
+<blockquote><p>仅对 SDK 通道强制 mTLS、运营后台/前端用普通 HTTPS 时,推荐方式 A 在网关分路径配置; 证书签发与吊销纳入 PKI 流程,客户端证书可与 License/租户绑定以便溯源。</p>
+</blockquote>
+<h2 id="h342e20e585b6">4. 其它（已具备 / 建议）</h2>
+<ul>
+<li>鉴权：运营后台 JWT + 接口级 <code>@RequirePerm</code>(已落地)。</li>
+<li>传输：对外统一 HTTPS;<code>/actuator/**</code> 仅内网放行(nginx 已示例)。</li>
+<li>审计：关键写操作入 <code>audit_log</code>(已落地)。</li>
+<li>密钥/口令:统一入 Nacos(加密) 或 KMS,不落明文(见 <code>docs/部署-CentOS7.md</code>)。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/安全增强.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

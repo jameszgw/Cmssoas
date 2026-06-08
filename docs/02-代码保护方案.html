@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02 · 代码保护方案（防逆向 / 防泄露） · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="02-代码保护方案.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 02 · 代码保护方案（防逆向 / 防泄露）</div>
+<h1 id="h303220c2b720">02 · 代码保护方案（防逆向 / 防泄露）</h1>
+<blockquote><p>目标：对客户交付的 Spring Boot jar 进行纵深防护，使<strong>反编译、脱壳、破解 License 校验</strong>的成本远高于软件本身价值。</p>
+</blockquote>
+<hr>
+<h2 id="h312e20e8aebe">1. 设计思路：纵深防御分层</h2>
+<p>单一手段都能被针对性突破，因此采用"洋葱式"多层防护，攻击者必须逐层攻克：</p>
+<pre><code>┌────────────────────────────────────────────────────────┐
+│ L5 法律与运营层：LICENSE 协议、合同、在线吊销、水印追溯       │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ L4 运行环境层：反调试、反 dump、完整性自校验、防 attach  │ │
+│ │ ┌────────────────────────────────────────────────┐ │ │
+│ │ │ L3 关键逻辑层：License 校验/核心算法 Native 化      │ │ │
+│ │ │ ┌────────────────────────────────────────────┐ │ │ │
+│ │ │ │ L2 字节码加密层：Xjar/ClassFinal 套壳 + 运行解密 │ │ │ │
+│ │ │ │ ┌────────────────────────────────────────┐ │ │ │ │
+│ │ │ │ │ L1 混淆层：名称/控制流/字符串/反射代理     │ │ │ │ │
+│ │ │ │ │ ┌────────────────────────────────────┐ │ │ │ │ │
+│ │ │ │ │ │ L0 业务源码                          │ │ │ │ │ │
+│ │ │ │ │ └────────────────────────────────────┘ │ │ │ │ │
+│ │ │ │ └────────────────────────────────────────┘ │ │ │ │
+│ │ │ └────────────────────────────────────────────┘ │ │ │
+│ │ └────────────────────────────────────────────────┘ │ │
+│ └────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────┘</code></pre>
+<div class="tbl"><table><thead><tr><th>层</th><th>防护手段</th><th>主要对抗</th></tr></thead><tbody><tr><td>L1 混淆</td><td>类/方法/字段重命名、控制流平坦化、字符串加密、无用代码注入</td><td>反编译后可读性、静态分析</td></tr><tr><td>L2 字节码加密</td><td>整包/类文件加密，运行期内存解密</td><td>直接 jar -&gt; class 反编译、静态提取</td></tr><tr><td>L3 Native 化</td><td>License 校验、密钥派生、核心算法用 JNI/GraalVM 编译为原生码</td><td>patch 校验逻辑、Java 层 hook</td></tr><tr><td>L4 运行环境</td><td>反调试（JDWP 检测）、反 attach、内存 dump 抑制、jar 完整性 hash 校验</td><td>动态调试、内存脱壳、agent 注入</td></tr><tr><td>L5 法律/运营</td><td>授权协议、唯一水印、在线吊销、审计追溯</td><td>即便破解也可发现与追责</td></tr></tbody></table></div>
+<hr>
+<h2 id="h322e20e68a80">2. 技术选型对比</h2>
+<h3 id="h322e3120e4bb">2.1 代码混淆器</h3>
+<div class="tbl"><table><thead><tr><th>工具</th><th>授权</th><th>能力</th><th>对 Spring 兼容性</th><th>评价</th></tr></thead><tbody><tr><td><strong>ProGuard</strong></td><td>免费/开源</td><td>重命名、瘦身、基础优化；<strong>无控制流/字符串加密</strong></td><td>反射/CGLIB 需大量 keep 规则，易踩坑</td><td>入门免费方案，防护强度有限</td></tr><tr><td><strong>yGuard</strong></td><td>免费/开源</td><td>重命名为主</td><td>一般</td><td>简单项目可用</td></tr><tr><td><strong>Allatori</strong></td><td>商用</td><td>重命名 + <strong>控制流混淆 + 字符串加密 + 水印 + 资源加密</strong></td><td>较好，有 Spring 实践</td><td><strong>推荐</strong>，性价比高，防护强</td></tr><tr><td><strong>DashO</strong></td><td>商用（较贵）</td><td>强混淆 + 防篡改 + 反调试</td><td>好</td><td>预算充足可选</td></tr></tbody></table></div>
+<blockquote><p><strong>结论</strong>：免费起步用 <strong>ProGuard</strong>（注意 keep Spring 反射/实体/MyBatis Mapper/Controller）；商用首选 <strong>Allatori</strong>（字符串加密对隐藏 License 校验、密钥、URL 很关键）。</p>
+</blockquote>
+<blockquote><p>⚠️ Spring Boot 混淆注意：Bean 名、<code>@Configuration</code>、<code>@Entity</code> 字段（影响 ORM 映射）、Controller 方法（影响路由）、Jackson 序列化字段、SPI/<code>META-INF</code> 等需配置 keep 白名单，否则运行时反射失败。建议<strong>只混淆核心业务/算法包，放过框架交互边界</strong>。</p>
+</blockquote>
+<h3 id="h322e3220e5ad">2.2 字节码加密 / 套壳</h3>
+<div class="tbl"><table><thead><tr><th>工具</th><th>授权</th><th>原理</th><th>优点</th><th>缺点/风险</th></tr></thead><tbody><tr><td><strong>Xjar</strong></td><td>开源(国产)</td><td>对 jar 内 class/资源 AES 加密，生成 Go 编写的解密启动器（<code>go-xjar</code>），运行时解密加载</td><td>整包保护、启动器为原生不易逆、可绑定密码</td><td>启动器与密钥分发需保护；解密后类仍可能被内存 dump</td></tr><tr><td><strong>ClassFinal</strong></td><td>开源(国产)</td><td>class 加密，运行期用自定义 ClassLoader + javaagent 内存解密；支持<strong>机器绑定 + 密码 + 防 agent</strong></td><td>集成简单、Maven 插件、支持机器绑定</td><td>维护活跃度一般；内存 dump 风险同上</td></tr><tr><td><strong>自研 ClassLoader + Agent</strong></td><td>自有</td><td>自定义加密格式 + native agent 解密 + 反 dump</td><td>可控、可与 License 密钥联动</td><td>开发成本高</td></tr></tbody></table></div>
+<blockquote><p><strong>结论</strong>：推荐 <strong>Xjar（整包套壳）</strong> 或 <strong>ClassFinal（类级 + 机器绑定）</strong>。两者均可，关键在于<strong>解密密钥不能硬编码在 jar 里</strong>——应由 <strong>License 派生</strong> 或运行时从受保护渠道获取（见 §4）。</p>
+</blockquote>
+<h3 id="h322e3320e585">2.3 关键逻辑 Native 化</h3>
+<div class="tbl"><table><thead><tr><th>方案</th><th>原理</th><th>防护强度</th><th>成本</th></tr></thead><tbody><tr><td><strong>GraalVM native-image</strong></td><td>将（部分或整体）应用 AOT 编译为本地可执行文件，无 .class 字节码</td><td>高（无字节码可反编译）</td><td>中-高：反射/动态代理需配置 <code>reflect-config.json</code>，Spring Boot 有官方 AOT 支持但需适配</td></tr><tr><td><strong>JNI (C/C++)</strong></td><td>把 License 验签、密钥派生、指纹算法用 C 实现，编译为 .so/.dll</td><td>高（针对最关键逻辑）</td><td>中：需跨平台编译、混淆 native（OLLVM）</td></tr><tr><td><strong>jar 转 exe（jpackage/launch4j/exe4j）</strong></td><td>仅打包封装，<strong>不改变字节码</strong></td><td>低（不是防护，只是分发便利）</td><td>低</td></tr></tbody></table></div>
+<blockquote><p><strong>结论</strong>：把<strong>最敏感的逻辑（License 验签、解密密钥派生、硬件指纹）下沉到 JNI native 库</strong>，并用 OLLVM 混淆 native 代码。整体应用可选 GraalVM native-image 进一步消除字节码。 <strong>明确澄清</strong>：<code>jar 转 exe</code> 本身<strong>不提供防逆向能力</strong>，不能作为主力防护，仅用于分发体验。</p>
+</blockquote>
+<h3 id="h322e3420e980">2.4 选型小结（推荐组合）</h3>
+<pre><code>业务源码
+  └─(L1) ProGuard/Allatori 混淆（核心包，字符串加密）
+        └─(L3) 关键校验/密钥逻辑 → JNI native(.so/.dll, OLLVM 混淆)
+              └─(L2) Xjar/ClassFinal 加密套壳（密钥由 License 派生）
+                    └─(L4) native agent：反调试 + 反 dump + 完整性校验
+                          └─(可选) GraalVM native-image 整体原生化</code></pre>
+<hr>
+<h2 id="h332e20e59ca8">3. 在 CI/CD 中的构建流水线</h2>
+<pre><code>mvn package（原始 boot jar）
+   ↓
+① 混淆（ProGuard/Allatori Maven 插件，keep 白名单）
+   ↓
+② 编译/链接 native 库（JNI 关键逻辑，OLLVM）→ 内置到 jar
+   ↓
+③ 加密套壳（Xjar/ClassFinal 插件）→ 产出受保护交付物
+   ↓
+④ 完整性签名：对最终产物计算 hash 并由厂商私钥签名，启动时自校验
+   ↓
+⑤ 注入唯一水印（客户/批次标识）用于泄露溯源
+   ↓
+产出：客户专属、可溯源的受保护交付包</code></pre>
+<ul>
+<li>流水线在<strong>隔离的构建机</strong>执行，混淆映射表（mapping）、native 源码、密钥<strong>不随交付物分发</strong>，仅留存于厂商侧（mapping 用于崩溃栈反混淆排障）。</li>
+<li>每个客户/批次产出<strong>唯一水印</strong>，一旦在外网发现泄露包，可溯源到泄露方。</li>
+</ul>
+<hr>
+<h2 id="h342e20e4b88e">4. 与 License 的联动（核心创新点）</h2>
+<p><strong>让"解密密钥"依赖"合法 License"</strong>，把代码保护与授权强绑定：</p>
+<ol>
+<li>套壳加密时，class 解密密钥 = <code>KDF(产品根密钥, License 中的 licenseId/指纹)</code>。</li>
+<li>应用启动 → native agent 先校验 License（验签 + 指纹 + 有效期）→ 校验通过才派生出正确的解密密钥 → 才能解密加载业务类。</li>
+<li>效果：<strong>没有合法 License，连业务字节码都无法被正确解密运行</strong>；单纯 patch 掉 Java 层校验也无法得到正确密钥。</li>
+</ol>
+<blockquote><p>这一设计把"破解 License"与"脱壳解密"两个难题耦合在一起，显著提升破解门槛。</p>
+</blockquote>
+<hr>
+<h2 id="h352e20e58f8d">5. 反调试 / 反 dump / 完整性校验（L4）</h2>
+<div class="tbl"><table><thead><tr><th>手段</th><th>实现</th><th>对抗</th></tr></thead><tbody><tr><td>反调试</td><td>检测 JDWP（<code>-agentlib:jdwp</code>、<code>-Xdebug</code>）、检测 <code>java.lang.management</code> 中的调试参数、native 层 <code>ptrace</code> 自附加</td><td>动态断点调试</td></tr><tr><td>反 attach</td><td>启动后调用 native 关闭/监控 attach 机制，检测异常 <code>-javaagent</code>/instrument</td><td>运行期注入 agent dump 内存类</td></tr><tr><td>内存 dump 抑制</td><td>native agent 监控可疑内存读取、关键类用后即清/不长期驻留明文</td><td>从内存提取已解密 class</td></tr><tr><td>完整性自校验</td><td>启动与运行期周期性校验 jar/native 库 hash 是否被篡改（与厂商签名比对）</td><td>patch 字节码/替换 native 库</td></tr><tr><td>多点冗余校验</td><td>License 校验结果在多处分散验证、结果参与业务计算</td><td>单点 NOP 绕过</td></tr></tbody></table></div>
+<blockquote><p><strong>失败策略</strong>：检测到调试/篡改 → 不直接崩溃（易被定位），而是<strong>延迟、随机化失败或静默降级</strong>，增加攻击者定位难度（tamper-evident 优于 tamper-fail）。</p>
+</blockquote>
+<hr>
+<h2 id="h362e20e6bd9c">6. 潜在风险与应对</h2>
+<div class="tbl"><table><thead><tr><th>风险</th><th>说明</th><th>应对措施</th></tr></thead><tbody><tr><td><strong>字节码终可反编译</strong></td><td>Java 本质可逆，混淆只增加阅读难度</td><td>叠加加密 + Native + 在线校验；核心价值逻辑 Native 化；接受"抬高门槛"的现实目标</td></tr><tr><td><strong>内存 dump 脱壳</strong></td><td>自定义 ClassLoader 解密后的 class 在内存中可被 dump（如 HSDB、自写 agent）</td><td>native 反 dump agent；关键类不长期明文驻留；最核心逻辑放 Native（dump 出来也是机器码）；GraalVM 整体原生化</td></tr><tr><td><strong>patch 校验逻辑</strong></td><td>攻击者 NOP 掉验签返回 true</td><td>校验 Native 化 + 完整性自校验 + 多点冗余 + 解密密钥依赖 License（§4）</td></tr><tr><td><strong>Spring 反射兼容性</strong></td><td>混淆破坏 Bean/ORM/路由</td><td>精确 keep 白名单；只混淆核心包；CI 中加冒烟测试验证混淆包可启动</td></tr><tr><td><strong>GraalVM 适配成本</strong></td><td>反射/动态代理/AOT 配置复杂</td><td>仅对核心模块原生化；用 Spring Boot AOT + 自动生成 reflect-config；预留适配工时</td></tr><tr><td><strong>native 库被逆向</strong></td><td>.so/.dll 仍可被 IDA/Ghidra 分析</td><td>OLLVM 控制流混淆 + 字符串加密 + 反调试；关键常量运行期派生</td></tr><tr><td><strong>性能开销</strong></td><td>加密解密、完整性校验、心跳带来开销</td><td>类解密只在加载时一次；完整性校验异步/抽样；native 校验高性能</td></tr><tr><td><strong>mapping/密钥泄露</strong></td><td>反混淆映射表或根密钥泄露则防护失效</td><td>构建机隔离、密钥入 KMS/HSM、最小权限、定期轮换、不随交付物分发</td></tr><tr><td><strong>跨平台分发</strong></td><td>native 库需多平台编译</td><td>CI 多平台交叉编译（Linux/Win/麒麟/统信），按客户环境裁剪</td></tr><tr><td><strong>误杀正常运维</strong></td><td>反调试误判客户 APM/监控 agent</td><td>提供白名单配置、官方支持的可观测接入方式、宽松/严格模式可配</td></tr></tbody></table></div>
+<hr>
+<h2 id="h372e20e4baa4">7. 交付与排障</h2>
+<ul>
+<li><strong>交付物</strong>：受保护 jar/native 包 + 启动器 + License 导入工具 + 指纹采集工具。</li>
+<li><strong>排障</strong>：保留 ProGuard mapping，崩溃栈用 <code>retrace</code> 反混淆；native 崩溃保留符号表（厂商侧）。</li>
+<li><strong>降级开关</strong>：提供"调试构建"（关闭部分防护）供联调，<strong>严禁外发</strong>，CI 区分 <code>debug</code> / <code>release</code> profile。</li>
+</ul>
+<hr>
+<h2 id="he999843ae59c">附:在线代码加固(运营平台,与构建/打包并存)</h2>
+<p>除"构建/打包时加固"(本文上述 ProGuard/加密方案,见 <code>examples/protected-app</code>)外,运营平台还提供 <strong>在线加固</strong>:用户上传 jar → 平台异步加固 → 下载。两者<strong>并存、不取代</strong>,由运营用户按租户设置模式 (BUILD/ONLINE/BOTH)并可在任务级覆盖。技术含 ProGuard 混淆、关键类加密+License 绑定、口令式类加密, 经 <code>HardenProvider</code> 抽象可插拔接商用器。详见 <a href="功能-在线代码加固.html"><code>docs/功能-在线代码加固.md</code></a>。</p>
+
+<div class="docfoot">本页由 <code>docs/02-代码保护方案.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

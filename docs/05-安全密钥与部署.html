@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 · 安全密钥管理与部署架构 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="05-安全密钥与部署.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 05 · 安全密钥管理与部署架构</div>
+<h1 id="h303520c2b720">05 · 安全密钥管理与部署架构</h1>
+<blockquote><p>整个方案的"信任根"是签名私钥。私钥一旦泄露，所有 License 均可被伪造，全线失守。因此密钥管理是重中之重。</p>
+</blockquote>
+<hr>
+<h2 id="h312e20e5af86">1. 密钥体系</h2>
+<div class="tbl"><table><thead><tr><th>密钥</th><th>用途</th><th>存放</th><th>暴露面</th></tr></thead><tbody><tr><td><strong>License 签名私钥</strong></td><td>签发 License</td><td>KMS/HSM，永不出域</td><td>仅 License Server 通过 KMS API 调用签名</td></tr><tr><td>License 验签公钥</td><td>客户端验签</td><td>内置于 SDK/被保护应用</td><td>可公开（公钥泄露无害）</td></tr><tr><td>产品根密钥（解密密钥派生）</td><td>派生 class 解密密钥（02 §4）</td><td>KMS + 构建机隔离</td><td>不随交付物分发</td></tr><tr><td>mTLS 证书</td><td>SDK↔Server 通道</td><td>双方证书库</td><td>受 CA 管控</td></tr><tr><td>后台 JWT 签名密钥</td><td>运营后台会话</td><td>服务端配置中心/KMS</td><td>服务端</td></tr></tbody></table></div>
+<h3 id="h312e3120e5af">1.1 密钥分级与轮换</h3>
+<ul>
+<li><strong>按产品线 + 大版本</strong>使用不同签名密钥（<code>kid</code> 标识），缩小爆炸半径。</li>
+<li>客户端内置<strong>多公钥</strong>（按 <code>kid</code> 选择），支持平滑<strong>轮换</strong>：新 License 用新私钥签，旧 License 用旧公钥继续验。</li>
+<li>私钥泄露应急：吊销对应 <code>kid</code> → 用新密钥重签存量 License → 推送更新（在线模式可远程刷新）。</li>
+</ul>
+<h3 id="h312e3220e980">1.2 选型对比</h3>
+<div class="tbl"><table><thead><tr><th>方案</th><th>安全性</th><th>成本</th><th>信创合规</th><th>适用</th></tr></thead><tbody><tr><td>云 KMS（阿里/华为/腾讯）</td><td>高（私钥不出域、审计、轮换）</td><td>中（按调用计费）</td><td>部分支持国密</td><td>公有云/混合云</td></tr><tr><td>硬件 HSM（加密机）</td><td>最高（物理防护、抗提取）</td><td>高（采购+运维）</td><td>支持国密 SDF</td><td>政企/金融/私有化</td></tr><tr><td>SoftHSM / 软实现</td><td>中（依赖主机安全）</td><td>低</td><td>——</td><td>开发/测试</td></tr><tr><td>TrueLicense KeyStore</td><td>低-中（密钥随包易被提取）</td><td>低</td><td>——</td><td>不推荐用于高价值场景</td></tr></tbody></table></div>
+<blockquote><p><strong>结论</strong>：生产用<strong>云 KMS</strong> 或<strong>硬件 HSM</strong>；金融/政企信创选支持<strong>国密 SM2</strong> 的 HSM/加密机。开发测试可用 SoftHSM。</p>
+</blockquote>
+<hr>
+<h2 id="h322e20e9809a">2. 通道与接口安全</h2>
+<ul>
+<li><strong>SDK ↔ Server</strong>：mTLS 双向认证 + 请求签名（HMAC + nonce + 时间戳）防中间人/重放；响应由服务端签名，SDK 验签。</li>
+<li><strong>控制台 ↔ 后端</strong>：HTTPS + JWT + RBAC + 关键操作 MFA/审批 + 防重放 + 接口限流。</li>
+<li><strong>最小权限</strong>：签发权限、吊销权限分离；私钥调用仅签发引擎服务账户可用。</li>
+<li><strong>审计</strong>：所有签发/吊销/密钥调用入不可变审计日志，支持告警（异常签发量）。</li>
+</ul>
+<hr>
+<h2 id="h332e20e983a8">3. 部署架构</h2>
+<pre><code>                         ┌──────────────── WAF / API 网关 ────────────────┐
+                         │           (TLS 终止、限流、防重放)               │
+                         └───────┬───────────────────────────┬────────────┘
+                                 │                           │
+                    ┌────────────▼─────────┐     ┌───────────▼───────────┐
+                    │ 运营后端(签发/管理)    │     │ 在线校验服务(心跳/CRL)  │
+                    │ 多实例, 内网          │     │ 多实例, 独立扩缩容       │
+                    └─────┬──────────┬─────┘     └───────────┬───────────┘
+                          │          │                       │
+                ┌─────────▼──┐  ┌────▼─────┐         ┌───────▼────────┐
+                │ KMS / HSM  │  │ PostgreSQL│         │     Redis      │
+                │ (私钥)     │  │ (主从+备份)│         │ (席位/nonce/CRL)│
+                └────────────┘  └──────────┘         └────────────────┘</code></pre>
+<ul>
+<li><strong>签发服务</strong>与<strong>在线校验服务</strong>分离：前者低频高安全（靠近 KMS、严格管控），后者高并发（独立扩缩容）。</li>
+<li><strong>高可用</strong>：服务无状态多实例；DB 主从 + 定期备份 + 异地容灾；Redis 哨兵/集群；KMS/HSM 双机。</li>
+<li><strong>私有化交付</strong>：提供单机/内网部署包（含离线签发能力、SoftHSM/本地加密机适配），满足无外网客户。</li>
+<li><strong>可观测</strong>：Prometheus + Grafana 监控签发量、心跳 QPS、宽限期触发、异常告警；日志集中（ELK）。</li>
+</ul>
+<hr>
+<h2 id="h342e20e6bd9c">4. 潜在风险与应对</h2>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>私钥泄露</td><td>KMS/HSM 不出域 + 分级 + 轮换 + 应急重签 + 异常签发告警</td></tr><tr><td>KMS/HSM 不可用致无法签发</td><td>双机热备 + 限流排队 + 离线应急签发预案</td></tr><tr><td>在线服务被 DDoS</td><td>WAF + 网关限流 + 弹性扩容 + CDN/边缘</td></tr><tr><td>DB 故障/数据丢失</td><td>主从 + PITR 备份 + 异地容灾 + 定期恢复演练</td></tr><tr><td>证书过期致 SDK 断连</td><td>证书到期监控 + 自动轮换 + 宽限期兜底</td></tr><tr><td>内部人员越权签发</td><td>权限分离 + 审批流 + 全审计 + 定期审计复核</td></tr><tr><td>私有化环境密钥保护弱</td><td>强制本地加密机/SoftHSM + 交付即轮换专属密钥</td></tr></tbody></table></div>
+
+<div class="docfoot">本页由 <code>docs/05-安全密钥与部署.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

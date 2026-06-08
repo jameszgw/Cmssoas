@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>00 · 完整解决方案（分步骤 · 含前后端） · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="00-完整解决方案(分步骤·含前后端).md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 00 · 完整解决方案（分步骤 · 含前后端）</div>
+<h1 id="h303020c2b720">00 · 完整解决方案（分步骤 · 含前后端）</h1>
+<blockquote><p>本文是<strong>权威主文档</strong>：按实施步骤推进，<strong>每一步统一包含</strong>： <strong>① 设计思路 ② 技术选型对比 ③ 潜在风险 ④ 应对措施</strong>，并标注<strong>前端 / 后端落点</strong>。 细节展开见附录 01–07。</p>
+</blockquote>
+<h2 id="he79baee6a087">目标与三大子系统</h2>
+<ol>
+<li><strong>代码保护</strong>（防逆向、防泄露）——步骤 1–5</li>
+<li><strong>License 认证</strong>（离线 + 在线、可管理、版本与历史追溯）——步骤 6–12</li>
+<li><strong>多租户运营平台</strong>（前后端、租户开通、DB 初始化、超管、模块/功能/版本授权）——步骤 13–19</li>
+<li><strong>收尾</strong>：密钥、部署、路线图——步骤 18–20</li>
+</ol>
+<blockquote><p>⚠️ 现实边界：纯软件无法绝对防破解；目标是<strong>抬高破解成本 &gt; 软件价值</strong>，以"技术 + 在线吊销/水印溯源 + 法律协议"构成综合防线。</p>
+</blockquote>
+<hr>
+<h1 id="he7acace4b880">第一部分 · 代码保护</h1>
+<h2 id="he6ada5e9aaa4">步骤 1：代码混淆</h2>
+<p><strong>① 设计思路</strong> 仅混淆<strong>核心业务/算法包</strong>（风控规则、计费、License 校验辅助逻辑），放过框架交互边界（Controller 路由、<code>@Entity</code> 字段、Bean 名、Jackson 序列化字段、SPI），避免破坏 Spring 反射。开启<strong>名称重命名 + 控制流平坦化 + 字符串加密</strong>，重点把"License 校验、密钥、URL 常量"等敏感字符串加密。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>工具</th><th>授权</th><th>能力</th><th>Spring 兼容</th><th>结论</th></tr></thead><tbody><tr><td>ProGuard</td><td>免费</td><td>重命名/瘦身，无控制流/字符串加密</td><td>需大量 keep</td><td>起步可用</td></tr><tr><td>yGuard</td><td>免费</td><td>重命名为主</td><td>一般</td><td>简单项目</td></tr><tr><td><strong>Allatori</strong></td><td>商用</td><td>重命名+控制流+字符串加密+水印</td><td>较好</td><td><strong>推荐</strong></td></tr><tr><td>DashO</td><td>商用贵</td><td>强混淆+防篡改</td><td>好</td><td>预算足可选</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>混淆破坏反射致启动失败</td><td>精确 keep 白名单；只混淆核心包；CI 加"混淆后冒烟启动测试"</td></tr><tr><td>防护强度有限（仍可反编译）</td><td>叠加后续步骤（加密+Native）；字符串加密隐藏关键逻辑</td></tr><tr><td>崩溃栈不可读、排障难</td><td>保留 mapping（仅厂商侧），用 <code>retrace</code> 反混淆</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（被保护的 Spring Boot 交付物构建期）；前端无关。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 2：字节码加密 / 套壳</h2>
+<p><strong>① 设计思路</strong> 对 jar 内 class/资源加密，运行期内存解密加载。<strong>关键创新</strong>：class 解密密钥 = <code>KDF(产品根密钥, License 信息)</code> —— 没有合法 License 就解不出正确密钥、跑不起业务字节码（与步骤 6–9 联动）。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>工具</th><th>授权</th><th>原理</th><th>优点</th><th>风险</th></tr></thead><tbody><tr><td><strong>Xjar</strong></td><td>开源(国产)</td><td>整包 AES 加密 + Go 原生启动器解密</td><td>整包保护、启动器难逆</td><td>解密后类可被内存 dump</td></tr><tr><td><strong>ClassFinal</strong></td><td>开源(国产)</td><td>class 加密 + 自定义 ClassLoader/agent 内存解密，支持机器绑定</td><td>集成简单、Maven 插件</td><td>维护活跃度一般</td></tr><tr><td>自研 ClassLoader+Agent</td><td>自有</td><td>自定义格式 + native 解密</td><td>可控、可与 License 联动</td><td>开发成本高</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>解密后内存 dump 脱壳</td><td>步骤 3 把核心逻辑 Native 化；步骤 4 反 dump；明文类不长期驻留</td></tr><tr><td>解密密钥硬编码被提取</td><td>密钥由 License 派生（不入包）；根密钥入 KMS、构建机隔离</td></tr><tr><td>启动器/agent 被替换</td><td>步骤 4 完整性自校验（hash + 厂商签名比对）</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（构建期 + 运行期）；前端无关。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 3：关键逻辑 Native 化</h2>
+<p><strong>① 设计思路</strong> 把<strong>License 验签、解密密钥派生、硬件/软指纹算法、核心算法</strong>用 JNI（C/C++）实现并编译为 <code>.so/.dll</code>，再用 OLLVM 混淆 native；可选用 GraalVM native-image 对核心模块整体 AOT，彻底消除可反编译字节码。<code>jar 转 exe</code> 仅作分发便利、<strong>不计入防护</strong>。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>方案</th><th>原理</th><th>防护</th><th>成本</th></tr></thead><tbody><tr><td><strong>JNI(C/C++)+OLLVM</strong></td><td>关键逻辑原生化</td><td>高（针对最敏感点）</td><td>中：跨平台编译</td></tr><tr><td>GraalVM native-image</td><td>整体/模块 AOT，无字节码</td><td>高</td><td>中-高：反射需 <code>reflect-config</code></td></tr><tr><td>jpackage/launch4j/exe4j</td><td>仅封装，不改字节码</td><td><strong>无（非防护）</strong></td><td>低</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>native 仍可被 IDA/Ghidra 逆向</td><td>OLLVM 控制流混淆 + 字符串加密 + 关键常量运行期派生</td></tr><tr><td>跨平台编译维护重</td><td>CI 多平台交叉编译（Linux/Win/麒麟/统信），按客户裁剪</td></tr><tr><td>GraalVM 适配反射/代理复杂</td><td>仅核心模块原生化；用 Spring Boot AOT 自动生成配置；预留工时</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（被保护应用 + SDK 的 native 部分）；前端无关。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 4：运行时防护（反调试 / 反 dump / 完整性自校验）</h2>
+<p><strong>① 设计思路</strong> native agent 在运行期检测 JDWP/调试参数、<code>ptrace</code> 自附加、异常 <code>-javaagent</code> 注入；周期性校验 jar/native 库 hash 与厂商签名是否一致；License 校验结果<strong>多点冗余</strong>并参与业务计算。检测到篡改<strong>不立即崩溃</strong>，而是延迟/随机化失败/静默降级（tamper-evident 优于 tamper-fail）。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>手段</th><th>实现</th><th>对抗</th></tr></thead><tbody><tr><td>反调试</td><td>检测 JDWP/<code>-Xdebug</code> + native <code>ptrace</code></td><td>动态断点</td></tr><tr><td>反 attach</td><td>关闭/监控 attach、检测可疑 agent</td><td>运行期注入 dump</td></tr><tr><td>完整性校验</td><td>hash + 厂商私钥签名比对</td><td>patch 字节码/换 native</td></tr><tr><td>多点冗余校验</td><td>校验结果分散、参与计算</td><td>单点 NOP 绕过</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>误杀客户 APM/监控 agent</td><td>提供白名单 + 官方可观测接入；严格/宽松模式可配</td></tr><tr><td>检测点被定位逐一拔除</td><td>多点冗余 + 延迟随机失败 + 结果耦合业务</td></tr><tr><td>校验自身被 patch</td><td>校验逻辑 Native 化（步骤 3）+ 互相校验</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（被保护应用运行期）；前端无关。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 5：CI/CD 安全构建流水线</h2>
+<p><strong>① 设计思路</strong> 在<strong>隔离构建机</strong>串联：<code>mvn package → 混淆 → 编译 native → 加密套壳 → 完整性签名 → 注入客户唯一水印</code>，产出<strong>客户专属、可溯源</strong>交付物。mapping、native 源码、根密钥<strong>不随交付物分发</strong>，仅留厂商侧。区分 <code>debug</code>（关闭部分防护，仅内部联调）/<code>release</code> profile。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>环节</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>构建</td><td>Maven + GitLab CI/Jenkins</td><td>Gradle</td></tr><tr><td>混淆插件</td><td>ProGuard/Allatori Maven 插件</td><td>——</td></tr><tr><td>加密插件</td><td>Xjar/ClassFinal Maven 插件</td><td>自研</td></tr><tr><td>签名</td><td>KMS 签名（私钥不出域）</td><td>本地 keystore（不推荐）</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>构建机泄露 mapping/根密钥</td><td>构建机隔离、最小权限、密钥入 KMS、定期轮换</td></tr><tr><td>debug 包外泄</td><td>profile 隔离 + 制品库权限 + 水印区分</td></tr><tr><td>泄露包难溯源</td><td>每客户/批次唯一水印 → 外网发现可定位泄露方</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（交付物构建）；可在运营平台（前端）提供"按客户出包/水印管理"界面。</p>
+<hr>
+<h1 id="he7acace4ba8c">第二部分 · License 认证</h1>
+<h2 id="he6ada5e9aaa4">步骤 6：信任根与签名体系</h2>
+<p><strong>① 设计思路</strong> 非对称签名为信任根：厂商<strong>私钥签发</strong>（KMS/HSM 不出域），客户端<strong>内置公钥验签</strong>。客户端永不持私钥 → 无法伪造 License，只能尝试 patch（由第一部分对抗）。客户端内置<strong>多公钥 + <code>kid</code></strong>，支持密钥轮换。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>算法</th><th>签名长度</th><th>性能</th><th>国密</th><th>结论</th></tr></thead><tbody><tr><td>RSA-2048</td><td>长</td><td>验快签慢</td><td>否</td><td>兼容性好</td></tr><tr><td>ECDSA P-256</td><td>短</td><td>快</td><td>否</td><td>可选</td></tr><tr><td><strong>Ed25519</strong></td><td>短</td><td>最快</td><td>否</td><td><strong>通用推荐</strong></td></tr><tr><td><strong>SM2</strong></td><td>短</td><td>快</td><td><strong>是</strong></td><td><strong>信创推荐</strong></td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>私钥泄露→全线可伪造</td><td>KMS/HSM 托管；按产品/大版本分级密钥（缩小爆炸半径）；可轮换/重签</td></tr><tr><td>验签被 patch</td><td>Native 化 + 完整性校验 + 解密密钥依赖 License</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（签发引擎调 KMS）；前端无（公钥在 SDK）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 7：License 数据模型与"模块/功能/版本"授权</h2>
+<p><strong>① 设计思路</strong> License claims 含：<code>licenseId / schemaVersion / licenseVersion / tenantId / 客户 / 模块 / 功能+配额 / appVersionRange（软件版本授权）/ 有效期 / mode / watermark / 绑定信息</code>。两层版本号：<code>schemaVersion</code>（结构演进）、<code>licenseVersion</code>（每次变更+1，供历史追溯）；<code>appVersionRange</code> 实现按版本授权。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>载体</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>离线</td><td>签名 <code>.lic</code>（claims+签名，类 JWS 自定义）</td><td>TrueLicense（密钥随包易提取，不推荐高价值）</td></tr><tr><td>在线</td><td>API 返回服务端签名快照</td><td>——</td></tr><tr><td>功能门禁</td><td>注解 <code>@RequiresFeature</code> + Spring AOP</td><td>编程式判断</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>篡改 claims</td><td>签名覆盖全字段，改一字节即失败</td></tr><tr><td>schema 升级不兼容旧 License</td><td><code>schemaVersion</code> 兼容、SDK 向后兼容</td></tr><tr><td>授权与平台配置不一致</td><td>套餐→License 单一映射来源，变更即重签</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（模型/签发）；前端（控制台配置模块/功能/版本矩阵——见步骤 15、17）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 8：离线授权（含小厂现实方案）</h2>
+<p><strong>① 设计思路</strong> <strong>默认采用"签名期限 License（不绑机）"</strong> —— 只签客户+功能+版本+有效期+水印，防伪造靠签名、防滥用靠水印溯源+到期续签+合同。硬件指纹绑定<strong>仅作高价值/涉密场景可选增强</strong>（详见附录 07，含小厂 T0–T3 分级方案）。</p>
+<p><strong>② 技术选型对比（小厂离线分级）</strong></p>
+<div class="tbl"><table><thead><tr><th>档</th><th>方案</th><th>绑机</th><th>联网</th><th>运维</th><th>防复制</th></tr></thead><tbody><tr><td><strong>T0</strong> ⭐</td><td>签名期限(不绑机)+水印</td><td>否</td><td>否</td><td>极低</td><td>弱</td></tr><tr><td>T1</td><td>软节点锁(installationId)</td><td>软</td><td>否</td><td>低</td><td>中</td></tr><tr><td><strong>T2</strong> ⭐</td><td>在线自助激活+离线运行</td><td>软</td><td>激活时一次</td><td>低(自动)</td><td>强</td></tr><tr><td><strong>T3</strong> ⭐</td><td>Keygen 自托管/SaaS</td><td>可配</td><td>可配</td><td>低(不自研)</td><td>强</td></tr><tr><td>(增强)</td><td>硬件指纹绑定</td><td>硬</td><td>否</td><td>高</td><td>强</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>硬件指纹运维重、云容器漂移、客户抵触</td><td><strong>不默认硬绑</strong>；用 T0/T2/T3</td></tr><tr><td>不绑机可复制多部署</td><td>唯一水印溯源 + 有效期强制续 + 合同 + 可选遥测发现异常副本数</td></tr><tr><td>无法离线实时吊销</td><td>到期不续 + 法律；需实时吊销则上 T2/在线</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（签发/激活服务）；前端（控制台一键/批量签发、激活码管理、离线签发导出）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 9：在线授权（激活 / 心跳 / 吊销 / 浮动席位）</h2>
+<p><strong>① 设计思路</strong> 应用激活后周期心跳；服务端校验有效性、并发席位（Redis 活跃实例 TTL）、CRL 实时吊销，返回<strong>服务端签名快照</strong>。通道 mTLS + nonce 防重放。断网进入<strong>宽限期 fail-open</strong>，超期 fail-closed，避免误伤又防永久离线绕过。<strong>推荐 HYBRID</strong>：平时在线、断网走宽限期/离线兜底。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>模式</th><th>优点</th><th>缺点</th><th>适用</th></tr></thead><tbody><tr><td>离线</td><td>不依赖网络</td><td>不能实时吊销/计量</td><td>内网/涉密</td></tr><tr><td>在线</td><td>实时吊销/席位/计量/远程停用</td><td>依赖网络</td><td>SaaS/有外网</td></tr><tr><td><strong>HYBRID</strong> ⭐</td><td>离线兜底+在线增强</td><td>实现复杂</td><td><strong>默认推荐</strong></td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>断网致生产停摆</td><td>宽限期 + 离线兜底 + 服务高可用多活</td></tr><tr><td>心跳重放/抓包伪造响应</td><td>nonce+时间戳+去重；mTLS；服务端响应签名 SDK 验签</td></tr><tr><td>海量心跳压力</td><td>在线服务独立扩缩容 + Redis + 间隔可调 + 限流</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（激活/心跳/CRL/席位服务）；前端（控制台监控在线实例/席位/心跳异常）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 10：防破解专项</h2>
+<p><strong>① 设计思路</strong> 聚焦三类攻击：伪造、共享、绕过。伪造→签名；共享→指纹/席位/水印；绕过→Native+完整性+时间回拨检测。</p>
+<p><strong>② 技术选型对比 / ③ 风险 / ④ 应对</strong>（合并）</p>
+<div class="tbl"><table><thead><tr><th>攻击</th><th>防护（应对）</th></tr></thead><tbody><tr><td>伪造 License</td><td>非对称签名，私钥不出域</td></tr><tr><td>一码多机</td><td>离线水印/软节点锁 + 在线席位去重</td></tr><tr><td><strong>时间回拨</strong>绕有效期</td><td>在线同步可信时间 + 本地 <code>highWaterMark</code>（见过的最大时间戳，回拨即拒）+ 单调用量计数</td></tr><tr><td>patch 验签</td><td>Native 化 + 多点冗余 + 完整性自校验 + 解密密钥依赖 License</td></tr><tr><td>改本地缓存</td><td>缓存加密+签名，以服务端为准</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端 + SDK；前端无关。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 11：License 生命周期、版本号与历史追溯</h2>
+<p><strong>① 设计思路</strong> 状态机：<code>DRAFT→ISSUED→ACTIVATED→(RENEWED/MODIFIED ↺, SUSPENDED↔)→REVOKED/EXPIRED</code>。每次签发/续期/变更/吊销 <code>licenseVersion+1</code> 并写 <code>license_history</code>（<strong>完整 claims 快照 + 签名 + 操作人 + 时间 + 原因 + 订单</strong>）。控制台支持版本列表、<strong>任意两版 diff</strong>、当前生效标识、吊销原因、审计。到期前 30/15/7 天多渠道预警。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>能力</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>历史存储</td><td>不可变历史表（append-only）</td><td>事件溯源 ES</td></tr><tr><td>diff 展示</td><td>前端 JSON diff 组件</td><td>后端预算 diff</td></tr><tr><td>预警</td><td>定时任务 + 站内/邮件/短信</td><td>消息队列</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>运营误吊销/误改</td><td>二次确认 + 审批流 + 历史可回看回溯</td></tr><tr><td>历史被篡改</td><td>append-only + 审计 + 可选哈希链</td></tr><tr><td>到期未续致中断</td><td>预警 + 续期宽限 + 平滑降级</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（生命周期 API + 历史/审计）；前端（生命周期操作、版本历史时间线 + diff 视图）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 12：客户端 License SDK</h2>
+<p><strong>① 设计思路</strong> 轻量 Java 库嵌入被保护应用：指纹/软指纹采集、公钥验签、离线 <code>.lic</code> 加载/在线快照缓存（加密）、激活/心跳、时间回拨检测、功能/版本门禁（注解 + 编程式）、事件回调（将到期/已降级/已吊销）。抽象 <code>LicenseProvider</code> 接口，便于切换自研/Keygen/SaaS。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>维度</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>门禁</td><td><code>@RequiresFeature</code> + Spring AOP</td><td>拦截器</td></tr><tr><td>关键逻辑</td><td>JNI native（步骤 3）</td><td>纯 Java（弱）</td></tr><tr><td>提供方抽象</td><td><code>LicenseProvider</code> SPI</td><td>硬编码</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>SDK 被逆向定位校验</td><td>关键逻辑 Native + 多点冗余</td></tr><tr><td>误降级影响业务</td><td>宽限期 + 平滑降级（停增量保只读）+ 状态端点供运维排查</td></tr><tr><td>集成侵入大</td><td>注解式低侵入 + starter 自动装配</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（嵌入客户应用）；客户应用前端可读 <code>LicenseStatus</code> 展示授权状态/到期/席位。</p>
+<hr>
+<h1 id="he7acace4b889">第三部分 · 多租户运营平台（前后端）</h1>
+<h2 id="he6ada5e9aaa4">步骤 13：多租户隔离与租户上下文</h2>
+<p><strong>① 设计思路</strong> 平台自身用<strong>共享库 + <code>tenant_id</code> 行级隔离</strong>，PG <strong>RLS 行级安全</strong>做数据库兜底（应用层漏判也拒绝跨租户）。被授权客户业务系统多为私有化独立部署。平台支持<strong>可配置隔离级别</strong>：大客户独立 Schema/库，中小走共享行级。<code>TenantContext</code>（ThreadLocal）+ 拦截器解析 JWT 注入 + MyBatis-Plus 多租户插件自动追加条件。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>策略</th><th>隔离</th><th>成本</th><th>弹性</th><th>适用</th></tr></thead><tbody><tr><td>独立库</td><td>最高</td><td>高</td><td>差</td><td>强合规/大客户</td></tr><tr><td>独立 Schema</td><td>中高</td><td>中</td><td>中</td><td>数十~数百</td></tr><tr><td><strong>共享+tenant_id+RLS</strong> ⭐</td><td>逻辑+DB兜底</td><td>低</td><td>最好</td><td>海量中小</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>跨租户越权</td><td>应用拦截 + PG RLS 双保险 + 跨租户安全测试</td></tr><tr><td>忘加 tenant 条件</td><td>插件全局拦截 + RLS 兜底 + 代码评审</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（隔离/上下文/RLS）；前端（登录态携带租户、超管可切租户视图）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 14：租户开通、DB 初始化与超管下发</h2>
+<p><strong>① 设计思路</strong> 用 <strong>Saga 状态机</strong> 编排：建租户记录(INITIALIZING)→按隔离级别编排资源→<strong>Flyway 迁移建表</strong>→种子数据→<strong>创建初始超管</strong>→绑套餐生成首张 License→置 ACTIVE。每步<strong>幂等可重试</strong>，失败回滚/补偿，杜绝半初始化脏数据。超管<strong>用邀请激活链接自设密</strong>（优于系统发密码），首登强制改密 + 强制 MFA，密码 Argon2/BCrypt 加盐，绝不明文落库/日志。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>环节</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>编排</td><td>Saga 状态机</td><td>本地事务（跨资源不够）</td></tr><tr><td>DB 迁移</td><td><strong>Flyway</strong></td><td>Liquibase</td></tr><tr><td>密码哈希</td><td>Argon2id</td><td>BCrypt</td></tr><tr><td>超管下发</td><td>邀请链接(一次性限时)</td><td>系统生成密码</td></tr><tr><td>MFA</td><td>TOTP</td><td>短信验证码</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>半初始化脏数据</td><td>Saga + 幂等 + 回滚补偿 + 断点续做</td></tr><tr><td>超管密码泄露</td><td>邀请自设密 + 首登改密 + MFA + 不落明文 + 审计</td></tr><tr><td>存量租户 schema 升级风险</td><td>Flyway 灰度 + 备份 + 回滚演练 + 维护窗口</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（Saga/Flyway/超管服务）；前端（开通向导分步表单 + 初始化进度轮询/WebSocket）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 15：授权模型（产品-模块-功能-版本-套餐-订阅）</h2>
+<p><strong>① 设计思路</strong> <code>Product→Module→Feature/Quota</code>，<code>Version</code> + <code>feature_version_map</code>（版本功能矩阵，实现按版本授权），<code>Plan/SKU</code>=模块/功能/配额/版本范围组合+定价，<code>Subscription</code>=租户↔套餐。订阅生效→解析为 License 的 <code>modules/features/appVersionRange/concurrency</code>→签发；变更套餐→重签（版本+1）。授权为 License 的<strong>单一来源</strong>。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>维度</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>权限模型</td><td>功能点 Feature + 配额 Quota</td><td>粗粒度模块开关</td></tr><tr><td>版本授权</td><td>feature_version_map 矩阵</td><td>单一版本号</td></tr><tr><td>套餐</td><td>SKU 组合 + 加购包</td><td>固定版型</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>配置与 License 漂移</td><td>单一映射来源 + 变更即重签 + 定时对账</td></tr><tr><td>功能矩阵复杂难维护</td><td>控制台可视化矩阵编辑 + 版本继承默认值</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（模型/解析/签发联动）；前端（产品目录、版本功能矩阵编辑、套餐编排）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 16：平台后端服务架构与 API</h2>
+<p><strong>① 设计思路</strong> 模块化单体或微服务：<code>auth / tenant / catalog / plan / license / online / stats / audit + common-tenant + infra(KMS/消息/缓存/定时)</code>。<strong>签发服务</strong>（低频高安全，近 KMS）与<strong>在线校验服务</strong>（高并发）<strong>分离部署</strong>、独立扩缩容。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>层</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>框架</td><td>Spring Boot 3.x (Java 17/21)</td><td>Quarkus</td></tr><tr><td>安全</td><td>Spring Security + JWT + mTLS</td><td>Sa-Token</td></tr><tr><td>持久</td><td>MyBatis-Plus</td><td>JPA</td></tr><tr><td>DB</td><td>PostgreSQL(RLS)</td><td>MySQL8</td></tr><tr><td>缓存</td><td>Redis(席位/nonce/CRL)</td><td>——</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>签发被高并发拖垮</td><td>与在线服务分离；签发限流排队</td></tr><tr><td>接口越权/重放</td><td>RBAC + 审计 + nonce + 限流</td></tr></tbody></table></div>
+<p><strong>API 示例</strong></p>
+<pre><code># 后台(JWT+RBAC)：/api/tenants /plans /subscriptions
+#   /licenses/issue|{id}/renew|modify|revoke|history  /stats/dashboard
+# SDK(mTLS+签名)：/sdk/activate /heartbeat /crl /time</code></pre>
+<p><strong>前后端落点</strong>：后端（全部 API）；前端消费后台 API。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 17：运营管理控制台（前端）</h2>
+<p><strong>① 设计思路</strong> 中后台 SPA：登录(账密+MFA)+按钮级 RBAC；租户管理（开通向导/进度/配额）、产品目录与版本功能矩阵、套餐/订阅、<strong>License 管理（签发向导/生命周期/版本历史 diff/下载重发）</strong>、在线监控（实例/席位/心跳/地理分布）、运营大盘（ECharts）、审计中心。i18n + 暗色主题 + 信创浏览器适配。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>维度</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>框架</td><td><strong>Vue3 + TS + Vite</strong></td><td>React</td></tr><tr><td>组件库</td><td>Element Plus / Ant Design Vue</td><td>Naive UI</td></tr><tr><td>状态</td><td>Pinia</td><td>Vuex</td></tr><tr><td>图表</td><td>ECharts</td><td>AntV</td></tr><tr><td>鉴权</td><td>路由守卫 + 按钮指令级权限</td><td>——</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>前端越权（隐藏按钮仍可调 API）</td><td>后端二次鉴权为准；前端仅体验</td></tr><tr><td>Token 泄露/XSS</td><td>HttpOnly+短时效+刷新；CSP；输入转义</td></tr><tr><td>大数据量列表卡顿</td><td>分页/虚拟滚动 + 服务端筛选</td></tr><tr><td>信创环境兼容</td><td>主流+国产浏览器测试矩阵</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：前端主体；依赖步骤 16 后端 API。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 18：安全密钥管理（KMS / HSM）</h2>
+<p><strong>① 设计思路</strong> 私钥是信任根，<strong>永不出域</strong>：License 签名私钥、产品根密钥入 KMS/HSM；公钥内置 SDK。按产品线/大版本分级密钥（<code>kid</code>），支持轮换：新签用新私钥、旧 License 用旧公钥继续验。私钥泄露应急：吊销 <code>kid</code>→重签存量→在线推送。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>方案</th><th>安全</th><th>成本</th><th>信创</th><th>适用</th></tr></thead><tbody><tr><td>云 KMS</td><td>高</td><td>中</td><td>部分国密</td><td>公/混合云</td></tr><tr><td>硬件 HSM</td><td>最高</td><td>高</td><td>国密SDF</td><td>政企金融</td></tr><tr><td>SoftHSM</td><td>中</td><td>低</td><td>——</td><td>开发测试</td></tr><tr><td>TrueLicense keystore</td><td>低</td><td>低</td><td>——</td><td>不推荐高价值</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>私钥泄露</td><td>KMS/HSM 不出域 + 分级 + 轮换 + 应急重签 + 异常签发告警</td></tr><tr><td>KMS 不可用无法签发</td><td>双机热备 + 限流排队 + 离线应急预案</td></tr><tr><td>内部越权签发</td><td>签发/吊销权限分离 + 审批 + 全审计</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端（KMS 集成）；前端（密钥/kid 状态只读展示，不暴露私钥操作）。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 19：部署架构与高可用</h2>
+<p><strong>① 设计思路</strong> WAF/网关（TLS 终止、限流、防重放）→ 签发后端（内网、近 KMS）+ 在线校验服务（独立扩缩容）→ KMS/HSM + PostgreSQL(主从+备份) + Redis(哨兵/集群)。服务无状态多实例；DB 异地容灾；提供私有化单机/内网部署包（含离线签发、SoftHSM/本地加密机适配）。Prometheus+Grafana+ELK 可观测。</p>
+<p><strong>② 技术选型对比</strong></p>
+<div class="tbl"><table><thead><tr><th>维度</th><th>选型</th><th>备选</th></tr></thead><tbody><tr><td>网关</td><td>API 网关 + WAF</td><td>Nginx</td></tr><tr><td>编排</td><td>K8s</td><td>虚机+脚本</td></tr><tr><td>监控</td><td>Prometheus+Grafana</td><td>云监控</td></tr><tr><td>日志</td><td>ELK</td><td>Loki</td></tr></tbody></table></div>
+<p><strong>③ 潜在风险 / ④ 应对措施</strong></p>
+<div class="tbl"><table><thead><tr><th>风险</th><th>应对</th></tr></thead><tbody><tr><td>在线服务被 DDoS</td><td>WAF+限流+弹性扩容+边缘</td></tr><tr><td>DB 故障/丢数据</td><td>主从+PITR+异地容灾+恢复演练</td></tr><tr><td>证书过期断连</td><td>到期监控+自动轮换+宽限期兜底</td></tr><tr><td>私有化密钥保护弱</td><td>强制本地加密机/SoftHSM + 交付即轮换专属密钥</td></tr></tbody></table></div>
+<p><strong>前后端落点</strong>：后端/基础设施；前端通过网关访问。</p>
+<hr>
+<h2 id="he6ada5e9aaa4">步骤 20：实施路线图与验收</h2>
+<p><strong>① 设计思路</strong>：分四阶段，先跑通主链路再加固运营化。</p>
+<div class="tbl"><table><thead><tr><th>阶段</th><th>周期</th><th>内容</th><th>里程碑</th></tr></thead><tbody><tr><td>一·MVP</td><td>4–6周</td><td>签名/验签、离线签发、SDK 门禁、混淆+套壳示例</td><td>离线 License 跑通受保护应用</td></tr><tr><td>二·在线+运营</td><td>4–6周</td><td>激活/心跳/吊销/席位、租户开通、授权模型、控制台、历史追溯</td><td>控制台完成"开通→授权→签发→吊销"</td></tr><tr><td>三·加固+信创</td><td>4–6周</td><td>Native+反调试+完整性、KMS/HSM、SM2、GraalVM 试点、高可用</td><td>通过红队渗透</td></tr><tr><td>四·运营完善</td><td>持续</td><td>计费对接、预警、批量、水印溯源、大盘</td><td>可运营闭环</td></tr></tbody></table></div>
+<p><strong>② 技术选型对比</strong>：见各步骤。<strong>③ 风险 / ④ 应对</strong>：见附录 06 全局风险矩阵（18 项）。</p>
+<p><strong>验收指标</strong>：破解成本 &gt; 软件价值；宽限期内误杀=0；签发&lt;200ms；心跳单实例≥5k QPS；可用性 99.9%+；任一 License 可还原全部历史版本与操作人。</p>
+<p><strong>前后端落点</strong>：全栈。</p>
+<hr>
+<h2 id="he99984e5bd95">附录索引</h2>
+<ul>
+<li>01 总体架构 / 02 代码保护 / 03 License 认证 / 04 多租户平台 / 05 密钥与部署 / 06 路线图与风险总览 / 07 小厂离线授权现实方案。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/00-完整解决方案(分步骤·含前后端).md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

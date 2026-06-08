@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODEMAN 会话交接(Handoff) · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="HANDOFF.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / CODEMAN 会话交接(Handoff)</div>
+<h1 id="h434f44454d41">CODEMAN 会话交接(Handoff)</h1>
+<blockquote><p>供下一个会话快速接续。记录当前状态、架构约定、关键决策与"踩坑修复",以及候选下一步。 English version: <a href="HANDOFF-en.html">HANDOFF-en.md</a></p>
+</blockquote>
+<h2 id="h302e20e9809f">0. 速览</h2>
+<ul>
+<li><strong>项目</strong>:CODEMAN —— Spring Boot 代码保护 + License 认证 + 多租户运营平台(后端 + Vue3 控制台 + 客户端 SDK + 代码保护示例)。</li>
+<li><strong>开发分支</strong>:<code>claude/loving-einstein-Pp4cA</code>(所有工作在此;<strong>禁止</strong>改 <code>main</code>)。GitHub 仓库 slug 仍为 <code>jameszgw/cmssoas</code>(<strong>未改名</strong>,徽章/链接保持此 slug)。</li>
+<li><strong>最新提交</strong>:<code>63830a4</code>(在线代码加固)。CI 全绿(run #56,11 作业 success;tag 作业 skipped 属正常)。</li>
+<li><strong>栈/版本</strong>:Spring Boot <strong>3.5.0</strong>,Java <strong>21</strong>(不支持 Java 8),Maven;Vue3+TS+Element Plus+vite;groupId/根包 <strong>com.codeman</strong>;版本 <strong>1.0.1</strong>;License <strong>GPLv3</strong>。</li>
+<li><strong>数据库</strong>:H2(开发默认,<code>MODE=PostgreSQL</code>)/ PostgreSQL(生产,<code>profile=prod</code>)/ MySQL 5.7·8.0(<code>profile=mysql</code>,<code>db/mysql</code> 方言脚本,CI 真机矩阵验证)。</li>
+<li><strong>初始账号</strong>:<code>admin / 8888</code>(首登强制改密);默认用户初始密码 <code>Codeman@123</code>。</li>
+<li><strong>构建命令</strong>:后端 <code>cd server/license-platform &amp;&amp; mvn test</code>(全套);前端 <code>cd web/console &amp;&amp; npm run build</code>。</li>
+</ul>
+<h2 id="h312e20e591bd">1. 命名/品牌约定(重要,改名已彻底完成)</h2>
+<ul>
+<li>Java 包/坐标:<code>com.codeman.*</code>;groupId <code>com.codeman</code>;三模块 version <code>1.0.1</code>。</li>
+<li>品牌字样 <code>CODEMAN</code>;DB 名 <code>codeman</code>;邮箱域 <code>@codeman.com</code>;JWT 默认串 <code>codeman-dev-...</code>;前端 localStorage 键 <code>codeman.*</code>(token/theme/locale/portal/help);npm 包 <code>codeman-console</code>。</li>
+<li><strong>唯一例外</strong>:GitHub 仓库 URL 仍 <code>jameszgw/cmssoas</code>(README 徽章已保持);工作目录物理路径仍 <code>/home/user/Cmssoas</code>(不可改)。</li>
+<li>全仓 <code>cmssoas/CMSSOAS/Cmssoas</code> 残留 = 0(LICENSE 文件为 GPLv3 原文,未动)。</li>
+</ul>
+<h2 id="h322e20e5b7b2">2. 已交付的业务模块(后端包 <code>com.codeman.platform.*</code>)</h2>
+<p>overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·<strong>签名CRL</strong>·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / <strong>customer(客户主数据+客户360)</strong> / billing(<strong>支付收款(人工确认)</strong> + <strong>电子发票</strong>) / <strong>contract(自建电子签·哈希存证)</strong> / <strong>notice(须知+用户授权)</strong> / <strong>cs(智能客服,OpenAI 兼容,可降级)</strong> / <strong>portal(租户自助门户)</strong> / <strong>harden(在线代码加固)</strong> / rbac / mail(outbox) / alert / common。</p>
+<ul>
+<li>前端菜单(权限点):overview, tenant, license, online, catalog, plan, <strong>customer</strong>, billing, <strong>contract</strong>, <strong>notice</strong>, <strong>cs</strong>, <strong>harden</strong>, <strong>tenant:portal</strong>(自助门户管理), audit, role:view, user:view。</li>
+<li>公开页(无 ops 鉴权):<code>/activate/:token</code>(激活)、<code>/portal</code> + <code>/portal/home</code>(租户门户)。</li>
+<li>公开后端端点(<code>/pub/**</code>,JwtAuthFilter 放行):<code>/pub/notices/active</code>、<code>/pub/consents</code>、<code>/pub/payments/notify/{channel}</code>、<code>/pub/portal/login|overview</code>、<code>/pub/crl</code>、<code>/pub/license/public-keys</code>。</li>
+</ul>
+<h2 id="h332e20e695b0">3. 数据库迁移</h2>
+<ul>
+<li>PG/H2:<code>server/.../db/migration/V1..V18</code>。MySQL 方言:<code>server/.../db/mysql/V1..V18</code>(机械转换:<code>IDENTITY→AUTO_INCREMENT</code>、<code>TIMESTAMP→DATETIME</code>、布尔默认 <code>1/0</code>、每表 <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>)。</li>
+<li><strong>新增迁移后必做</strong>:① 在 <code>db/migration</code> 加 <code>Vn</code>;② 在 <code>db/mysql</code> 加同号方言版(同样转换);③ 运行 <code>bash deploy/sql/generate-schema.sh</code> 重生成 <code>deploy/sql/schema-*.sql</code>;④ 更新 <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> 里的迁移计数断言(当前 <strong>18</strong>)。</li>
+<li>最近迁移:V15 customer、V16 tenant_portal、V17 tax_invoice、V18 harden。</li>
+</ul>
+<h2 id="h342e2022e980">4. "通用·不绑定厂商·可降级"的 provider 抽象(本项目核心范式)</h2>
+<ul>
+<li>智能客服:<code>ChatProvider</code>+<code>OpenAiCompatProvider</code>(纯 JDK HttpClient,SSE);未配置 <code>app.ai.*</code> 则降级知识库(关键词召回 <code>knowledge/faq.md</code>)。配 <code>AI_BASE_URL/AI_API_KEY/AI_MODEL</code> 即接 GLM-4-Flash/通义/DeepSeek/Ollama。</li>
+<li>支付:<code>PaymentProvider</code>+<code>MockPaymentProvider</code>(默认人工确认到账;<code>app.pay.provider</code>)。</li>
+<li>电子发票:<code>EInvoiceProvider</code>+<code>MockEInvoiceProvider</code>(<code>app.einvoice.provider</code>)。</li>
+<li>代码加固:<code>HardenProvider</code>(OBFUSCATE=ProGuard 库内调用;ENCRYPT_BIND=类加密+License;FATJAR_ENCRYPT=类加密+口令)。预留 Allatori/ClassFinal/Xjar。</li>
+</ul>
+<h2 id="h352e20e59ca8">5. 在线代码加固(最近一次大功能,细节)</h2>
+<ul>
+<li>与"构建/打包"(<code>examples/protected-app</code>,<code>mvn -Pharden</code>)<strong>并存</strong>;按租户 <code>HardenConfig</code>(BUILD/ONLINE/BOTH)+ 任务级覆盖;BUILD 模式拒绝在线加固。</li>
+<li>流程:<code>POST /api/harden/jobs</code>(multipart 上传)→ 异步流水线(按勾选技术顺序)→ <code>GET /api/harden/jobs/{id}/download</code>。配置 <code>app.harden.work-dir</code>(compose 已挂持久卷 <code>harden</code>)、<code>spring.servlet.multipart</code>。</li>
+<li>运行期注入纯 JDK <code>com.codeman.platform.harden.runtime.HardenLauncher/HardenClassLoader</code>(AES-256-GCM 解密加载;密钥 SHA-256 派生:LICENSE_BIND 取绑定 License 的 <code>.lic</code> 原文,PASSPHRASE 取口令)。</li>
+<li>产物运行:<code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code>(绑定)/ <code>java -Dharden.key=&lt;口令&gt; -jar x.jar</code>(口令)。</li>
+<li><strong>关键修复</strong>:proguard-base 拉入 log4j-core 与 Spring 的 log4j-to-slf4j 冲突 → 加 <code>src/main/resources/log4j2.component.properties</code> 强制 <code>Log4jContextFactory</code>;ProGuard library jars 仅用 <code>java.base/java.logging</code>(避免 java.desktop 超大拖慢);<code>HardenService.run</code> 捕获 <code>Throwable</code>(防 Error 静默挂死任务)。</li>
+</ul>
+<h2 id="h362e20e6b58b">6. 测试与 CI</h2>
+<ul>
+<li>后端测试(<code>mvn test</code>):约 27 用例(1 个 <code>MysqlRealMigrationTest</code> 仅 CI 真机跑、本地跳过)。关键:<code>*IntegrationTest</code>(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden)、<code>MysqlMigrationTest</code>(H2 MySQL 模式)、<code>KnowledgeBaseTest</code>、<code>Sm2SignatureServiceTest</code>、<code>TotpTest</code>、<code>TenantSchemaServiceTest</code>。</li>
+<li>CI <code>.github/workflows/ci.yml</code>:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright) / <strong>mysql 矩阵 [8.0, 5.7] 真机迁移</strong> / ci-summary / release(仅 tag)。</li>
+<li><strong>真机验证手法</strong>(沙箱无常驻 <code>&amp;</code>):用 Bash 工具 <code>run_in_background:true</code> 跑 <code>java -jar</code>;<code>until grep "Tomcat started on port 8080" log</code> 等待;<code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> 查 CI(list 输出过大时存盘后用 python 解析)。</li>
+</ul>
+<h2 id="h372e20e5b7b2">7. 已知限制 / 待办候选(未做)</h2>
+<ul>
+<li>在线加固:ProGuard 默认 keep 规则保守(对任意 jar 通用),强混淆需用户自带 keep 规则;胖包(BOOT-INF/lib 嵌套)整体加密未做(当前按包前缀加密业务类)。Xjar/Allatori/ClassFinal 适配器<strong>预留未实现</strong>。</li>
+<li>支付/电子签/电子发票:默认 mock/人工/沙箱;真实渠道(微信支付/支付宝/Stripe、航信/百望、e签宝/法大大)适配器未实现(抽象已就位)。</li>
+<li>其它增强候选:用量计费(metering)、营收对账报表、人工客服坐席工作台、KMS/HSM 实接、HA/备份恢复/蓝绿、PostgreSQL 真机 CI(目前仅 MySQL 真机矩阵)。</li>
+<li>运维:<code>tag v*</code> 推送被环境 403 拦(需用户在 GitHub UI 打 tag);PR 未建(用户未要求)。</li>
+</ul>
+<h2 id="h382e20e7baa6">8. 约束(贯穿全程)</h2>
+<ul>
+<li>私钥不落明文(env/Nacos/KMS 注入);智能客服不外发密钥/隐私。</li>
+<li>仅在 <code>claude/loving-einstein-Pp4cA</code> 开发并推送;<code>git push -u origin &lt;branch&gt;</code> 失败按 2/4/8/16s 退避重试;<strong>不建 PR、不推 tag</strong>除非明确要求。</li>
+<li>文档优先 <code>docs/</code>(功能/设计)与 <code>deploy/</code>(部署/操作/帮助);改动后保持 README/DEPLOY/deploy 索引同步;代码与迁移含中文注释。</li>
+</ul>
+<h2 id="h392e20e5b8b8">9. 常用路径</h2>
+<ul>
+<li>后端:<code>server/license-platform</code>(<code>src/main/java/com/codeman/platform/&lt;模块&gt;</code>,<code>src/main/resources/{application*.yml,db/migration,db/mysql,knowledge,log4j2.component.properties}</code>)。</li>
+<li>前端:<code>web/console/src/{views,api,layouts/DefaultLayout.vue,router/index.ts,i18n/locales/{zh-CN,en-US}.ts,components}</code>;截图 <code>web/console/shots/</code>。</li>
+<li>SDK/示例:<code>sdk/license-sdk</code>、<code>examples/protected-app</code>(ProGuard <code>proguard.pro</code> + <code>-Pharden</code>)。</li>
+<li>文档:<code>docs/功能-*.md</code>、<code>docs/智能客服-大模型选型与部署.md</code>、<code>docs/02-代码保护方案.md</code>;<code>deploy/README.md</code>、<code>deploy/sql/*</code>、<code>deploy/docs/{操作说明,帮助文档,README}.md</code>;<code>.env.example</code>、<code>.env.prod.example</code>、<code>docker-compose.yml</code>、<code>docker-compose.mysql.yml</code>。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/HANDOFF.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>
