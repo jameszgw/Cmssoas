@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CODEMAN 操作帮助中心 · 按流程 / 按模块</title>
-<meta name="description" content="CODEMAN 平台全功能详细操作帮助：按操作流程（部署→开通→授权→加固→回款→合规→运维）与按功能模块两种导航，含逐步操作、所需权限、提示与常见问题。" />
+<title>CODEMAN 操作帮助中心 · 按流程 / 按模块（含每功能详解）</title>
+<meta name="description" content="CODEMAN 平台全功能详细操作帮助：按操作流程（步骤清晰、关联到具体功能）与按功能模块（细分到每个功能点，含前置/后置条件、所需系统与用户参数、权限、入口与逐步操作）。" />
 <style>
   :root{
     --bg:#0a0e1a; --panel:#0f1628; --card:#121a30; --card2:#16203a;
@@ -18,7 +18,7 @@
   body{margin:0;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;
     color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.14),transparent 60%),var(--bg)}
   a{color:var(--acc);text-decoration:none}
-  code,kbd{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);
+  code,kbd{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.86em;background:rgba(124,77,255,.14);
     border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
   /* top bar */
   header{position:sticky;top:0;z-index:30;height:60px;display:flex;align-items:center;gap:16px;padding:0 20px;
@@ -39,15 +39,19 @@
   .tabs button{flex:1;border:0;background:transparent;color:var(--mut);font-weight:700;font-size:13.5px;
     padding:8px;border-radius:7px;cursor:pointer;transition:.2s}
   .tabs button.on{background:var(--grad);color:#fff}
-  .navgrp{margin-bottom:16px}
+  .navgrp{margin-bottom:10px}
   .navgrp h4{margin:14px 8px 6px;font-size:11.5px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
   .navlink{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;color:var(--mut);
     font-size:14px;cursor:pointer;transition:.15s}
   .navlink:hover{background:rgba(255,255,255,.05);color:#fff}
   .navlink.active{background:rgba(79,140,255,.16);color:#fff;border-left:2px solid var(--acc)}
   .navlink .e{width:18px;text-align:center}
+  .subnav{margin:2px 0 6px 10px;border-left:1px solid var(--line);padding-left:6px;display:none}
+  .subnav.show{display:block}
+  .sublink{display:block;padding:4px 8px;border-radius:6px;color:var(--dim);font-size:12.7px;cursor:pointer}
+  .sublink:hover{background:rgba(255,255,255,.05);color:#cfe0ff}
   /* main */
-  main{flex:1;min-width:0;padding:30px 40px 80px;max-width:920px}
+  main{flex:1;min-width:0;padding:30px 40px 90px;max-width:960px}
   .crumbs{color:var(--dim);font-size:13px;margin-bottom:6px}
   h1{font-size:28px;margin:0 0 6px;font-weight:850}
   h1 .gr{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -55,54 +59,72 @@
   section.doc{display:none;animation:fade .25s ease}
   section.doc.show{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  h2.sec{font-size:20px;margin:34px 0 4px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  h2.sec{font-size:20px;margin:30px 0 4px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
   h2.sec .e{font-size:22px}
-  h2.sec:first-of-type{border-top:0;padding-top:0;margin-top:8px}
-  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
-  .tag{font-size:12px;border-radius:7px;padding:4px 10px;border:1px solid var(--line);background:var(--card)}
+  h2.sec:first-of-type{border-top:0;padding-top:0;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+  .tag{font-size:12px;border-radius:7px;padding:4px 10px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
   .tag.perm{color:#bcd0ff;border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.1)}
   .tag.role{color:#d8c6ff;border-color:rgba(124,77,255,.4);background:rgba(124,77,255,.1)}
   .tag.pre{color:#a9e8cf;border-color:rgba(35,196,131,.4);background:rgba(35,196,131,.1)}
   .desc{color:var(--mut);margin:0 0 14px}
+  /* flow steps */
   ol.steps{counter-reset:s;list-style:none;padding:0;margin:0 0 14px}
-  ol.steps>li{position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed rgba(34,48,79,.7)}
+  ol.steps>li{position:relative;padding:10px 0 12px 44px;border-bottom:1px dashed rgba(34,48,79,.7)}
   ol.steps>li:last-child{border-bottom:0}
   ol.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;
-    width:28px;height:28px;border-radius:8px;background:var(--grad);color:#fff;font-weight:800;font-size:13px;
-    display:grid;place-items:center}
+    width:28px;height:28px;border-radius:8px;background:var(--grad);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
   ol.steps>li b{color:var(--txt)}
   ol.steps>li .h{color:var(--mut)}
-  .note{border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;border:1px solid var(--line)}
+  .see{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:12.5px;
+    border:1px solid rgba(79,140,255,.4);background:rgba(79,140,255,.08);color:#bcd0ff;border-radius:999px;padding:3px 10px;cursor:pointer}
+  .see:hover{background:rgba(79,140,255,.18);color:#fff}
+  .seewrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+  /* function card */
+  .fn{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;scroll-margin-top:74px}
+  .fn:target,.fn.flash{border-color:var(--acc);box-shadow:0 0 0 2px rgba(79,140,255,.25)}
+  .fnh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;font-size:17px;font-weight:800}
+  .fnh .num{width:24px;height:24px;border-radius:7px;background:rgba(124,77,255,.18);border:1px solid var(--line);
+    color:#d8c6ff;font-size:12px;font-weight:800;display:grid;place-items:center}
+  .ep{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;color:#9fe0c4;background:#0b1020;
+    border:1px solid var(--line);border-radius:7px;padding:4px 10px;display:inline-block;margin:2px 0 10px}
+  .ep .m{color:#ffb547;font-weight:700}
+  .blk{margin:10px 0}
+  .blk .lab{font-weight:800;font-size:12.5px;letter-spacing:.5px;color:var(--dim);text-transform:uppercase;margin-bottom:5px}
+  ul.tick,ul.dash{margin:0;padding-left:2px;list-style:none}
+  ul.tick li,ul.dash li{position:relative;padding:3px 0 3px 20px;color:var(--mut);font-size:14px}
+  ul.tick li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+  ul.dash li::before{content:"→";position:absolute;left:0;color:var(--acc)}
+  ol.mini{margin:0;padding-left:20px;color:var(--mut)}
+  ol.mini li{padding:2px 0;font-size:14px}
+  ol.mini li b{color:var(--txt)}
+  table.params{border-collapse:collapse;width:100%;margin:6px 0;font-size:13px}
+  table.params th,table.params td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  table.params th{background:var(--card2);color:var(--txt);white-space:nowrap}
+  table.params td{color:var(--mut)}
+  table.params td.n{color:#cfe0ff;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;white-space:nowrap}
+  .req{color:var(--bad);font-weight:700}.opt{color:var(--dim)}
+  .note{border-radius:9px;padding:9px 14px;margin:9px 0;font-size:13.5px;border:1px solid var(--line)}
   .note .lab{font-weight:800;margin-right:6px}
-  .note.tip{background:rgba(35,196,131,.08);border-color:rgba(35,196,131,.3);color:#bdf0da}
-  .note.tip .lab{color:var(--ok)}
-  .note.warn{background:rgba(255,181,71,.08);border-color:rgba(255,181,71,.3);color:#ffe0b0}
-  .note.warn .lab{color:var(--warn)}
-  .note.faq{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.3);color:#ffd2d2}
-  .note.faq .lab{color:var(--bad)}
-  pre{background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;
-    font:13px/1.65 "SF Mono",Menlo,Consolas,monospace;color:#cfe0ff;margin:12px 0}
-  pre .c{color:#5f7299}.pre .k{color:#7c4dff}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
-  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}
-  th{background:var(--card2);color:var(--txt)}
-  td{color:var(--mut)}
+  .note.tip{background:rgba(35,196,131,.08);border-color:rgba(35,196,131,.3);color:#bdf0da}.note.tip .lab{color:var(--ok)}
+  .note.warn{background:rgba(255,181,71,.08);border-color:rgba(255,181,71,.3);color:#ffe0b0}.note.warn .lab{color:var(--warn)}
+  .note.faq{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.3);color:#ffd2d2}.note.faq .lab{color:var(--bad)}
+  pre{background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:13px 15px;overflow:auto;
+    font:12.5px/1.6 "SF Mono",Menlo,Consolas,monospace;color:#cfe0ff;margin:10px 0}
+  pre .c{color:#5f7299}
+  table.ref{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  table.ref th{background:var(--card2)}table.ref td{color:var(--mut)}
   .pager{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
   .pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--mut);transition:.2s}
-  .pager a:hover{border-color:var(--acc);color:#fff}
-  .pager a.n{text-align:right}
+  .pager a:hover{border-color:var(--acc);color:#fff}.pager a.n{text-align:right}
   .pager small{display:block;color:var(--dim);font-size:11.5px}
-  .hidden{display:none!important}
   .nohit{color:var(--dim);padding:40px 0;text-align:center}
-  /* mobile */
   .menubtn{display:none;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 12px;cursor:pointer}
   @media(max-width:880px){
     aside{position:fixed;left:0;top:60px;z-index:40;background:var(--panel);transform:translateX(-105%);transition:.25s;box-shadow:0 20px 60px rgba(0,0,0,.6)}
     aside.open{transform:none}
-    main{padding:24px 18px 60px}
-    .menubtn{display:inline-block}
-    #search{width:140px}
-    header .lk{display:none}
+    main{padding:24px 16px 60px}.menubtn{display:inline-block}#search{width:130px}header .lk{display:none}
   }
 </style>
 </head>
@@ -112,7 +134,7 @@
   <button class="menubtn" id="menubtn">☰</button>
   <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 帮助中心</a>
   <span class="sp"></span>
-  <input id="search" type="search" placeholder="搜索功能 / 操作…" autocomplete="off" />
+  <input id="search" type="search" placeholder="搜索功能 / 操作 / 参数…" autocomplete="off" />
   <a class="lk" href="index.html">官宣页</a>
   <a class="lk" href="../../docs/使用手册-从部署到应用.md">手册(MD)</a>
 </header>
@@ -125,568 +147,764 @@
     </div>
     <nav id="nav"></nav>
   </aside>
-
-  <main id="main">
-    <!-- content injected; each <section class="doc" id="..."> -->
-  </main>
+  <main id="main"></main>
 </div>
 
 <script>
-/* ============ 文档数据：按流程 + 按模块 ============ */
-/* 每个条目:{id,nav标题,emoji,正文HTML}。正文用统一组件类。 */
+/* =========================================================
+   数据模型
+   - FLOW:操作流程(步骤清晰 + 关联到具体功能 fid)
+   - MOD :功能模块(细分到每个功能点;每功能含 权限/入口/前置/参数/步骤/后置/提示)
+   每个 MOD.functions[i].fid 为全局锚点,流程步骤通过 see:[{go:fid,label}] 关联
+   ========================================================= */
 
-const FLOW = [
-  {id:"f-deploy", e:"🚀", t:"流程1 · 从零部署上线", html:`
-    <div class="crumbs">操作流程 / 部署上线</div>
-    <h1><span class="gr">从零部署</span>到首次登录</h1>
-    <p class="intro">面向运维：把平台跑起来，并完成系统初始化。三种部署方式任选其一。</p>
-
-    <h2 class="sec"><span class="e">①</span>准备环境</h2>
-    <div class="meta"><span class="tag pre">前置:JDK 17+(推荐21)</span><span class="tag pre">数据库:H2/PG/MySQL</span><span class="tag pre">Docker(可选)</span></div>
-    <ol class="steps">
-      <li><b>确认 JDK</b> <span class="h">17 及以上(<b>不支持 Java 8</b>);容器化部署可跳过。</span></li>
-      <li><b>选择数据库</b> <span class="h">试用用 H2(内置);生产用 PostgreSQL 16 或 MySQL 5.7/8.0(库须 <code>utf8mb4</code>)。</span></li>
-      <li><b>(多实例)准备 Redis 7</b> <span class="h">用于心跳 nonce 防重放;单机可不启用。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>部署方式 A · Docker Compose(推荐)</h2>
-    <ol class="steps">
-      <li><b>复制环境模板</b><pre><span class="c"># 试用</span>
-cp .env.example .env
-<span class="c"># 生产:改 JWT_SECRET / 数据库 / SMTP / 渠道密钥</span>
-cp .env.prod.example .env</pre></li>
-      <li><b>一键启动</b><pre>docker compose up -d --build</pre></li>
-      <li><b>(可选)用 MySQL</b><pre>docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console</pre></li>
-      <li><b>访问</b> <span class="h">控制台 <code>http://localhost</code> · 后端 <code>:8080</code> · Prometheus <code>:9090</code> · Grafana <code>:3000</code>。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">③</span>部署方式 B · 裸机(systemd + nginx)</h2>
-    <ol class="steps">
-      <li><b>配置后端环境文件</b><pre>cp deploy/codeman-backend.env.example /etc/codeman/backend.env  <span class="c"># 改数据库/密钥</span></pre></li>
-      <li><b>安装服务</b><pre>sudo bash deploy/install.sh
-systemctl status codeman-backend</pre></li>
-      <li><b>详见</b> <a href="../../docs/部署-CentOS7.md">docs/部署-CentOS7.md</a>。</li>
-    </ol>
-
-    <h2 class="sec"><span class="e">④</span>部署方式 C · 本地开发</h2>
-    <ol class="steps">
-      <li><b>后端(默认 H2,开箱即跑)</b><pre>cd server/license-platform &amp;&amp; mvn spring-boot:run   <span class="c"># :8080</span></pre></li>
-      <li><b>前端</b><pre>cd web/console &amp;&amp; npm install &amp;&amp; npm run dev      <span class="c"># :5173 代理到 :8080</span></pre></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">⑤</span>建表方式</h2>
-    <table><tr><th>方式</th><th>做法</th><th>适用</th></tr>
-    <tr><td>Flyway 自动(推荐)</td><td>应用启动自动建表 + 写系统种子</td><td>绝大多数场景</td></tr>
-    <tr><td>纯 SQL</td><td>执行 <code>deploy/sql/schema-&lt;方言&gt;.sql</code> → <code>init-admin.sql</code> → <code>test-data.sql</code>,并设 <code>SPRING_FLYWAY_ENABLED=false</code></td><td>DBA 受控环境</td></tr></table>
-
-    <h2 class="sec"><span class="e">⑥</span>首次登录与初始化</h2>
-    <ol class="steps">
-      <li><b>登录</b> <span class="h">用 <code>admin / 8888</code> 登录控制台。</span></li>
-      <li><b>强制改密</b> <span class="h">首登必须修改初始密码。</span></li>
-      <li><b>确认须知(若有)</b> <span class="h">弹层勾选「我已阅读并同意」。</span></li>
-      <li><b>核对权限/建号</b> <span class="h">「角色权限」核对;「用户管理」为成员建号(初始密码默认 <code>Codeman@123</code>)。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>应用首启会自动建表、写权限/角色/套餐种子、创建超管 admin 并授予全部权限。</div>
-    <div class="note warn"><span class="lab">注意</span>H2 为内存库,重启清空,切勿用于生产。生产务必改 <code>JWT_SECRET</code> 与各渠道密钥。</div>
-  `},
-
-  {id:"f-onboard", e:"🤝", t:"流程2 · 开通客户并签发授权", html:`
-    <div class="crumbs">操作流程 / 开通与授权</div>
-    <h1><span class="gr">开通租户</span>→ 签发 License → 客户接入</h1>
-    <p class="intro">最核心的业务主线:把一个客户变成可授权、可验签的租户。</p>
-    <div class="meta"><span class="tag perm">权限:tenant / catalog / license</span><span class="tag role">角色:运营 / 超管</span></div>
-
-    <h2 class="sec"><span class="e">①</span>维护产品与套餐</h2>
-    <ol class="steps">
-      <li><b>产品与版本</b> <span class="h">维护产品矩阵(模块/功能点/版本范围)。</span></li>
-      <li><b>套餐</b> <span class="h">定义价格/席位/包含模块/功能点/版本范围,作为签发与计费依据。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>开通租户</h2>
-    <ol class="steps">
-      <li><b>新建租户</b> <span class="h">填名称、管理员邮箱、选择套餐。</span></li>
-      <li><b>系统自动</b> <span class="h">建立租户独立 Schema(真隔离),并发送开通/激活邮件(发件箱异步)。</span></li>
-      <li><b>客户激活</b> <span class="h">管理员凭邮件激活、设置密码、(可选)绑定 MFA。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">③</span>签发 License</h2>
-    <ol class="steps">
-      <li><b>签发</b> <span class="h">选产品/版型/模块/有效期/并发数 → 服务端私钥签名生成 <code>.lic</code>(默认 Ed25519,可选国密 SM2)。</span></li>
-      <li><b>下载 / 导出</b> <span class="h">下载 <code>.lic</code> 交付客户;可导出 CSV 台账。</span></li>
-      <li><b>(可选)订阅联动</b> <span class="h">创建订阅可自动出账并联动签发。</span></li>
-    </ol>
-    <div class="note warn"><span class="lab">注意</span>私钥不出域,仅服务端签名;客户端只持有公钥验签。切勿把私钥打进客户产物。</div>
-
-    <h2 class="sec"><span class="e">④</span>客户端接入 SDK</h2>
-    <ol class="steps">
-      <li><b>集成 SDK</b> <span class="h"><code>sdk/license-sdk</code> 用公钥验 <code>.lic</code> 签名 + 功能/版本门禁(SemVer)。</span></li>
-      <li><b>在线通道(可选)</b> <span class="h">接入心跳/吊销/浮动席位/宽限期。</span></li>
-      <li><b>验证</b> <span class="h">运营在「在线监控」查看实例上线、心跳与席位占用。</span></li>
-    </ol>
-    <div class="note faq"><span class="lab">常见问题</span>客户反馈"License 无效"?核对:① 公钥 kid 与签发算法一致;② 未过期且未被吊销(查 CRL);③ 功能/版本在授权范围内;④ 时间未回拨。</div>
-  `},
-
-  {id:"f-harden", e:"🛡️", t:"流程3 · 代码保护与加固交付", html:`
-    <div class="crumbs">操作流程 / 代码保护</div>
-    <h1><span class="gr">代码保护</span>与在线加固交付</h1>
-    <p class="intro">两条路线并存:构建时自建加固(流水线) + 平台在线加固(上传 jar)。由运营按租户设置可切换。</p>
-    <div class="meta"><span class="tag perm">权限:harden / harden:config / harden:run</span></div>
-
-    <h2 class="sec"><span class="e">①</span>设置加固模式(按租户)</h2>
-    <ol class="steps">
-      <li><b>进入「加固设置」</b> <span class="h">为租户选择模式:<b>仅构建自建</b> / <b>仅平台在线</b> / <b>两者并存</b>。</span></li>
-      <li><b>默认技术</b> <span class="h">勾选默认启用的加固技术(可在每次任务覆盖)。</span></li>
-    </ol>
-    <div class="note warn"><span class="lab">注意</span>当租户设为「仅构建自建(BUILD)」模式时,平台会拒绝在线加固任务。</div>
-
-    <h2 class="sec"><span class="e">②</span>路线 A · 平台在线加固</h2>
-    <ol class="steps">
-      <li><b>提交任务</b> <span class="h">「提交在线加固」上传可执行 jar。</span></li>
-      <li><b>勾选技术</b> <span class="h">ProGuard 混淆 / 类加密+License 绑定 / 口令式类加密(按勾选顺序流水线执行)。</span></li>
-      <li><b>异步处理</b> <span class="h">任务进入队列,处理完成后状态变为可下载。</span></li>
-      <li><b>下载产物</b> <span class="h">下载加固后的 jar。</span></li>
-    </ol>
-    <pre><span class="c"># 运行加固产物</span>
-java -Dharden.license=&lt;客户的.lic&gt; -jar app.jar   <span class="c"># License 绑定</span>
-java -Dharden.key=&lt;口令&gt;            -jar app.jar   <span class="c"># 口令式</span></pre>
-
-    <h2 class="sec"><span class="e">③</span>路线 B · 构建时自建加固</h2>
-    <ol class="steps">
-      <li><b>ProGuard 混淆</b><pre>cd examples/protected-app &amp;&amp; mvn -Pharden</pre></li>
-      <li><b>类加密 + License 绑定</b> <span class="h"><code>BuildProtected</code> 加密关键类,解密密钥与 License 派生绑定。</span></li>
-      <li><b>验证</b> <span class="h"><code>demo.sh</code> 演示合法/错钥/篡改三种情形。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>设计细节见 <a href="../../docs/02-代码保护方案.md">代码保护方案</a>。纯软件保护目标是抬高破解成本,非绝对不可破解。</div>
-  `},
-
-  {id:"f-billing", e:"💰", t:"流程4 · 计费回款闭环", html:`
-    <div class="crumbs">操作流程 / 计费回款</div>
-    <h1><span class="gr">出账 → 收款 → 开票</span>闭环</h1>
-    <p class="intro">从订阅/合同自动出账,到人工确认到账,再到开具电子发票的完整资金闭环。</p>
-    <div class="meta"><span class="tag perm">权限:billing</span><span class="tag role">角色:财务 / 运营</span></div>
-
-    <h2 class="sec"><span class="e">①</span>出账</h2>
-    <ol class="steps">
-      <li><b>自动出账</b> <span class="h">订阅或生效合同(金额&gt;0)自动生成账单,状态 <code>PENDING</code>。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>收款(默认人工确认)</h2>
-    <ol class="steps">
-      <li><b>发起收款</b> <span class="h">对 PENDING 账单发起扫码收款。</span></li>
-      <li><b>客户支付</b> <span class="h">客户扫码付款。</span></li>
-      <li><b>确认到账</b> <span class="h">财务核对后点「确认到账(人工)」完成核销。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>默认人工确认;接入真实渠道(微信/支付宝/Stripe)改 <code>app.pay.provider</code> 即可,无需改业务代码。</div>
-
-    <h2 class="sec"><span class="e">③</span>开票</h2>
-    <ol class="steps">
-      <li><b>申请开票</b> <span class="h">对已收款账单开具电子发票:选普票/专票、填抬头、税号、邮箱。</span></li>
-      <li><b>生成发票</b> <span class="h">生成发票代码/号码/PDF;账单转「已开票」。</span></li>
-    </ol>
-    <div class="note warn"><span class="lab">注意</span>默认沙箱开票。生产改 <code>app.einvoice.provider</code> 接航信/百望等真实渠道。</div>
-  `},
-
-  {id:"f-compliance", e:"📝", t:"流程5 · 合同与合规", html:`
-    <div class="crumbs">操作流程 / 合同合规</div>
-    <h1><span class="gr">须知公示</span>与合同签约存证</h1>
-    <p class="intro">合规留痕:须知/隐私公示与授权记录,自建电子签合同的发起、签署与哈希存证。</p>
-    <div class="meta"><span class="tag perm">权限:notice / contract</span></div>
-
-    <h2 class="sec"><span class="e">①</span>须知与授权</h2>
-    <ol class="steps">
-      <li><b>新建草稿</b> <span class="h">「须知管理」新建条款/隐私/公告草稿。</span></li>
-      <li><b>发布</b> <span class="h">发布即定稿,旧版自动归档;可设「强制确认」。</span></li>
-      <li><b>查看授权记录</b> <span class="h">「授权记录」查看同意/撤回(主体/版本/渠道/IP/时间),可导出 CSV 取证。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>合同签约</h2>
-    <ol class="steps">
-      <li><b>新建草稿</b> <span class="h">选模板(占位符自动填充)或手填 → 生成草稿。</span></li>
-      <li><b>发起签署</b> <span class="h">内容定稿快照 + SHA-256 存证。</span></li>
-      <li><b>逐方签署</b> <span class="h">各签署方依次签署。</span></li>
-      <li><b>生效归档</b> <span class="h">全部签署后合同生效并存证归档;金额&gt;0 自动出账。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>未签署的合同可作废;合同列表可导出 CSV。</div>
-    <div class="note warn"><span class="lab">注意</span>本平台为自建电子签 + 哈希存证;如需具法律效力的 CA 签章,可对接 e签宝/法大大(抽象已预留)。</div>
-  `},
-
-  {id:"f-selfservice", e:"🚪", t:"流程6 · 客户自助与客服", html:`
-    <div class="crumbs">操作流程 / 客户自助</div>
-    <h1><span class="gr">自助门户</span>与智能客服</h1>
-    <p class="intro">让最终客户自助查看授权、并通过智能客服自助答疑,减轻运营负担。</p>
-    <div class="meta"><span class="tag perm">权限:tenant:portal / cs</span></div>
-
-    <h2 class="sec"><span class="e">①</span>开通自助门户</h2>
-    <ol class="steps">
-      <li><b>为租户开通</b> <span class="h">「自助门户」为租户开通,生成访问码并复制凭证。</span></li>
-      <li><b>交付凭证</b> <span class="h">把「租户编号 + 访问码」交给客户。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>客户使用门户</h2>
-    <ol class="steps">
-      <li><b>访问</b> <span class="h">客户打开门户地址 <code>/portal</code>。</span></li>
-      <li><b>登录</b> <span class="h">用「租户编号 + 访问码」登录。</span></li>
-      <li><b>只读查看</b> <span class="h">查看本租户的 License/合同/账单/订阅(严格隔离,只读)。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">③</span>智能客服</h2>
-    <ol class="steps">
-      <li><b>对话</b> <span class="h">控制台右下角悬浮窗发起对话。</span></li>
-      <li><b>知识库作答</b> <span class="h">基于产品知识库(FAQ)流式作答,可「转人工」。</span></li>
-      <li><b>接大模型(可选)</b> <span class="h">配置 <code>AI_*</code> 三项即接 GLM/通义/DeepSeek/Ollama;未配则降级知识库匹配。</span></li>
-      <li><b>审计</b> <span class="h">「智能客服」页可审计全部会话。</span></li>
-    </ol>
-  `},
-
-  {id:"f-ops", e:"🔧", t:"流程7 · 日常运维", html:`
-    <div class="crumbs">操作流程 / 运维</div>
-    <h1><span class="gr">监控 · 备份 · 密钥 · 升级</span></h1>
-    <p class="intro">保障平台稳定运行与安全演进。</p>
-    <div class="meta"><span class="tag role">角色:运维 / DBA</span></div>
-
-    <h2 class="sec"><span class="e">①</span>监控</h2>
-    <ol class="steps">
-      <li><b>Actuator + Prometheus</b> <span class="h">抓取 <code>/actuator/prometheus</code>。</span></li>
-      <li><b>Grafana 看板</b> <span class="h">预置看板 <code>infra/grafana</code>;在线授权监控大盘实时观察实例/席位。</span></li>
-      <li><b>告警</b> <span class="h">配 <code>ALERT_WECOM_WEBHOOK</code> 接企业微信告警。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">②</span>备份</h2>
-    <ol class="steps">
-      <li><b>数据库</b> <span class="h">定期 <code>pg_dump</code>/<code>mysqldump</code> + PITR。</span></li>
-      <li><b>Redis</b> <span class="h">哨兵/集群(可选)。</span></li>
-      <li><b>加固产物</b> <span class="h"><code>app.harden.work-dir</code> 用持久卷。</span></li>
-    </ol>
-
-    <h2 class="sec"><span class="e">③</span>密钥</h2>
-    <ol class="steps">
-      <li><b>不落明文</b> <span class="h">私钥、<code>JWT_SECRET</code>、各渠道密钥经 env/Nacos/KMS 注入。</span></li>
-      <li><b>详见</b> <a href="../../docs/密钥管理-KMS.md">密钥管理-KMS</a>。</li>
-    </ol>
-
-    <h2 class="sec"><span class="e">④</span>多实例 & 升级</h2>
-    <ol class="steps">
-      <li><b>水平扩展</b> <span class="h">设 <code>APP_REDIS_ENABLED=true</code>,心跳 nonce 走 Redis;签发与在线校验可分离部署。</span></li>
-      <li><b>数据库升级</b> <span class="h">改 Flyway 迁移(同时补 <code>db/mysql</code> 方言)→ <code>bash deploy/sql/generate-schema.sh</code> 重生成 schema → CI 真机矩阵验证。</span></li>
-    </ol>
-  `},
-];
-
+/* ---------- 功能模块(细分到功能点) ---------- */
 const MOD = [
-  {id:"m-tenant", e:"🏢", t:"租户管理", html:`
-    <div class="crumbs">功能模块 / 租户管理</div>
-    <h1>租户管理</h1>
-    <p class="intro">开通、激活、续期与隔离配置。每个租户拥有独立 Schema(真隔离)。</p>
-    <div class="meta"><span class="tag perm">权限:tenant(:view/:edit)</span></div>
-    <h2 class="sec"><span class="e">📋</span>开通租户</h2>
-    <ol class="steps">
-      <li><b>新建</b> <span class="h">填名称、管理员邮箱、套餐。</span></li>
-      <li><b>建库 + 发邮件</b> <span class="h">系统建立独立 Schema 并发开通邮件(发件箱异步)。</span></li>
-      <li><b>激活</b> <span class="h">管理员凭邮件激活、设密码、(可选)绑定 MFA。</span></li>
-    </ol>
-    <h2 class="sec"><span class="e">🔁</span>续期与隔离</h2>
-    <ol class="steps">
-      <li><b>续期</b> <span class="h">延长租户有效期。</span></li>
-      <li><b>查看隔离配置</b> <span class="h">查看该租户的 Schema/数据隔离信息。</span></li>
-    </ol>
-    <div class="note faq"><span class="lab">常见问题</span>激活邮件没收到?检查 SMTP(<code>APP_MAIL_*</code>)与发件箱(outbox)状态;可在后台重发。</div>
-  `},
-  {id:"m-license", e:"🔑", t:"License 授权", html:`
-    <div class="crumbs">功能模块 / License 授权</div>
-    <h1>License 授权(全生命周期)</h1>
-    <p class="intro">签发、续期、变更、吊销、CRL 与到期自动停用;Ed25519 默认 / 国密 SM2 可选。</p>
-    <div class="meta"><span class="tag perm">权限:license(:view/:issue/:revoke)</span></div>
-    <h2 class="sec"><span class="e">✍️</span>签发</h2>
-    <ol class="steps"><li><b>选参数</b> <span class="h">产品/版型/模块/有效期/并发。</span></li>
-      <li><b>签名生成</b> <span class="h">服务端私钥签名生成 <code>.lic</code>。</span></li>
-      <li><b>下载/导出</b> <span class="h">下载 <code>.lic</code>;导出 CSV 台账。</span></li></ol>
-    <h2 class="sec"><span class="e">🔄</span>续期 / 变更 / 吊销</h2>
-    <ol class="steps"><li><b>操作即重签</b> <span class="h">每次操作重新签名并记录版本历史(diff 可查)。</span></li></ol>
-    <h2 class="sec"><span class="e">🚫</span>吊销名单 CRL</h2>
-    <ol class="steps"><li><b>查看签名 CRL</b> <span class="h">公开分发地址 <code>/pub/crl</code>、公钥集 <code>/pub/license/public-keys</code>。</span></li>
-      <li><b>离线生效</b> <span class="h">离线客户端按 kid 验签后拒绝已吊销 License。</span></li></ol>
-    <h2 class="sec"><span class="e">⏰</span>到期停用</h2>
-    <ol class="steps"><li><b>自动/手动</b> <span class="h">每日自动或手动触发,将过期 License 置 <code>EXPIRED</code>。</span></li></ol>
-    <div class="note warn"><span class="lab">注意</span>切换签名算法(ed25519/sm2)由 <code>LICENSE_SIGN_ALGO</code> 控制;客户端公钥 kid 必须匹配。</div>
-  `},
-  {id:"m-online", e:"📡", t:"在线监控", html:`
-    <div class="crumbs">功能模块 / 在线监控</div>
-    <h1>在线监控</h1>
-    <p class="intro">观测 SDK 在线实例的实时状态。</p>
-    <div class="meta"><span class="tag perm">权限:online</span></div>
-    <h2 class="sec"><span class="e">📊</span>查看</h2>
-    <ol class="steps">
-      <li><b>在线实例</b> <span class="h">查看接入的 SDK 实例与最近心跳。</span></li>
-      <li><b>席位占用</b> <span class="h">查看并发席位占用情况。</span></li>
-      <li><b>断网处理</b> <span class="h">观察断网宽限期与到期后的席位释放。</span></li>
-    </ol>
-  `},
-  {id:"m-catalog", e:"📦", t:"产品与套餐", html:`
-    <div class="crumbs">功能模块 / 产品与套餐</div>
-    <h1>产品与版本 / 套餐订阅</h1>
-    <p class="intro">维护产品矩阵与套餐,创建订阅并自动出账。</p>
-    <div class="meta"><span class="tag perm">权限:catalog / plan</span></div>
-    <h2 class="sec"><span class="e">🧩</span>产品与版本</h2>
-    <ol class="steps"><li><b>维护产品矩阵</b> <span class="h">模块、功能点、版本范围。</span></li></ol>
-    <h2 class="sec"><span class="e">🎫</span>套餐订阅</h2>
-    <ol class="steps">
-      <li><b>定义套餐</b> <span class="h">价格/席位/模块/功能点/版本范围。</span></li>
-      <li><b>创建订阅</b> <span class="h">为客户创建订阅 → 自动出账(账单 PENDING),可联动签发 License。</span></li>
-    </ol>
-  `},
-  {id:"m-customer", e:"👤", t:"客户管理(360)", html:`
-    <div class="crumbs">功能模块 / 客户管理</div>
-    <h1>客户管理(客户360)</h1>
-    <p class="intro">客户主数据 + 按客户聚合的全景视图。</p>
-    <div class="meta"><span class="tag perm">权限:customer</span></div>
-    <h2 class="sec"><span class="e">🗂️</span>主数据</h2>
-    <ol class="steps"><li><b>维护客户</b> <span class="h">新建/编辑客户主数据。</span></li></ol>
-    <h2 class="sec"><span class="e">🔭</span>客户360</h2>
-    <ol class="steps"><li><b>聚合视图</b> <span class="h">点「客户360」按客户名称聚合其 License/合同/账单/支付/订阅与关键指标。</span></li></ol>
-  `},
-  {id:"m-billing", e:"💳", t:"计费账单", html:`
-    <div class="crumbs">功能模块 / 计费账单</div>
-    <h1>计费账单(收款 + 开票)</h1>
-    <p class="intro">出账、扫码收款(人工确认)与电子发票。</p>
-    <div class="meta"><span class="tag perm">权限:billing</span></div>
-    <h2 class="sec"><span class="e">🧾</span>出账</h2>
-    <ol class="steps"><li><b>自动出账</b> <span class="h">订阅/合同自动生成账单(PENDING)。</span></li></ol>
-    <h2 class="sec"><span class="e">💴</span>收款</h2>
-    <ol class="steps">
-      <li><b>发起扫码收款</b></li>
-      <li><b>客户支付</b></li>
-      <li><b>确认到账(人工)</b> <span class="h">财务核对后核销;可改 <code>app.pay.provider</code> 接真实渠道。</span></li>
-    </ol>
-    <h2 class="sec"><span class="e">📑</span>开票</h2>
-    <ol class="steps"><li><b>开电子发票</b> <span class="h">普票/专票、抬头、税号、邮箱 → 生成代码/号码/PDF,账单转「已开票」。默认沙箱,改 <code>app.einvoice.provider</code> 接真实渠道。</span></li></ol>
-  `},
-  {id:"m-contract", e:"📝", t:"合同签约", html:`
-    <div class="crumbs">功能模块 / 合同签约</div>
-    <h1>合同签约(自建电子签)</h1>
-    <p class="intro">模板填充、定稿快照、SHA-256 存证、逐方签署。</p>
-    <div class="meta"><span class="tag perm">权限:contract</span></div>
-    <ol class="steps">
-      <li><b>新建草稿</b> <span class="h">选模板(占位符自动填充)或手填。</span></li>
-      <li><b>发起签署</b> <span class="h">内容定稿快照 + SHA-256 存证。</span></li>
-      <li><b>逐方签署</b></li>
-      <li><b>生效归档</b> <span class="h">全部签署后生效并存证;金额&gt;0 自动出账。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>未签署合同可作废;支持导出 CSV。</div>
-  `},
-  {id:"m-notice", e:"📋", t:"须知与授权", html:`
-    <div class="crumbs">功能模块 / 须知与授权</div>
-    <h1>须知与授权</h1>
-    <p class="intro">条款/隐私/公告的发布与同意留痕。</p>
-    <div class="meta"><span class="tag perm">权限:notice</span></div>
-    <h2 class="sec"><span class="e">📢</span>须知管理</h2>
-    <ol class="steps">
-      <li><b>新建草稿</b> <span class="h">条款/隐私/公告。</span></li>
-      <li><b>发布</b> <span class="h">定稿,旧版归档;可设「强制确认」。</span></li>
-    </ol>
-    <h2 class="sec"><span class="e">✅</span>授权记录</h2>
-    <ol class="steps"><li><b>查看/取证</b> <span class="h">同意/撤回(主体/版本/渠道/IP/时间),导出 CSV。公开页 <code>/pub/notices/active</code>、<code>/pub/consents</code>。</span></li></ol>
-  `},
-  {id:"m-cs", e:"🤖", t:"智能客服", html:`
-    <div class="crumbs">功能模块 / 智能客服</div>
-    <h1>智能客服</h1>
-    <p class="intro">基于知识库的流式问答,通用不绑厂商,可降级。</p>
-    <div class="meta"><span class="tag perm">权限:cs</span></div>
-    <ol class="steps">
-      <li><b>对话</b> <span class="h">控制台右下角悬浮窗。</span></li>
-      <li><b>知识库作答</b> <span class="h">基于产品 FAQ,支持流式与「转人工」。</span></li>
-      <li><b>接大模型</b> <span class="h">配 <code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code> 即接 GLM/通义/DeepSeek/Ollama;未配降级知识库。</span></li>
-      <li><b>会话审计</b> <span class="h">本页审计全部会话。</span></li>
-    </ol>
-    <div class="note warn"><span class="lab">注意</span>智能客服不外发密钥/隐私数据。</div>
-  `},
-  {id:"m-harden", e:"📦", t:"在线代码加固", html:`
-    <div class="crumbs">功能模块 / 在线代码加固</div>
-    <h1>在线代码加固</h1>
-    <p class="intro">上传 jar → 选技术 → 异步加固 → 下载;与构建时加固并存,按租户可切换。</p>
-    <div class="meta"><span class="tag perm">权限:harden / harden:config / harden:run</span></div>
-    <h2 class="sec"><span class="e">⚙️</span>加固设置</h2>
-    <ol class="steps"><li><b>选模式</b> <span class="h">仅构建自建 / 仅平台在线 / 两者并存,并设默认技术。</span></li></ol>
-    <h2 class="sec"><span class="e">⬆️</span>提交在线加固</h2>
-    <ol class="steps">
-      <li><b>上传 jar</b></li>
-      <li><b>勾选技术</b> <span class="h">ProGuard 混淆 / 类加密+License 绑定 / 口令式类加密。</span></li>
-      <li><b>异步处理 → 下载产物</b></li>
-    </ol>
-    <pre>java -Dharden.license=&lt;.lic&gt; -jar x.jar   <span class="c"># License 绑定</span>
-java -Dharden.key=&lt;口令&gt;     -jar x.jar   <span class="c"># 口令式</span></pre>
-    <div class="note faq"><span class="lab">常见问题</span>任务一直处理中?检查 jar 是否可执行、文件大小未超 <code>HARDEN_MAX_FILE_MB</code>、工作目录 <code>HARDEN_WORK_DIR</code> 可写。</div>
-  `},
-  {id:"m-portal", e:"🚪", t:"租户自助门户", html:`
-    <div class="crumbs">功能模块 / 自助门户</div>
-    <h1>租户自助门户</h1>
-    <p class="intro">面向最终客户的只读门户;运营开通、客户用编号+访问码登录。</p>
-    <div class="meta"><span class="tag perm">权限:tenant:portal</span></div>
-    <h2 class="sec"><span class="e">🔑</span>运营开通</h2>
-    <ol class="steps"><li><b>开通并复制凭证</b> <span class="h">「自助门户」为租户开通,生成访问码。</span></li></ol>
-    <h2 class="sec"><span class="e">👁️</span>客户使用</h2>
-    <ol class="steps">
-      <li><b>访问 <code>/portal</code></b></li>
-      <li><b>登录</b> <span class="h">租户编号 + 访问码。</span></li>
-      <li><b>只读查看</b> <span class="h">本租户 License/合同/账单/订阅,严格隔离。</span></li>
-    </ol>
-  `},
-  {id:"m-rbac", e:"🔐", t:"角色权限 / 用户", html:`
-    <div class="crumbs">功能模块 / 角色权限与用户</div>
-    <h1>角色权限与用户管理</h1>
-    <p class="intro">多态权限树 + 用户生命周期。</p>
-    <div class="meta"><span class="tag perm">权限:role:view / user:view</span></div>
-    <h2 class="sec"><span class="e">🌳</span>角色权限</h2>
-    <ol class="steps">
-      <li><b>多态权限树</b> <span class="h">每个权限点支持「无 / 只读 / 编辑 / 完全」。</span></li>
-      <li><b>自动授超管</b> <span class="h">新增权限自动授予超管;VIEWER 默认只读。</span></li>
-    </ol>
-    <h2 class="sec"><span class="e">👥</span>用户管理</h2>
-    <ol class="steps">
-      <li><b>新建用户</b> <span class="h">指定角色,初始密码默认 <code>Codeman@123</code>(可自定义)。</span></li>
-      <li><b>重置/启停</b> <span class="h">重置密码、启用/停用账号。</span></li>
-      <li><b>首登改密</b> <span class="h">新用户首次登录强制改密。</span></li>
-    </ol>
-  `},
-  {id:"m-audit", e:"🧾", t:"审计日志", html:`
-    <div class="crumbs">功能模块 / 审计</div>
-    <h1>审计日志</h1>
-    <p class="intro">关键操作留痕,便于追溯与合规。</p>
-    <div class="meta"><span class="tag perm">权限:audit</span></div>
-    <ol class="steps"><li><b>查看审计</b> <span class="h">查看操作主体、动作、对象、时间等;License 变更含版本 diff。</span></li></ol>
-  `},
-  {id:"m-sdk", e:"🧩", t:"SDK 接入", html:`
-    <div class="crumbs">功能模块 / SDK 接入</div>
-    <h1>客户端 SDK 接入与代码保护</h1>
-    <p class="intro">客户侧集成:验签 + 功能/版本门禁 + 代码保护。</p>
-    <h2 class="sec"><span class="e">🔏</span>SDK 验签</h2>
-    <ol class="steps"><li><b>集成</b> <span class="h"><code>sdk/license-sdk</code> 用公钥验 <code>.lic</code> 签名 + 功能/版本门禁(SemVer)。私钥不出域。</span></li></ol>
-    <h2 class="sec"><span class="e">🛡️</span>构建时代码保护</h2>
-    <ol class="steps">
-      <li><b>ProGuard 混淆</b><pre>cd examples/protected-app &amp;&amp; mvn -Pharden</pre></li>
-      <li><b>类加密 + 绑定</b> <span class="h"><code>BuildProtected</code> 加密关键类,密钥与 License 绑定;<code>demo.sh</code> 演示合法/错钥/篡改。</span></li>
-    </ol>
-    <div class="note tip"><span class="lab">提示</span>设计详见 <a href="../../docs/02-代码保护方案.md">代码保护方案</a>、<a href="../../docs/03-License认证方案.md">License 认证方案</a>。也可改用平台在线加固(无需自建流水线)。</div>
-  `},
-  {id:"m-ai", e:"🧠", t:"大模型接入", html:`
-    <div class="crumbs">功能模块 / 大模型接入</div>
-    <h1>智能客服大模型接入</h1>
-    <p class="intro">通用 OpenAI 兼容,换厂商只改 <code>.env</code> 三项。</p>
-    <pre><span class="c"># 智谱 GLM-4-Flash(常免费)</span>
+{ id:"m-tenant", e:"🏢", t:"租户管理", intro:"开通、激活、续期与隔离配置;每个租户拥有独立隔离空间。", perm:"tenant",
+  functions:[
+   { fid:"fn-tenant-onboard", name:"开通租户", perm:"tenant:onboard", ep:["POST","/api/tenants"],
+     entry:"控制台 → 租户管理 → 「开通租户」对话框(Tenants.vue)",
+     pre:["登录账号具备 <code>tenant:onboard</code>","租户名称不重复"],
+     params:[
+       {n:"name",t:"String",r:1,d:"租户名称,如「华东数据科技有限公司」"},
+       {n:"email",t:"String",r:1,d:"管理员邮箱(用于接收激活邮件,须合法邮箱)"},
+       {n:"plan",t:"String",r:0,d:"套餐:基础版/专业版/企业版/旗舰版"},
+       {n:"version",t:"String",r:0,d:"产品版本,默认 v2.4.0"},
+       {n:"isolation",t:"String",r:0,d:"隔离级别:共享库·行级(RLS,默认)/独立 Schema/独立数据库"},
+       {n:"mode",t:"String",r:0,d:"授权模式:混合 HYBRID(默认)/在线 ONLINE/离线 OFFLINE"},
+     ],
+     steps:["填写名称、管理员邮箱;选择套餐、版本、隔离级别与授权模式。",
+       "右侧实时预览开通邮件内容,确认无误后提交。",
+       "系统生成租户编号(如 <code>T-100482</code>)并返回邮件发送结果。"],
+     post:["建租户记录(INITIALIZING→ACTIVE)并创建隔离 Schema、跑 Flyway 迁移、写默认角色种子。",
+       "创建 SUPER_ADMIN(待激活)+ 生成 MFA 密钥与一次性激活令牌。",
+       "异步发送开通邮件(含激活链接);审计 <code>TENANT_CREATED</code>。"],
+     notes:[{k:"faq",t:"邮件没收到?检查 SMTP(<code>APP_MAIL_*</code>)与发件箱(outbox)状态,可让管理员凭激活页链接直接激活。"}] },
+   { fid:"fn-tenant-list", name:"租户列表", perm:"tenant:view", ep:["GET","/api/tenants"],
+     entry:"控制台 → 租户管理(主表)",
+     params:[], pre:[],
+     steps:["查看全部租户:编号/名称/邮箱/套餐/状态/到期。","状态枚举:active(正常)/soon(暂停)/init(初始化中)/exp(失败)。"],
+     post:[] },
+   { fid:"fn-tenant-settings", name:"查看隔离配置", perm:"tenant:view", ep:["GET","/api/tenants/{code}/settings"],
+     entry:"控制台 → 租户行 → 设置/详情",
+     params:[{n:"code",t:"Path",r:1,d:"租户编号"}],
+     pre:["租户编号存在"],
+     steps:["查看该租户 Schema 名、配置项与角色数。"], post:[] },
+   { fid:"fn-tenant-activate", name:"激活账户(客户侧·公开)", perm:"公开(令牌校验)", ep:["GET/POST","/api/activation/{token}"],
+     entry:"客户打开激活页 <code>/activate/:token</code>(Activate.vue)",
+     pre:["激活令牌有效未过期","管理员处于 PENDING_ACTIVATION"],
+     params:[
+       {n:"password",t:"String",r:1,d:"管理员密码,长度 8–64"},
+       {n:"mfaCode",t:"String",r:0,d:"可选 MFA 验证码;填写则绑定 MFA"},
+     ],
+     steps:["GET 取激活信息(租户名/邮箱/MFA 二维码 otpauth)。","设置密码,(可选)扫码绑定 MFA 并填验证码。","POST 提交激活。"],
+     post:["设置密码哈希;管理员状态→ACTIVE;(可选)绑定 MFA;审计 <code>ADMIN_ACTIVATED</code>。"] },
+  ]},
+
+{ id:"m-license", e:"🔑", t:"License 授权", intro:"签发/续期/变更/吊销/下载/导出/到期停用/到期提醒/CRL/公钥/验签;Ed25519 默认、国密 SM2 可选。", perm:"license",
+  functions:[
+   { fid:"fn-license-issue", name:"签发 License", perm:"license:issue", ep:["POST","/api/licenses/issue"],
+     entry:"控制台 → License 授权 → 「签发」(Licensing.vue)",
+     pre:["具备 <code>license:issue</code>","租户存在","<code>notAfter</code> 晚于 <code>notBefore</code>"],
+     params:[
+       {n:"tenantCode",t:"String",r:1,d:"租户编号"},
+       {n:"customer",t:"String",r:1,d:"客户名称"},
+       {n:"productCode",t:"String",r:0,d:"产品码,默认 CODEMAN"},
+       {n:"edition",t:"String",r:0,d:"版型 BASIC/PROFESSIONAL/ENTERPRISE/FLAGSHIP,默认 ENTERPRISE"},
+       {n:"mode",t:"String",r:0,d:"OFFLINE/ONLINE/HYBRID,默认 HYBRID"},
+       {n:"modules",t:"List",r:1,d:"授权模块,如 RISK/REPORT/AUDIT/BI/DATA"},
+       {n:"features",t:"Map",r:0,d:"功能开关/配额,如 {\"REPORT.EXPORT\":true,\"MAX_USERS\":2000}"},
+       {n:"appVersionRange",t:"String",r:0,d:"SemVer 范围,如 >=2.0.0 <3.0.0"},
+       {n:"notBefore / notAfter",t:"Date",r:1,d:"生效 / 失效日期(ISO)"},
+       {n:"concurrency",t:"Integer",r:0,d:"并发席位数,默认 1"},
+       {n:"reason",t:"String",r:0,d:"审计原因,如「控制台签发」"},
+     ],
+     steps:["选择租户/客户/版型/模式;勾选模块与功能开关。","设置版本范围、生效与失效日期、并发席位。","提交签发,服务端私钥签名生成 <code>.lic</code>。"],
+     post:["License 记录 status=ACTIVE,version=1,生成水印 watermark。","claimsJson 经 Ed25519 签名(存 kid+signature);写历史 opType=ISSUE;审计 <code>LICENSE_ISSUED</code>。"],
+     notes:[{k:"warn",t:"私钥不出域;客户端仅持公钥验签。签名算法由 <code>LICENSE_SIGN_ALGO</code>(ed25519/sm2)控制。"}] },
+   { fid:"fn-license-renew", name:"续期", perm:"license:renew", ep:["POST","/api/licenses/{id}/renew"],
+     entry:"License 列表 → 行操作「续期」",
+     pre:["License 存在且为 ACTIVE","新 notAfter 晚于当前 notBefore"],
+     params:[{n:"notAfter",t:"Date",r:1,d:"新失效日期"},{n:"reason",t:"String",r:0,d:"审计原因"}],
+     steps:["弹窗预填当前失效日期,改为新日期。","提交后 License 重新签名、版本号 +1。"],
+     post:["notAfter 更新;version 自增;重签;写历史 RENEW;审计 <code>LICENSE_RENEWED</code>。"] },
+   { fid:"fn-license-modify", name:"变更(模块/功能/席位/版型)", perm:"license:issue", ep:["POST","/api/licenses/{id}/modify"],
+     entry:"License 列表 → 行操作「变更」",
+     pre:["License 存在且为 ACTIVE"],
+     params:[{n:"modules",t:"List",r:0,d:"新模块列表"},{n:"features",t:"Map",r:0,d:"新功能开关"},
+       {n:"appVersionRange",t:"String",r:0,d:"新版本范围"},{n:"concurrency",t:"Integer",r:0,d:"新席位"},
+       {n:"edition",t:"String",r:0,d:"新版型"},{n:"reason",t:"String",r:0,d:"审计原因"}],
+     steps:["仅填写需变更的字段。","提交后按新内容重签、版本 +1。"],
+     post:["对应字段更新;version 自增;重签;写历史 MODIFY;审计 <code>LICENSE_MODIFIED</code>。"] },
+   { fid:"fn-license-revoke", name:"吊销", perm:"license:revoke", ep:["POST","/api/licenses/{id}/revoke"],
+     entry:"License 列表 → 行操作「吊销」(警示确认)",
+     pre:["License 存在且为 ACTIVE"],
+     params:[{n:"reason",t:"String",r:0,d:"吊销原因,如「客户违约」"}],
+     steps:["确认吊销并填写原因。","提交后状态→REVOKED 并进入 CRL。"],
+     post:["status=REVOKED;加入吊销名单 CRL;version 自增、重签;写历史 REVOKE;离线 SDK 据 CRL 拒绝。"] },
+   { fid:"fn-license-list", name:"列表 / 详情 / 历史", perm:"license:view / 公开(详情·历史)",
+     ep:["GET","/api/licenses · /{id} · /{id}/history"],
+     entry:"控制台 → License 授权(主表 + 详情抽屉)",
+     params:[], pre:[],
+     steps:["列表查看 ID/租户/客户/版型/状态/到期/版本。","详情含 claimsJson 与签名;历史含每版本 opType(ISSUE/RENEW/MODIFY/REVOKE/EXPIRE)与操作者、原因。"],
+     post:[] },
+   { fid:"fn-license-download", name:"下载 .lic / 导出 CSV", perm:"license:view",
+     ep:["GET","/api/licenses/{id}/download · /export.csv"],
+     entry:"License 行操作「下载」/ 列表「导出 CSV」",
+     params:[], pre:["下载需鉴权携带 JWT(blob 下载已修复丢 token 问题)"],
+     steps:["「下载」获取 <code>{licenseId}.lic</code> 文本文件交付客户。","「导出 CSV」导出授权台账。"], post:[] },
+   { fid:"fn-license-expire", name:"到期自动停用 / 到期提醒", perm:"license:revoke / license:view",
+     ep:["POST","/api/licenses/run-auto-expire · /run-expiry-reminder"],
+     entry:"控制台按钮手动触发;系统每日自动调度",
+     params:[], pre:[],
+     steps:["到期停用:将 notAfter<今天 的 ACTIVE 置 EXPIRED(重签、写历史 EXPIRE),返回数量。",
+       "到期提醒:对临近到期且未提醒的 License 发邮件并标记 expiryReminded=true。"],
+     post:["每日 @Scheduled 自动执行;也可手动点按钮立即跑。"] },
+   { fid:"fn-license-pub", name:"公钥 / 签名 CRL / 验签(公开)", perm:"公开(/pub/**)",
+     ep:["GET/POST","/pub/license/public-keys · /pub/crl · /api/licenses/verify"],
+     entry:"供客户端 SDK 调用,无需登录",
+     params:[{n:"lic",t:"String",r:0,d:"验签接口:传入 .lic 文本,返回 valid/claims"}],
+     pre:[],
+     steps:["公钥集 <code>/pub/license/public-keys</code>:JWKS 风格,含 kid 支持轮换。",
+       "签名 CRL <code>/pub/crl</code>:含 payloadB64+signature;SDK 验签后拒绝名单内 License。",
+       "验签 <code>/api/licenses/verify</code>:服务端校验签名并返回解析后的 claims。"],
+     post:[] },
+  ]},
+
+{ id:"m-online", e:"📡", t:"在线监控", intro:"观测 SDK 在线实例、心跳、席位、宽限期;并提供 SDK 激活/心跳/释放通道。", perm:"online",
+  functions:[
+   { fid:"fn-online-instances", name:"在线实例 / 席位 / 统计", perm:"online:view",
+     ep:["GET","/api/online/instances · /seats · /stats"],
+     entry:"控制台 → 在线监控(Online.vue,5 秒轮询)",
+     params:[], pre:[],
+     steps:["实例表:licenseId/instanceId/机器码/IP/状态/激活时间/最近心跳。",
+       "状态计算:online(近期心跳)/grace(超宽限但未超 24h)/offline/released。",
+       "席位:used/total(used=ACTIVE 且心跳在宽限期内的实例数);统计卡:在线/宽限/已用席位。"],
+     post:[] },
+   { fid:"fn-online-sdk", name:"SDK 通道:激活 / 心跳 / 释放(SDK 调用)", perm:"SDK(建议 mTLS+签名)",
+     ep:["POST","/sdk/activate · /sdk/heartbeat · /sdk/deactivate"],
+     entry:"由客户端 SDK 调用,非控制台操作",
+     pre:["License 存在、ACTIVE、未吊销/未过期","激活需可用席位>0(否则 409)","心跳 nonce 不可重复(防重放)"],
+     params:[
+       {n:"licenseId / instanceId",t:"String",r:1,d:"License 与实例唯一标识(如 host+PID)"},
+       {n:"machineCode",t:"String",r:0,d:"机器指纹(激活)"},
+       {n:"nonce",t:"String",r:1,d:"心跳一次性随机串(防重放)"},
+       {n:"ts",t:"Long",r:0,d:"客户端时间戳(可选,用于时间校验)"},
+     ],
+     steps:["activate:返回签名授权快照 authSnapshot(供离线宽限)、heartbeatSec、graceSec、席位占用。",
+       "heartbeat:按 heartbeatSec 周期上报;返回 OK/REVOKED/EXPIRED/REPLAY 等状态。",
+       "deactivate:释放实例,状态→RELEASED,席位回收。"],
+     post:["写/更新 LicenseInstance;nonce 入 NonceGuard(多实例走 Redis,<code>APP_REDIS_ENABLED=true</code>);审计实例事件。"] },
+  ]},
+
+{ id:"m-catalog", e:"📦", t:"产品 / 套餐 / 订阅", intro:"产品-模块-功能-版本矩阵;套餐定价;订阅自动签发 License 并出账。", perm:"catalog / plan",
+  functions:[
+   { fid:"fn-catalog-products", name:"产品矩阵 / 功能-版本可用矩阵", perm:"catalog:view",
+     ep:["GET","/api/catalog/products · /api/catalog/matrix"],
+     entry:"控制台 → 产品与版本(Products.vue)",
+     params:[], pre:[],
+     steps:["左侧:产品(CODEMAN)→ 模块(RISK/REPORT/AUDIT/BI/DATA)→ 功能点层级。",
+       "右侧:功能 × 版本(v2.2/v2.3/v2.4)可用性矩阵。"],
+     post:[] },
+   { fid:"fn-plan-list", name:"套餐列表", perm:"plan:view", ep:["GET","/api/plans"],
+     entry:"控制台 → 套餐订阅(Plans.vue,套餐卡)",
+     params:[], pre:[],
+     steps:["查看套餐:code/名称/价格/版本范围/席位/模块。",
+       "种子:基础版¥19800·2席 / 专业版¥49800·5席 / 企业版¥99800·20席 / 旗舰版¥198000·50席。"],
+     post:[] },
+   { fid:"fn-sub-create", name:"创建订阅(自动签发+自动出账)", perm:"plan:subscribe", ep:["POST","/api/subscriptions"],
+     entry:"套餐卡 → 「订阅」对话框",
+     pre:["套餐存在","endAt 晚于 startAt"],
+     params:[
+       {n:"tenantCode",t:"String",r:1,d:"租户编号"},
+       {n:"customer",t:"String",r:1,d:"客户名称"},
+       {n:"planCode",t:"String",r:1,d:"套餐码 BASIC/PROFESSIONAL/ENTERPRISE/FLAGSHIP"},
+       {n:"qty",t:"Integer",r:0,d:"数量倍数,默认 1"},
+       {n:"startAt / endAt",t:"Date",r:1,d:"订阅起止日期"},
+     ],
+     steps:["从套餐卡选定套餐,填租户/客户/数量/起止。","提交创建订阅。"],
+     post:["订阅 status=ACTIVE;按套餐自动签发 License(席位=plan.seats×qty,起止=订阅起止);","自动出账 Invoice(amount=price×qty,type=SUBSCRIBE);审计 <code>SUBSCRIPTION_CREATE</code>。"] },
+   { fid:"fn-sub-change", name:"变更套餐 / 取消订阅", perm:"plan:subscribe",
+     ep:["POST","/api/subscriptions/{id}/change · /cancel"],
+     entry:"订阅列表 → 行操作",
+     pre:["订阅存在"],
+     params:[{n:"planCode",t:"String",r:0,d:"变更:新套餐码"}],
+     steps:["变更:改套餐后关联 License 按新套餐重签(模块/席位更新、版本 +1),并做差额计费。",
+       "取消:订阅→CANCELLED,关联 License 吊销(进 CRL)。"],
+     post:["审计 <code>SUBSCRIPTION_CHANGE</code> / <code>SUBSCRIPTION_CANCEL</code>。"] },
+  ]},
+
+{ id:"m-customer", e:"👤", t:"客户管理(360)", intro:"客户主数据维护 + 按客户聚合 License/合同/账单/支付/订阅的 360 视图。", perm:"customer",
+  functions:[
+   { fid:"fn-customer-crud", name:"新建 / 编辑客户", perm:"customer:edit", ep:["POST/PUT","/api/customers · /{id}"],
+     entry:"控制台 → 客户管理 → 新建/编辑(Customers.vue)",
+     pre:["具备 <code>customer:edit</code>"],
+     params:[
+       {n:"name",t:"String",r:1,d:"客户名称(最长 128;创建后不可改)"},
+       {n:"tenantCode",t:"String",r:0,d:"关联租户编号 T-xxxxxx"},
+       {n:"contact / email / phone",t:"String",r:0,d:"联系人 / 邮箱 / 电话"},
+       {n:"industry",t:"String",r:0,d:"行业"},
+       {n:"status",t:"Enum",r:0,d:"ACTIVE / INACTIVE,默认 ACTIVE"},
+       {n:"note",t:"String",r:0,d:"备注(≤512)"},
+     ],
+     steps:["填写客户信息提交。","编辑时名称不可修改;可切换状态。"],
+     post:["写/更新客户主数据。"] },
+   { fid:"fn-customer-360", name:"客户360(聚合视图)", perm:"customer:view", ep:["GET","/api/customers/{id}/overview"],
+     entry:"客户行点击 → 360 抽屉(5 个页签)",
+     params:[{n:"id",t:"Path",r:1,d:"客户 ID"}],
+     pre:[],
+     steps:["KPI:License 数/有效数、合同数/签约额、发票数/已收/待收、订阅数、支付数。",
+       "页签:Licenses / Contracts / Invoices / Subscriptions / Payments。"],
+     post:[] },
+   { fid:"fn-customer-export", name:"导出 CSV", perm:"customer:view", ep:["GET","/api/customers/export.csv"],
+     entry:"客户列表 → 「导出 CSV」", params:[], pre:[],
+     steps:["导出列:code/name/contact/email/phone/industry/status/createdAt。"], post:[] },
+  ]},
+
+{ id:"m-billing", e:"💳", t:"计费账单(收款+开票)", intro:"出账 → 扫码收款(默认人工确认)→ 开电子发票;Provider 可切真实渠道。", perm:"billing",
+  functions:[
+   { fid:"fn-bill-list", name:"账单列表 / 税票列表 / 导出", perm:"billing:view",
+     ep:["GET","/api/invoices · /tax-invoices/all · /export.csv"],
+     entry:"控制台 → 计费账单(Billing.vue,含 KPI)",
+     params:[], pre:[],
+     steps:["账单含 KPI(待收/已收/数量)。","可查全部税票;导出账单 CSV。"], post:[] },
+   { fid:"fn-bill-payment", name:"发起收款 / 查询 / 模拟到账", perm:"billing:manage(发起·模拟) / billing:view(查询)",
+     ep:["POST/GET","/api/payments · /{id} · /{id}/sandbox-confirm"],
+     entry:"账单行 → 「收款」对话框(二维码/支付链接)",
+     pre:["发起收款:账单 status=PENDING","模拟到账:当前为 MOCK 沙箱渠道"],
+     params:[{n:"invoiceId",t:"Long",r:1,d:"发起收款的账单 ID"}],
+     steps:["发起收款:生成 Payment(CREATED)+ 二维码 qrContent/payUrl(默认 MOCK)。",
+       "前端每 1.5s 轮询支付状态。","沙箱:点「✅ 模拟支付成功」即标记到账(仅 MOCK 渠道可用)。"],
+     post:["支付成功后 Payment→PAID 且关联账单→PAID。"],
+     notes:[{k:"tip",t:"接真实渠道改 <code>app.pay.provider</code>(PAY_PROVIDER),回调走公开端点见下。无需改业务代码。"}] },
+   { fid:"fn-bill-notify", name:"支付回调(公开·异步)", perm:"公开(渠道验签)", ep:["POST","/pub/payments/notify/{channel}"],
+     entry:"由支付渠道服务器回调,无需登录",
+     pre:["渠道签名校验通过"],
+     params:[{n:"channel",t:"Path",r:1,d:"MOCK/WECHATPAY/ALIPAY/STRIPE"}],
+     steps:["渠道回调 → Provider.verifyNotify 验签。","通过则 Payment→PAID、关联账单→PAID;失败返回 FAIL。"],
+     post:["幂等:已 PAID 不重复处理。"] },
+   { fid:"fn-bill-pay-issue", name:"人工收款 / 标记开票(独立操作)", perm:"billing:manage",
+     ep:["POST","/api/invoices/{id}/pay · /{id}/issue"],
+     entry:"账单行操作",
+     pre:["收款:账单=PENDING","开票编号:账单=PAID"],
+     params:[],
+     steps:["pay:人工确认到账,账单→PAID(记 paidAt)。","issue:对已收款账单生成发票号 <code>INV-…</code>,账单→INVOICED。"],
+     post:["仅待支付可收款、仅已收款可开票(否则报错)。"] },
+   { fid:"fn-bill-einvoice", name:"申请电子发票", perm:"billing:manage", ep:["POST","/api/invoices/{id}/e-invoice"],
+     entry:"账单行 → 「开票」对话框",
+     pre:["账单存在","type=SPECIAL(专票)时必须填 taxNo"],
+     params:[
+       {n:"title",t:"String",r:1,d:"发票抬头(≤160)"},
+       {n:"type",t:"Enum",r:0,d:"NORMAL 普票(默认)/ SPECIAL 专票"},
+       {n:"taxNo",t:"String",r:0,d:"税号(专票必填)"},
+       {n:"email",t:"String",r:0,d:"发票接收邮箱"},
+     ],
+     steps:["选普票/专票,填抬头、(专票)税号、邮箱。","提交开票申请。"],
+     post:["生成 TaxInvoice(ISSUING→ISSUED),含发票代码/号码/PDF 链接。默认 mock,生产改 <code>app.einvoice.provider</code>(EINVOICE_PROVIDER)。"] },
+  ]},
+
+{ id:"m-contract", e:"📝", t:"合同签约", intro:"模板填充 → 草稿 → 发起(定稿快照+SHA-256 存证)→ 逐方签署 → 生效归档(金额>0 自动出账)。", perm:"contract",
+  functions:[
+   { fid:"fn-contract-create", name:"新建合同(草稿)", perm:"contract:edit", ep:["POST","/api/contracts"],
+     entry:"控制台 → 合同签约 → 「新建」(Contracts.vue)",
+     pre:["customer 非空","无 templateId 时 contentHtml 必填","至少 1 个签署方"],
+     params:[
+       {n:"customer",t:"String",r:1,d:"客户名称"},
+       {n:"templateId",t:"Long",r:0,d:"模板 ID(选模板则占位符自动填充)"},
+       {n:"contentHtml",t:"HTML",r:0,d:"无模板时必填的正文"},
+       {n:"title",t:"String",r:0,d:"标题(空则「{客户} 服务合同」)"},
+       {n:"amount",t:"Number",r:0,d:"金额(>0 则全部签署后自动出账)"},
+       {n:"planCode / tenantCode / subscriptionId",t:"-",r:0,d:"可选关联"},
+       {n:"parties[]",t:"Array",r:1,d:"签署方:name(必)/partyRole(甲乙方)/email/phone"},
+     ],
+     steps:["选模板或手填正文;填客户、金额。","添加签署方(姓名/角色/邮箱)。","提交生成草稿(DRAFT,各方 PENDING)。"],
+     post:["模板占位符 {{customer}}/{{amount}}/{{plan}}/{{tenant}}/{{date}} 自动渲染。"] },
+   { fid:"fn-contract-send", name:"发起签署", perm:"contract:edit", ep:["POST","/api/contracts/{id}/send"],
+     entry:"合同详情 → 「发起签署」(仅草稿可见)",
+     pre:["合同=DRAFT","至少 1 签署方"],
+     params:[],
+     steps:["点「发起签署」。"],
+     post:["状态→SENT;生成合同号 <code>HT-…</code>;contentHash=SHA-256(正文) 定稿快照防篡改。"] },
+   { fid:"fn-contract-sign", name:"签署(逐方)", perm:"contract:sign", ep:["POST","/api/contracts/{id}/sign/{partyId}"],
+     entry:"合同详情 → 某签署方「签署」",
+     pre:["合同=SENT 或 SIGNING","该方 signStatus=PENDING(不可重签)"],
+     params:[{n:"partyId",t:"Path",r:1,d:"签署方 ID"}],
+     steps:["对每个签署方依次点「签署」。"],
+     post:["该方→SIGNED,signHash=SHA-256(contentHash|姓名|时间);","全部签署后合同→SIGNED;若 amount>0 自动出账(type=CONTRACT);否则部分签署为 SIGNING。"] },
+   { fid:"fn-contract-void", name:"作废 / 模板 / 导出", perm:"contract:edit / contract:view",
+     ep:["POST/GET","/api/contracts/{id}/void · /templates · /export.csv"],
+     entry:"合同行操作 / 模板管理 / 列表导出",
+     pre:["作废:合同未 SIGNED"],
+     params:[{n:"模板:name",t:"String",r:1,d:"模板名"},{n:"模板:contentHtml",t:"HTML",r:1,d:"模板正文(可含占位符)"},
+       {n:"模板:variables",t:"String",r:0,d:"占位符列表,默认 customer,amount,plan,tenant,date"}],
+     steps:["作废未签署合同(已签署不可作废)。","新建模板供签约复用。","导出合同 CSV(含 contentHash)。"],
+     post:[] },
+  ]},
+
+{ id:"m-notice", e:"📋", t:"须知与授权", intro:"条款/隐私/公告的版本化发布 + 同意/撤回留痕(主体/版本/渠道/IP/时间)。", perm:"notice / consent",
+  functions:[
+   { fid:"fn-notice-crud", name:"新建 / 编辑须知", perm:"notice:edit", ep:["POST/PUT","/api/notices · /{id}"],
+     entry:"控制台 → 须知管理 → 新建/编辑(Notices.vue)",
+     pre:["编辑仅 DRAFT 可改(已发布须新建版本)"],
+     params:[
+       {n:"type",t:"Enum",r:1,d:"TERMS/PRIVACY/NOTICE/ANNOUNCEMENT"},
+       {n:"title",t:"String",r:1,d:"标题(≤160)"},
+       {n:"contentHtml",t:"HTML",r:1,d:"正文"},
+       {n:"forceAck",t:"Boolean",r:0,d:"是否强制确认(登录后必须同意),默认 false"},
+     ],
+     steps:["选类型、填标题与正文,(可选)开启强制确认。","保存为草稿(版本自动 = 同类型最大版本 +1)。"],
+     post:["创建 DRAFT;effectiveAt 在发布时写入。"] },
+   { fid:"fn-notice-publish", name:"发布须知", perm:"notice:edit", ep:["POST","/api/notices/{id}/publish"],
+     entry:"须知行 → 「发布」(仅草稿)",
+     pre:["须知=DRAFT"],
+     params:[],
+     steps:["点「发布」。"],
+     post:["状态→PUBLISHED、写 effectiveAt;同类型旧 PUBLISHED→ARCHIVED(每类型仅 1 个生效);审计「{type} v{n} 已发布」。"] },
+   { fid:"fn-notice-ack", name:"待确认 / 确认(登录用户)", perm:"登录用户", ep:["GET/POST","/api/notices/pending · /{id}/ack"],
+     entry:"登录后自动弹层(强制确认须知)",
+     pre:["须知 PUBLISHED 且 forceAck=true 且当前用户未 GRANTED"],
+     params:[],
+     steps:["登录后获取待确认列表 → 弹层。","勾选「我已阅读并同意」→ ack。"],
+     post:["写 UserConsent(subject=用户,action=GRANTED,channel=WEB,记 IP/UA/version);审计 CONSENT_GRANTED。"] },
+   { fid:"fn-notice-pub", name:"公开:生效须知 / 同意 / 撤回", perm:"公开(/pub/**)",
+     ep:["GET/POST","/pub/notices/active · /pub/consents · /pub/consents/revoke"],
+     entry:"公开政策页 / 外部门户表单",
+     pre:[],
+     params:[{n:"type",t:"Query",r:0,d:"active:须知类型"},{n:"noticeId",t:"Long",r:1,d:"同意/撤回:须知 ID"},
+       {n:"subject",t:"String",r:1,d:"主体(用户名/邮箱)"},{n:"channel",t:"String",r:1,d:"渠道 WEB/EMAIL/API"}],
+     steps:["active:取当前 PUBLISHED 须知。","consents:记录同意(GRANTED)。","revoke:记录撤回(REVOKED)。"],
+     post:["均记录 IP/UA。"] },
+   { fid:"fn-notice-consents", name:"授权记录 / 导出", perm:"consent:view",
+     ep:["GET","/api/notices/consents · /consents/export.csv"],
+     entry:"控制台 → 须知管理 → 「授权记录」页签",
+     params:[], pre:[],
+     steps:["查看同意/撤回流水(主体/类型/版本/动作/渠道/IP/时间)。","导出 CSV 取证。"], post:[] },
+  ]},
+
+{ id:"m-cs", e:"🤖", t:"智能客服", intro:"基于知识库的流式问答(OpenAI 兼容),未接大模型自动降级;可转人工、可审计。", perm:"cs",
+  functions:[
+   { fid:"fn-cs-chat", name:"对话(SSE 流式)/ 状态 / 转人工", perm:"cs:use",
+     ep:["GET/POST","/api/cs/status · /api/cs/chat · /api/cs/{id}/escalate"],
+     entry:"控制台右下角悬浮窗(CsWidget.vue / CustomerService.vue)",
+     pre:["具备 <code>cs:use</code>"],
+     params:[{n:"question",t:"String",r:1,d:"用户问题"},{n:"conversationId",t:"Long",r:0,d:"为空则自动新建会话"}],
+     steps:["发问 → SSE 返回:event meta(会话ID)→ delta(增量文本)→ done。","status 显示 ready/model/kbSize;可「转人工」escalate。"],
+     post:["未配大模型(<code>AI_ENABLED=false</code>)时降级知识库召回(faq.md)。"],
+     notes:[{k:"warn",t:"系统提示内置安全约束:仅答本产品、不外泄密钥/隐私、不执行写操作。"}] },
+   { fid:"fn-cs-history", name:"我的会话 / 消息 / 全部会话(审计)", perm:"cs:use(自己) / cs:view(全部)",
+     ep:["GET","/api/cs/conversations/mine · /{id}/messages · /api/cs/conversations"],
+     entry:"控制台 → 智能客服(会话列表)",
+     params:[], pre:[],
+     steps:["查看本人会话与消息(role:user/assistant/system)。","cs:view 可审计全部会话。"],
+     post:[] },
+  ]},
+
+{ id:"m-harden", e:"📦", t:"在线代码加固", intro:"按租户配置模式;上传 jar→选技术→异步加固→下载;与构建时加固并存。", perm:"harden",
+  functions:[
+   { fid:"fn-harden-config", name:"加固设置(按租户)", perm:"harden:config(保存) / harden:view(读取)",
+     ep:["GET/PUT","/api/harden/config · /configs · (PUT)/config"],
+     entry:"控制台 → 在线加固 → 「加固设置」(Harden.vue)",
+     pre:["保存需 <code>harden:config</code>"],
+     params:[
+       {n:"tenantCode",t:"String",r:0,d:"租户码(空=平台级)"},
+       {n:"mode",t:"Enum",r:1,d:"BUILD(仅构建自建)/ONLINE(仅平台在线)/BOTH(并存)"},
+       {n:"obfuscate",t:"Boolean",r:0,d:"默认启用 ProGuard 混淆"},
+       {n:"encryptBind",t:"Boolean",r:0,d:"默认启用 类加密+License 绑定"},
+       {n:"fatjarEncrypt",t:"Boolean",r:0,d:"默认启用 口令式类加密"},
+     ],
+     steps:["选模式与默认技术 → 保存。"],
+     post:["租户设为 BUILD 时,平台拒绝其在线加固任务。"] },
+   { fid:"fn-harden-submit", name:"提交在线加固(上传 jar)", perm:"harden:run", ep:["POST","/api/harden/jobs (multipart)"],
+     entry:"控制台 → 在线加固 → 「提交在线加固」",
+     pre:["租户模式非 BUILD","文件为 .jar 且 ≤ <code>HARDEN_MAX_FILE_MB</code>(默认 200)"],
+     params:[
+       {n:"file",t:"File",r:1,d:"可执行 jar(multipart)"},
+       {n:"techniques",t:"CSV",r:0,d:"OBFUSCATE,ENCRYPT_BIND,FATJAR_ENCRYPT(按序执行)"},
+       {n:"bindLicense",t:"String",r:0,d:"ENCRYPT_BIND 绑定的 License ID"},
+       {n:"passphrase",t:"String",r:0,d:"FATJAR_ENCRYPT 的口令"},
+       {n:"encryptPrefix",t:"String",r:0,d:"加密的包前缀(省略则自动推断)"},
+       {n:"tenantCode",t:"String",r:0,d:"租户码"},
+     ],
+     steps:["上传 jar,勾选技术。","ENCRYPT_BIND 填 License ID;FATJAR_ENCRYPT 填口令;(可选)填加密包前缀。","提交 → 异步流水线 QUEUED→RUNNING→DONE/FAILED。"],
+     post:["密钥派生:ENCRYPT_BIND 取 .lic 内容、FATJAR_ENCRYPT 取口令的 SHA-256;2 线程异步处理。"] },
+   { fid:"fn-harden-jobs", name:"任务列表 / 详情 / 下载产物", perm:"harden:view",
+     ep:["GET","/api/harden/jobs · /{id} · /{id}/download"],
+     entry:"控制台 → 在线加固 → 任务表",
+     params:[], pre:["下载需任务 DONE"],
+     steps:["查看任务:jobNo/源文件/技术/状态/产物大小。","下载产物 <code>hardened-{源文件名}</code>。"],
+     post:[],
+     notes:[{k:"tip",t:"运行产物:<code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code>(绑定)或 <code>java -Dharden.key=&lt;口令&gt; -jar x.jar</code>(口令);也支持 HARDEN_LICENSE/HARDEN_KEY 环境变量。"},
+       {k:"faq",t:"一直处理中/失败?检查 jar 可执行、未超大小、工作目录 <code>HARDEN_WORK_DIR</code> 可写。"}] },
+  ]},
+
+{ id:"m-portal", e:"🚪", t:"租户自助门户", intro:"运营为租户开通访问码;客户用「租户编号+访问码」登录,只读查看本租户授权。", perm:"tenant:portal",
+  functions:[
+   { fid:"fn-portal-admin", name:"门户管理(开通/重置/停用)", perm:"tenant:portal(开通·重置·停用) / tenant:view(列表)",
+     ep:["GET/POST","/api/portal-admin · /{tenantCode}/enable · /reset · /disable"],
+     entry:"控制台 → 自助门户(PortalAdmin.vue)",
+     pre:["具备 <code>tenant:portal</code>"],
+     params:[{n:"tenantCode",t:"Path",r:1,d:"目标租户编号"}],
+     steps:["「开通」生成 8 位访问码(字母数字,排除易混 0/1/I/O)。","「复制」一键复制 租户编号+访问码+门户地址。","可「重置」访问码或「停用」门户。"],
+     post:["开通/重置/停用分别审计 PORTAL_ENABLE/RESET/DISABLE。"] },
+   { fid:"fn-portal-login", name:"门户登录 / 总览(客户侧·公开)", perm:"公开(门户令牌)",
+     ep:["POST/GET","/pub/portal/login · /pub/portal/overview"],
+     entry:"客户打开 <code>/portal</code>(Portal.vue → PortalHome.vue)",
+     pre:["租户存在且门户已启用","访问码匹配"],
+     params:[{n:"tenantCode",t:"String",r:1,d:"租户编号"},{n:"accessCode",t:"String",r:1,d:"访问码"}],
+     steps:["用 编号+访问码 登录 → 颁发 role=TENANT_PORTAL 的令牌(存 localStorage <code>codeman.portal.token</code>)。",
+       "总览只读查看 KPI 与 License/合同/账单/订阅(严格按租户过滤,他租户数据不可见)。"],
+     post:["令牌缺失/失效返回 401;门户无任何写操作。"] },
+  ]},
+
+{ id:"m-rbac", e:"🔐", t:"角色权限 / 用户", intro:"多态权限树(NONE/VIEW/EDIT/FULL)+ 用户生命周期 + 登录/改密。", perm:"role:view / user:view",
+  functions:[
+   { fid:"fn-rbac-roles", name:"权限树 / 角色 / 设置角色权限", perm:"读取无需特权 / 设置需超管",
+     ep:["GET/PUT","/api/rbac/permissions · /roles · /roles/{id} · (PUT)/roles/{id}/permissions"],
+     entry:"控制台 → 角色权限(Roles.vue)",
+     pre:["设置权限:超管校验"],
+     params:[{n:"权限项",t:"{code,mode}[]",r:1,d:"mode ∈ NONE/VIEW/EDIT/FULL"}],
+     steps:["选角色 → 权限树逐节点选择 无/只读/编辑/完全。","父节点级联到未设置的子节点 → 保存。"],
+     post:["新增权限自动授予超管;VIEWER 默认只读;NONE 即不记录;审计 ROLE_PERM_UPDATE。"] },
+   { fid:"fn-rbac-users", name:"用户管理(新建/重置/启停)", perm:"user:view(列表) / user:edit(写)",
+     ep:["GET/POST","/api/users · /{id}/reset-password · /{id}/toggle"],
+     entry:"控制台 → 用户管理(Users.vue)",
+     pre:["写操作需 <code>user:edit</code>"],
+     params:[
+       {n:"username",t:"String",r:1,d:"用户名(唯一,1–64)"},
+       {n:"roleId",t:"Long",r:1,d:"角色 ID"},
+       {n:"password",t:"String",r:0,d:"初始密码,空则默认 <code>Codeman@123</code>"},
+     ],
+     steps:["新建用户:指定角色与(可选)初始密码。","可重置密码、启用/停用账号。"],
+     post:["新建与重置均置 mustChangePwd=true(首登强制改密);内置 admin 不可停用;审计 USER_CREATE/RESET_PWD/TOGGLE。"] },
+   { fid:"fn-rbac-auth", name:"登录 / 当前用户 / 修改密码", perm:"无需特权(登录态)",
+     ep:["POST/GET","/api/auth/login · /api/auth/me · /api/auth/change-password"],
+     entry:"登录页(Login.vue)/ 首登强制改密弹层",
+     pre:["登录:账号 status=ACTIVE"],
+     params:[
+       {n:"username / password",t:"String",r:1,d:"登录凭据"},
+       {n:"oldPassword / newPassword",t:"String",r:1,d:"改密(新密 6–64)"},
+     ],
+     steps:["登录返回 token + 角色 + 生效权限(含 mode)+ mustChangePwd。","mustChangePwd=true 时强制改密后方可使用。"],
+     post:["JWT 有效期 <code>JWT_TTL_HOURS</code>(默认 12h);密钥 <code>JWT_SECRET</code> 生产必改。"] },
+  ]},
+
+{ id:"m-audit", e:"🧾", t:"审计日志", intro:"关键操作不可变留痕,支持搜索与导出。", perm:"audit:view",
+  functions:[
+   { fid:"fn-audit", name:"查看 / 搜索 / 导出审计", perm:"audit:view", ep:["GET","/api/audit · /audit/export.csv"],
+     entry:"控制台 → 审计(Audit.vue)",
+     params:[{n:"keyword",t:"Query",r:0,d:"按 action/detail/actor 模糊搜索"}],
+     pre:[],
+     steps:["列表默认按时间倒序取前 200。","关键字搜索;导出 CSV(createdAt/actor/action/tenantId/detail)。"],
+     post:["所有写操作自动经 AuditWriter 记录;日志不可删改。"] },
+  ]},
+
+{ id:"m-sdk", e:"🧩", t:"SDK 接入与代码保护", intro:"客户侧:公钥验签 + 功能/版本门禁 + 在线通道 + 构建时代码保护。", perm:"客户端集成",
+  functions:[
+   { fid:"fn-sdk-verify", name:"SDK 验签与门禁", perm:"客户端",
+     ep:["-","sdk/license-sdk"],
+     entry:"客户应用集成 SDK",
+     pre:["持有平台公钥(<code>/pub/license/public-keys</code>,按 kid)"],
+     params:[],
+     steps:["用公钥验 <code>.lic</code> 签名;校验有效期、CRL、功能开关与版本范围(SemVer)。","在线模式接 SDK 通道(见 在线监控 · SDK 通道)。"],
+     post:["私钥不出域,客户端不持私钥。"],
+     notes:[{k:"tip",t:"设计详见 <a href='../../docs/02-代码保护方案.md'>代码保护方案</a>、<a href='../../docs/03-License认证方案.md'>License 认证方案</a>。"}] },
+   { fid:"fn-sdk-build", name:"构建时代码保护", perm:"CI/CD",
+     ep:["-","examples/protected-app"],
+     entry:"构建流水线 <code>mvn -Pharden</code>",
+     pre:[],
+     params:[],
+     steps:["ProGuard 混淆:<code>cd examples/protected-app &amp;&amp; mvn -Pharden</code>。","<code>BuildProtected</code> 加密关键类,解密密钥与 License 派生绑定。","<code>demo.sh</code> 演示 合法/错钥/篡改 三态。"],
+     post:["与「平台在线加固」并存,可按租户切换(见 在线代码加固)。"] },
+  ]},
+
+{ id:"m-ai", e:"🧠", t:"大模型接入", intro:"智能客服通用 OpenAI 兼容,换厂商只改 .env 三项。", perm:"配置",
+  functions:[
+   { fid:"fn-ai-config", name:"大模型配置", perm:"运维配置",
+     ep:["-","application.yml / .env(app.ai.*)"],
+     entry:".env / application.yml",
+     pre:["可访问对应模型服务"],
+     params:[
+       {n:"AI_ENABLED",t:"Boolean",r:0,d:"启用大模型(默认 false→降级知识库)"},
+       {n:"AI_BASE_URL",t:"URL",r:0,d:"OpenAI 兼容端点,默认本地 Ollama"},
+       {n:"AI_API_KEY",t:"String",r:0,d:"云厂商 API Key(本地 Ollama 不需要)"},
+       {n:"AI_MODEL",t:"String",r:0,d:"模型 ID,如 glm-4-flash/deepseek-chat/qwen2.5:7b-instruct"},
+       {n:"AI_TIMEOUT_SEC / AI_HISTORY_LIMIT",t:"Int",r:0,d:"超时(默认60)/ 历史条数(默认12)"},
+     ],
+     steps:[],
+     post:[],
+     notes:[{k:"tip",t:"示例见下;选型/成本对比见 <a href='../../docs/智能客服-大模型选型与部署.md'>智能客服-大模型选型与部署</a>。Docker 启本地模型:<code>docker compose --profile ai up -d</code> 后 <code>ollama pull</code>。"}],
+     code:`# 智谱 GLM-4-Flash(常免费)
 AI_ENABLED=true
 AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4
 AI_API_KEY=***
 AI_MODEL=glm-4-flash
 
-<span class="c"># 本地 Ollama(离线)</span>
+# 本地 Ollama(离线)
 AI_ENABLED=true
 AI_BASE_URL=http://ollama:11434/v1
-AI_MODEL=qwen2.5:7b-instruct</pre>
-    <div class="note tip"><span class="lab">提示</span>选型/部署/成本对比见 <a href="../../docs/智能客服-大模型选型与部署.md">智能客服-大模型选型与部署</a>。Docker 启用本地模型:<code>docker compose --profile ai up -d</code> 后 <code>ollama pull</code> 模型。</div>
-  `},
-  {id:"m-ref", e:"📚", t:"附录:变量/端口/端点", html:`
-    <div class="crumbs">功能模块 / 附录</div>
-    <h1>附录:环境变量 / 端口 / 公开端点</h1>
-    <h2 class="sec"><span class="e">🔧</span>关键环境变量</h2>
-    <table><tr><th>变量</th><th>说明</th></tr>
-      <tr><td><code>JWT_SECRET</code></td><td>JWT 密钥(生产必改)</td></tr>
-      <tr><td><code>LICENSE_SIGN_ALGO</code></td><td>签名算法 ed25519 / sm2</td></tr>
-      <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td>prod / mysql</td></tr>
-      <tr><td><code>DB_URL/DB_USER/DB_PASSWORD</code></td><td>数据库连接</td></tr>
-      <tr><td><code>APP_REDIS_ENABLED</code></td><td>多实例心跳 nonce</td></tr>
-      <tr><td><code>APP_MAIL_*</code> / <code>CORS_ORIGINS</code></td><td>邮件 / 跨域</td></tr>
-      <tr><td><code>PAY_PROVIDER</code> / <code>EINVOICE_PROVIDER</code></td><td>支付 / 发票渠道</td></tr>
-      <tr><td><code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code></td><td>智能客服大模型</td></tr>
-      <tr><td><code>HARDEN_WORK_DIR/HARDEN_MAX_FILE_MB</code></td><td>在线加固</td></tr>
-      <tr><td><code>ALERT_WECOM_WEBHOOK</code></td><td>企业微信告警</td></tr></table>
-    <h2 class="sec"><span class="e">🌐</span>公开端点(<code>/pub/**</code>,无需登录)</h2>
-    <table><tr><th>端点</th><th>用途</th></tr>
-      <tr><td><code>/pub/notices/active</code> · <code>/pub/consents</code></td><td>须知 / 同意撤回</td></tr>
-      <tr><td><code>/pub/payments/notify/{channel}</code></td><td>支付回调</td></tr>
-      <tr><td><code>/pub/portal/login|overview</code></td><td>租户门户</td></tr>
-      <tr><td><code>/pub/crl</code> · <code>/pub/license/public-keys</code></td><td>吊销名单 / 公钥集</td></tr></table>
-    <h2 class="sec"><span class="e">🔌</span>端口</h2>
-    <table><tr><th>服务</th><th>端口</th></tr>
-      <tr><td>控制台</td><td>80(Docker)/ 5173(dev)</td></tr>
-      <tr><td>后端</td><td>8080</td></tr>
-      <tr><td>PostgreSQL / MySQL / Redis</td><td>5432 / 3306 / 6379</td></tr>
-      <tr><td>Prometheus / Grafana / Ollama</td><td>9090 / 3000 / 11434</td></tr></table>
-  `},
+AI_MODEL=qwen2.5:7b-instruct` },
+  ]},
+
+{ id:"m-ref", e:"📚", t:"附录:变量/端口/端点", intro:"环境变量、公开端点与端口速查。", perm:"参考",
+  functions:[
+   { fid:"fn-ref", name:"速查表", perm:"-", ep:["-","-"], entry:"-", params:[], pre:[], steps:[], post:[],
+     html:`
+     <div class="blk"><div class="lab">关键环境变量</div>
+     <table class="ref"><tr><th>变量</th><th>说明</th></tr>
+     <tr><td><code>JWT_SECRET</code> / <code>JWT_TTL_HOURS</code></td><td>JWT 密钥(生产必改)/ 有效期(默认 12h)</td></tr>
+     <tr><td><code>LICENSE_SIGN_ALGO</code></td><td>签名算法 ed25519 / sm2</td></tr>
+     <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td>prod / mysql</td></tr>
+     <tr><td><code>DB_URL/DB_USER/DB_PASSWORD</code></td><td>数据库连接</td></tr>
+     <tr><td><code>APP_REDIS_ENABLED</code></td><td>多实例心跳 nonce 走 Redis</td></tr>
+     <tr><td><code>APP_MAIL_*</code> / <code>CORS_ORIGINS</code></td><td>邮件 / 跨域</td></tr>
+     <tr><td><code>PAY_PROVIDER</code> / <code>EINVOICE_PROVIDER</code></td><td>支付 / 发票渠道</td></tr>
+     <tr><td><code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code></td><td>智能客服大模型</td></tr>
+     <tr><td><code>HARDEN_WORK_DIR/HARDEN_MAX_FILE_MB</code></td><td>在线加固工作目录 / 上限(默认 200MB)</td></tr>
+     <tr><td><code>ALERT_WECOM_WEBHOOK</code></td><td>企业微信告警</td></tr></table></div>
+     <div class="blk"><div class="lab">公开端点(/pub/**,无需登录)</div>
+     <table class="ref"><tr><th>端点</th><th>用途</th></tr>
+     <tr><td><code>/pub/notices/active</code> · <code>/pub/consents[/revoke]</code></td><td>须知 / 同意 / 撤回</td></tr>
+     <tr><td><code>/pub/payments/notify/{channel}</code></td><td>支付回调</td></tr>
+     <tr><td><code>/pub/portal/login|overview</code></td><td>租户门户</td></tr>
+     <tr><td><code>/pub/crl</code> · <code>/pub/license/public-keys</code></td><td>吊销名单 / 公钥集</td></tr>
+     <tr><td><code>/api/activation/{token}</code></td><td>租户激活</td></tr>
+     <tr><td><code>/sdk/activate|heartbeat|deactivate</code></td><td>SDK 在线通道</td></tr></table></div>
+     <div class="blk"><div class="lab">端口</div>
+     <table class="ref"><tr><th>服务</th><th>端口</th></tr>
+     <tr><td>控制台</td><td>80(Docker)/ 5173(dev)</td></tr>
+     <tr><td>后端</td><td>8080</td></tr>
+     <tr><td>PostgreSQL / MySQL / Redis</td><td>5432 / 3306 / 6379</td></tr>
+     <tr><td>Prometheus / Grafana / Ollama</td><td>9090 / 3000 / 11434</td></tr></table></div>` },
+  ]},
 ];
 
-/* ============ 渲染 ============ */
-const main = document.getElementById('main');
-const nav = document.getElementById('nav');
-let mode = 'flow';
+/* ---------- 操作流程(步骤清晰 + 关联功能) ---------- */
+const FLOW = [
+{ id:"f-deploy", e:"🚀", t:"流程1 · 从零部署上线", intro:"面向运维:把平台跑起来并完成初始化。",
+  blocks:[
+   {h:"① 准备环境", pre:["JDK 17+(推荐 21,不支持 Java 8;容器化可免)","数据库:试用 H2 / 生产 PostgreSQL 16 或 MySQL 5.7·8.0(utf8mb4)","(多实例)Redis 7"]},
+   {h:"② 部署方式 A · Docker Compose(推荐)", steps:[
+     {b:"复制环境模板", d:"试用 <code>cp .env.example .env</code>;生产 <code>cp .env.prod.example .env</code> 并改 JWT/数据库/SMTP/渠道密钥。"},
+     {b:"一键启动", d:"<code>docker compose up -d --build</code>。"},
+     {b:"(可选)用 MySQL", d:"<code>docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console</code>。"},
+     {b:"访问", d:"控制台 <code>http://localhost</code> · 后端 <code>:8080</code> · Prometheus <code>:9090</code> · Grafana <code>:3000</code>。"},
+   ]},
+   {h:"③ 部署方式 B · 裸机(systemd+nginx)", steps:[
+     {b:"配置环境文件", d:"<code>cp deploy/codeman-backend.env.example /etc/codeman/backend.env</code> 改数据库/密钥。"},
+     {b:"安装服务", d:"<code>sudo bash deploy/install.sh</code> → <code>systemctl status codeman-backend</code>。详见 docs/部署-CentOS7.md。"},
+   ]},
+   {h:"④ 部署方式 C · 本地开发", steps:[
+     {b:"后端(默认 H2)", d:"<code>cd server/license-platform &amp;&amp; mvn spring-boot:run</code>(:8080)。"},
+     {b:"前端", d:"<code>cd web/console &amp;&amp; npm install &amp;&amp; npm run dev</code>(:5173)。"},
+   ]},
+   {h:"⑤ 建表方式", steps:[
+     {b:"Flyway 自动(推荐)", d:"应用启动自动建表 + 写系统种子。"},
+     {b:"纯 SQL", d:"执行 <code>deploy/sql/schema-&lt;方言&gt;.sql → init-admin.sql → test-data.sql</code>,并设 <code>SPRING_FLYWAY_ENABLED=false</code>。"},
+   ]},
+   {h:"⑥ 首次登录与初始化", steps:[
+     {b:"登录", d:"用 <code>admin / 8888</code> 登录。"},
+     {b:"强制改密", d:"首登必须改密。", see:[{go:"fn-rbac-auth",label:"登录/改密详解"}]},
+     {b:"确认须知(若有)", d:"弹层勾选「我已阅读并同意」。", see:[{go:"fn-notice-ack",label:"须知确认详解"}]},
+     {b:"建号与权限", d:"为成员建号、核对角色权限。", see:[{go:"fn-rbac-users",label:"用户管理"},{go:"fn-rbac-roles",label:"角色权限"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"H2 为内存库,重启清空,勿用于生产;生产务必改 <code>JWT_SECRET</code> 与各渠道密钥。"}] },
 
-function allDocs(){ return FLOW.concat(MOD); }
+{ id:"f-onboard", e:"🤝", t:"流程2 · 开通客户并签发授权", intro:"最核心业务主线:把客户变成可授权、可验签的租户。",
+  blocks:[
+   {h:"① 维护产品与套餐", steps:[
+     {b:"产品/模块/功能/版本", d:"维护产品矩阵与可用矩阵。", see:[{go:"fn-catalog-products",label:"产品矩阵"}]},
+     {b:"套餐定价", d:"定义价格/席位/模块/版本范围。", see:[{go:"fn-plan-list",label:"套餐列表"}]},
+   ]},
+   {h:"② 开通租户", steps:[
+     {b:"新建租户", d:"填名称/管理员邮箱/套餐;系统建隔离 Schema 并发激活邮件。", see:[{go:"fn-tenant-onboard",label:"开通租户"}]},
+     {b:"客户激活", d:"管理员凭邮件激活、设密码、(可选)绑 MFA。", see:[{go:"fn-tenant-activate",label:"激活账户"}]},
+   ]},
+   {h:"③ 交付授权(两种方式)", steps:[
+     {b:"直接签发 License", d:"选产品/版型/模块/有效期/并发 → 生成 .lic。", see:[{go:"fn-license-issue",label:"签发 License"}]},
+     {b:"或 创建订阅(自动签发+出账)", d:"按套餐一步到位。", see:[{go:"fn-sub-create",label:"创建订阅"}]},
+     {b:"下载/导出", d:"下载 .lic 交付;导出台账。", see:[{go:"fn-license-download",label:"下载/导出"}]},
+   ]},
+   {h:"④ 客户端接入与监控", steps:[
+     {b:"集成 SDK 验签", d:"公钥验签 + 功能/版本门禁。", see:[{go:"fn-sdk-verify",label:"SDK 验签"}]},
+     {b:"(在线模式)接 SDK 通道", d:"激活/心跳/释放。", see:[{go:"fn-online-sdk",label:"SDK 通道"}]},
+     {b:"运营侧监控", d:"查看实例上线、心跳、席位。", see:[{go:"fn-online-instances",label:"在线监控"}]},
+   ]},
+  ],
+  notes:[{k:"faq",t:"客户反馈「License 无效」?核对:公钥 kid/算法一致、未过期未吊销(查 CRL)、功能/版本在范围内、时间未回拨。"}] },
 
-function renderDocs(){
-  main.innerHTML = allDocs().map(d=>`<section class="doc" id="${d.id}">${d.html}${pager(d)}</section>`).join('');
+{ id:"f-harden", e:"🛡️", t:"流程3 · 代码保护与加固交付", intro:"两条路线并存,由运营按租户设置切换。",
+  blocks:[
+   {h:"① 设置加固模式(按租户)", steps:[
+     {b:"选模式与默认技术", d:"仅构建自建 / 仅平台在线 / 两者并存。", see:[{go:"fn-harden-config",label:"加固设置"}]},
+   ]},
+   {h:"② 路线 A · 平台在线加固", steps:[
+     {b:"上传 jar 并选技术", d:"ProGuard 混淆 / 类加密+License / 口令式。", see:[{go:"fn-harden-submit",label:"提交在线加固"}]},
+     {b:"下载产物并运行", d:"<code>-Dharden.license</code> 或 <code>-Dharden.key</code> 运行。", see:[{go:"fn-harden-jobs",label:"任务/下载"}]},
+   ]},
+   {h:"③ 路线 B · 构建时自建加固", steps:[
+     {b:"流水线加固", d:"<code>mvn -Pharden</code> + 类加密绑定 License。", see:[{go:"fn-sdk-build",label:"构建时保护"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"租户设为「仅构建自建(BUILD)」时,平台拒绝其在线加固任务。"}] },
+
+{ id:"f-billing", e:"💰", t:"流程4 · 计费回款闭环", intro:"出账 → 收款(人工确认)→ 开票。",
+  blocks:[
+   {h:"① 出账", steps:[{b:"自动出账", d:"订阅或生效合同(金额>0)自动生成 PENDING 账单。", see:[{go:"fn-sub-create",label:"订阅出账"},{go:"fn-contract-sign",label:"合同出账"}]}]},
+   {h:"② 收款(默认人工确认)", steps:[
+     {b:"发起扫码收款", d:"对 PENDING 账单生成二维码。", see:[{go:"fn-bill-payment",label:"发起收款"}]},
+     {b:"确认到账", d:"沙箱模拟到账,或财务人工核对后 pay。", see:[{go:"fn-bill-pay-issue",label:"人工收款"}]},
+   ]},
+   {h:"③ 开票", steps:[{b:"开电子发票", d:"普票/专票、抬头、税号、邮箱 → 生成代码/号码/PDF。", see:[{go:"fn-bill-einvoice",label:"申请发票"}]}]},
+  ],
+  notes:[{k:"tip",t:"接真实支付/发票渠道改 <code>PAY_PROVIDER</code>/<code>EINVOICE_PROVIDER</code>,业务流程不变。"}] },
+
+{ id:"f-compliance", e:"📝", t:"流程5 · 合同与合规", intro:"须知公示与合同签约存证。",
+  blocks:[
+   {h:"① 须知与授权", steps:[
+     {b:"发布须知", d:"新建草稿 → 发布(旧版归档),可设强制确认。", see:[{go:"fn-notice-crud",label:"新建须知"},{go:"fn-notice-publish",label:"发布"}]},
+     {b:"留痕取证", d:"查看同意/撤回记录并导出。", see:[{go:"fn-notice-consents",label:"授权记录"}]},
+   ]},
+   {h:"② 合同签约", steps:[
+     {b:"新建草稿", d:"选模板或手填 + 添加签署方。", see:[{go:"fn-contract-create",label:"新建合同"}]},
+     {b:"发起签署", d:"定稿快照 + SHA-256 存证。", see:[{go:"fn-contract-send",label:"发起签署"}]},
+     {b:"逐方签署→生效", d:"全部签署后生效;金额>0 自动出账。", see:[{go:"fn-contract-sign",label:"签署"}]},
+   ]},
+  ],
+  notes:[{k:"warn",t:"自建电子签 + 哈希存证;需 CA 签章可对接 e签宝/法大大(抽象已预留)。"}] },
+
+{ id:"f-selfservice", e:"🚪", t:"流程6 · 客户自助与客服", intro:"客户自助查看授权 + 智能客服答疑。",
+  blocks:[
+   {h:"① 开通自助门户", steps:[{b:"为租户开通并交付凭证", d:"生成访问码,复制 编号+访问码+地址。", see:[{go:"fn-portal-admin",label:"门户管理"}]}]},
+   {h:"② 客户使用门户", steps:[{b:"登录只读查看", d:"客户用 编号+访问码 登录 /portal。", see:[{go:"fn-portal-login",label:"门户登录"}]}]},
+   {h:"③ 智能客服", steps:[
+     {b:"对话答疑", d:"右下角悬浮窗,知识库流式作答、可转人工。", see:[{go:"fn-cs-chat",label:"对话"}]},
+     {b:"(可选)接大模型", d:"配 AI_* 即接 GLM/通义/DeepSeek/Ollama。", see:[{go:"fn-ai-config",label:"大模型配置"}]},
+   ]},
+  ] },
+
+{ id:"f-ops", e:"🔧", t:"流程7 · 日常运维", intro:"监控 / 备份 / 密钥 / 升级。",
+  blocks:[
+   {h:"① 监控告警", steps:[
+     {b:"指标与看板", d:"Prometheus 抓 <code>/actuator/prometheus</code> + Grafana 看板。"},
+     {b:"在线大盘", d:"实时观察实例/席位。", see:[{go:"fn-online-instances",label:"在线监控"}]},
+     {b:"告警", d:"配 <code>ALERT_WECOM_WEBHOOK</code> 接企业微信。"},
+   ]},
+   {h:"② 备份", pre:["数据库定期 pg_dump/mysqldump + PITR","Redis 哨兵/集群(可选)","加固产物目录 HARDEN_WORK_DIR 用持久卷"]},
+   {h:"③ 密钥", steps:[{b:"不落明文", d:"私钥、JWT_SECRET、渠道密钥经 env/Nacos/KMS 注入(docs/密钥管理-KMS.md)。"}]},
+   {h:"④ 多实例 & 升级", steps:[
+     {b:"水平扩展", d:"<code>APP_REDIS_ENABLED=true</code> 心跳 nonce 走 Redis。"},
+     {b:"License 到期治理", d:"每日自动停用 + 到期提醒。", see:[{go:"fn-license-expire",label:"到期停用/提醒"}]},
+     {b:"数据库升级", d:"改 Flyway 迁移(补 db/mysql 方言)→ generate-schema.sh → CI 真机矩阵验证。"},
+   ]},
+  ] },
+];
+
+/* ========================= 渲染 ========================= */
+const main=document.getElementById('main'), nav=document.getElementById('nav');
+let mode='flow';
+const FNMAP={}; MOD.forEach(m=>m.functions.forEach(f=>FNMAP[f.fid]=m.id));
+function esc(s){return s;}
+
+/* —— 功能卡渲染 —— */
+function renderFn(f,idx){
+  let h=`<div class="fn" id="${f.fid}">`;
+  h+=`<div class="fnh"><span class="num">${idx}</span>${f.name}`;
+  if(f.perm) h+=` <span class="tag perm">权限 ${f.perm}</span>`;
+  h+=`</div>`;
+  if(f.ep && f.ep[0]!=='-') h+=`<div class="ep"><span class="m">${f.ep[0]}</span> ${f.ep[1]}</div>`;
+  if(f.html){ h+=f.html; h+=`</div>`; return h; }
+  if(f.entry && f.entry!=='-') h+=`<div class="blk"><div class="lab">入口</div><div class="desc" style="margin:0">${f.entry}</div></div>`;
+  if(f.pre&&f.pre.length) h+=`<div class="blk"><div class="lab">前置条件</div><ul class="tick">${f.pre.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  if(f.params&&f.params.length){
+    h+=`<div class="blk"><div class="lab">参数</div><table class="params"><tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>`;
+    h+=f.params.map(p=>`<tr><td class="n">${p.n}</td><td>${p.t}</td><td>${p.r?'<span class="req">必填</span>':'<span class="opt">可选</span>'}</td><td>${p.d}</td></tr>`).join('');
+    h+=`</table></div>`;
+  }
+  if(f.steps&&f.steps.length) h+=`<div class="blk"><div class="lab">操作步骤</div><ol class="mini">${f.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
+  if(f.post&&f.post.length) h+=`<div class="blk"><div class="lab">结果 / 后置</div><ul class="dash">${f.post.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  if(f.code) h+=`<pre>${f.code.replace(/^# .*/gm,m=>`<span class="c">${m}</span>`)}</pre>`;
+  if(f.notes) h+=f.notes.map(n=>`<div class="note ${n.k}"><span class="lab">${n.k==='tip'?'提示':n.k==='warn'?'注意':'常见问题'}</span>${n.t}</div>`).join('');
+  h+=`</div>`; return h;
 }
+function renderMod(m){
+  let h=`<div class="crumbs">功能模块 / ${m.t}</div><h1>${m.e} ${m.t}</h1><p class="intro">${m.intro}</p>`;
+  m.functions.forEach((f,i)=>h+=renderFn(f,i+1));
+  return h;
+}
+/* —— 流程渲染 —— */
+function renderFlow(f){
+  let h=`<div class="crumbs">操作流程 / ${f.t.replace(/^流程\d+ · /,'')}</div><h1>${f.e} ${f.t.replace(/^流程\d+ · /,'<span class="gr">')}</span></h1><p class="intro">${f.intro}</p>`;
+  f.blocks.forEach(b=>{
+    h+=`<h2 class="sec">${b.h}</h2>`;
+    if(b.pre) h+=`<ul class="tick">${b.pre.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    if(b.steps){
+      h+=`<ol class="steps">`+b.steps.map(s=>{
+        let li=`<li><b>${s.b}</b> <span class="h">${s.d}</span>`;
+        if(s.see) li+=`<div class="seewrap">`+s.see.map(x=>`<span class="see" data-go="${x.go}">🔗 ${x.label}</span>`).join('')+`</div>`;
+        return li+`</li>`;
+      }).join('')+`</ol>`;
+    }
+  });
+  if(f.notes) h+=f.notes.map(n=>`<div class="note ${n.k}"><span class="lab">${n.k==='tip'?'提示':n.k==='warn'?'注意':'常见问题'}</span>${n.t}</div>`).join('');
+  return h;
+}
+function allDocs(){return FLOW.concat(MOD);}
 function pager(d){
-  const list = FLOW.some(x=>x.id===d.id)?FLOW:MOD;
-  const i = list.findIndex(x=>x.id===d.id);
-  const prev=list[i-1], next=list[i+1];
-  return `<div class="pager">
-    ${prev?`<a href="#${prev.id}" data-go="${prev.id}"><small>← 上一篇</small>${prev.e} ${prev.t}</a>`:`<span style="flex:1"></span>`}
-    ${next?`<a class="n" href="#${next.id}" data-go="${next.id}"><small>下一篇 →</small>${next.e} ${next.t}</a>`:`<span style="flex:1"></span>`}
-  </div>`;
+  const list=FLOW.some(x=>x.id===d.id)?FLOW:MOD, i=list.findIndex(x=>x.id===d.id), prev=list[i-1], next=list[i+1];
+  return `<div class="pager">${prev?`<a data-go="${prev.id}"><small>← 上一篇</small>${prev.e} ${prev.t}</a>`:`<span style="flex:1"></span>`}${next?`<a class="n" data-go="${next.id}"><small>下一篇 →</small>${next.e} ${next.t}</a>`:`<span style="flex:1"></span>`}</div>`;
+}
+function renderDocs(){
+  main.innerHTML = FLOW.map(f=>`<section class="doc" id="${f.id}">${renderFlow(f)}${pager(f)}</section>`).join('')
+    + MOD.map(m=>`<section class="doc" id="${m.id}">${renderMod(m)}${pager(m)}</section>`).join('');
 }
 function renderNav(){
-  const list = mode==='flow'?FLOW:MOD;
-  const title = mode==='flow'?'按操作流程':'按功能模块';
-  nav.innerHTML = `<div class="navgrp"><h4>${title}</h4>`+
-    list.map(d=>`<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>`).join('')+
-    `</div>`;
+  const list=mode==='flow'?FLOW:MOD, title=mode==='flow'?'按操作流程':'按功能模块';
+  nav.innerHTML=`<div class="navgrp"><h4>${title}</h4>`+list.map(d=>{
+    let sub='';
+    if(mode==='mod'&&d.functions) sub=`<div class="subnav" id="sub-${d.id}">`+d.functions.map(f=>`<span class="sublink" data-go="${f.fid}">${f.name}</span>`).join('')+`</div>`;
+    return `<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>${sub}`;
+  }).join('')+`</div>`;
 }
-function show(id){
-  document.querySelectorAll('section.doc').forEach(s=>s.classList.toggle('show', s.id===id));
-  // ensure nav mode matches the doc
-  const inFlow = FLOW.some(x=>x.id===id);
-  if((inFlow&&mode!=='flow')||(!inFlow&&mode!=='mod')){
-    mode = inFlow?'flow':'mod';
-    setTab(); renderNav();
-  }
-  document.querySelectorAll('.navlink').forEach(n=>n.classList.toggle('active', n.dataset.go===id));
-  window.scrollTo({top:0,behavior:'smooth'});
-  history.replaceState(null,'','#'+id);
+function show(target){
+  let docId=target, anchor=null;
+  if(FNMAP[target]){docId=FNMAP[target];anchor=target;}
+  // 切换 tab 以匹配目标
+  const inFlow=FLOW.some(x=>x.id===docId);
+  if((inFlow&&mode!=='flow')||(!inFlow&&mode!=='mod')){mode=inFlow?'flow':'mod';setTab();renderNav();}
+  document.querySelectorAll('section.doc').forEach(s=>s.classList.toggle('show',s.id===docId));
+  document.querySelectorAll('.navlink').forEach(n=>n.classList.toggle('active',n.dataset.go===docId));
+  document.querySelectorAll('.subnav').forEach(s=>s.classList.toggle('show',s.id==='sub-'+docId));
+  if(anchor){
+    const el=document.getElementById(anchor);
+    if(el){el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);}
+    history.replaceState(null,'','#'+anchor);
+  }else{window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'','#'+docId);}
   closeAside();
 }
-function setTab(){
-  document.getElementById('tabFlow').classList.toggle('on', mode==='flow');
-  document.getElementById('tabMod').classList.toggle('on', mode==='mod');
-}
-
-/* tabs */
+function setTab(){document.getElementById('tabFlow').classList.toggle('on',mode==='flow');document.getElementById('tabMod').classList.toggle('on',mode==='mod');}
 document.getElementById('tabFlow').onclick=()=>{mode='flow';setTab();renderNav();show(FLOW[0].id);};
 document.getElementById('tabMod').onclick=()=>{mode='mod';setTab();renderNav();show(MOD[0].id);};
-
-/* delegate nav + pager clicks */
-document.addEventListener('click',e=>{
-  const g=e.target.closest('[data-go]');
-  if(g){e.preventDefault();show(g.dataset.go);}
-});
-
-/* search */
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();show(g.dataset.go);}});
 const search=document.getElementById('search');
 search.addEventListener('input',()=>{
   const q=search.value.trim().toLowerCase();
   if(!q){renderNav();return;}
-  const hits=allDocs().filter(d=>(d.t+' '+d.html).toLowerCase().includes(q));
-  nav.innerHTML = `<div class="navgrp"><h4>搜索结果 (${hits.length})</h4>`+
-    (hits.length?hits.map(d=>`<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>`).join('')
-      :`<div class="nohit">无匹配，换个关键词试试</div>`)+`</div>`;
+  // 搜索:文档标题 + 模块功能名/参数
+  const hits=[];
+  FLOW.forEach(f=>{if((f.t+JSON.stringify(f.blocks)).toLowerCase().includes(q))hits.push({go:f.id,e:f.e,t:f.t,sub:'流程'});});
+  MOD.forEach(m=>{
+    m.functions.forEach(f=>{if((f.name+JSON.stringify(f.params||[])+JSON.stringify(f.steps||[])+(f.entry||'')).toLowerCase().includes(q))hits.push({go:f.fid,e:m.e,t:f.name,sub:m.t});});
+    if(m.t.toLowerCase().includes(q))hits.push({go:m.id,e:m.e,t:m.t,sub:'模块'});
+  });
+  nav.innerHTML=`<div class="navgrp"><h4>搜索结果 (${hits.length})</h4>`+(hits.length?hits.map(h=>`<div class="navlink" data-go="${h.go}"><span class="e">${h.e}</span><span>${h.t} <span style="color:var(--dim);font-size:11px">· ${h.sub}</span></span></div>`).join(''):`<div class="nohit">无匹配,换个关键词</div>`)+`</div>`;
 });
-
-/* mobile drawer */
 const aside=document.getElementById('aside');
 document.getElementById('menubtn').onclick=()=>aside.classList.toggle('open');
-function closeAside(){ if(window.innerWidth<=880) aside.classList.remove('open'); }
-
-/* init */
-renderDocs(); renderNav();
+function closeAside(){if(window.innerWidth<=880)aside.classList.remove('open');}
+renderDocs();renderNav();
 const start=(location.hash||'').slice(1);
-show(allDocs().some(d=>d.id===start)?start:FLOW[0].id);
+show((FNMAP[start]||allDocs().some(d=>d.id===start))?start:FLOW[0].id);
 </script>
 </body>
 </html>
