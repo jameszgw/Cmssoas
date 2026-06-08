@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CODEMAN 操作帮助中心 · 按流程 / 按模块</title>
+<meta name="description" content="CODEMAN 平台全功能详细操作帮助：按操作流程（部署→开通→授权→加固→回款→合规→运维）与按功能模块两种导航，含逐步操作、所需权限、提示与常见问题。" />
+<style>
+  :root{
+    --bg:#0a0e1a; --panel:#0f1628; --card:#121a30; --card2:#16203a;
+    --line:#22304f; --txt:#e8edf7; --mut:#9fb0cd; --dim:#6f80a0;
+    --acc:#4f8cff; --acc2:#7c4dff; --ok:#23c483; --warn:#ffb547; --bad:#ff6b6b;
+    --grad:linear-gradient(120deg,#4f8cff 0%,#7c4dff 60%,#23c483 120%);
+    --side:300px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;
+    color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.14),transparent 60%),var(--bg)}
+  a{color:var(--acc);text-decoration:none}
+  code,kbd{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);
+    border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+  /* top bar */
+  header{position:sticky;top:0;z-index:30;height:60px;display:flex;align-items:center;gap:16px;padding:0 20px;
+    background:rgba(10,14,26,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+  .logo{width:28px;height:28px;border-radius:7px;background:var(--grad);display:grid;place-items:center;font-weight:900;color:#fff}
+  header .sp{flex:1}
+  header a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+  header a.lk:hover{color:#fff;background:rgba(255,255,255,.06)}
+  #search{background:var(--card);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:8px 12px;width:240px;font-size:14px;outline:none}
+  #search:focus{border-color:var(--acc)}
+  /* layout */
+  .layout{display:flex;min-height:calc(100vh - 60px)}
+  aside{width:var(--side);flex:0 0 var(--side);border-right:1px solid var(--line);
+    position:sticky;top:60px;height:calc(100vh - 60px);overflow:auto;padding:16px 12px}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px}
+  .tabs button{flex:1;border:0;background:transparent;color:var(--mut);font-weight:700;font-size:13.5px;
+    padding:8px;border-radius:7px;cursor:pointer;transition:.2s}
+  .tabs button.on{background:var(--grad);color:#fff}
+  .navgrp{margin-bottom:16px}
+  .navgrp h4{margin:14px 8px 6px;font-size:11.5px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+  .navlink{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;color:var(--mut);
+    font-size:14px;cursor:pointer;transition:.15s}
+  .navlink:hover{background:rgba(255,255,255,.05);color:#fff}
+  .navlink.active{background:rgba(79,140,255,.16);color:#fff;border-left:2px solid var(--acc)}
+  .navlink .e{width:18px;text-align:center}
+  /* main */
+  main{flex:1;min-width:0;padding:30px 40px 80px;max-width:920px}
+  .crumbs{color:var(--dim);font-size:13px;margin-bottom:6px}
+  h1{font-size:28px;margin:0 0 6px;font-weight:850}
+  h1 .gr{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .intro{color:var(--mut);margin:0 0 22px;font-size:15px}
+  section.doc{display:none;animation:fade .25s ease}
+  section.doc.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.sec{font-size:20px;margin:34px 0 4px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  h2.sec .e{font-size:22px}
+  h2.sec:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+  .tag{font-size:12px;border-radius:7px;padding:4px 10px;border:1px solid var(--line);background:var(--card)}
+  .tag.perm{color:#bcd0ff;border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.1)}
+  .tag.role{color:#d8c6ff;border-color:rgba(124,77,255,.4);background:rgba(124,77,255,.1)}
+  .tag.pre{color:#a9e8cf;border-color:rgba(35,196,131,.4);background:rgba(35,196,131,.1)}
+  .desc{color:var(--mut);margin:0 0 14px}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:0 0 14px}
+  ol.steps>li{position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed rgba(34,48,79,.7)}
+  ol.steps>li:last-child{border-bottom:0}
+  ol.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;
+    width:28px;height:28px;border-radius:8px;background:var(--grad);color:#fff;font-weight:800;font-size:13px;
+    display:grid;place-items:center}
+  ol.steps>li b{color:var(--txt)}
+  ol.steps>li .h{color:var(--mut)}
+  .note{border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;border:1px solid var(--line)}
+  .note .lab{font-weight:800;margin-right:6px}
+  .note.tip{background:rgba(35,196,131,.08);border-color:rgba(35,196,131,.3);color:#bdf0da}
+  .note.tip .lab{color:var(--ok)}
+  .note.warn{background:rgba(255,181,71,.08);border-color:rgba(255,181,71,.3);color:#ffe0b0}
+  .note.warn .lab{color:var(--warn)}
+  .note.faq{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.3);color:#ffd2d2}
+  .note.faq .lab{color:var(--bad)}
+  pre{background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;
+    font:13px/1.65 "SF Mono",Menlo,Consolas,monospace;color:#cfe0ff;margin:12px 0}
+  pre .c{color:#5f7299}.pre .k{color:#7c4dff}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  th{background:var(--card2);color:var(--txt)}
+  td{color:var(--mut)}
+  .pager{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+  .pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--mut);transition:.2s}
+  .pager a:hover{border-color:var(--acc);color:#fff}
+  .pager a.n{text-align:right}
+  .pager small{display:block;color:var(--dim);font-size:11.5px}
+  .hidden{display:none!important}
+  .nohit{color:var(--dim);padding:40px 0;text-align:center}
+  /* mobile */
+  .menubtn{display:none;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 12px;cursor:pointer}
+  @media(max-width:880px){
+    aside{position:fixed;left:0;top:60px;z-index:40;background:var(--panel);transform:translateX(-105%);transition:.25s;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    aside.open{transform:none}
+    main{padding:24px 18px 60px}
+    .menubtn{display:inline-block}
+    #search{width:140px}
+    header .lk{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="menubtn" id="menubtn">☰</button>
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 帮助中心</a>
+  <span class="sp"></span>
+  <input id="search" type="search" placeholder="搜索功能 / 操作…" autocomplete="off" />
+  <a class="lk" href="index.html">官宣页</a>
+  <a class="lk" href="../../docs/使用手册-从部署到应用.md">手册(MD)</a>
+</header>
+
+<div class="layout">
+  <aside id="aside">
+    <div class="tabs">
+      <button id="tabFlow" class="on" data-mode="flow">按操作流程</button>
+      <button id="tabMod" data-mode="mod">按功能模块</button>
+    </div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <main id="main">
+    <!-- content injected; each <section class="doc" id="..."> -->
+  </main>
+</div>
+
+<script>
+/* ============ 文档数据：按流程 + 按模块 ============ */
+/* 每个条目:{id,nav标题,emoji,正文HTML}。正文用统一组件类。 */
+
+const FLOW = [
+  {id:"f-deploy", e:"🚀", t:"流程1 · 从零部署上线", html:`
+    <div class="crumbs">操作流程 / 部署上线</div>
+    <h1><span class="gr">从零部署</span>到首次登录</h1>
+    <p class="intro">面向运维：把平台跑起来，并完成系统初始化。三种部署方式任选其一。</p>
+
+    <h2 class="sec"><span class="e">①</span>准备环境</h2>
+    <div class="meta"><span class="tag pre">前置:JDK 17+(推荐21)</span><span class="tag pre">数据库:H2/PG/MySQL</span><span class="tag pre">Docker(可选)</span></div>
+    <ol class="steps">
+      <li><b>确认 JDK</b> <span class="h">17 及以上(<b>不支持 Java 8</b>);容器化部署可跳过。</span></li>
+      <li><b>选择数据库</b> <span class="h">试用用 H2(内置);生产用 PostgreSQL 16 或 MySQL 5.7/8.0(库须 <code>utf8mb4</code>)。</span></li>
+      <li><b>(多实例)准备 Redis 7</b> <span class="h">用于心跳 nonce 防重放;单机可不启用。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>部署方式 A · Docker Compose(推荐)</h2>
+    <ol class="steps">
+      <li><b>复制环境模板</b><pre><span class="c"># 试用</span>
+cp .env.example .env
+<span class="c"># 生产:改 JWT_SECRET / 数据库 / SMTP / 渠道密钥</span>
+cp .env.prod.example .env</pre></li>
+      <li><b>一键启动</b><pre>docker compose up -d --build</pre></li>
+      <li><b>(可选)用 MySQL</b><pre>docker compose -f docker-compose.yml -f docker-compose.mysql.yml up -d mysql redis backend console</pre></li>
+      <li><b>访问</b> <span class="h">控制台 <code>http://localhost</code> · 后端 <code>:8080</code> · Prometheus <code>:9090</code> · Grafana <code>:3000</code>。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">③</span>部署方式 B · 裸机(systemd + nginx)</h2>
+    <ol class="steps">
+      <li><b>配置后端环境文件</b><pre>cp deploy/codeman-backend.env.example /etc/codeman/backend.env  <span class="c"># 改数据库/密钥</span></pre></li>
+      <li><b>安装服务</b><pre>sudo bash deploy/install.sh
+systemctl status codeman-backend</pre></li>
+      <li><b>详见</b> <a href="../../docs/部署-CentOS7.md">docs/部署-CentOS7.md</a>。</li>
+    </ol>
+
+    <h2 class="sec"><span class="e">④</span>部署方式 C · 本地开发</h2>
+    <ol class="steps">
+      <li><b>后端(默认 H2,开箱即跑)</b><pre>cd server/license-platform &amp;&amp; mvn spring-boot:run   <span class="c"># :8080</span></pre></li>
+      <li><b>前端</b><pre>cd web/console &amp;&amp; npm install &amp;&amp; npm run dev      <span class="c"># :5173 代理到 :8080</span></pre></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">⑤</span>建表方式</h2>
+    <table><tr><th>方式</th><th>做法</th><th>适用</th></tr>
+    <tr><td>Flyway 自动(推荐)</td><td>应用启动自动建表 + 写系统种子</td><td>绝大多数场景</td></tr>
+    <tr><td>纯 SQL</td><td>执行 <code>deploy/sql/schema-&lt;方言&gt;.sql</code> → <code>init-admin.sql</code> → <code>test-data.sql</code>,并设 <code>SPRING_FLYWAY_ENABLED=false</code></td><td>DBA 受控环境</td></tr></table>
+
+    <h2 class="sec"><span class="e">⑥</span>首次登录与初始化</h2>
+    <ol class="steps">
+      <li><b>登录</b> <span class="h">用 <code>admin / 8888</code> 登录控制台。</span></li>
+      <li><b>强制改密</b> <span class="h">首登必须修改初始密码。</span></li>
+      <li><b>确认须知(若有)</b> <span class="h">弹层勾选「我已阅读并同意」。</span></li>
+      <li><b>核对权限/建号</b> <span class="h">「角色权限」核对;「用户管理」为成员建号(初始密码默认 <code>Codeman@123</code>)。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>应用首启会自动建表、写权限/角色/套餐种子、创建超管 admin 并授予全部权限。</div>
+    <div class="note warn"><span class="lab">注意</span>H2 为内存库,重启清空,切勿用于生产。生产务必改 <code>JWT_SECRET</code> 与各渠道密钥。</div>
+  `},
+
+  {id:"f-onboard", e:"🤝", t:"流程2 · 开通客户并签发授权", html:`
+    <div class="crumbs">操作流程 / 开通与授权</div>
+    <h1><span class="gr">开通租户</span>→ 签发 License → 客户接入</h1>
+    <p class="intro">最核心的业务主线:把一个客户变成可授权、可验签的租户。</p>
+    <div class="meta"><span class="tag perm">权限:tenant / catalog / license</span><span class="tag role">角色:运营 / 超管</span></div>
+
+    <h2 class="sec"><span class="e">①</span>维护产品与套餐</h2>
+    <ol class="steps">
+      <li><b>产品与版本</b> <span class="h">维护产品矩阵(模块/功能点/版本范围)。</span></li>
+      <li><b>套餐</b> <span class="h">定义价格/席位/包含模块/功能点/版本范围,作为签发与计费依据。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>开通租户</h2>
+    <ol class="steps">
+      <li><b>新建租户</b> <span class="h">填名称、管理员邮箱、选择套餐。</span></li>
+      <li><b>系统自动</b> <span class="h">建立租户独立 Schema(真隔离),并发送开通/激活邮件(发件箱异步)。</span></li>
+      <li><b>客户激活</b> <span class="h">管理员凭邮件激活、设置密码、(可选)绑定 MFA。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">③</span>签发 License</h2>
+    <ol class="steps">
+      <li><b>签发</b> <span class="h">选产品/版型/模块/有效期/并发数 → 服务端私钥签名生成 <code>.lic</code>(默认 Ed25519,可选国密 SM2)。</span></li>
+      <li><b>下载 / 导出</b> <span class="h">下载 <code>.lic</code> 交付客户;可导出 CSV 台账。</span></li>
+      <li><b>(可选)订阅联动</b> <span class="h">创建订阅可自动出账并联动签发。</span></li>
+    </ol>
+    <div class="note warn"><span class="lab">注意</span>私钥不出域,仅服务端签名;客户端只持有公钥验签。切勿把私钥打进客户产物。</div>
+
+    <h2 class="sec"><span class="e">④</span>客户端接入 SDK</h2>
+    <ol class="steps">
+      <li><b>集成 SDK</b> <span class="h"><code>sdk/license-sdk</code> 用公钥验 <code>.lic</code> 签名 + 功能/版本门禁(SemVer)。</span></li>
+      <li><b>在线通道(可选)</b> <span class="h">接入心跳/吊销/浮动席位/宽限期。</span></li>
+      <li><b>验证</b> <span class="h">运营在「在线监控」查看实例上线、心跳与席位占用。</span></li>
+    </ol>
+    <div class="note faq"><span class="lab">常见问题</span>客户反馈"License 无效"?核对:① 公钥 kid 与签发算法一致;② 未过期且未被吊销(查 CRL);③ 功能/版本在授权范围内;④ 时间未回拨。</div>
+  `},
+
+  {id:"f-harden", e:"🛡️", t:"流程3 · 代码保护与加固交付", html:`
+    <div class="crumbs">操作流程 / 代码保护</div>
+    <h1><span class="gr">代码保护</span>与在线加固交付</h1>
+    <p class="intro">两条路线并存:构建时自建加固(流水线) + 平台在线加固(上传 jar)。由运营按租户设置可切换。</p>
+    <div class="meta"><span class="tag perm">权限:harden / harden:config / harden:run</span></div>
+
+    <h2 class="sec"><span class="e">①</span>设置加固模式(按租户)</h2>
+    <ol class="steps">
+      <li><b>进入「加固设置」</b> <span class="h">为租户选择模式:<b>仅构建自建</b> / <b>仅平台在线</b> / <b>两者并存</b>。</span></li>
+      <li><b>默认技术</b> <span class="h">勾选默认启用的加固技术(可在每次任务覆盖)。</span></li>
+    </ol>
+    <div class="note warn"><span class="lab">注意</span>当租户设为「仅构建自建(BUILD)」模式时,平台会拒绝在线加固任务。</div>
+
+    <h2 class="sec"><span class="e">②</span>路线 A · 平台在线加固</h2>
+    <ol class="steps">
+      <li><b>提交任务</b> <span class="h">「提交在线加固」上传可执行 jar。</span></li>
+      <li><b>勾选技术</b> <span class="h">ProGuard 混淆 / 类加密+License 绑定 / 口令式类加密(按勾选顺序流水线执行)。</span></li>
+      <li><b>异步处理</b> <span class="h">任务进入队列,处理完成后状态变为可下载。</span></li>
+      <li><b>下载产物</b> <span class="h">下载加固后的 jar。</span></li>
+    </ol>
+    <pre><span class="c"># 运行加固产物</span>
+java -Dharden.license=&lt;客户的.lic&gt; -jar app.jar   <span class="c"># License 绑定</span>
+java -Dharden.key=&lt;口令&gt;            -jar app.jar   <span class="c"># 口令式</span></pre>
+
+    <h2 class="sec"><span class="e">③</span>路线 B · 构建时自建加固</h2>
+    <ol class="steps">
+      <li><b>ProGuard 混淆</b><pre>cd examples/protected-app &amp;&amp; mvn -Pharden</pre></li>
+      <li><b>类加密 + License 绑定</b> <span class="h"><code>BuildProtected</code> 加密关键类,解密密钥与 License 派生绑定。</span></li>
+      <li><b>验证</b> <span class="h"><code>demo.sh</code> 演示合法/错钥/篡改三种情形。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>设计细节见 <a href="../../docs/02-代码保护方案.md">代码保护方案</a>。纯软件保护目标是抬高破解成本,非绝对不可破解。</div>
+  `},
+
+  {id:"f-billing", e:"💰", t:"流程4 · 计费回款闭环", html:`
+    <div class="crumbs">操作流程 / 计费回款</div>
+    <h1><span class="gr">出账 → 收款 → 开票</span>闭环</h1>
+    <p class="intro">从订阅/合同自动出账,到人工确认到账,再到开具电子发票的完整资金闭环。</p>
+    <div class="meta"><span class="tag perm">权限:billing</span><span class="tag role">角色:财务 / 运营</span></div>
+
+    <h2 class="sec"><span class="e">①</span>出账</h2>
+    <ol class="steps">
+      <li><b>自动出账</b> <span class="h">订阅或生效合同(金额&gt;0)自动生成账单,状态 <code>PENDING</code>。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>收款(默认人工确认)</h2>
+    <ol class="steps">
+      <li><b>发起收款</b> <span class="h">对 PENDING 账单发起扫码收款。</span></li>
+      <li><b>客户支付</b> <span class="h">客户扫码付款。</span></li>
+      <li><b>确认到账</b> <span class="h">财务核对后点「确认到账(人工)」完成核销。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>默认人工确认;接入真实渠道(微信/支付宝/Stripe)改 <code>app.pay.provider</code> 即可,无需改业务代码。</div>
+
+    <h2 class="sec"><span class="e">③</span>开票</h2>
+    <ol class="steps">
+      <li><b>申请开票</b> <span class="h">对已收款账单开具电子发票:选普票/专票、填抬头、税号、邮箱。</span></li>
+      <li><b>生成发票</b> <span class="h">生成发票代码/号码/PDF;账单转「已开票」。</span></li>
+    </ol>
+    <div class="note warn"><span class="lab">注意</span>默认沙箱开票。生产改 <code>app.einvoice.provider</code> 接航信/百望等真实渠道。</div>
+  `},
+
+  {id:"f-compliance", e:"📝", t:"流程5 · 合同与合规", html:`
+    <div class="crumbs">操作流程 / 合同合规</div>
+    <h1><span class="gr">须知公示</span>与合同签约存证</h1>
+    <p class="intro">合规留痕:须知/隐私公示与授权记录,自建电子签合同的发起、签署与哈希存证。</p>
+    <div class="meta"><span class="tag perm">权限:notice / contract</span></div>
+
+    <h2 class="sec"><span class="e">①</span>须知与授权</h2>
+    <ol class="steps">
+      <li><b>新建草稿</b> <span class="h">「须知管理」新建条款/隐私/公告草稿。</span></li>
+      <li><b>发布</b> <span class="h">发布即定稿,旧版自动归档;可设「强制确认」。</span></li>
+      <li><b>查看授权记录</b> <span class="h">「授权记录」查看同意/撤回(主体/版本/渠道/IP/时间),可导出 CSV 取证。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>合同签约</h2>
+    <ol class="steps">
+      <li><b>新建草稿</b> <span class="h">选模板(占位符自动填充)或手填 → 生成草稿。</span></li>
+      <li><b>发起签署</b> <span class="h">内容定稿快照 + SHA-256 存证。</span></li>
+      <li><b>逐方签署</b> <span class="h">各签署方依次签署。</span></li>
+      <li><b>生效归档</b> <span class="h">全部签署后合同生效并存证归档;金额&gt;0 自动出账。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>未签署的合同可作废;合同列表可导出 CSV。</div>
+    <div class="note warn"><span class="lab">注意</span>本平台为自建电子签 + 哈希存证;如需具法律效力的 CA 签章,可对接 e签宝/法大大(抽象已预留)。</div>
+  `},
+
+  {id:"f-selfservice", e:"🚪", t:"流程6 · 客户自助与客服", html:`
+    <div class="crumbs">操作流程 / 客户自助</div>
+    <h1><span class="gr">自助门户</span>与智能客服</h1>
+    <p class="intro">让最终客户自助查看授权、并通过智能客服自助答疑,减轻运营负担。</p>
+    <div class="meta"><span class="tag perm">权限:tenant:portal / cs</span></div>
+
+    <h2 class="sec"><span class="e">①</span>开通自助门户</h2>
+    <ol class="steps">
+      <li><b>为租户开通</b> <span class="h">「自助门户」为租户开通,生成访问码并复制凭证。</span></li>
+      <li><b>交付凭证</b> <span class="h">把「租户编号 + 访问码」交给客户。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>客户使用门户</h2>
+    <ol class="steps">
+      <li><b>访问</b> <span class="h">客户打开门户地址 <code>/portal</code>。</span></li>
+      <li><b>登录</b> <span class="h">用「租户编号 + 访问码」登录。</span></li>
+      <li><b>只读查看</b> <span class="h">查看本租户的 License/合同/账单/订阅(严格隔离,只读)。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">③</span>智能客服</h2>
+    <ol class="steps">
+      <li><b>对话</b> <span class="h">控制台右下角悬浮窗发起对话。</span></li>
+      <li><b>知识库作答</b> <span class="h">基于产品知识库(FAQ)流式作答,可「转人工」。</span></li>
+      <li><b>接大模型(可选)</b> <span class="h">配置 <code>AI_*</code> 三项即接 GLM/通义/DeepSeek/Ollama;未配则降级知识库匹配。</span></li>
+      <li><b>审计</b> <span class="h">「智能客服」页可审计全部会话。</span></li>
+    </ol>
+  `},
+
+  {id:"f-ops", e:"🔧", t:"流程7 · 日常运维", html:`
+    <div class="crumbs">操作流程 / 运维</div>
+    <h1><span class="gr">监控 · 备份 · 密钥 · 升级</span></h1>
+    <p class="intro">保障平台稳定运行与安全演进。</p>
+    <div class="meta"><span class="tag role">角色:运维 / DBA</span></div>
+
+    <h2 class="sec"><span class="e">①</span>监控</h2>
+    <ol class="steps">
+      <li><b>Actuator + Prometheus</b> <span class="h">抓取 <code>/actuator/prometheus</code>。</span></li>
+      <li><b>Grafana 看板</b> <span class="h">预置看板 <code>infra/grafana</code>;在线授权监控大盘实时观察实例/席位。</span></li>
+      <li><b>告警</b> <span class="h">配 <code>ALERT_WECOM_WEBHOOK</code> 接企业微信告警。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">②</span>备份</h2>
+    <ol class="steps">
+      <li><b>数据库</b> <span class="h">定期 <code>pg_dump</code>/<code>mysqldump</code> + PITR。</span></li>
+      <li><b>Redis</b> <span class="h">哨兵/集群(可选)。</span></li>
+      <li><b>加固产物</b> <span class="h"><code>app.harden.work-dir</code> 用持久卷。</span></li>
+    </ol>
+
+    <h2 class="sec"><span class="e">③</span>密钥</h2>
+    <ol class="steps">
+      <li><b>不落明文</b> <span class="h">私钥、<code>JWT_SECRET</code>、各渠道密钥经 env/Nacos/KMS 注入。</span></li>
+      <li><b>详见</b> <a href="../../docs/密钥管理-KMS.md">密钥管理-KMS</a>。</li>
+    </ol>
+
+    <h2 class="sec"><span class="e">④</span>多实例 & 升级</h2>
+    <ol class="steps">
+      <li><b>水平扩展</b> <span class="h">设 <code>APP_REDIS_ENABLED=true</code>,心跳 nonce 走 Redis;签发与在线校验可分离部署。</span></li>
+      <li><b>数据库升级</b> <span class="h">改 Flyway 迁移(同时补 <code>db/mysql</code> 方言)→ <code>bash deploy/sql/generate-schema.sh</code> 重生成 schema → CI 真机矩阵验证。</span></li>
+    </ol>
+  `},
+];
+
+const MOD = [
+  {id:"m-tenant", e:"🏢", t:"租户管理", html:`
+    <div class="crumbs">功能模块 / 租户管理</div>
+    <h1>租户管理</h1>
+    <p class="intro">开通、激活、续期与隔离配置。每个租户拥有独立 Schema(真隔离)。</p>
+    <div class="meta"><span class="tag perm">权限:tenant(:view/:edit)</span></div>
+    <h2 class="sec"><span class="e">📋</span>开通租户</h2>
+    <ol class="steps">
+      <li><b>新建</b> <span class="h">填名称、管理员邮箱、套餐。</span></li>
+      <li><b>建库 + 发邮件</b> <span class="h">系统建立独立 Schema 并发开通邮件(发件箱异步)。</span></li>
+      <li><b>激活</b> <span class="h">管理员凭邮件激活、设密码、(可选)绑定 MFA。</span></li>
+    </ol>
+    <h2 class="sec"><span class="e">🔁</span>续期与隔离</h2>
+    <ol class="steps">
+      <li><b>续期</b> <span class="h">延长租户有效期。</span></li>
+      <li><b>查看隔离配置</b> <span class="h">查看该租户的 Schema/数据隔离信息。</span></li>
+    </ol>
+    <div class="note faq"><span class="lab">常见问题</span>激活邮件没收到?检查 SMTP(<code>APP_MAIL_*</code>)与发件箱(outbox)状态;可在后台重发。</div>
+  `},
+  {id:"m-license", e:"🔑", t:"License 授权", html:`
+    <div class="crumbs">功能模块 / License 授权</div>
+    <h1>License 授权(全生命周期)</h1>
+    <p class="intro">签发、续期、变更、吊销、CRL 与到期自动停用;Ed25519 默认 / 国密 SM2 可选。</p>
+    <div class="meta"><span class="tag perm">权限:license(:view/:issue/:revoke)</span></div>
+    <h2 class="sec"><span class="e">✍️</span>签发</h2>
+    <ol class="steps"><li><b>选参数</b> <span class="h">产品/版型/模块/有效期/并发。</span></li>
+      <li><b>签名生成</b> <span class="h">服务端私钥签名生成 <code>.lic</code>。</span></li>
+      <li><b>下载/导出</b> <span class="h">下载 <code>.lic</code>;导出 CSV 台账。</span></li></ol>
+    <h2 class="sec"><span class="e">🔄</span>续期 / 变更 / 吊销</h2>
+    <ol class="steps"><li><b>操作即重签</b> <span class="h">每次操作重新签名并记录版本历史(diff 可查)。</span></li></ol>
+    <h2 class="sec"><span class="e">🚫</span>吊销名单 CRL</h2>
+    <ol class="steps"><li><b>查看签名 CRL</b> <span class="h">公开分发地址 <code>/pub/crl</code>、公钥集 <code>/pub/license/public-keys</code>。</span></li>
+      <li><b>离线生效</b> <span class="h">离线客户端按 kid 验签后拒绝已吊销 License。</span></li></ol>
+    <h2 class="sec"><span class="e">⏰</span>到期停用</h2>
+    <ol class="steps"><li><b>自动/手动</b> <span class="h">每日自动或手动触发,将过期 License 置 <code>EXPIRED</code>。</span></li></ol>
+    <div class="note warn"><span class="lab">注意</span>切换签名算法(ed25519/sm2)由 <code>LICENSE_SIGN_ALGO</code> 控制;客户端公钥 kid 必须匹配。</div>
+  `},
+  {id:"m-online", e:"📡", t:"在线监控", html:`
+    <div class="crumbs">功能模块 / 在线监控</div>
+    <h1>在线监控</h1>
+    <p class="intro">观测 SDK 在线实例的实时状态。</p>
+    <div class="meta"><span class="tag perm">权限:online</span></div>
+    <h2 class="sec"><span class="e">📊</span>查看</h2>
+    <ol class="steps">
+      <li><b>在线实例</b> <span class="h">查看接入的 SDK 实例与最近心跳。</span></li>
+      <li><b>席位占用</b> <span class="h">查看并发席位占用情况。</span></li>
+      <li><b>断网处理</b> <span class="h">观察断网宽限期与到期后的席位释放。</span></li>
+    </ol>
+  `},
+  {id:"m-catalog", e:"📦", t:"产品与套餐", html:`
+    <div class="crumbs">功能模块 / 产品与套餐</div>
+    <h1>产品与版本 / 套餐订阅</h1>
+    <p class="intro">维护产品矩阵与套餐,创建订阅并自动出账。</p>
+    <div class="meta"><span class="tag perm">权限:catalog / plan</span></div>
+    <h2 class="sec"><span class="e">🧩</span>产品与版本</h2>
+    <ol class="steps"><li><b>维护产品矩阵</b> <span class="h">模块、功能点、版本范围。</span></li></ol>
+    <h2 class="sec"><span class="e">🎫</span>套餐订阅</h2>
+    <ol class="steps">
+      <li><b>定义套餐</b> <span class="h">价格/席位/模块/功能点/版本范围。</span></li>
+      <li><b>创建订阅</b> <span class="h">为客户创建订阅 → 自动出账(账单 PENDING),可联动签发 License。</span></li>
+    </ol>
+  `},
+  {id:"m-customer", e:"👤", t:"客户管理(360)", html:`
+    <div class="crumbs">功能模块 / 客户管理</div>
+    <h1>客户管理(客户360)</h1>
+    <p class="intro">客户主数据 + 按客户聚合的全景视图。</p>
+    <div class="meta"><span class="tag perm">权限:customer</span></div>
+    <h2 class="sec"><span class="e">🗂️</span>主数据</h2>
+    <ol class="steps"><li><b>维护客户</b> <span class="h">新建/编辑客户主数据。</span></li></ol>
+    <h2 class="sec"><span class="e">🔭</span>客户360</h2>
+    <ol class="steps"><li><b>聚合视图</b> <span class="h">点「客户360」按客户名称聚合其 License/合同/账单/支付/订阅与关键指标。</span></li></ol>
+  `},
+  {id:"m-billing", e:"💳", t:"计费账单", html:`
+    <div class="crumbs">功能模块 / 计费账单</div>
+    <h1>计费账单(收款 + 开票)</h1>
+    <p class="intro">出账、扫码收款(人工确认)与电子发票。</p>
+    <div class="meta"><span class="tag perm">权限:billing</span></div>
+    <h2 class="sec"><span class="e">🧾</span>出账</h2>
+    <ol class="steps"><li><b>自动出账</b> <span class="h">订阅/合同自动生成账单(PENDING)。</span></li></ol>
+    <h2 class="sec"><span class="e">💴</span>收款</h2>
+    <ol class="steps">
+      <li><b>发起扫码收款</b></li>
+      <li><b>客户支付</b></li>
+      <li><b>确认到账(人工)</b> <span class="h">财务核对后核销;可改 <code>app.pay.provider</code> 接真实渠道。</span></li>
+    </ol>
+    <h2 class="sec"><span class="e">📑</span>开票</h2>
+    <ol class="steps"><li><b>开电子发票</b> <span class="h">普票/专票、抬头、税号、邮箱 → 生成代码/号码/PDF,账单转「已开票」。默认沙箱,改 <code>app.einvoice.provider</code> 接真实渠道。</span></li></ol>
+  `},
+  {id:"m-contract", e:"📝", t:"合同签约", html:`
+    <div class="crumbs">功能模块 / 合同签约</div>
+    <h1>合同签约(自建电子签)</h1>
+    <p class="intro">模板填充、定稿快照、SHA-256 存证、逐方签署。</p>
+    <div class="meta"><span class="tag perm">权限:contract</span></div>
+    <ol class="steps">
+      <li><b>新建草稿</b> <span class="h">选模板(占位符自动填充)或手填。</span></li>
+      <li><b>发起签署</b> <span class="h">内容定稿快照 + SHA-256 存证。</span></li>
+      <li><b>逐方签署</b></li>
+      <li><b>生效归档</b> <span class="h">全部签署后生效并存证;金额&gt;0 自动出账。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>未签署合同可作废;支持导出 CSV。</div>
+  `},
+  {id:"m-notice", e:"📋", t:"须知与授权", html:`
+    <div class="crumbs">功能模块 / 须知与授权</div>
+    <h1>须知与授权</h1>
+    <p class="intro">条款/隐私/公告的发布与同意留痕。</p>
+    <div class="meta"><span class="tag perm">权限:notice</span></div>
+    <h2 class="sec"><span class="e">📢</span>须知管理</h2>
+    <ol class="steps">
+      <li><b>新建草稿</b> <span class="h">条款/隐私/公告。</span></li>
+      <li><b>发布</b> <span class="h">定稿,旧版归档;可设「强制确认」。</span></li>
+    </ol>
+    <h2 class="sec"><span class="e">✅</span>授权记录</h2>
+    <ol class="steps"><li><b>查看/取证</b> <span class="h">同意/撤回(主体/版本/渠道/IP/时间),导出 CSV。公开页 <code>/pub/notices/active</code>、<code>/pub/consents</code>。</span></li></ol>
+  `},
+  {id:"m-cs", e:"🤖", t:"智能客服", html:`
+    <div class="crumbs">功能模块 / 智能客服</div>
+    <h1>智能客服</h1>
+    <p class="intro">基于知识库的流式问答,通用不绑厂商,可降级。</p>
+    <div class="meta"><span class="tag perm">权限:cs</span></div>
+    <ol class="steps">
+      <li><b>对话</b> <span class="h">控制台右下角悬浮窗。</span></li>
+      <li><b>知识库作答</b> <span class="h">基于产品 FAQ,支持流式与「转人工」。</span></li>
+      <li><b>接大模型</b> <span class="h">配 <code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code> 即接 GLM/通义/DeepSeek/Ollama;未配降级知识库。</span></li>
+      <li><b>会话审计</b> <span class="h">本页审计全部会话。</span></li>
+    </ol>
+    <div class="note warn"><span class="lab">注意</span>智能客服不外发密钥/隐私数据。</div>
+  `},
+  {id:"m-harden", e:"📦", t:"在线代码加固", html:`
+    <div class="crumbs">功能模块 / 在线代码加固</div>
+    <h1>在线代码加固</h1>
+    <p class="intro">上传 jar → 选技术 → 异步加固 → 下载;与构建时加固并存,按租户可切换。</p>
+    <div class="meta"><span class="tag perm">权限:harden / harden:config / harden:run</span></div>
+    <h2 class="sec"><span class="e">⚙️</span>加固设置</h2>
+    <ol class="steps"><li><b>选模式</b> <span class="h">仅构建自建 / 仅平台在线 / 两者并存,并设默认技术。</span></li></ol>
+    <h2 class="sec"><span class="e">⬆️</span>提交在线加固</h2>
+    <ol class="steps">
+      <li><b>上传 jar</b></li>
+      <li><b>勾选技术</b> <span class="h">ProGuard 混淆 / 类加密+License 绑定 / 口令式类加密。</span></li>
+      <li><b>异步处理 → 下载产物</b></li>
+    </ol>
+    <pre>java -Dharden.license=&lt;.lic&gt; -jar x.jar   <span class="c"># License 绑定</span>
+java -Dharden.key=&lt;口令&gt;     -jar x.jar   <span class="c"># 口令式</span></pre>
+    <div class="note faq"><span class="lab">常见问题</span>任务一直处理中?检查 jar 是否可执行、文件大小未超 <code>HARDEN_MAX_FILE_MB</code>、工作目录 <code>HARDEN_WORK_DIR</code> 可写。</div>
+  `},
+  {id:"m-portal", e:"🚪", t:"租户自助门户", html:`
+    <div class="crumbs">功能模块 / 自助门户</div>
+    <h1>租户自助门户</h1>
+    <p class="intro">面向最终客户的只读门户;运营开通、客户用编号+访问码登录。</p>
+    <div class="meta"><span class="tag perm">权限:tenant:portal</span></div>
+    <h2 class="sec"><span class="e">🔑</span>运营开通</h2>
+    <ol class="steps"><li><b>开通并复制凭证</b> <span class="h">「自助门户」为租户开通,生成访问码。</span></li></ol>
+    <h2 class="sec"><span class="e">👁️</span>客户使用</h2>
+    <ol class="steps">
+      <li><b>访问 <code>/portal</code></b></li>
+      <li><b>登录</b> <span class="h">租户编号 + 访问码。</span></li>
+      <li><b>只读查看</b> <span class="h">本租户 License/合同/账单/订阅,严格隔离。</span></li>
+    </ol>
+  `},
+  {id:"m-rbac", e:"🔐", t:"角色权限 / 用户", html:`
+    <div class="crumbs">功能模块 / 角色权限与用户</div>
+    <h1>角色权限与用户管理</h1>
+    <p class="intro">多态权限树 + 用户生命周期。</p>
+    <div class="meta"><span class="tag perm">权限:role:view / user:view</span></div>
+    <h2 class="sec"><span class="e">🌳</span>角色权限</h2>
+    <ol class="steps">
+      <li><b>多态权限树</b> <span class="h">每个权限点支持「无 / 只读 / 编辑 / 完全」。</span></li>
+      <li><b>自动授超管</b> <span class="h">新增权限自动授予超管;VIEWER 默认只读。</span></li>
+    </ol>
+    <h2 class="sec"><span class="e">👥</span>用户管理</h2>
+    <ol class="steps">
+      <li><b>新建用户</b> <span class="h">指定角色,初始密码默认 <code>Codeman@123</code>(可自定义)。</span></li>
+      <li><b>重置/启停</b> <span class="h">重置密码、启用/停用账号。</span></li>
+      <li><b>首登改密</b> <span class="h">新用户首次登录强制改密。</span></li>
+    </ol>
+  `},
+  {id:"m-audit", e:"🧾", t:"审计日志", html:`
+    <div class="crumbs">功能模块 / 审计</div>
+    <h1>审计日志</h1>
+    <p class="intro">关键操作留痕,便于追溯与合规。</p>
+    <div class="meta"><span class="tag perm">权限:audit</span></div>
+    <ol class="steps"><li><b>查看审计</b> <span class="h">查看操作主体、动作、对象、时间等;License 变更含版本 diff。</span></li></ol>
+  `},
+  {id:"m-sdk", e:"🧩", t:"SDK 接入", html:`
+    <div class="crumbs">功能模块 / SDK 接入</div>
+    <h1>客户端 SDK 接入与代码保护</h1>
+    <p class="intro">客户侧集成:验签 + 功能/版本门禁 + 代码保护。</p>
+    <h2 class="sec"><span class="e">🔏</span>SDK 验签</h2>
+    <ol class="steps"><li><b>集成</b> <span class="h"><code>sdk/license-sdk</code> 用公钥验 <code>.lic</code> 签名 + 功能/版本门禁(SemVer)。私钥不出域。</span></li></ol>
+    <h2 class="sec"><span class="e">🛡️</span>构建时代码保护</h2>
+    <ol class="steps">
+      <li><b>ProGuard 混淆</b><pre>cd examples/protected-app &amp;&amp; mvn -Pharden</pre></li>
+      <li><b>类加密 + 绑定</b> <span class="h"><code>BuildProtected</code> 加密关键类,密钥与 License 绑定;<code>demo.sh</code> 演示合法/错钥/篡改。</span></li>
+    </ol>
+    <div class="note tip"><span class="lab">提示</span>设计详见 <a href="../../docs/02-代码保护方案.md">代码保护方案</a>、<a href="../../docs/03-License认证方案.md">License 认证方案</a>。也可改用平台在线加固(无需自建流水线)。</div>
+  `},
+  {id:"m-ai", e:"🧠", t:"大模型接入", html:`
+    <div class="crumbs">功能模块 / 大模型接入</div>
+    <h1>智能客服大模型接入</h1>
+    <p class="intro">通用 OpenAI 兼容,换厂商只改 <code>.env</code> 三项。</p>
+    <pre><span class="c"># 智谱 GLM-4-Flash(常免费)</span>
+AI_ENABLED=true
+AI_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+AI_API_KEY=***
+AI_MODEL=glm-4-flash
+
+<span class="c"># 本地 Ollama(离线)</span>
+AI_ENABLED=true
+AI_BASE_URL=http://ollama:11434/v1
+AI_MODEL=qwen2.5:7b-instruct</pre>
+    <div class="note tip"><span class="lab">提示</span>选型/部署/成本对比见 <a href="../../docs/智能客服-大模型选型与部署.md">智能客服-大模型选型与部署</a>。Docker 启用本地模型:<code>docker compose --profile ai up -d</code> 后 <code>ollama pull</code> 模型。</div>
+  `},
+  {id:"m-ref", e:"📚", t:"附录:变量/端口/端点", html:`
+    <div class="crumbs">功能模块 / 附录</div>
+    <h1>附录:环境变量 / 端口 / 公开端点</h1>
+    <h2 class="sec"><span class="e">🔧</span>关键环境变量</h2>
+    <table><tr><th>变量</th><th>说明</th></tr>
+      <tr><td><code>JWT_SECRET</code></td><td>JWT 密钥(生产必改)</td></tr>
+      <tr><td><code>LICENSE_SIGN_ALGO</code></td><td>签名算法 ed25519 / sm2</td></tr>
+      <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td>prod / mysql</td></tr>
+      <tr><td><code>DB_URL/DB_USER/DB_PASSWORD</code></td><td>数据库连接</td></tr>
+      <tr><td><code>APP_REDIS_ENABLED</code></td><td>多实例心跳 nonce</td></tr>
+      <tr><td><code>APP_MAIL_*</code> / <code>CORS_ORIGINS</code></td><td>邮件 / 跨域</td></tr>
+      <tr><td><code>PAY_PROVIDER</code> / <code>EINVOICE_PROVIDER</code></td><td>支付 / 发票渠道</td></tr>
+      <tr><td><code>AI_ENABLED/AI_BASE_URL/AI_API_KEY/AI_MODEL</code></td><td>智能客服大模型</td></tr>
+      <tr><td><code>HARDEN_WORK_DIR/HARDEN_MAX_FILE_MB</code></td><td>在线加固</td></tr>
+      <tr><td><code>ALERT_WECOM_WEBHOOK</code></td><td>企业微信告警</td></tr></table>
+    <h2 class="sec"><span class="e">🌐</span>公开端点(<code>/pub/**</code>,无需登录)</h2>
+    <table><tr><th>端点</th><th>用途</th></tr>
+      <tr><td><code>/pub/notices/active</code> · <code>/pub/consents</code></td><td>须知 / 同意撤回</td></tr>
+      <tr><td><code>/pub/payments/notify/{channel}</code></td><td>支付回调</td></tr>
+      <tr><td><code>/pub/portal/login|overview</code></td><td>租户门户</td></tr>
+      <tr><td><code>/pub/crl</code> · <code>/pub/license/public-keys</code></td><td>吊销名单 / 公钥集</td></tr></table>
+    <h2 class="sec"><span class="e">🔌</span>端口</h2>
+    <table><tr><th>服务</th><th>端口</th></tr>
+      <tr><td>控制台</td><td>80(Docker)/ 5173(dev)</td></tr>
+      <tr><td>后端</td><td>8080</td></tr>
+      <tr><td>PostgreSQL / MySQL / Redis</td><td>5432 / 3306 / 6379</td></tr>
+      <tr><td>Prometheus / Grafana / Ollama</td><td>9090 / 3000 / 11434</td></tr></table>
+  `},
+];
+
+/* ============ 渲染 ============ */
+const main = document.getElementById('main');
+const nav = document.getElementById('nav');
+let mode = 'flow';
+
+function allDocs(){ return FLOW.concat(MOD); }
+
+function renderDocs(){
+  main.innerHTML = allDocs().map(d=>`<section class="doc" id="${d.id}">${d.html}${pager(d)}</section>`).join('');
+}
+function pager(d){
+  const list = FLOW.some(x=>x.id===d.id)?FLOW:MOD;
+  const i = list.findIndex(x=>x.id===d.id);
+  const prev=list[i-1], next=list[i+1];
+  return `<div class="pager">
+    ${prev?`<a href="#${prev.id}" data-go="${prev.id}"><small>← 上一篇</small>${prev.e} ${prev.t}</a>`:`<span style="flex:1"></span>`}
+    ${next?`<a class="n" href="#${next.id}" data-go="${next.id}"><small>下一篇 →</small>${next.e} ${next.t}</a>`:`<span style="flex:1"></span>`}
+  </div>`;
+}
+function renderNav(){
+  const list = mode==='flow'?FLOW:MOD;
+  const title = mode==='flow'?'按操作流程':'按功能模块';
+  nav.innerHTML = `<div class="navgrp"><h4>${title}</h4>`+
+    list.map(d=>`<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>`).join('')+
+    `</div>`;
+}
+function show(id){
+  document.querySelectorAll('section.doc').forEach(s=>s.classList.toggle('show', s.id===id));
+  // ensure nav mode matches the doc
+  const inFlow = FLOW.some(x=>x.id===id);
+  if((inFlow&&mode!=='flow')||(!inFlow&&mode!=='mod')){
+    mode = inFlow?'flow':'mod';
+    setTab(); renderNav();
+  }
+  document.querySelectorAll('.navlink').forEach(n=>n.classList.toggle('active', n.dataset.go===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'','#'+id);
+  closeAside();
+}
+function setTab(){
+  document.getElementById('tabFlow').classList.toggle('on', mode==='flow');
+  document.getElementById('tabMod').classList.toggle('on', mode==='mod');
+}
+
+/* tabs */
+document.getElementById('tabFlow').onclick=()=>{mode='flow';setTab();renderNav();show(FLOW[0].id);};
+document.getElementById('tabMod').onclick=()=>{mode='mod';setTab();renderNav();show(MOD[0].id);};
+
+/* delegate nav + pager clicks */
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');
+  if(g){e.preventDefault();show(g.dataset.go);}
+});
+
+/* search */
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  if(!q){renderNav();return;}
+  const hits=allDocs().filter(d=>(d.t+' '+d.html).toLowerCase().includes(q));
+  nav.innerHTML = `<div class="navgrp"><h4>搜索结果 (${hits.length})</h4>`+
+    (hits.length?hits.map(d=>`<div class="navlink" data-go="${d.id}"><span class="e">${d.e}</span><span>${d.t}</span></div>`).join('')
+      :`<div class="nohit">无匹配，换个关键词试试</div>`)+`</div>`;
+});
+
+/* mobile drawer */
+const aside=document.getElementById('aside');
+document.getElementById('menubtn').onclick=()=>aside.classList.toggle('open');
+function closeAside(){ if(window.innerWidth<=880) aside.classList.remove('open'); }
+
+/* init */
+renderDocs(); renderNav();
+const start=(location.hash||'').slice(1);
+show(allDocs().some(d=>d.id===start)?start:FLOW[0].id);
+</script>
+</body>
+</html>
