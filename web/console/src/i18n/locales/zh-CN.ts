@@ -6,7 +6,7 @@ export default {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
     catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
     contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理', portalAdmin: '自助门户', harden: '代码加固',
-    cmprint: 'CmPrint 授权',
+    cmprint: 'CmPrint 授权', cmrule: 'CmRuleEngine 授权',
   },
   cmprint: {
     lead: 'CmPrint 打印模板设计器商业授权:按 社区/专业/企业 三档签发,能力键级合同微调;License 内置能力表,客户端 resolveEdition 直接消费;含本产品维度审计查询。',
@@ -30,6 +30,31 @@ export default {
     tip: {
       overrides: '在档位预设之上按合同微调个别能力(如专业版客户单独购买直连打印);微调会显式固化进 License 的 features。',
       range: '授权可运行的 CmPrint 版本范围,如 >=0.5.0 <1.0.0',
+    },
+  },
+  cmrule: {
+    lead: 'CmRuleEngine 规则引擎商业授权:按 社区/专业/企业/旗舰 四档签发,能力键级合同微调;License 内置能力表,rule-engine-server 验签后直接消费;含本产品维度审计查询。',
+    issue: '＋ 签发 CmRuleEngine 授权', issueTitle: '签发 CmRuleEngine License', issued: '已签发 {id}',
+    issueFail: '签发失败', loadFail: '加载 CmRuleEngine License 失败', required: '请填写租户编号与客户名称',
+    licenses: 'CmRuleEngine License', empty: '暂无 CmRuleEngine License。',
+    matrix: '版本档位 × 能力矩阵', matrixSub: '与 CmRuleEngine capabilities 能力键一一对应',
+    matrixNote: '仅列四档有差异的能力键;其余能力键(基础规则链设计与运行、零代码向导、保存前体检、节点搜索)四档全部包含。',
+    capability: '能力键', overrides: '能力微调(合同级)',
+    revokeReason: '合同终止',
+    auditTitle: '审计查询', auditSub: 'CmRuleEngine 授权全轨迹:签发/续期/变更/吊销/到期',
+    auditKw: '搜索 License 编号/客户/操作人', auditQuery: '查询',
+    signNote: '提交后由服务端私钥(Ed25519)签名生成 .lic;claims.features 固化「档位预设 ∪ 微调」,rule-engine-server 经 RE_LICENSE/RE_LICENSE_PUBKEY 验签后 resolve(edition, features) 即得一致能力门禁。',
+    ed: { COMMUNITY: '社区版', PROFESSIONAL: '专业版', ENTERPRISE: '企业版', ULTIMATE: '旗舰版' },
+    cap: {
+      templateLibrary: '模板库', decisionTable: '决策表节点', ruleFlow: '规则流(子链)',
+      edgeChains: 'EDGE 规则链', versionHistory: '版本管理', orchestrationBasic: '服务编排基本节点',
+      auditQuery: '审计查询', versionDiff: '影响分析(版本对比)', auditExport: '审计导出 CSV',
+      orchestrationAdvanced: '高级服务编排', dbDialects: '国产数据库适配', haCluster: '高可用集群',
+      aiRuleGen: 'AI 生成规则链', distributedTx: '分布式事务', xinChuang: '信创认证',
+    },
+    tip: {
+      overrides: '在档位预设之上按合同微调个别能力(如专业版客户单独购买影响分析);微调会显式固化进 License 的 features。',
+      range: '授权可运行的 CmRuleEngine 版本范围,如 >=1.0.0 <2.0.0',
     },
   },
   billing: {
@@ -131,6 +156,12 @@ export default {
       title: '操作指引 · CmPrint 授权',
       t1: '按 社区/专业/企业 三档签发,矩阵展示各档能力差异;可在档位预设上做合同级能力微调(如专业版单独放开直连打印)。',
       t2: 'License 的 features 固化「档位预设 ∪ 微调」,集成端验签后调用 resolveEdition(edition, features) 即得一致的能力门禁,两侧版本漂移不影响已签发授权。',
+      t3: '审计查询覆盖本产品全轨迹(签发/续期/变更/吊销/到期),支持 动作/关键字/时间段 过滤与 CSV 导出。',
+    },
+    cmrule: {
+      title: '操作指引 · CmRuleEngine 授权',
+      t1: '按 社区/专业/企业/旗舰 四档签发,矩阵展示各档能力差异;可在档位预设上做合同级能力微调(如专业版单独放开影响分析)。',
+      t2: 'License 的 features 固化「档位预设 ∪ 微调」,rule-engine-server 经 RE_LICENSE/RE_LICENSE_PUBKEY 验签后 resolve(edition, features) 即得一致的能力门禁,两侧版本漂移不影响已签发授权。',
       t3: '审计查询覆盖本产品全轨迹(签发/续期/变更/吊销/到期),支持 动作/关键字/时间段 过滤与 CSV 导出。',
     },
   },

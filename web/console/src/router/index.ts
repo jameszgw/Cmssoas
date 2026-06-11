@@ -11,6 +11,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/products', name: 'products', component: () => import('@/views/Products.vue') },
   { path: '/plans', name: 'plans', component: () => import('@/views/Plans.vue') },
   { path: '/cmprint', name: 'cmprint', component: () => import('@/views/CmPrint.vue') },
+  { path: '/cmrule', name: 'cmrule', component: () => import('@/views/CmRule.vue') },
   { path: '/customers', name: 'customers', component: () => import('@/views/Customers.vue') },
   { path: '/audit', name: 'audit', component: () => import('@/views/Audit.vue') },
   { path: '/billing', name: 'billing', component: () => import('@/views/Billing.vue') },

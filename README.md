@@ -56,6 +56,7 @@
 | 客户端 SDK | `sdk/license-sdk` | Ed25519 / 国密 SM2 验签 + 功能/版本门禁 |
 | 代码保护示例 | `examples/protected-app` | 类加密 + 解密密钥与 License 绑定 + ProGuard 混淆 |
 | CmPrint 授权集成 | `examples/cmprint-integration` | CmPrint 打印设计器商业授权(社区/专业/企业三档 + 能力微调)与审计查询;客户端验签适配器 + 全链路脚本,见 [功能说明](docs/功能-CmPrint商业授权与审计查询.md) |
+| CmRuleEngine 授权集成 | `examples/cmrule-integration` | CmRuleEngine 规则引擎商业授权(社区/专业/企业/旗舰四档 + 能力微调)与审计查询;客户端验签适配器 + 全链路脚本,见 [功能说明](docs/功能-CmRuleEngine商业授权与审计查询.md) |
 | 部署/可观测 | `docker-compose.yml`、`infra/` | PostgreSQL + Redis + Prometheus + Grafana |
 
 ```bash

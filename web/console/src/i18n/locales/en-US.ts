@@ -6,7 +6,7 @@ export default {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
     catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
     contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers', portalAdmin: 'Portal', harden: 'Hardening',
-    cmprint: 'CmPrint',
+    cmprint: 'CmPrint', cmrule: 'CmRuleEngine License',
   },
   cmprint: {
     lead: 'Commercial licensing for the CmPrint print-template designer: Community / Professional / Enterprise editions with per-capability contract overrides; the license embeds the capability table consumed by resolveEdition on the client; includes product-scoped audit queries.',
@@ -30,6 +30,31 @@ export default {
     tip: {
       overrides: 'Fine-tune individual capabilities on top of the edition preset (e.g. a Professional customer purchasing direct print); overrides are frozen explicitly into the license features.',
       range: 'CmPrint version range the license covers, e.g. >=0.5.0 <1.0.0',
+    },
+  },
+  cmrule: {
+    lead: 'Commercial licensing for the CmRuleEngine rule engine: Community / Professional / Enterprise / Ultimate editions with per-capability contract overrides; the license embeds the capability table consumed by rule-engine-server after signature verification; includes product-scoped audit queries.',
+    issue: '＋ Issue CmRuleEngine license', issueTitle: 'Issue CmRuleEngine License', issued: 'Issued {id}',
+    issueFail: 'Issue failed', loadFail: 'Failed to load CmRuleEngine licenses', required: 'Tenant ID and customer are required',
+    licenses: 'CmRuleEngine Licenses', empty: 'No CmRuleEngine licenses yet.',
+    matrix: 'Editions × capability matrix', matrixSub: 'Keys map 1:1 to CmRuleEngine capabilities',
+    matrixNote: 'Only keys that differ across editions are listed; all other capabilities (core rule-chain design & run, zero-code wizard, lint check, node search) are included in every edition.',
+    capability: 'Capability', overrides: 'Capability overrides (contract-level)',
+    revokeReason: 'Contract terminated',
+    auditTitle: 'Audit query', auditSub: 'Full CmRuleEngine licensing trail: issue / renew / modify / revoke / expire',
+    auditKw: 'Search license ID / customer / actor', auditQuery: 'Search',
+    signNote: 'The server signs the license with its Ed25519 private key and produces a .lic; claims.features freezes “edition preset ∪ overrides”, so rule-engine-server (RE_LICENSE / RE_LICENSE_PUBKEY) calls resolve(edition, features) for identical capability gating.',
+    ed: { COMMUNITY: 'Community', PROFESSIONAL: 'Professional', ENTERPRISE: 'Enterprise', ULTIMATE: 'Ultimate' },
+    cap: {
+      templateLibrary: 'Template library', decisionTable: 'Decision table node', ruleFlow: 'Rule flow (sub-chains)',
+      edgeChains: 'EDGE rule chains', versionHistory: 'Version history', orchestrationBasic: 'Basic orchestration (REST call)',
+      auditQuery: 'Audit query', versionDiff: 'Impact analysis (diff)', auditExport: 'Audit CSV export',
+      orchestrationAdvanced: 'Advanced orchestration', dbDialects: 'Domestic DB dialects', haCluster: 'HA cluster',
+      aiRuleGen: 'AI rule generation', distributedTx: 'Distributed transactions', xinChuang: 'XinChuang certification',
+    },
+    tip: {
+      overrides: 'Fine-tune individual capabilities on top of the edition preset (e.g. a Professional customer purchasing impact analysis); overrides are frozen explicitly into the license features.',
+      range: 'CmRuleEngine version range the license covers, e.g. >=1.0.0 <2.0.0',
     },
   },
   billing: {
@@ -131,6 +156,12 @@ export default {
       title: 'Guide · CmPrint Licensing',
       t1: 'Issue Community / Professional / Enterprise editions; the matrix shows per-edition capability differences, and contract-level overrides can fine-tune individual capabilities (e.g. enable direct print for a Professional customer).',
       t2: 'License features freeze “edition preset ∪ overrides”; after signature verification the integrator calls resolveEdition(edition, features) for identical capability gating — version drift never affects issued licenses.',
+      t3: 'Audit query covers the full product trail (issue / renew / modify / revoke / expire) with action / keyword / date filters and CSV export.',
+    },
+    cmrule: {
+      title: 'Guide · CmRuleEngine Licensing',
+      t1: 'Issue Community / Professional / Enterprise / Ultimate editions; the matrix shows per-edition capability differences, and contract-level overrides can fine-tune individual capabilities (e.g. enable impact analysis for a Professional customer).',
+      t2: 'License features freeze “edition preset ∪ overrides”; rule-engine-server verifies the .lic via RE_LICENSE / RE_LICENSE_PUBKEY and calls resolve(edition, features) for identical capability gating — version drift never affects issued licenses.',
       t3: 'Audit query covers the full product trail (issue / renew / modify / revoke / expire) with action / keyword / date filters and CSV export.',
     },
   },
