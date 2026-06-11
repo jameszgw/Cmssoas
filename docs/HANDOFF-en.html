@@ -70,7 +70,7 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <h2 id="h302e20544c3b">0. TL;DR</h2>
 <ul>
 <li><strong>Project</strong>: CODEMAN — Spring Boot code protection + License authentication + multi-tenant operations platform (backend + Vue3 console + client SDK + code-protection demo).</li>
-<li><strong>Dev branch</strong>: <code>claude/loving-einstein-Pp4cA</code> (work only here; <strong>never</strong> touch <code>main</code>). GitHub repo slug stays <code>jameszgw/cmssoas</code> (<strong>not renamed</strong>; README badges keep this slug).</li>
+<li><strong>Dev branch</strong>: <code>claude/hopeful-ride-u8txs8</code> (current session; previously <code>claude/loving-einstein-Pp4cA</code>; work only on the dev branch, <strong>never</strong> touch <code>main</code>). GitHub repo slug stays <code>jameszgw/cmssoas</code> (<strong>not renamed</strong>; README badges keep this slug).</li>
 <li><strong>Latest commit</strong>: <code>0c4ad69</code> (handoff); last feature <code>63830a4</code> (online code hardening). CI fully green (run #56, 11 jobs success; tag job skipped is expected).</li>
 <li><strong>Stack/versions</strong>: Spring Boot <strong>3.5.0</strong>, Java <strong>21</strong> (Java 8 NOT supported), Maven; Vue3+TS+Element Plus+vite; groupId/base package <strong>com.codeman</strong>; version <strong>1.0.1</strong>; license <strong>GPLv3</strong>.</li>
 <li><strong>Databases</strong>: H2 (dev default, <code>MODE=PostgreSQL</code>) / PostgreSQL (prod, <code>profile=prod</code>) / MySQL 5.7·8.0 (<code>profile=mysql</code>, <code>db/mysql</code> dialect scripts, validated by CI real-DB matrix).</li>
@@ -93,8 +93,8 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 </ul>
 <h2 id="h332e204d6967">3. Migrations</h2>
 <ul>
-<li>PG/H2: <code>server/.../db/migration/V1..V18</code>. MySQL dialect: <code>server/.../db/mysql/V1..V18</code> (transform: <code>IDENTITY→AUTO_INCREMENT</code>, <code>TIMESTAMP→DATETIME</code>, boolean default <code>1/0</code>, per-table <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>).</li>
-<li><strong>When adding a migration</strong>: ① add <code>Vn</code> under <code>db/migration</code>; ② add same-numbered MySQL dialect under <code>db/mysql</code>; ③ run <code>bash deploy/sql/generate-schema.sh</code> to regenerate <code>deploy/sql/schema-*.sql</code>; ④ bump the migration-count assertions in <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> (currently <strong>18</strong>).</li>
+<li>PG/H2: <code>server/.../db/migration/V1..V19</code>. MySQL dialect: <code>server/.../db/mysql/V1..V19</code> (transform: <code>IDENTITY→AUTO_INCREMENT</code>, <code>TIMESTAMP→DATETIME</code>, boolean default <code>1/0</code>, per-table <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>).</li>
+<li><strong>When adding a migration</strong>: ① add <code>Vn</code> under <code>db/migration</code>; ② add same-numbered MySQL dialect under <code>db/mysql</code>; ③ run <code>bash deploy/sql/generate-schema.sh</code> to regenerate <code>deploy/sql/schema-*.sql</code>; ④ bump the migration-count assertions in <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> (currently <strong>19</strong>).</li>
 <li>Recent: V15 customer, V16 tenant_portal, V17 tax_invoice, V18 harden.</li>
 </ul>
 <h2 id="h342e2050726f">4. Provider abstraction pattern (core idiom: vendor-agnostic + degradable)</h2>
@@ -112,10 +112,19 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <li>Run output: <code>java -Dharden.license=&lt;.lic&gt; -jar x.jar</code> (bound) / <code>java -Dharden.key=&lt;pass&gt; -jar x.jar</code> (passphrase).</li>
 <li><strong>Gotcha fixes</strong>: proguard-base brings log4j-core which clashes with Spring's log4j-to-slf4j → added <code>src/main/resources/log4j2.component.properties</code> forcing <code>Log4jContextFactory</code>; ProGuard library jars limited to <code>java.base/java.logging</code> (avoid huge java.desktop hang); <code>HardenService.run</code> catches <code>Throwable</code> (prevent Error silently hanging a job).</li>
 </ul>
+<h2 id="h35622e20436d">5b. CmPrint commercial licensing &amp; audit query (most recent big feature)</h2>
+<ul>
+<li><strong>Contract</strong>: claims.productCode=CMPRINT; edition ∈ COMMUNITY/PROFESSIONAL/ENTERPRISE; claims.features = "edition preset ∪ contract overrides" (keys = CmPrint CAPABILITY_KEYS, 37 keys); client calls <code>resolveEdition(edition.toLowerCase(), features)</code> → <code>&lt;cmprint-designer :capabilities&gt;</code>. Explicit keys are frozen at issue time → no drift between repos.</li>
+<li>Backend <code>com.codeman.platform.cmprint</code>: <code>CmprintEditions</code> (constants mirror cmprint capabilities.js — <strong>keep both sides in sync</strong>), endpoints editions/licenses/issue (edition + capability-key whitelist validation) / audit (Specification filter: CMPRINT_* actions + generic license events matched by this product's license ids; action/keyword/date range + paging + CSV).</li>
+<li><strong>Subscription auto-issue fix</strong>: plan gained product_code/edition; SubscriptionService no longer hardcodes "CODEMAN"/plan-code (legacy CODEMAN plans backfilled edition=code, behavior unchanged). LicenseView gained productCode.</li>
+<li>Frontend <code>views/CmPrint.vue</code> (perm=cmprint): edition × capability matrix (only the 13 differing keys), issue wizard (switches init from edition preset; only diffs vs preset submitted as overrides), license list (renew/revoke/download reuse generic endpoints), audit query.</li>
+<li>Client kit <code>examples/cmprint-integration/</code>: cmprint-license.mjs (zero-dep WebCrypto Ed25519 verifier; public key = X.509 SPKI base64), verify-demo.mjs, issue-and-verify.sh (full chain verified live; tampered .lic rejected).</li>
+<li><strong>Pitfalls</strong>: Java <code>Map.copyOf</code> does not preserve order (edition-order assertion failed once) — use unmodifiable LinkedHashMap; <code>/api/**</code> requires JWT even without @RequirePerm (only <code>/pub/**</code> is anonymous).</li>
+</ul>
 <h2 id="h362e20546573">6. Tests &amp; CI</h2>
 <ul>
-<li>Backend <code>mvn test</code>: ~27 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
-<li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
+<li>Backend <code>mvn test</code>: 33 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
+<li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 8 specs incl. cmprint) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
 <li><strong>Real-run technique in sandbox</strong> (no persistent <code>&amp;</code>): use the Bash tool with <code>run_in_background:true</code> to run <code>java -jar</code>; wait with <code>until grep "Tomcat started on port 8080" log</code>; inspect CI via <code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> (when list output is too large, save to file and parse with python).</li>
 </ul>
 <h2 id="h372e204b6e6f">7. Known limits / candidate TODOs (not done)</h2>
@@ -128,7 +137,7 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <h2 id="h382e20436f6e">8. Constraints (throughout)</h2>
 <ul>
 <li>Private keys never plaintext (inject via env/Nacos/KMS); AI support never sends secrets/PII.</li>
-<li>Develop &amp; push only on <code>claude/loving-einstein-Pp4cA</code>; <code>git push -u origin &lt;branch&gt;</code>, retry on network failure with 2/4/8/16s backoff; <strong>no PR, no tag</strong> unless explicitly asked.</li>
+<li>Develop &amp; push only on the current dev branch (<code>claude/hopeful-ride-u8txs8</code>); <code>git push -u origin &lt;branch&gt;</code>, retry on network failure with 2/4/8/16s backoff; <strong>no PR, no tag</strong> unless explicitly asked.</li>
 <li>Docs: <code>docs/</code> (features/design) + <code>deploy/</code> (deploy/ops/help); keep README/DEPLOY/deploy indexes in sync; code &amp; migrations carry Chinese comments.</li>
 </ul>
 <h2 id="h392e204b6579">9. Key paths</h2>

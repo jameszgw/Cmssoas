@@ -49,13 +49,13 @@ public final class LicenseDtos {
     public record PublicKeyView(String algorithm, String publicKeyBase64) {}
 
     public record LicenseView(
-            String licenseId, String tenantCode, String customer, String edition,
+            String licenseId, String tenantCode, String customer, String productCode, String edition,
             String mode, String status, int version, String appVersionRange,
             String notAfter, List<String> modules
     ) {
         public static LicenseView from(License l) {
             return new LicenseView(
-                    l.getLicenseId(), l.getTenantCode(), l.getCustomer(), l.getEdition(),
+                    l.getLicenseId(), l.getTenantCode(), l.getCustomer(), l.getProductCode(), l.getEdition(),
                     l.getMode(), l.getStatus().name(), l.getCurrentVersion(), l.getAppVersionRange(),
                     l.getNotAfter().toString(),
                     l.getModules().isBlank() ? List.of() : Arrays.asList(l.getModules().split(","))

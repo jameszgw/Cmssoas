@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功能说明:CmPrint 商业授权与审计查询(产品集成) · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="功能-CmPrint商业授权与审计查询.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 功能说明:CmPrint 商业授权与审计查询(产品集成)</div>
+<h1 id="he58a9fe883bd">功能说明:CmPrint 商业授权与审计查询(产品集成)</h1>
+<p>把 <strong>CmPrint(Web 打印模板设计器)</strong> 作为产品接入平台:按 CmPrint 的商业版本逻辑 (社区版 / 专业版 / 企业版,见 cmprint 仓库 <code>docs/commercial-editions.zh-CN.md</code> 与 <code>src/core/capabilities.js</code> 的 <code>EDITIONS</code>/<code>resolveEdition</code>)签发 License, 能力键级合同微调,内置本产品维度的<strong>审计查询</strong>。沿用平台一贯设计:RBAC、审计、Ed25519 签名、订阅驱动签发。</p>
+<h2 id="he99b86e68890">集成模型(谁负责什么)</h2>
+<div class="tbl"><table><thead><tr><th>侧</th><th>职责</th></tr></thead><tbody><tr><td><strong>CODEMAN(本平台)</strong></td><td>产品目录登记、三档套餐、签发/续期/变更/吊销、CRL、审计查询、授权 UI</td></tr><tr><td><strong>CmPrint(客户端)</strong></td><td>验签 .lic → <code>resolveEdition(claims.edition.toLowerCase(), claims.features)</code> → <code>&lt;cmprint-designer :capabilities&gt;</code> 裁剪 UI/功能</td></tr></tbody></table></div>
+<p><strong>契约</strong>:<code>claims.productCode = CMPRINT</code>;<code>claims.edition ∈ COMMUNITY/PROFESSIONAL/ENTERPRISE</code>; <code>claims.features</code> = 签发时固化的「<strong>档位预设 ∪ 合同微调</strong>」能力表,键名与 CmPrint <code>CAPABILITY_KEYS</code>(37 键)同名。 显式键优先于 CmPrint 内置预设 —— 两侧版本漂移不影响已签发授权(防漂移设计)。</p>
+<h2 id="he4b889e6a1a3">三档版本(V19 种子套餐,订阅自动签发)</h2>
+<div class="tbl"><table><thead><tr><th>套餐</th><th>edition</th><th>价格基准</th><th>席位</th><th>相对全开关闭的能力</th></tr></thead><tbody><tr><td><code>CMPRINT_COMMUNITY</code> 社区版</td><td>COMMUNITY</td><td>0</td><td>1</td><td>高级导出(PDF 图片/文本、Word、Excel/CSV、图片、分享)、直连打印、套打底图、对位校准、水印、子模板、云模板库、换肤 —— 13 键</td></tr><tr><td><code>CMPRINT_PRO</code> 专业版</td><td>PROFESSIONAL</td><td>12800</td><td>5</td><td>直连打印、云模板库 —— 2 键</td></tr><tr><td><code>CMPRINT_ENT</code> 企业版</td><td>ENTERPRISE</td><td>39800</td><td>20</td><td>无(全功能)</td></tr></tbody></table></div>
+<p>产品目录(产品与版本页):<code>CMPRINT</code> 产品,模块 = 能力域(设计器/数据/预览打印/导出/模板), 功能点 = CmPrint 能力键(与 License features 同名,授权与计费同粒度)。</p>
+<h2 id="he68e88e69d83">授权 UI(控制台「CmPrint 授权」,权限 <code>cmprint</code>)</h2>
+<ul>
+<li><strong>档位 × 能力矩阵</strong>:仅列三档有差异的 13 个能力键(其余 24 键三档全含),与签发表单同源。</li>
+<li><strong>签发向导</strong>:选档位 → 能力开关按档位预设初始化 → 合同级微调(如专业版客户单独购买直连打印)→</li>
+</ul>
+<p>  仅把<strong>相对预设的改动</strong>作为 <code>overrides</code> 提交,审计详情一目了然;Ed25519 签名产出 .lic。</p>
+<ul>
+<li><strong>列表</strong>:仅本产品 License;下载 .lic / 续期 / 吊销复用通用端点与权限。</li>
+<li><strong>审计查询</strong>:动作 / 关键字(License 编号、客户、操作人)/ 时间段过滤 + 分页 + CSV 导出。</li>
+</ul>
+<h2 id="he5aea1e8aea1">审计查询(<code>cmprint:audit</code>)</h2>
+<p>范围 = <code>CMPRINT_*</code> 动作(如 <code>CMPRINT_LICENSE_ISSUE</code>,detail 含档位与微调内容) <strong>+ 涉及本产品 License 编号的通用 License 事件</strong>(<code>LICENSE_ISSUE/RENEW/MODIFY/REVOKE/EXPIRED</code>)—— 即本产品授权的全生命周期轨迹。API:</p>
+<pre><code>GET /api/cmprint/audit?action=&amp;keyword=&amp;from=&amp;to=&amp;page=&amp;size=    # 分页 {total, rows}
+GET /api/cmprint/audit/export.csv?action=&amp;keyword=&amp;from=&amp;to=     # CSV</code></pre>
+<h2 id="he5908ee7abaf">后端 API(<code>com.codeman.platform.cmprint</code>)</h2>
+<div class="tbl"><table><thead><tr><th>端点</th><th>权限</th><th>说明</th></tr></thead><tbody><tr><td><code>GET /api/cmprint/editions</code></td><td><code>cmprint:view</code></td><td>三档预设 + 全键能力解析表(与前端 resolveEdition 同语义)</td></tr><tr><td><code>GET /api/cmprint/licenses</code></td><td><code>cmprint:view</code></td><td>仅 productCode=CMPRINT 的 License</td></tr><tr><td><code>POST /api/cmprint/licenses/issue</code></td><td><code>cmprint:issue</code></td><td>档位+能力微调签发;<strong>校验档位与能力键白名单</strong>,features=预设∪微调</td></tr><tr><td><code>GET /api/cmprint/audit[/export.csv]</code></td><td><code>cmprint:audit</code></td><td>审计查询(见上)</td></tr></tbody></table></div>
+<p>续期/变更/吊销/下载/验签复用通用 <code>/api/licenses/**</code>(原权限不变)。</p>
+<h2 id="he695b0e68dae">数据与权限(V19 迁移)</h2>
+<ul>
+<li><code>plan</code> 表新增 <code>product_code</code>(默认 CODEMAN)与 <code>edition</code> —— <strong>订阅自动签发</strong>据此落</li>
+</ul>
+<p>  License 的 productCode 与 edition(修复此前写死 CODEMAN/套餐码;存量 CODEMAN 套餐行为不变)。</p>
+<ul>
+<li>产品目录种子:CMPRINT 产品 + 5 模块 + 17 功能点(能力键)+ v0.5 版本矩阵 + 三档套餐。</li>
+<li>权限点:<code>cmprint</code>(菜单)/<code>cmprint:view</code>/<code>cmprint:issue</code>/<code>cmprint:audit</code></li>
+</ul>
+<p>  (SUPER_ADMIN 自动补齐 FULL;VIEWER 新装自动获 MENU+view)。</p>
+<h2 id="he5aea2e688b7">客户端集成件与演示(<code>examples/cmprint-integration/</code>)</h2>
+<ul>
+<li><code>cmprint-license.mjs</code>:零依赖适配器(浏览器/Node≥20)——解析 .lic → WebCrypto Ed25519 验签 →</li>
+</ul>
+<p>  产品/状态/有效期校验 → <code>{edition, overrides}</code>;含已签名 CRL 的 <code>isRevoked</code>。</p>
+<ul>
+<li><code>verify-demo.mjs</code>:命令行验签 + 能力解析演示。</li>
+<li><code>issue-and-verify.sh</code>:登录 → 矩阵 → 签发 → 下载 → 平台验签 → 本地验签 → 审计查询 全链路脚本。</li>
+</ul>
+<p>服务端渲染(CmPrint 企业版)用 Java SDK 门禁:<code>claims.hasFeature("exportPdf")</code> 等。</p>
+<h2 id="he9aa8ce8af81">验证</h2>
+<ul>
+<li>后端 <code>CmprintIntegrationTest</code> 6 用例:档位矩阵 / 签发-验签契约(微调固化进 features)/</li>
+</ul>
+<p>  非法档位与能力键 400 / 列表只含本产品 / 审计全轨迹(动作、关键字、时间窗、CSV)/ CMPRINT 套餐订阅自动签发。</p>
+<ul>
+<li>前端 e2e <code>cmprint.spec.ts</code>:登录 → 矩阵 → 专业版+directPrint 微调签发 → 列表 → 审计过滤(全套 8/8)。</li>
+<li>真机演示脚本跑通(签发 LIC-2026-0010,本地 WebCrypto 验签通过,篡改 .lic 被拒)。</li>
+<li>截图:<code>web/console/shots/cmp-01..03</code>。</li>
+</ul>
+
+<div class="docfoot">本页由 <code>docs/功能-CmPrint商业授权与审计查询.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>

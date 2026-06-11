@@ -8,6 +8,7 @@ export interface MatrixView { versions: string[]; rows: MatrixRow[] }
 export interface PlanView {
   code: string; name: string; planKey: string; price: number
   versionRange: string; seats: number; modules: string[]; status: string
+  productCode: string; edition: string
 }
 export interface SubscriptionView {
   id: number; tenantCode: string; customer: string; planCode: string; qty: number
