@@ -115,7 +115,7 @@ class CmruleIntegrationTest {
         Map<String, Object> features = (Map<String, Object>) claims.get("features");
         assertEquals(Boolean.TRUE, features.get("versionDiff"), "微调应固化进 features");
         assertEquals(Boolean.FALSE, features.get("aiRuleGen"), "档位预设应固化进 features");
-        assertEquals(List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDIT"), claims.get("modules"));
+        assertEquals(List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDITLOG"), claims.get("modules"));
         assertEquals(">=1.0.0 <2.0.0", claims.get("appVersionRange"));
     }
 

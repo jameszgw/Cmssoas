@@ -1,7 +1,7 @@
 -- ============================================================
 -- CODEMAN 全量表结构 + 系统初始化数据(PostgreSQL / H2)
 -- 自动生成,请勿手改;由 deploy/sql/generate-schema.sh 合并 Flyway 迁移而来。
--- 生成时间: 2026-06-11 17:27:30
+-- 生成时间: 2026-06-11 17:32:54
 -- 含:全部业务表 DDL + 系统数据(权限/角色/套餐等种子)。
 -- 注:初始超管账号 admin/8888 由应用首启自动创建(或见 init-admin.sql)。
 -- ============================================================
@@ -680,7 +680,7 @@ INSERT INTO module(product_code,code,name,sort) VALUES
  ('CMRULE','FLOW','规则流',4),
  ('CMRULE','VERSION','版本管理',5),
  ('CMRULE','ORCH','服务编排',6),
- ('CMRULE','AUDIT','审计',7),
+ ('CMRULE','AUDITLOG','审计',7),
  ('CMRULE','PLATFORM','平台增强',8),
  ('CMRULE','AI','智能',9);
 
@@ -698,8 +698,8 @@ INSERT INTO feature(module_code,code,name,sort) VALUES
  ('VERSION','versionDiff','影响分析(版本对比)',10),
  ('ORCH','orchestrationBasic','服务编排基本节点(REST 外呼)',11),
  ('ORCH','orchestrationAdvanced','高级服务编排(消息/DB/补偿)',12),
- ('AUDIT','auditQuery','审计查询',13),
- ('AUDIT','auditExport','审计导出 CSV',14),
+ ('AUDITLOG','auditQuery','审计查询',13),
+ ('AUDITLOG','auditExport','审计导出 CSV',14),
  ('PLATFORM','dbDialects','国产数据库适配',15),
  ('PLATFORM','haCluster','高可用集群',16),
  ('PLATFORM','distributedTx','分布式事务',17),
@@ -721,12 +721,12 @@ INSERT INTO plan(code,name,plan_key,price,version_range,seats,modules,features,s
  ('CMRULE_COMMUNITY','CmRuleEngine 社区版','plan.cmr.com',0,'>=1.0.0 <2.0.0',1,'CORE,LOWCODE',
    '{"templateLibrary":false,"decisionTable":false,"ruleFlow":false,"edgeChains":false,"versionHistory":false,"orchestrationBasic":false,"auditQuery":false,"versionDiff":false,"auditExport":false,"orchestrationAdvanced":false,"dbDialects":false,"haCluster":false,"aiRuleGen":false,"distributedTx":false,"xinChuang":false}',
    'ACTIVE',14,'CMRULE','COMMUNITY'),
- ('CMRULE_PRO','CmRuleEngine 专业版','plan.cmr.pro',16800,'>=1.0.0 <2.0.0',5,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDIT',
+ ('CMRULE_PRO','CmRuleEngine 专业版','plan.cmr.pro',16800,'>=1.0.0 <2.0.0',5,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDITLOG',
    '{"versionDiff":false,"auditExport":false,"orchestrationAdvanced":false,"dbDialects":false,"haCluster":false,"aiRuleGen":false,"distributedTx":false,"xinChuang":false}',
    'ACTIVE',15,'CMRULE','PROFESSIONAL'),
- ('CMRULE_ENT','CmRuleEngine 企业版','plan.cmr.ent',49800,'>=1.0.0 <2.0.0',20,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDIT,PLATFORM',
+ ('CMRULE_ENT','CmRuleEngine 企业版','plan.cmr.ent',49800,'>=1.0.0 <2.0.0',20,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDITLOG,PLATFORM',
    '{"aiRuleGen":false,"distributedTx":false,"xinChuang":false}','ACTIVE',16,'CMRULE','ENTERPRISE'),
- ('CMRULE_ULT','CmRuleEngine 旗舰版','plan.cmr.ult',158000,'>=1.0.0 <2.0.0',999,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDIT,PLATFORM,AI',
+ ('CMRULE_ULT','CmRuleEngine 旗舰版','plan.cmr.ult',158000,'>=1.0.0 <2.0.0',999,'CORE,LOWCODE,DECISION,FLOW,VERSION,ORCH,AUDITLOG,PLATFORM,AI',
    '{}','ACTIVE',17,'CMRULE','ULTIMATE');
 
 -- ===== CmRuleEngine 授权权限点 =====

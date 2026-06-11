@@ -64,9 +64,9 @@ public final class CmruleEditions {
 
         Map<String, List<String>> modules = new LinkedHashMap<>();
         modules.put("COMMUNITY", List.of("CORE", "LOWCODE"));
-        modules.put("PROFESSIONAL", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDIT"));
-        modules.put("ENTERPRISE", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDIT", "PLATFORM"));
-        modules.put("ULTIMATE", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDIT", "PLATFORM", "AI"));
+        modules.put("PROFESSIONAL", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDITLOG"));
+        modules.put("ENTERPRISE", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDITLOG", "PLATFORM"));
+        modules.put("ULTIMATE", List.of("CORE", "LOWCODE", "DECISION", "FLOW", "VERSION", "ORCH", "AUDITLOG", "PLATFORM", "AI"));
         EDITION_MODULES = java.util.Collections.unmodifiableMap(modules);
     }
 
