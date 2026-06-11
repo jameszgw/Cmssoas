@@ -4,6 +4,7 @@ export interface LicenseView {
   licenseId: string
   tenantCode: string
   customer: string
+  productCode: string
   edition: string
   mode: string
   status: string
