@@ -64,7 +64,7 @@ public class SubscriptionService {
         List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
         Map<String, Object> features = readJson(plan.getFeatures());
         IssueRequest issue = new IssueRequest(
-                r.tenantCode(), r.customer(), "CODEMAN", plan.getCode(), "HYBRID",
+                r.tenantCode(), r.customer(), plan.getProductCode(), plan.getEditionOrCode(), "HYBRID",
                 modules, features, plan.getVersionRange(),
                 r.startAt(), r.endAt(), plan.getSeats() * qty,
                 "订阅自动签发：" + plan.getCode() + " x" + qty);
@@ -103,7 +103,7 @@ public class SubscriptionService {
             List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
             licenseService.modify(s.getLicenseId(), new com.codeman.platform.license.dto.LicenseDtos.ModifyRequest(
                     modules, readJson(plan.getFeatures()), plan.getVersionRange(),
-                    plan.getSeats() * s.getQty(), plan.getCode(), "套餐变更：" + s.getPlanCode() + " → " + plan.getCode()));
+                    plan.getSeats() * s.getQty(), plan.getEditionOrCode(), "套餐变更：" + s.getPlanCode() + " → " + plan.getCode()));
         }
         String old = s.getPlanCode();
         s.setPlanCode(plan.getCode());

@@ -19,12 +19,13 @@ public final class CatalogDtos {
     public record MatrixView(List<String> versions, List<MatrixRow> rows) {}
 
     public record PlanView(String code, String name, String planKey, int price,
-                           String versionRange, int seats, List<String> modules, String status) {
+                           String versionRange, int seats, List<String> modules, String status,
+                           String productCode, String edition) {
         public static PlanView from(Plan p) {
             return new PlanView(p.getCode(), p.getName(), p.getPlanKey(), p.getPrice(),
                     p.getVersionRange(), p.getSeats(),
                     p.getModules().isBlank() ? List.of() : List.of(p.getModules().split(",")),
-                    p.getStatus());
+                    p.getStatus(), p.getProductCode(), p.getEditionOrCode());
         }
     }
 
