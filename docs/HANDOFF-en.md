@@ -4,7 +4,7 @@
 
 ## 0. TL;DR
 - **Project**: CODEMAN — Spring Boot code protection + License authentication + multi-tenant operations platform (backend + Vue3 console + client SDK + code-protection demo).
-- **Dev branch**: `claude/loving-einstein-Pp4cA` (work only here; **never** touch `main`). GitHub repo slug stays `jameszgw/cmssoas` (**not renamed**; README badges keep this slug).
+- **Dev branch**: `claude/hopeful-ride-u8txs8` (current session; previously `claude/loving-einstein-Pp4cA`; work only on the dev branch, **never** touch `main`). GitHub repo slug stays `jameszgw/cmssoas` (**not renamed**; README badges keep this slug).
 - **Latest commit**: `0c4ad69` (handoff); last feature `63830a4` (online code hardening). CI fully green (run #56, 11 jobs success; tag job skipped is expected).
 - **Stack/versions**: Spring Boot **3.5.0**, Java **21** (Java 8 NOT supported), Maven; Vue3+TS+Element Plus+vite; groupId/base package **com.codeman**; version **1.0.1**; license **GPLv3**.
 - **Databases**: H2 (dev default, `MODE=PostgreSQL`) / PostgreSQL (prod, `profile=prod`) / MySQL 5.7·8.0 (`profile=mysql`, `db/mysql` dialect scripts, validated by CI real-DB matrix).
@@ -24,8 +24,8 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 - Public backend endpoints (`/pub/**`, bypass JwtAuthFilter): `/pub/notices/active`, `/pub/consents`, `/pub/payments/notify/{channel}`, `/pub/portal/login|overview`, `/pub/crl`, `/pub/license/public-keys`.
 
 ## 3. Migrations
-- PG/H2: `server/.../db/migration/V1..V18`. MySQL dialect: `server/.../db/mysql/V1..V18` (transform: `IDENTITY→AUTO_INCREMENT`, `TIMESTAMP→DATETIME`, boolean default `1/0`, per-table `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`).
-- **When adding a migration**: ① add `Vn` under `db/migration`; ② add same-numbered MySQL dialect under `db/mysql`; ③ run `bash deploy/sql/generate-schema.sh` to regenerate `deploy/sql/schema-*.sql`; ④ bump the migration-count assertions in `MysqlMigrationTest`/`MysqlRealMigrationTest` (currently **18**).
+- PG/H2: `server/.../db/migration/V1..V19`. MySQL dialect: `server/.../db/mysql/V1..V19` (transform: `IDENTITY→AUTO_INCREMENT`, `TIMESTAMP→DATETIME`, boolean default `1/0`, per-table `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`).
+- **When adding a migration**: ① add `Vn` under `db/migration`; ② add same-numbered MySQL dialect under `db/mysql`; ③ run `bash deploy/sql/generate-schema.sh` to regenerate `deploy/sql/schema-*.sql`; ④ bump the migration-count assertions in `MysqlMigrationTest`/`MysqlRealMigrationTest` (currently **19**).
 - Recent: V15 customer, V16 tenant_portal, V17 tax_invoice, V18 harden.
 
 ## 4. Provider abstraction pattern (core idiom: vendor-agnostic + degradable)
@@ -41,9 +41,17 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 - Run output: `java -Dharden.license=<.lic> -jar x.jar` (bound) / `java -Dharden.key=<pass> -jar x.jar` (passphrase).
 - **Gotcha fixes**: proguard-base brings log4j-core which clashes with Spring's log4j-to-slf4j → added `src/main/resources/log4j2.component.properties` forcing `Log4jContextFactory`; ProGuard library jars limited to `java.base/java.logging` (avoid huge java.desktop hang); `HardenService.run` catches `Throwable` (prevent Error silently hanging a job).
 
+## 5b. CmPrint commercial licensing & audit query (most recent big feature)
+- **Contract**: claims.productCode=CMPRINT; edition ∈ COMMUNITY/PROFESSIONAL/ENTERPRISE; claims.features = "edition preset ∪ contract overrides" (keys = CmPrint CAPABILITY_KEYS, 37 keys); client calls `resolveEdition(edition.toLowerCase(), features)` → `<cmprint-designer :capabilities>`. Explicit keys are frozen at issue time → no drift between repos.
+- Backend `com.codeman.platform.cmprint`: `CmprintEditions` (constants mirror cmprint capabilities.js — **keep both sides in sync**), endpoints editions/licenses/issue (edition + capability-key whitelist validation) / audit (Specification filter: CMPRINT_* actions + generic license events matched by this product's license ids; action/keyword/date range + paging + CSV).
+- **Subscription auto-issue fix**: plan gained product_code/edition; SubscriptionService no longer hardcodes "CODEMAN"/plan-code (legacy CODEMAN plans backfilled edition=code, behavior unchanged). LicenseView gained productCode.
+- Frontend `views/CmPrint.vue` (perm=cmprint): edition × capability matrix (only the 13 differing keys), issue wizard (switches init from edition preset; only diffs vs preset submitted as overrides), license list (renew/revoke/download reuse generic endpoints), audit query.
+- Client kit `examples/cmprint-integration/`: cmprint-license.mjs (zero-dep WebCrypto Ed25519 verifier; public key = X.509 SPKI base64), verify-demo.mjs, issue-and-verify.sh (full chain verified live; tampered .lic rejected).
+- **Pitfalls**: Java `Map.copyOf` does not preserve order (edition-order assertion failed once) — use unmodifiable LinkedHashMap; `/api/**` requires JWT even without @RequirePerm (only `/pub/**` is anonymous).
+
 ## 6. Tests & CI
-- Backend `mvn test`: ~27 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
-- CI `.github/workflows/ci.yml`: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright) / **mysql matrix [8.0, 5.7] real-DB migration** / ci-summary / release(tag only).
+- Backend `mvn test`: 33 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
+- CI `.github/workflows/ci.yml`: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 8 specs incl. cmprint) / **mysql matrix [8.0, 5.7] real-DB migration** / ci-summary / release(tag only).
 - **Real-run technique in sandbox** (no persistent `&`): use the Bash tool with `run_in_background:true` to run `java -jar`; wait with `until grep "Tomcat started on port 8080" log`; inspect CI via `mcp__github__actions_*` + `mcp__github__get_job_logs` (when list output is too large, save to file and parse with python).
 
 ## 7. Known limits / candidate TODOs (not done)
@@ -54,7 +62,7 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 
 ## 8. Constraints (throughout)
 - Private keys never plaintext (inject via env/Nacos/KMS); AI support never sends secrets/PII.
-- Develop & push only on `claude/loving-einstein-Pp4cA`; `git push -u origin <branch>`, retry on network failure with 2/4/8/16s backoff; **no PR, no tag** unless explicitly asked.
+- Develop & push only on the current dev branch (`claude/hopeful-ride-u8txs8`); `git push -u origin <branch>`, retry on network failure with 2/4/8/16s backoff; **no PR, no tag** unless explicitly asked.
 - Docs: `docs/` (features/design) + `deploy/` (deploy/ops/help); keep README/DEPLOY/deploy indexes in sync; code & migrations carry Chinese comments.
 
 ## 9. Key paths

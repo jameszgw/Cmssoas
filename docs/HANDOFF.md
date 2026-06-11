@@ -5,8 +5,8 @@
 
 ## 0. 速览
 - **项目**:CODEMAN —— Spring Boot 代码保护 + License 认证 + 多租户运营平台(后端 + Vue3 控制台 + 客户端 SDK + 代码保护示例)。
-- **开发分支**:`claude/loving-einstein-Pp4cA`(所有工作在此;**禁止**改 `main`)。GitHub 仓库 slug 仍为 `jameszgw/cmssoas`(**未改名**,徽章/链接保持此 slug)。
-- **最新提交**:`63830a4`(在线代码加固)。CI 全绿(run #56,11 作业 success;tag 作业 skipped 属正常)。
+- **开发分支**:`claude/hopeful-ride-u8txs8`(当前会话;此前为 `claude/loving-einstein-Pp4cA`,所有工作在开发分支;**禁止**改 `main`)。GitHub 仓库 slug 仍为 `jameszgw/cmssoas`(**未改名**,徽章/链接保持此 slug)。
+- **最新功能**:CmPrint 商业授权与审计查询集成(产品 CMPRINT;详见 docs/功能-CmPrint商业授权与审计查询.md)。
 - **栈/版本**:Spring Boot **3.5.0**,Java **21**(不支持 Java 8),Maven;Vue3+TS+Element Plus+vite;groupId/根包 **com.codeman**;版本 **1.0.1**;License **GPLv3**。
 - **数据库**:H2(开发默认,`MODE=PostgreSQL`)/ PostgreSQL(生产,`profile=prod`)/ MySQL 5.7·8.0(`profile=mysql`,`db/mysql` 方言脚本,CI 真机矩阵验证)。
 - **初始账号**:`admin / 8888`(首登强制改密);默认用户初始密码 `Codeman@123`。
@@ -19,15 +19,15 @@
 - 全仓 `cmssoas/CMSSOAS/Cmssoas` 残留 = 0(LICENSE 文件为 GPLv3 原文,未动)。
 
 ## 2. 已交付的业务模块(后端包 `com.codeman.platform.*`)
-overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / rbac / mail(outbox) / alert / common。
-- 前端菜单(权限点):overview, tenant, license, online, catalog, plan, **customer**, billing, **contract**, **notice**, **cs**, **harden**, **tenant:portal**(自助门户管理), audit, role:view, user:view。
+overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / **cmprint(CmPrint 商业授权+审计查询)** / rbac / mail(outbox) / alert / common。
+- 前端菜单(权限点):overview, tenant, license, online, catalog, plan, **cmprint**, **customer**, billing, **contract**, **notice**, **cs**, **harden**, **tenant:portal**(自助门户管理), audit, role:view, user:view。
 - 公开页(无 ops 鉴权):`/activate/:token`(激活)、`/portal` + `/portal/home`(租户门户)。
 - 公开后端端点(`/pub/**`,JwtAuthFilter 放行):`/pub/notices/active`、`/pub/consents`、`/pub/payments/notify/{channel}`、`/pub/portal/login|overview`、`/pub/crl`、`/pub/license/public-keys`。
 
 ## 3. 数据库迁移
-- PG/H2:`server/.../db/migration/V1..V18`。MySQL 方言:`server/.../db/mysql/V1..V18`(机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`、每表 `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)。
-- **新增迁移后必做**:① 在 `db/migration` 加 `Vn`;② 在 `db/mysql` 加同号方言版(同样转换);③ 运行 `bash deploy/sql/generate-schema.sh` 重生成 `deploy/sql/schema-*.sql`;④ 更新 `MysqlMigrationTest`/`MysqlRealMigrationTest` 里的迁移计数断言(当前 **18**)。
-- 最近迁移:V15 customer、V16 tenant_portal、V17 tax_invoice、V18 harden。
+- PG/H2:`server/.../db/migration/V1..V19`。MySQL 方言:`server/.../db/mysql/V1..V19`(机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`、每表 `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)。
+- **新增迁移后必做**:① 在 `db/migration` 加 `Vn`;② 在 `db/mysql` 加同号方言版(同样转换);③ 运行 `bash deploy/sql/generate-schema.sh` 重生成 `deploy/sql/schema-*.sql`;④ 更新 `MysqlMigrationTest`/`MysqlRealMigrationTest` 里的迁移计数断言(当前 **19**)。
+- 最近迁移:V16 tenant_portal、V17 tax_invoice、V18 harden、V19 cmprint_catalog(plan 增 product_code/edition + CMPRINT 产品/套餐/权限种子)。
 
 ## 4. "通用·不绑定厂商·可降级"的 provider 抽象(本项目核心范式)
 - 智能客服:`ChatProvider`+`OpenAiCompatProvider`(纯 JDK HttpClient,SSE);未配置 `app.ai.*` 则降级知识库(关键词召回 `knowledge/faq.md`)。配 `AI_BASE_URL/AI_API_KEY/AI_MODEL` 即接 GLM-4-Flash/通义/DeepSeek/Ollama。
@@ -42,9 +42,25 @@ overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·*
 - 产物运行:`java -Dharden.license=<.lic> -jar x.jar`(绑定)/ `java -Dharden.key=<口令> -jar x.jar`(口令)。
 - **关键修复**:proguard-base 拉入 log4j-core 与 Spring 的 log4j-to-slf4j 冲突 → 加 `src/main/resources/log4j2.component.properties` 强制 `Log4jContextFactory`;ProGuard library jars 仅用 `java.base/java.logging`(避免 java.desktop 超大拖慢);`HardenService.run` 捕获 `Throwable`(防 Error 静默挂死任务)。
 
+## 5b. CmPrint 商业授权与审计查询(最近一次大功能,细节)
+- **契约**:claims.productCode=CMPRINT;edition ∈ COMMUNITY/PROFESSIONAL/ENTERPRISE;
+  claims.features=「档位预设 ∪ 合同微调」(键名=CmPrint CAPABILITY_KEYS 37 键);客户端
+  `resolveEdition(edition.toLowerCase(), features)` → `<cmprint-designer :capabilities>`。显式键固化防两侧漂移。
+- 后端 `com.codeman.platform.cmprint`:`CmprintEditions`(常量与 CmPrint capabilities.js 逐键一致,
+  **改动必须双侧同步**)、editions/licenses/issue(档位+能力键白名单校验)/audit(Specification 过滤:
+  CMPRINT_* 动作 + 本产品 License 编号关联通用事件;动作/关键字/时间段+分页+CSV)。
+- **订阅自动签发修复**:plan 新增 product_code/edition,SubscriptionService 不再写死 "CODEMAN"/套餐码
+  (存量 CODEMAN 套餐 edition=code 回填,行为不变)。LicenseView 增 productCode。
+- 前端 `views/CmPrint.vue`(perm=cmprint):档位×能力矩阵(只列 13 个有差异键)、签发向导
+  (开关按档位预设初始化,仅提交相对预设的 overrides)、列表(续期/吊销/下载复用通用端点)、审计查询。
+- 集成件 `examples/cmprint-integration/`:cmprint-license.mjs(零依赖 WebCrypto Ed25519 验签适配器,
+  公钥=X.509 SPKI base64)、verify-demo.mjs、issue-and-verify.sh(全链路已真机跑通,篡改 .lic 被拒)。
+- **坑**:Java `Map.copyOf` 不保序(档位顺序断言曾因此挂),保序场景用 unmodifiable LinkedHashMap;
+  `/api/**` 即使无 @RequirePerm 也要带 JWT(仅 `/pub/**` 匿名)。
+
 ## 6. 测试与 CI
-- 后端测试(`mvn test`):约 27 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
-- CI `.github/workflows/ci.yml`:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright) / **mysql 矩阵 [8.0, 5.7] 真机迁移** / ci-summary / release(仅 tag)。
+- 后端测试(`mvn test`):33 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
+- CI `.github/workflows/ci.yml`:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright,8 specs 含 cmprint) / **mysql 矩阵 [8.0, 5.7] 真机迁移** / ci-summary / release(仅 tag)。
 - **真机验证手法**(沙箱无常驻 `&`):用 Bash 工具 `run_in_background:true` 跑 `java -jar`;`until grep "Tomcat started on port 8080" log` 等待;`mcp__github__actions_*` + `mcp__github__get_job_logs` 查 CI(list 输出过大时存盘后用 python 解析)。
 
 ## 7. 已知限制 / 待办候选(未做)
@@ -55,7 +71,7 @@ overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·*
 
 ## 8. 约束(贯穿全程)
 - 私钥不落明文(env/Nacos/KMS 注入);智能客服不外发密钥/隐私。
-- 仅在 `claude/loving-einstein-Pp4cA` 开发并推送;`git push -u origin <branch>` 失败按 2/4/8/16s 退避重试;**不建 PR、不推 tag**除非明确要求。
+- 仅在当前开发分支(`claude/hopeful-ride-u8txs8`)开发并推送;`git push -u origin <branch>` 失败按 2/4/8/16s 退避重试;**不建 PR、不推 tag**除非明确要求。
 - 文档优先 `docs/`(功能/设计)与 `deploy/`(部署/操作/帮助);改动后保持 README/DEPLOY/deploy 索引同步;代码与迁移含中文注释。
 
 ## 9. 常用路径
