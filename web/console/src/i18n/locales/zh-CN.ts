@@ -4,6 +4,7 @@ export default {
   lang: { label: '中文' },
   nav: {
     overview: '运营总览', tenants: '租户管理', license: 'License 授权', online: '在线监控',
+    cmreport: 'CmReport 授权',
     catalog: '产品与版本', plan: '套餐订阅', billing: '计费账单', audit: '审计追溯', system: '角色权限', users: '用户管理',
     contract: '合同签约', notice: '须知与授权', cs: '智能客服', customer: '客户管理', portalAdmin: '自助门户', harden: '代码加固',
   },
@@ -60,6 +61,12 @@ export default {
     m: { NONE: '无', VIEW: '只读', EDIT: '编辑', FULL: '完全' },
   },
   help: {
+    cmreport: {
+      title: '操作指引 · CmReport 授权',
+      t1: '「按版本签发」选择商业版本即可,版本基线能力由产品侧推导;附加包在基线之上叠加(如 AI 包)。',
+      t2: '下载 .lic 交付客户导入产品(/license/activate);「验签公钥」复制到产品配置后开启强制门控。',
+      t3: '续期/吊销/历史复用通用 License 流程;CMREPORT-* 套餐订阅会自动签发对应版本授权。',
+    },
     overview: {
       title: '操作指引 · 运营总览',
       t1: '顶部「开通新租户」可一键建库、初始化并向管理员邮箱发送开通邮件。',
@@ -209,6 +216,20 @@ export default {
     note: '为保障安全，首次登录将强制修改密码并绑定双因素认证（MFA）。',
   },
   placeholder: { wip: '该模块正在建设中', wipSub: '将复用统一的设计系统、换肤与国际化能力' },
+  cmr: {
+    lead: 'CmReport 报表平台产品线:按商业版本(community/lite/pro/enterprise/ultimate)签发产品格式 License(RSA SHA256,与 CODEMAN 信任根隔离),支持附加包、限额与机器指纹。',
+    issue: '＋ 按版本签发', doIssue: '签发', issued: '已签发 {id}(RSA SHA256,CmReport 产品格式)', issueFail: '签发失败',
+    issueReason: '控制台按版本签发', loadFail: '加载 CmReport 授权列表失败', required: '请填写租户编号与客户名称',
+    edition: '商业版本', addons: '附加包(版本之上叠加)', addonsNone: '当前版本基线已含全部可选附加能力',
+    capPreview: '该版本能力集({n} 项):',
+    limits: '限额', nodes: '节点', users: '用户数', instances: '实例数', limitsTip: '0 = 不限;并发/节点/用户/实例与产品 LicenseManager 限额键一致。',
+    fingerprint: '机器指纹', fingerprintPh: '可空 = 不绑定;产品侧 /license/status 可查看本机指纹',
+    customerPh: '客户名称', revokeDefault: '客户违约',
+    verify: '自检', verifyOk: '验签通过(payload 如下)', verifyFail: '验签失败:令牌损坏或密钥不匹配',
+    pubKey: '验签公钥', alg: '算法',
+    pubKeyTip: '将公钥粘贴到 CmReport 的 cmreport.license.public-key(并设 enabled: true 强制门控),产品即可离线验签本平台签发的 .lic。',
+    copyKey: '复制公钥', copyYaml: '复制 yml 配置',
+  },
   lic: {
     lead: '非对称签名签发 License（Ed25519，私钥不出域），支持离线 .lic 下载、续期、变更、吊销与版本历史追溯。',
     issue: '＋ 签发 License', loadFail: '加载 License 列表失败', required: '请填写租户编号与客户名称',

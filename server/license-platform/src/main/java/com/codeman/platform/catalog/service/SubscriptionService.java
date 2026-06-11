@@ -60,11 +60,16 @@ public class SubscriptionService {
         if (!r.endAt().isAfter(r.startAt())) throw ApiException.badRequest("结束日期必须晚于开始日期");
         int qty = r.qty() == null ? 1 : Math.max(1, r.qty());
 
-        // —— 据套餐自动签发 License ——
+        // —— 据套餐自动签发 License(产品路由:CMREPORT-* 套餐签发 CmReport 产品格式)——
         List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
         Map<String, Object> features = readJson(plan.getFeatures());
+        boolean cmReport = plan.getCode().startsWith("CMREPORT");
+        String productCode = cmReport ? "CMREPORT" : "CODEMAN";
+        String edition = cmReport
+                ? String.valueOf(features.getOrDefault("cmEdition", "pro"))
+                : plan.getCode();
         IssueRequest issue = new IssueRequest(
-                r.tenantCode(), r.customer(), "CODEMAN", plan.getCode(), "HYBRID",
+                r.tenantCode(), r.customer(), productCode, edition, cmReport ? "OFFLINE" : "HYBRID",
                 modules, features, plan.getVersionRange(),
                 r.startAt(), r.endAt(), plan.getSeats() * qty,
                 "订阅自动签发：" + plan.getCode() + " x" + qty);
@@ -101,9 +106,14 @@ public class SubscriptionService {
                 .orElseThrow(() -> ApiException.badRequest("套餐不存在：" + newPlanCode));
         if (s.getLicenseId() != null) {
             List<String> modules = plan.getModules().isBlank() ? List.of() : Arrays.asList(plan.getModules().split(","));
+            Map<String, Object> planFeatures = readJson(plan.getFeatures());
+            // CMREPORT-* 套餐:版本取 features.cmEdition(产品格式重签由 LicenseService 按产品路由)
+            String edition = plan.getCode().startsWith("CMREPORT")
+                    ? String.valueOf(planFeatures.getOrDefault("cmEdition", "pro"))
+                    : plan.getCode();
             licenseService.modify(s.getLicenseId(), new com.codeman.platform.license.dto.LicenseDtos.ModifyRequest(
-                    modules, readJson(plan.getFeatures()), plan.getVersionRange(),
-                    plan.getSeats() * s.getQty(), plan.getCode(), "套餐变更：" + s.getPlanCode() + " → " + plan.getCode()));
+                    modules, planFeatures, plan.getVersionRange(),
+                    plan.getSeats() * s.getQty(), edition, "套餐变更：" + s.getPlanCode() + " → " + plan.getCode()));
         }
         String old = s.getPlanCode();
         s.setPlanCode(plan.getCode());

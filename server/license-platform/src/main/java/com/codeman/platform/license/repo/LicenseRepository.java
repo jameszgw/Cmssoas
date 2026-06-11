@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface LicenseRepository extends JpaRepository<License, Long> {
     Optional<License> findByLicenseId(String licenseId);
     List<License> findAllByOrderByCreatedAtDesc();
+
+    List<License> findByProductCodeOrderByCreatedAtDesc(String productCode);
     List<License> findByStatus(LicenseStatus status);
 }

@@ -35,14 +35,18 @@ public class LicenseService {
     private final SignatureService keyService;   // 可插拔签名实现（Ed25519 / SM2）
     private final ObjectMapper mapper;
     private final AuditWriter audit;
+    // CmReport 产品线签发器(productCode=CMREPORT 的行改用 RSA + 产品自有 payload 格式)
+    private final com.codeman.platform.cmreport.CmReportLicenseSigner cmReportSigner;
 
     public LicenseService(LicenseRepository licenseRepo, LicenseHistoryRepository historyRepo,
-                          SignatureService keyService, ObjectMapper mapper, AuditWriter audit) {
+                          SignatureService keyService, ObjectMapper mapper, AuditWriter audit,
+                          com.codeman.platform.cmreport.CmReportLicenseSigner cmReportSigner) {
         this.licenseRepo = licenseRepo;
         this.historyRepo = historyRepo;
         this.keyService = keyService;
         this.mapper = mapper;
         this.audit = audit;
+        this.cmReportSigner = cmReportSigner;
     }
 
     // ---------- 查询 ----------
@@ -238,8 +242,14 @@ public class LicenseService {
         historyRepo.save(LicenseHistory.of(l, op, "operator", reason));
     }
 
-    /** 依据实体当前字段构建 claims、签名并写回（claimsJson / signature / lic）。 */
+    /** 依据实体当前字段构建 claims、签名并写回（claimsJson / signature / lic）。
+     *  产品分流:CMREPORT 行使用 CmReport 产品格式(RSA SHA256,字段与产品验签端对齐),
+     *  其余(CODEMAN)保持原 Ed25519/SM2 claims 格式,续期/变更/到期重签同样按产品路由。 */
     private void resign(License l) {
+        if (com.codeman.platform.cmreport.CmReportLicenseSigner.isCmReport(l)) {
+            cmReportSigner.resign(l);
+            return;
+        }
         Map<String, Object> claims = new LinkedHashMap<>();
         claims.put("schemaVersion", 2);
         claims.put("licenseId", l.getLicenseId());

@@ -57,6 +57,10 @@ spring:
 app:
   license:
     sign-algo: ${LICENSE_SIGN_ALGO:ed25519}   # 签名算法：ed25519（默认）| sm2（国密）
+  cmreport:                                    # CmReport 产品线签发(RSA SHA256,与 CODEMAN 信任根隔离)
+    key-file: ${CMREPORT_KEY_FILE:./var/keys/cmreport-rsa.json}
+    rsa-priv: ${CMREPORT_RSA_PRIVATE_KEY:}     # KMS/env 注入 PKCS8 Base64(私钥不落盘);与 rsa-pub 成对
+    rsa-pub: ${CMREPORT_RSA_PUBLIC_KEY:}       # X509 Base64
   jwt:
     secret: ${JWT_SECRET:codeman-dev-secret-please-change-in-prod-0123456789}
     ttl-hours: ${JWT_TTL_HOURS:12}

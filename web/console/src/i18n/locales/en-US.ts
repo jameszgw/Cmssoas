@@ -4,6 +4,7 @@ export default {
   lang: { label: 'EN' },
   nav: {
     overview: 'Overview', tenants: 'Tenants', license: 'Licensing', online: 'Online',
+    cmreport: 'CmReport Licensing',
     catalog: 'Products', plan: 'Plans', billing: 'Billing', audit: 'Audit', system: 'Roles', users: 'Users',
     contract: 'Contracts', notice: 'Notices', cs: 'AI Support', customer: 'Customers', portalAdmin: 'Portal', harden: 'Hardening',
   },
@@ -60,6 +61,12 @@ export default {
     m: { NONE: 'None', VIEW: 'Read', EDIT: 'Edit', FULL: 'Full' },
   },
   help: {
+    cmreport: {
+      title: 'Guide · CmReport Licensing',
+      t1: 'Pick a commercial edition to issue; baseline capabilities are derived by the product, addons stack on top (e.g. AI pack).',
+      t2: 'Download the .lic and import it in the product (/license/activate); copy the verify key into the product config to enforce gating.',
+      t3: 'Renew/revoke/history reuse the common license flows; subscribing to a CMREPORT-* plan auto-issues the matching edition.',
+    },
     overview: {
       title: 'Guide · Overview',
       t1: 'Use “Onboard Tenant” to auto-provision the DB, initialize data and email the admin an activation invite.',
@@ -209,6 +216,20 @@ export default {
     note: 'For security, first login enforces a password change and MFA binding.',
   },
   placeholder: { wip: 'This module is under construction', wipSub: 'It will reuse the shared design system, theming and i18n' },
+  cmr: {
+    lead: 'CmReport product line: issue product-format licenses (RSA SHA256, isolated from the CODEMAN trust root) by commercial edition (community/lite/pro/enterprise/ultimate), with addons, limits and machine fingerprint.',
+    issue: '+ Issue by Edition', doIssue: 'Issue', issued: 'Issued {id} (RSA SHA256, CmReport format)', issueFail: 'Issue failed',
+    issueReason: 'Issued from console by edition', loadFail: 'Failed to load CmReport licenses', required: 'Tenant code and customer are required',
+    edition: 'Edition', addons: 'Addons (on top of edition)', addonsNone: 'All optional addons are already included in this edition',
+    capPreview: 'Capabilities of this edition ({n}):',
+    limits: 'Limits', nodes: 'Nodes', users: 'Users', instances: 'Instances', limitsTip: '0 = unlimited; keys match the product LicenseManager limits.',
+    fingerprint: 'Fingerprint', fingerprintPh: 'Empty = not bound; the product shows its fingerprint at /license/status',
+    customerPh: 'Customer name', revokeDefault: 'Customer breach',
+    verify: 'Verify', verifyOk: 'Signature valid (payload below)', verifyFail: 'Verification failed: token corrupted or key mismatch',
+    pubKey: 'Verify Key', alg: 'Algorithm',
+    pubKeyTip: 'Paste the public key into CmReport cmreport.license.public-key (and set enabled: true) so the product verifies .lic files issued by this platform offline.',
+    copyKey: 'Copy key', copyYaml: 'Copy yml config',
+  },
   lic: {
     lead: 'Asymmetric-signed licenses (Ed25519, private key never leaves the server); offline .lic download, renew, modify, revoke and version history.',
     issue: '＋ Issue License', loadFail: 'Failed to load licenses', required: 'Tenant ID and customer are required',

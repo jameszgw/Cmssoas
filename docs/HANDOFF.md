@@ -5,7 +5,7 @@
 
 ## 0. 速览
 - **项目**:CODEMAN —— Spring Boot 代码保护 + License 认证 + 多租户运营平台(后端 + Vue3 控制台 + 客户端 SDK + 代码保护示例)。
-- **开发分支**:`claude/loving-einstein-Pp4cA`(所有工作在此;**禁止**改 `main`)。GitHub 仓库 slug 仍为 `jameszgw/cmssoas`(**未改名**,徽章/链接保持此 slug)。
+- **开发分支**:`claude/dreamy-faraday-qhs9js`(当前会话;沿用约定:**禁止**改 `main`)。历史分支 `claude/loving-einstein-Pp4cA` 已合并。GitHub 仓库 slug 仍为 `jameszgw/cmssoas`(**未改名**,徽章/链接保持此 slug)。
 - **最新提交**:`63830a4`(在线代码加固)。CI 全绿(run #56,11 作业 success;tag 作业 skipped 属正常)。
 - **栈/版本**:Spring Boot **3.5.0**,Java **21**(不支持 Java 8),Maven;Vue3+TS+Element Plus+vite;groupId/根包 **com.codeman**;版本 **1.0.1**;License **GPLv3**。
 - **数据库**:H2(开发默认,`MODE=PostgreSQL`)/ PostgreSQL(生产,`profile=prod`)/ MySQL 5.7·8.0(`profile=mysql`,`db/mysql` 方言脚本,CI 真机矩阵验证)。
@@ -19,7 +19,7 @@
 - 全仓 `cmssoas/CMSSOAS/Cmssoas` 残留 = 0(LICENSE 文件为 GPLv3 原文,未动)。
 
 ## 2. 已交付的业务模块(后端包 `com.codeman.platform.*`)
-overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / rbac / mail(outbox) / alert / common。
+overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / **cmreport(CmReport 报表平台产品线授权:RSA SHA256 产品格式签发+版本矩阵+订阅路由,见 docs/功能-CmReport授权集成.md)** / rbac / mail(outbox) / alert / common。
 - 前端菜单(权限点):overview, tenant, license, online, catalog, plan, **customer**, billing, **contract**, **notice**, **cs**, **harden**, **tenant:portal**(自助门户管理), audit, role:view, user:view。
 - 公开页(无 ops 鉴权):`/activate/:token`(激活)、`/portal` + `/portal/home`(租户门户)。
 - 公开后端端点(`/pub/**`,JwtAuthFilter 放行):`/pub/notices/active`、`/pub/consents`、`/pub/payments/notify/{channel}`、`/pub/portal/login|overview`、`/pub/crl`、`/pub/license/public-keys`。
@@ -27,7 +27,7 @@ overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·*
 ## 3. 数据库迁移
 - PG/H2:`server/.../db/migration/V1..V18`。MySQL 方言:`server/.../db/mysql/V1..V18`(机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`、每表 `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)。
 - **新增迁移后必做**:① 在 `db/migration` 加 `Vn`;② 在 `db/mysql` 加同号方言版(同样转换);③ 运行 `bash deploy/sql/generate-schema.sh` 重生成 `deploy/sql/schema-*.sql`;④ 更新 `MysqlMigrationTest`/`MysqlRealMigrationTest` 里的迁移计数断言(当前 **18**)。
-- 最近迁移:V15 customer、V16 tenant_portal、V17 tax_invoice、V18 harden。
+- 最近迁移:V15 customer、V16 tenant_portal、V17 tax_invoice、V18 harden、**V19 cmreport_catalog(CmReport 产品/套餐 + license.signature 扩 512)**;迁移计数断言现为 **19**。
 
 ## 4. "通用·不绑定厂商·可降级"的 provider 抽象(本项目核心范式)
 - 智能客服:`ChatProvider`+`OpenAiCompatProvider`(纯 JDK HttpClient,SSE);未配置 `app.ai.*` 则降级知识库(关键词召回 `knowledge/faq.md`)。配 `AI_BASE_URL/AI_API_KEY/AI_MODEL` 即接 GLM-4-Flash/通义/DeepSeek/Ollama。

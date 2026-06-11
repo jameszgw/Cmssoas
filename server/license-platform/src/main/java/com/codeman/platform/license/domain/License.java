@@ -65,7 +65,7 @@ public class License {
     @Column(name = "claims_json", nullable = false, columnDefinition = "text")
     private String claimsJson;
 
-    @Column(nullable = false, length = 256)
+    @Column(nullable = false, length = 512)  // RSA-2048 签名(base64url)约 344 字符,Ed25519 约 86
     private String signature;
 
     @Column(nullable = false, columnDefinition = "text")

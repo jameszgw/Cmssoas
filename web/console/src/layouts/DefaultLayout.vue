@@ -23,6 +23,7 @@ const allNavs = [
   { to: '/overview', key: 'nav.overview', perm: 'overview' },
   { to: '/tenants', key: 'nav.tenants', perm: 'tenant' },
   { to: '/licensing', key: 'nav.license', perm: 'license' },
+  { to: '/cmreport', key: 'nav.cmreport', perm: 'license' },
   { to: '/online', key: 'nav.online', perm: 'online' },
   { to: '/products', key: 'nav.catalog', perm: 'catalog' },
   { to: '/plans', key: 'nav.plan', perm: 'plan' },

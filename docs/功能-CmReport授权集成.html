@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功能 · CmReport 报表平台授权集成 · CODEMAN 文档</title>
+<style>
+:root{--bg:#0a0e1a;--card:#121a30;--card2:#16203a;--line:#22304f;--txt:#e8edf7;--mut:#b3c1dc;--dim:#8294b4;--acc:#4f8cff;--acc2:#7c4dff;--ok:#23c483;--warn:#ffb547;--grad:linear-gradient(120deg,#4f8cff,#7c4dff 60%,#23c483 120%)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 600px at 90% -10%,rgba(124,77,255,.12),transparent 60%),var(--bg)}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;background:rgba(10,14,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .brand{display:flex;align-items:center;gap:9px;font-weight:800}
+header.top .logo{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:900}
+header.top .sp{flex:1}
+header.top a.lk{color:var(--mut);font-size:13.5px;padding:6px 10px;border-radius:8px}
+header.top a.lk:hover{color:#fff;background:rgba(255,255,255,.06);text-decoration:none}
+.wrap{max-width:920px;margin:0 auto;padding:34px 24px 90px}
+.crumbs{color:var(--dim);font-size:13px;margin-bottom:14px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;font-weight:800;scroll-margin-top:70px}
+h1{font-size:30px;margin:.2em 0 .6em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:23px;margin:1.5em 0 .5em;padding-top:.5em;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:1.3em 0 .4em;color:#dbe5fb}
+h4{font-size:16px;margin:1.1em 0 .3em;color:#cdd9f0}
+p{margin:.7em 0;color:var(--mut)}
+strong{color:var(--txt)}
+ul,ol{margin:.5em 0;padding-left:1.6em;color:var(--mut)}
+li{margin:.3em 0}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:rgba(124,77,255,.14);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:#cfe0ff}
+pre{background:#0b1020;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1em 0}
+pre code{background:none;border:0;padding:0;color:#cfe0ff;font-size:13.5px;line-height:1.65}
+blockquote{margin:1em 0;padding:.5em 1.1em;border-left:3px solid var(--acc);background:rgba(79,140,255,.07);border-radius:0 10px 10px 0;color:#cdd9f0}
+blockquote p{color:#cdd9f0}
+.tbl{overflow:auto;margin:1.1em 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--txt);white-space:nowrap}
+td{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+img{max-width:100%;border:1px solid var(--line);border-radius:10px;margin:.6em 0;background:#0b1020}
+figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em}
+.docfoot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px}
+/* 文档首页 */
+.hub h1{font-size:34px}
+.hub .lead{color:var(--mut);margin:0 0 26px}
+.grp{margin:22px 0}
+.grp h2{font-size:16px;border:0;padding:0;margin:0 0 10px;color:var(--acc);letter-spacing:1px;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dc{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.dc:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none}
+.dc b{color:var(--txt);display:block;font-size:15px}
+.dc span{color:var(--dim);font-size:12.5px}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">C</span>CODEMAN 文档</a>
+  <span class="sp"></span>
+  <a class="lk" href="../web/landing/help.html">🧭 帮助中心</a>
+  <a class="lk" href="index.html">📚 文档首页</a>
+  <a class="lk" href="../web/landing/index.html">🎉 官宣页</a>
+  <a class="lk" href="功能-CmReport授权集成.md">📄 源文件(md)</a>
+</header>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">文档首页</a> / 功能 · CmReport 报表平台授权集成</div>
+<h1 id="he58a9fe883bd">功能 · CmReport 报表平台授权集成</h1>
+<blockquote><p>CODEMAN 平台为 <strong>CmReport 报表平台</strong>(独立产品线)签发其产品格式的 License, 复用平台的租户/套餐/订阅/计费/审计闭环。日期:2026-06-11。</p>
+</blockquote>
+<h2 id="h312e20e99b86">1. 集成设计(双信任根、单平台)</h2>
+<div class="tbl"><table><thead><tr><th>维度</th><th>CODEMAN 自身</th><th>CmReport 产品线</th></tr></thead><tbody><tr><td>签名算法</td><td>Ed25519 / SM2(可切换)</td><td><strong>RSA-2048 SHA256withRSA</strong>(产品内置验签)</td></tr><tr><td>密钥</td><td><code>./var/keys/ed25519.json</code> 或 KMS/env</td><td><code>./var/keys/cmreport-rsa.json</code> 或 <code>CMREPORT_RSA_PRIVATE_KEY/PUBLIC_KEY</code></td></tr><tr><td>令牌格式</td><td>claims(schemaVersion 2)</td><td><code>base64url(payload).base64url(sig)</code>,payload 为产品 <code>License</code> 字段</td></tr><tr><td>版本语义</td><td>BASIC/PROFESSIONAL/ENTERPRISE/FLAGSHIP</td><td><strong>community/lite/pro/enterprise/ultimate</strong>(产品按版本推导能力基线)</td></tr><tr><td>记录存储</td><td><code>license</code> 表(<code>product_code=CODEMAN</code>)</td><td>同一张表(<code>product_code=CMREPORT</code>),续期/吊销/历史/下载共用</td></tr></tbody></table></div>
+<ul>
+<li><strong>产品分流</strong>:<code>LicenseService.resign()</code> 对 <code>product_code=CMREPORT</code> 的行改走</li>
+</ul>
+<p>  <code>CmReportLicenseSigner</code>(RSA + 产品 payload),其余保持原 claims 格式;   续期/套餐变更/到期重签均自动按产品路由,不会把 CmReport 授权改写成 CODEMAN 格式。</p>
+<ul>
+<li><strong>payload 字段</strong>(与产品 <code>com.codeman.report.license.License</code> 一一对应):</li>
+</ul>
+<p>  <code>licenseId / customer / edition / issuedAt(ms) / expiresAt(ms) / capabilities / addons / limits / fingerprint</code>。   <code>edition</code> 是版本基线(能力集由产品 <code>EditionCapabilities</code> 推导);<code>addons</code> 在基线之上叠加(如 <code>ai.pack</code>)。</p>
+<ul>
+<li><strong>能力矩阵副本</strong>:<code>CmReportEditions</code>(平台侧)与产品 <code>EditionCapabilities</code> 保持同步,</li>
+</ul>
+<p>  用于 UI 展示与附加包校验;产品才是能力语义的权威。</p>
+<h2 id="h322e20e7abaf">2. 端点(权限点复用 license:*)</h2>
+<div class="tbl"><table><thead><tr><th>端点</th><th>说明</th></tr></thead><tbody><tr><td><code>GET /api/cmreport/editions</code></td><td>版本矩阵(edition → 累计能力集)+ 附加包/限额键</td></tr><tr><td><code>POST /api/cmreport/licenses/issue</code></td><td>按版本签发:<code>{tenantCode, customer, edition, addons[], limits{}, fingerprint?, notBefore, notAfter}</code></td></tr><tr><td><code>GET /api/cmreport/licenses</code></td><td>CmReport 产品线授权列表</td></tr><tr><td><code>GET /api/cmreport/public-key</code></td><td>RSA 验签公钥(X509 Base64,产品配置用)+ kid</td></tr><tr><td><code>GET /api/cmreport/licenses/{id}/verify</code></td><td>运营侧自检(RSA 验签 + payload 回显)</td></tr><tr><td><code>GET /api/licenses/{id}/download</code> 等</td><td>下载 .lic / 续期 / 吊销 / 历史 —— 复用通用端点</td></tr></tbody></table></div>
+<p>控制台页面:<strong>「CmReport 授权」</strong>(<code>/cmreport</code>,导航复用 license 权限点): 按版本签发(能力集预览/附加包/限额/指纹)、列表、下载 .lic、自检、续期、吊销、验签公钥复制(含 yml 片段)。</p>
+<h2 id="h332e20e5a597">3. 套餐与订阅自动签发</h2>
+<p>迁移 <code>V19__cmreport_catalog.sql</code> 注入产品 <code>CMREPORT</code>、能力模块与 <strong>5 档套餐</strong>:</p>
+<div class="tbl"><table><thead><tr><th>套餐</th><th>版本(features.cmEdition)</th><th>限额示例</th></tr></thead><tbody><tr><td><code>CMREPORT-COMMUNITY</code></td><td>community</td><td>并发 10</td></tr><tr><td><code>CMREPORT-LITE</code></td><td>lite</td><td>并发 30 / 1 实例</td></tr><tr><td><code>CMREPORT-PRO</code></td><td>pro</td><td>并发 100 / 2 实例</td></tr><tr><td><code>CMREPORT-ENT</code></td><td>enterprise</td><td>并发 500 / 4 节点</td></tr><tr><td><code>CMREPORT-ULT</code></td><td>ultimate(含 ai.pack)</td><td>并发 2000 / 16 节点</td></tr></tbody></table></div>
+<p>订阅(<code>POST /api/subscriptions</code>,套餐码 <code>CMREPORT-*</code>)即自动签发对应版本的产品格式 License, 计费/出账/审计与 CODEMAN 套餐一致;套餐变更按新版本重签(版本 +1),退订吊销。</p>
+<h2 id="h342e20e4baa7">4. 产品侧(CmReport)配置</h2>
+<pre><code># CmReport 的 application.yml
+cmreport:
+  license:
+    enabled: true            # 强制门控(默认 false=过渡期放行)
+    public-key: &lt;GET /api/cmreport/public-key 的 publicKeyBase64&gt;</code></pre>
+<ol>
+<li>控制台「CmReport 授权 → 验签公钥」一键复制 yml 片段;</li>
+<li>签发后下载 <code>.lic</code>,产品侧 <code>POST /report/server/license/activate</code> 导入(或配置文件预置);</li>
+<li>产品 <code>/report/server/license/status</code> 可查看版本/能力清单/到期/限额与本机指纹。</li>
+</ol>
+<h2 id="h352e20e5ae89">5. 安全与限制</h2>
+<ul>
+<li>RSA 私钥与 Ed25519 私钥<strong>相互独立</strong>,轮换互不影响;生产用 <code>CMREPORT_RSA_PRIVATE_KEY/PUBLIC_KEY</code> 经 KMS 注入(私钥不落盘)。</li>
+<li>CmReport 当前为<strong>离线令牌</strong>:平台侧吊销仅作运营记录与续发拦截,已发离线令牌在产品侧到期前仍有效</li>
+</ul>
+<p>  (产品在线激活/心跳通道为产品路线图 L.2.2,接通后可实时吊销)。</p>
+<ul>
+<li><code>signature</code> 列由 V19 扩至 512(RSA-2048 签名 base64url ≈344 字符)。</li>
+</ul>
+<h2 id="h362e20e9aa8c">6. 验证</h2>
+<ul>
+<li><code>mvn test</code> 全绿;新增 <code>CmReportLicenseIntegrationTest</code> 5 用例:</li>
+</ul>
+<p>  版本矩阵、按版本签发(payload 字段/附加包/限额/指纹,以产品同款 RSA 验签流程核验)、   续期重签仍为产品格式、<code>CMREPORT-ENT</code> 订阅自动签发路由、未知版本/附加包 4xx 拒绝。</p>
+<ul>
+<li>迁移计数 18 → <strong>19</strong>(<code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> 同步更新);</li>
+</ul>
+<p>  <code>deploy/sql/schema-*.sql</code> 已由 <code>generate-schema.sh</code> 重生成。</p>
+
+<div class="docfoot">本页由 <code>docs/功能-CmReport授权集成.md</code> 自动生成 · <a href="../web/landing/help.html">返回帮助中心</a> · <a href="index.html">文档首页</a></div>
+</div>
+</body>
+</html>
