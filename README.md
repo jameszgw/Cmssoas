@@ -55,6 +55,7 @@
 | 运营前端 | `web/console` | Vue3 + TS + Element Plus：换肤/2K-4K/中英 i18n/操作帮助 |
 | 客户端 SDK | `sdk/license-sdk` | Ed25519 / 国密 SM2 验签 + 功能/版本门禁 |
 | 代码保护示例 | `examples/protected-app` | 类加密 + 解密密钥与 License 绑定 + ProGuard 混淆 |
+| 模板资产管理 | `server/.../tpl` + 控制台「模板资产」 | CmPrint 云端模板库+审批流:细粒度权限/版本回滚/按租户分发,见 [功能说明](docs/功能-模板资产管理.md) |
 | CmPrint 授权集成 | `examples/cmprint-integration` | CmPrint 打印设计器商业授权(社区/专业/企业三档 + 能力微调)与审计查询;客户端验签适配器 + 全链路脚本,见 [功能说明](docs/功能-CmPrint商业授权与审计查询.md) |
 | 部署/可观测 | `docker-compose.yml`、`infra/` | PostgreSQL + Redis + Prometheus + Grafana |
 

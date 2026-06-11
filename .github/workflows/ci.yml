@@ -133,6 +133,8 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: CmPrint 契约一致性校验 (CmprintEditions.java ↔ cmprint-contract.json)
+        run: node scripts/check-cmprint-contract.mjs
 
   e2e:
     name: 端到端测试 (Playwright)

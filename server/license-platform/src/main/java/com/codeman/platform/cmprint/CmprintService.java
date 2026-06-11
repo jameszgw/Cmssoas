@@ -97,6 +97,7 @@ public class CmprintService {
         Specification<AuditLog> spec = (root, q, cb) -> {
             List<Predicate> scope = new ArrayList<>();
             scope.add(cb.like(root.get("action"), "CMPRINT_%"));
+            scope.add(cb.like(root.get("action"), "TPL_%")); // 模板资产(云端模板库/审批)同属 CmPrint 业务轨迹
             for (String id : ids) scope.add(cb.like(root.get("detail"), "%" + id + "%"));
             List<Predicate> and = new ArrayList<>();
             and.add(cb.or(scope.toArray(new Predicate[0])));

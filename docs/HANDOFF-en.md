@@ -24,8 +24,8 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 - Public backend endpoints (`/pub/**`, bypass JwtAuthFilter): `/pub/notices/active`, `/pub/consents`, `/pub/payments/notify/{channel}`, `/pub/portal/login|overview`, `/pub/crl`, `/pub/license/public-keys`.
 
 ## 3. Migrations
-- PG/H2: `server/.../db/migration/V1..V19`. MySQL dialect: `server/.../db/mysql/V1..V19` (transform: `IDENTITY→AUTO_INCREMENT`, `TIMESTAMP→DATETIME`, boolean default `1/0`, per-table `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`).
-- **When adding a migration**: ① add `Vn` under `db/migration`; ② add same-numbered MySQL dialect under `db/mysql`; ③ run `bash deploy/sql/generate-schema.sh` to regenerate `deploy/sql/schema-*.sql`; ④ bump the migration-count assertions in `MysqlMigrationTest`/`MysqlRealMigrationTest` (currently **19**).
+- PG/H2: `server/.../db/migration/V1..V20`. MySQL dialect: `server/.../db/mysql/V1..V20` (transform: `IDENTITY→AUTO_INCREMENT`, `TIMESTAMP→DATETIME`, boolean default `1/0`, per-table `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`).
+- **When adding a migration**: ① add `Vn` under `db/migration`; ② add same-numbered MySQL dialect under `db/mysql`; ③ run `bash deploy/sql/generate-schema.sh` to regenerate `deploy/sql/schema-*.sql`; ④ bump the migration-count assertions in `MysqlMigrationTest`/`MysqlRealMigrationTest` (currently **20**).
 - Recent: V15 customer, V16 tenant_portal, V17 tax_invoice, V18 harden.
 
 ## 4. Provider abstraction pattern (core idiom: vendor-agnostic + degradable)
@@ -49,9 +49,15 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 - Client kit `examples/cmprint-integration/`: cmprint-license.mjs (zero-dep WebCrypto Ed25519 verifier; public key = X.509 SPKI base64), verify-demo.mjs, issue-and-verify.sh (full chain verified live; tampered .lic rejected).
 - **Pitfalls**: Java `Map.copyOf` does not preserve order (edition-order assertion failed once) — use unmodifiable LinkedHashMap; `/api/**` requires JWT even without @RequirePerm (only `/pub/**` is anonymous).
 
+## 5c. Template asset management (latest feature)
+- `com.codeman.platform.tpl`: print_template (live content / draft separated) + version trail + per-tenant gallery keys; approval flow DRAFT→PENDING(read-only)→APPROVED; rollback pulls history into the draft and goes through approval again; every action audited as TPL_* (included in the CmPrint audit query scope).
+- Public gallery `/pub/cmprint/gallery/{key}/api/templates...` matches the cmprint cloud-api.js contract verbatim ({success,message?,data}; items id/name/template/tags/version/author/useCount); designer uploads land as PENDING; owners may only delete not-yet-live uploads.
+- **Contract consistency check (CI-enforced)**: `scripts/check-cmprint-contract.mjs` compares CmprintEditions.java ↔ examples/cmprint-integration/cmprint-contract.json (cmprint repo runs test/cmprint-contract.test.js against its docs/cmprint-contract.json; the two JSON files must be byte-identical, sha256[:16]=a1ef84c1629dea43).
+- **Pitfalls**: Spring Data does not scan repository interfaces nested inside a plain interface (NoSuchBeanDefinition) — one top-level file per repo; browser 403 is usually the CORS allowlist (backend only permits :5173), not auth.
+
 ## 6. Tests & CI
-- Backend `mvn test`: 33 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
-- CI `.github/workflows/ci.yml`: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 8 specs incl. cmprint) / **mysql matrix [8.0, 5.7] real-DB migration** / ci-summary / release(tag only).
+- Backend `mvn test`: 37 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
+- CI `.github/workflows/ci.yml`: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 9 specs incl. cmprint/templates) + contract check (check-cmprint-contract) / **mysql matrix [8.0, 5.7] real-DB migration** / ci-summary / release(tag only).
 - **Real-run technique in sandbox** (no persistent `&`): use the Bash tool with `run_in_background:true` to run `java -jar`; wait with `until grep "Tomcat started on port 8080" log`; inspect CI via `mcp__github__actions_*` + `mcp__github__get_job_logs` (when list output is too large, save to file and parse with python).
 
 ## 7. Known limits / candidate TODOs (not done)

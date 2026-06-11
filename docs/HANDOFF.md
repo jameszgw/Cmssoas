@@ -19,15 +19,15 @@
 - 全仓 `cmssoas/CMSSOAS/Cmssoas` 残留 = 0(LICENSE 文件为 GPLv3 原文,未动)。
 
 ## 2. 已交付的业务模块(后端包 `com.codeman.platform.*`)
-overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / **cmprint(CmPrint 商业授权+审计查询)** / rbac / mail(outbox) / alert / common。
-- 前端菜单(权限点):overview, tenant, license, online, catalog, plan, **cmprint**, **customer**, billing, **contract**, **notice**, **cs**, **harden**, **tenant:portal**(自助门户管理), audit, role:view, user:view。
+overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·**签名CRL**·到期自动停用;Ed25519+SM2) / online(SDK 在线通道) / catalog(产品·套餐·订阅) / **customer(客户主数据+客户360)** / billing(**支付收款(人工确认)** + **电子发票**) / **contract(自建电子签·哈希存证)** / **notice(须知+用户授权)** / **cs(智能客服,OpenAI 兼容,可降级)** / **portal(租户自助门户)** / **harden(在线代码加固)** / **cmprint(CmPrint 商业授权+审计查询)** / **tpl(模板资产:云端模板库+审批流)** / rbac / mail(outbox) / alert / common。
+- 前端菜单(权限点):overview, tenant, license, online, catalog, plan, **cmprint**, **tpl**, **customer**, billing, **contract**, **notice**, **cs**, **harden**, **tenant:portal**(自助门户管理), audit, role:view, user:view。
 - 公开页(无 ops 鉴权):`/activate/:token`(激活)、`/portal` + `/portal/home`(租户门户)。
 - 公开后端端点(`/pub/**`,JwtAuthFilter 放行):`/pub/notices/active`、`/pub/consents`、`/pub/payments/notify/{channel}`、`/pub/portal/login|overview`、`/pub/crl`、`/pub/license/public-keys`。
 
 ## 3. 数据库迁移
-- PG/H2:`server/.../db/migration/V1..V19`。MySQL 方言:`server/.../db/mysql/V1..V19`(机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`、每表 `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)。
-- **新增迁移后必做**:① 在 `db/migration` 加 `Vn`;② 在 `db/mysql` 加同号方言版(同样转换);③ 运行 `bash deploy/sql/generate-schema.sh` 重生成 `deploy/sql/schema-*.sql`;④ 更新 `MysqlMigrationTest`/`MysqlRealMigrationTest` 里的迁移计数断言(当前 **19**)。
-- 最近迁移:V16 tenant_portal、V17 tax_invoice、V18 harden、V19 cmprint_catalog(plan 增 product_code/edition + CMPRINT 产品/套餐/权限种子)。
+- PG/H2:`server/.../db/migration/V1..V20`。MySQL 方言:`server/.../db/mysql/V1..V20`(机械转换:`IDENTITY→AUTO_INCREMENT`、`TIMESTAMP→DATETIME`、布尔默认 `1/0`、每表 `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)。
+- **新增迁移后必做**:① 在 `db/migration` 加 `Vn`;② 在 `db/mysql` 加同号方言版(同样转换);③ 运行 `bash deploy/sql/generate-schema.sh` 重生成 `deploy/sql/schema-*.sql`;④ 更新 `MysqlMigrationTest`/`MysqlRealMigrationTest` 里的迁移计数断言(当前 **20**)。
+- 最近迁移:V16 tenant_portal、V17 tax_invoice、V18 harden、V19 cmprint_catalog、V20 template_assets(模板资产三表+tpl 权限点)。
 
 ## 4. "通用·不绑定厂商·可降级"的 provider 抽象(本项目核心范式)
 - 智能客服:`ChatProvider`+`OpenAiCompatProvider`(纯 JDK HttpClient,SSE);未配置 `app.ai.*` 则降级知识库(关键词召回 `knowledge/faq.md`)。配 `AI_BASE_URL/AI_API_KEY/AI_MODEL` 即接 GLM-4-Flash/通义/DeepSeek/Ollama。
@@ -58,9 +58,21 @@ overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·*
 - **坑**:Java `Map.copyOf` 不保序(档位顺序断言曾因此挂),保序场景用 unmodifiable LinkedHashMap;
   `/api/**` 即使无 @RequirePerm 也要带 JWT(仅 `/pub/**` 匿名)。
 
+## 5c. 模板资产管理(最近功能,细节)
+- `com.codeman.platform.tpl`:print_template(content 生效/draft_content 草稿分离)+版本留档+按租户模板库密钥;
+  审批流 DRAFT→PENDING(只读)→APPROVED;回滚=历史内容拉回草稿再走审批;全动作 TPL_* 审计(已纳入 CmPrint 审计查询范围)。
+- 公开模板库 `/pub/cmprint/gallery/{key}/api/templates...` **逐字对齐 cmprint cloud-api.js 契约**
+  (响应 {success,message?,data};列表项 id/name/template/tags/version/author/useCount);设计器 cloudBaseUrl
+  配该地址即直连;上传落 PENDING(审批后上架);属主只可删未生效上传。
+- **契约一致性校验(CI 强制)**:`scripts/check-cmprint-contract.mjs` 比对 CmprintEditions.java ↔
+  examples/cmprint-integration/cmprint-contract.json(cmprint 仓库 test/cmprint-contract.test.js 对其
+  docs/cmprint-contract.json 同样校验;两 JSON 须字节一致,sha256[:16]=a1ef84c1629dea43)。
+- **坑**:Spring Data 不扫描嵌套在普通接口里的 repository 接口(NoSuchBeanDefinition)——每个 repo 顶层文件;
+  浏览器端 403 多半是 CORS 白名单(后端只许 5173)而非鉴权。
+
 ## 6. 测试与 CI
-- 后端测试(`mvn test`):33 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
-- CI `.github/workflows/ci.yml`:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright,8 specs 含 cmprint) / **mysql 矩阵 [8.0, 5.7] 真机迁移** / ci-summary / release(仅 tag)。
+- 后端测试(`mvn test`):37 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
+- CI `.github/workflows/ci.yml`:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright,9 specs 含 cmprint/templates)+ 契约校验(check-cmprint-contract) / **mysql 矩阵 [8.0, 5.7] 真机迁移** / ci-summary / release(仅 tag)。
 - **真机验证手法**(沙箱无常驻 `&`):用 Bash 工具 `run_in_background:true` 跑 `java -jar`;`until grep "Tomcat started on port 8080" log` 等待;`mcp__github__actions_*` + `mcp__github__get_job_logs` 查 CI(list 输出过大时存盘后用 python 解析)。
 
 ## 7. 已知限制 / 待办候选(未做)

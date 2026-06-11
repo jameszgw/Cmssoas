@@ -29,7 +29,7 @@ class MysqlRealMigrationTest {
         fw.clean();                         // 保证幂等(CI 全新库)
         MigrateResult r = fw.migrate();
         assertTrue(r.success, "MySQL 方言迁移应在真实 MySQL 成功应用");
-        assertEquals(19, r.migrationsExecuted, "应应用全部 19 个迁移");
-        assertEquals("19", fw.info().current().getVersion().getVersion(), "当前版本应为 19");
+        assertEquals(20, r.migrationsExecuted, "应应用全部 20 个迁移");
+        assertEquals("20", fw.info().current().getVersion().getVersion(), "当前版本应为 20");
     }
 }
