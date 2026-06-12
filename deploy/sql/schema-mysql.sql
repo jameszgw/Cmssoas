@@ -1,7 +1,7 @@
 -- ============================================================
 -- CODEMAN 全量表结构 + 系统初始化数据(MySQL 5.7 / 8.0)
 -- 自动生成,请勿手改;由 deploy/sql/generate-schema.sh 合并 Flyway 迁移而来。
--- 生成时间: 2026-06-11 10:28:17
+-- 生成时间: 2026-06-11 23:48:49
 -- 含:全部业务表 DDL + 系统数据(权限/角色/套餐等种子)。
 -- 注:初始超管账号 admin/8888 由应用首启自动创建(或见 init-admin.sql)。
 -- ============================================================
@@ -698,4 +698,66 @@ INSERT INTO permission(code,name,parent_code,type,sort) VALUES
  ('cmprint:view','查看 CmPrint 授权','cmprint','ACTION',1),
  ('cmprint:issue','签发 CmPrint 授权','cmprint','ACTION',2),
  ('cmprint:audit','CmPrint 审计查询','cmprint','ACTION',3);
+
+-- ---------- V20__template_assets.sql ----------
+-- [MySQL 方言] 由 db/migration/V20__template_assets.sql 机械转换:IDENTITY→AUTO_INCREMENT、TIMESTAMP→DATETIME、布尔默认 1/0、建表 utf8mb4。
+-- 模板资产管理(CmPrint 云端模板库 + 审批流):
+-- 1) print_template:模板资产主表——生效内容(content/current_version) + 工作副本(draft_content);
+--    status: DRAFT(未生效过)/PENDING(送审中,只读)/APPROVED(有生效版)/DISABLED(下架,不进模板库);
+-- 2) print_template_version:版本留档(送审/审批轨迹:提交人/备注/审批人/审批意见/内容哈希);
+-- 3) template_gallery_key:按租户的模板库拉取密钥——CmPrint 设计器 cloudBaseUrl 指向
+--    /pub/cmprint/gallery/{key} 即可直连(只见 APPROVED 且属于本租户或平台公共的模板);
+-- 4) tpl 菜单与 查看/编辑/使用/删除/导出/审批 权限点(按角色分配,即细粒度模板权限)。
+
+CREATE TABLE print_template (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    code            VARCHAR(40)  NOT NULL UNIQUE,          -- TPL-2026-0001
+    name            VARCHAR(128) NOT NULL,
+    product_code    VARCHAR(32)  NOT NULL DEFAULT 'CMPRINT',
+    tenant_code     VARCHAR(32),                           -- 空=平台公共;否则仅分发给该租户
+    tags            VARCHAR(256),                          -- 逗号分隔(模板库分组)
+    status          VARCHAR(16)  NOT NULL,                 -- DRAFT / PENDING / APPROVED / DISABLED
+    current_version INT          NOT NULL DEFAULT 0,       -- 生效版本号(0=尚无生效版)
+    content         TEXT,                                  -- 生效中的模板 JSON(审批通过的内容)
+    draft_content   TEXT,                                  -- 工作副本(编辑于此,送审后冻结)
+    use_count       INT          NOT NULL DEFAULT 0,
+    created_by      VARCHAR(64)  NOT NULL,
+    created_at      DATETIME    NOT NULL,
+    updated_at      DATETIME    NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE INDEX idx_print_template_status ON print_template(status);
+CREATE INDEX idx_print_template_tenant ON print_template(tenant_code);
+
+CREATE TABLE print_template_version (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    template_code VARCHAR(40)  NOT NULL,
+    version       INT          NOT NULL,
+    content       TEXT         NOT NULL,
+    hash          VARCHAR(16)  NOT NULL,                   -- 内容哈希(去重/对比)
+    status        VARCHAR(16)  NOT NULL,                   -- PENDING / APPROVED / REJECTED
+    submitted_by  VARCHAR(64),
+    submit_note   VARCHAR(256),
+    reviewed_by   VARCHAR(64),
+    review_note   VARCHAR(256),
+    created_at    DATETIME    NOT NULL,
+    reviewed_at   DATETIME
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE INDEX idx_ptv_code ON print_template_version(template_code);
+
+CREATE TABLE template_gallery_key (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_code VARCHAR(32) NOT NULL UNIQUE,               -- 'PUBLIC' = 平台公共库密钥
+    gallery_key VARCHAR(64) NOT NULL UNIQUE,
+    enabled     BOOLEAN     NOT NULL DEFAULT 1,
+    updated_at  DATETIME    NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO permission(code,name,parent_code,type,sort) VALUES
+ ('tpl','模板资产',NULL,'MENU',15),
+ ('tpl:view','查看模板','tpl','ACTION',1),
+ ('tpl:edit','编辑/送审模板','tpl','ACTION',2),
+ ('tpl:approve','审批模板','tpl','ACTION',3),
+ ('tpl:use','使用模板','tpl','ACTION',4),
+ ('tpl:delete','删除模板','tpl','ACTION',5),
+ ('tpl:export','导出模板','tpl','ACTION',6);
 

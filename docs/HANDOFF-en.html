@@ -93,8 +93,8 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 </ul>
 <h2 id="h332e204d6967">3. Migrations</h2>
 <ul>
-<li>PG/H2: <code>server/.../db/migration/V1..V19</code>. MySQL dialect: <code>server/.../db/mysql/V1..V19</code> (transform: <code>IDENTITY→AUTO_INCREMENT</code>, <code>TIMESTAMP→DATETIME</code>, boolean default <code>1/0</code>, per-table <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>).</li>
-<li><strong>When adding a migration</strong>: ① add <code>Vn</code> under <code>db/migration</code>; ② add same-numbered MySQL dialect under <code>db/mysql</code>; ③ run <code>bash deploy/sql/generate-schema.sh</code> to regenerate <code>deploy/sql/schema-*.sql</code>; ④ bump the migration-count assertions in <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> (currently <strong>19</strong>).</li>
+<li>PG/H2: <code>server/.../db/migration/V1..V20</code>. MySQL dialect: <code>server/.../db/mysql/V1..V20</code> (transform: <code>IDENTITY→AUTO_INCREMENT</code>, <code>TIMESTAMP→DATETIME</code>, boolean default <code>1/0</code>, per-table <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>).</li>
+<li><strong>When adding a migration</strong>: ① add <code>Vn</code> under <code>db/migration</code>; ② add same-numbered MySQL dialect under <code>db/mysql</code>; ③ run <code>bash deploy/sql/generate-schema.sh</code> to regenerate <code>deploy/sql/schema-*.sql</code>; ④ bump the migration-count assertions in <code>MysqlMigrationTest</code>/<code>MysqlRealMigrationTest</code> (currently <strong>20</strong>).</li>
 <li>Recent: V15 customer, V16 tenant_portal, V17 tax_invoice, V18 harden.</li>
 </ul>
 <h2 id="h342e2050726f">4. Provider abstraction pattern (core idiom: vendor-agnostic + degradable)</h2>
@@ -121,10 +121,22 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <li>Client kit <code>examples/cmprint-integration/</code>: cmprint-license.mjs (zero-dep WebCrypto Ed25519 verifier; public key = X.509 SPKI base64), verify-demo.mjs, issue-and-verify.sh (full chain verified live; tampered .lic rejected).</li>
 <li><strong>Pitfalls</strong>: Java <code>Map.copyOf</code> does not preserve order (edition-order assertion failed once) — use unmodifiable LinkedHashMap; <code>/api/**</code> requires JWT even without @RequirePerm (only <code>/pub/**</code> is anonymous).</li>
 </ul>
+<h2 id="h35632e205465">5c. Template asset management (latest feature)</h2>
+<ul>
+<li><code>com.codeman.platform.tpl</code>: print_template (live content / draft separated) + version trail + per-tenant gallery keys; approval flow DRAFT→PENDING(read-only)→APPROVED; rollback pulls history into the draft and goes through approval again; every action audited as TPL_* (included in the CmPrint audit query scope).</li>
+<li>Public gallery <code>/pub/cmprint/gallery/{key}/api/templates...</code> matches the cmprint cloud-api.js contract verbatim ({success,message?,data}; items id/name/template/tags/version/author/useCount); designer uploads land as PENDING; owners may only delete not-yet-live uploads.</li>
+<li><strong>Contract consistency check (CI-enforced)</strong>: <code>scripts/check-cmprint-contract.mjs</code> compares CmprintEditions.java ↔ examples/cmprint-integration/cmprint-contract.json (cmprint repo runs test/cmprint-contract.test.js against its docs/cmprint-contract.json; the two JSON files must be byte-identical, sha256[:16]=a1ef84c1629dea43).</li>
+<li><strong>Pitfalls</strong>: Spring Data does not scan repository interfaces nested inside a plain interface (NoSuchBeanDefinition) — one top-level file per repo; browser 403 is usually the CORS allowlist (backend only permits :5173), not auth.</li>
+</ul>
+<h2 id="h35642e204f6e">5d. Online floating-seat browser client (latest)</h2>
+<ul>
+<li>examples/cmprint-integration/cmprint-online-client.mjs: activate / auto heartbeat (nonce) / Ed25519 reply verification (payload=<code>licenseId|instanceId|serverTime|STATUS</code>) / pagehide sendBeacon release / offline grace + auto re-activate; online-demo.mjs verified live (seat exclusion / release-takeover / instant REVOKED).</li>
+<li><strong>WebConfig CORS</strong>: /sdk/<strong> and /pub/</strong> open to any origin (no credentials; browser clients call from integrator domains), /api/** stays on the cors.allowed-origins allowlist — CorsConfigTest covers all three.</li>
+</ul>
 <h2 id="h362e20546573">6. Tests &amp; CI</h2>
 <ul>
-<li>Backend <code>mvn test</code>: 33 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
-<li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 8 specs incl. cmprint) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
+<li>Backend <code>mvn test</code>: 40 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>·<strong>tplAsset</strong>), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
+<li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 9 specs incl. cmprint/templates) + contract check (check-cmprint-contract) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
 <li><strong>Real-run technique in sandbox</strong> (no persistent <code>&amp;</code>): use the Bash tool with <code>run_in_background:true</code> to run <code>java -jar</code>; wait with <code>until grep "Tomcat started on port 8080" log</code>; inspect CI via <code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> (when list output is too large, save to file and parse with python).</li>
 </ul>
 <h2 id="h372e204b6e6f">7. Known limits / candidate TODOs (not done)</h2>

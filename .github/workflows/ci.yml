@@ -79,7 +79,13 @@ jobs:
         run: |
           set -e
           B=http://localhost:8080
-          TOKEN=$(curl -s -X POST $B/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"8888"}' | sed -E 's/.*"token":"([^"]+)".*/\1/')
+          # 登录重试:健康检查 UP 早于 CommandLineRunner 建 admin 账号,直登有竞态(曾两次假红)
+          for i in $(seq 1 30); do
+            TOKEN=$(curl -s -X POST $B/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"8888"}' | sed -E 's/.*"token":"([^"]+)".*/\1/')
+            case "$TOKEN" in eyJ*) break ;; esac
+            sleep 1
+          done
+          case "$TOKEN" in eyJ*) ;; *) echo "登录失败:$TOKEN"; exit 1 ;; esac
           # 校验公钥算法与矩阵一致
           EXP=$([ "${{ matrix.algo }}" = "sm2" ] && echo SM2 || echo Ed25519)
           ALG=$(curl -s $B/api/licenses/public-key -H "Authorization: Bearer $TOKEN" | sed -E 's/.*"algorithm":"([^"]+)".*/\1/')
@@ -133,6 +139,8 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: CmPrint 契约一致性校验 (CmprintEditions.java ↔ cmprint-contract.json)
+        run: node scripts/check-cmprint-contract.mjs
 
   e2e:
     name: 端到端测试 (Playwright)
