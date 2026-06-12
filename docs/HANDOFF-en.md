@@ -55,8 +55,12 @@ overview / tenant (onboard/activate/MFA) / license (issue·renew·modify·revoke
 - **Contract consistency check (CI-enforced)**: `scripts/check-cmprint-contract.mjs` compares CmprintEditions.java ↔ examples/cmprint-integration/cmprint-contract.json (cmprint repo runs test/cmprint-contract.test.js against its docs/cmprint-contract.json; the two JSON files must be byte-identical, sha256[:16]=a1ef84c1629dea43).
 - **Pitfalls**: Spring Data does not scan repository interfaces nested inside a plain interface (NoSuchBeanDefinition) — one top-level file per repo; browser 403 is usually the CORS allowlist (backend only permits :5173), not auth.
 
+## 5d. Online floating-seat browser client (latest)
+- examples/cmprint-integration/cmprint-online-client.mjs: activate / auto heartbeat (nonce) / Ed25519 reply verification (payload=`licenseId|instanceId|serverTime|STATUS`) / pagehide sendBeacon release / offline grace + auto re-activate; online-demo.mjs verified live (seat exclusion / release-takeover / instant REVOKED).
+- **WebConfig CORS**: /sdk/** and /pub/** open to any origin (no credentials; browser clients call from integrator domains), /api/** stays on the cors.allowed-origins allowlist — CorsConfigTest covers all three.
+
 ## 6. Tests & CI
-- Backend `mvn test`: 37 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
+- Backend `mvn test`: 40 tests (one `MysqlRealMigrationTest` runs only in CI real-DB, skipped locally). Key: `*IntegrationTest` (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**), `MysqlMigrationTest` (H2 MySQL mode), `KnowledgeBaseTest`, `Sm2SignatureServiceTest`, `TotpTest`, `TenantSchemaServiceTest`.
 - CI `.github/workflows/ci.yml`: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 9 specs incl. cmprint/templates) + contract check (check-cmprint-contract) / **mysql matrix [8.0, 5.7] real-DB migration** / ci-summary / release(tag only).
 - **Real-run technique in sandbox** (no persistent `&`): use the Bash tool with `run_in_background:true` to run `java -jar`; wait with `until grep "Tomcat started on port 8080" log`; inspect CI via `mcp__github__actions_*` + `mcp__github__get_job_logs` (when list output is too large, save to file and parse with python).
 

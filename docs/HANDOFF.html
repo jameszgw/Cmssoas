@@ -154,9 +154,18 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <li><strong>坑</strong>:Spring Data 不扫描嵌套在普通接口里的 repository 接口(NoSuchBeanDefinition)——每个 repo 顶层文件;</li>
 </ul>
 <p>  浏览器端 403 多半是 CORS 白名单(后端只许 5173)而非鉴权。</p>
+<h2 id="h35642e20e59c">5d. 在线浮动席位浏览器客户端(最近功能)</h2>
+<ul>
+<li>examples/cmprint-integration/cmprint-online-client.mjs:激活/自动心跳(nonce)/Ed25519 响应验签</li>
+</ul>
+<p>  (payload=<code>licenseId|instanceId|serverTime|STATUS</code>)/pagehide sendBeacon 释放/断网宽限+恢复自动重激活;   online-demo.mjs 真机全链路(席位互斥/释放接替/吊销即时 REVOKED)已跑通。</p>
+<ul>
+<li><strong>WebConfig CORS</strong>:/sdk/<strong> 与 /pub/</strong> 对任意来源放开(无凭据;浏览器客户端从集成方域直调),</li>
+</ul>
+<p>  /api/** 仍按 cors.allowed-origins 白名单——CorsConfigTest 三断言回归。</p>
 <h2 id="h362e20e6b58b">6. 测试与 CI</h2>
 <ul>
-<li>后端测试(<code>mvn test</code>):37 用例(1 个 <code>MysqlRealMigrationTest</code> 仅 CI 真机跑、本地跳过)。关键:<code>*IntegrationTest</code>(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>·<strong>tplAsset</strong>)、<code>MysqlMigrationTest</code>(H2 MySQL 模式)、<code>KnowledgeBaseTest</code>、<code>Sm2SignatureServiceTest</code>、<code>TotpTest</code>、<code>TenantSchemaServiceTest</code>。</li>
+<li>后端测试(<code>mvn test</code>):40 用例(1 个 <code>MysqlRealMigrationTest</code> 仅 CI 真机跑、本地跳过)。关键:<code>*IntegrationTest</code>(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>·<strong>tplAsset</strong>)、<code>MysqlMigrationTest</code>(H2 MySQL 模式)、<code>KnowledgeBaseTest</code>、<code>Sm2SignatureServiceTest</code>、<code>TotpTest</code>、<code>TenantSchemaServiceTest</code>。</li>
 <li>CI <code>.github/workflows/ci.yml</code>:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright,9 specs 含 cmprint/templates)+ 契约校验(check-cmprint-contract) / <strong>mysql 矩阵 [8.0, 5.7] 真机迁移</strong> / ci-summary / release(仅 tag)。</li>
 <li><strong>真机验证手法</strong>(沙箱无常驻 <code>&amp;</code>):用 Bash 工具 <code>run_in_background:true</code> 跑 <code>java -jar</code>;<code>until grep "Tomcat started on port 8080" log</code> 等待;<code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> 查 CI(list 输出过大时存盘后用 python 解析)。</li>
 </ul>

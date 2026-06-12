@@ -128,9 +128,14 @@ figure{margin:1.2em 0}figcaption{color:var(--dim);font-size:13px;margin-top:.3em
 <li><strong>Contract consistency check (CI-enforced)</strong>: <code>scripts/check-cmprint-contract.mjs</code> compares CmprintEditions.java ↔ examples/cmprint-integration/cmprint-contract.json (cmprint repo runs test/cmprint-contract.test.js against its docs/cmprint-contract.json; the two JSON files must be byte-identical, sha256[:16]=a1ef84c1629dea43).</li>
 <li><strong>Pitfalls</strong>: Spring Data does not scan repository interfaces nested inside a plain interface (NoSuchBeanDefinition) — one top-level file per repo; browser 403 is usually the CORS allowlist (backend only permits :5173), not auth.</li>
 </ul>
+<h2 id="h35642e204f6e">5d. Online floating-seat browser client (latest)</h2>
+<ul>
+<li>examples/cmprint-integration/cmprint-online-client.mjs: activate / auto heartbeat (nonce) / Ed25519 reply verification (payload=<code>licenseId|instanceId|serverTime|STATUS</code>) / pagehide sendBeacon release / offline grace + auto re-activate; online-demo.mjs verified live (seat exclusion / release-takeover / instant REVOKED).</li>
+<li><strong>WebConfig CORS</strong>: /sdk/<strong> and /pub/</strong> open to any origin (no credentials; browser clients call from integrator domains), /api/** stays on the cors.allowed-origins allowlist — CorsConfigTest covers all three.</li>
+</ul>
 <h2 id="h362e20546573">6. Tests &amp; CI</h2>
 <ul>
-<li>Backend <code>mvn test</code>: 37 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>·<strong>tplAsset</strong>), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
+<li>Backend <code>mvn test</code>: 40 tests (one <code>MysqlRealMigrationTest</code> runs only in CI real-DB, skipped locally). Key: <code>*IntegrationTest</code> (rbac/features: notice·payment·tax·customer·portal·licenseLifecycle·harden·<strong>cmprint</strong>·<strong>tplAsset</strong>), <code>MysqlMigrationTest</code> (H2 MySQL mode), <code>KnowledgeBaseTest</code>, <code>Sm2SignatureServiceTest</code>, <code>TotpTest</code>, <code>TenantSchemaServiceTest</code>.</li>
 <li>CI <code>.github/workflows/ci.yml</code>: backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright, 9 specs incl. cmprint/templates) + contract check (check-cmprint-contract) / <strong>mysql matrix [8.0, 5.7] real-DB migration</strong> / ci-summary / release(tag only).</li>
 <li><strong>Real-run technique in sandbox</strong> (no persistent <code>&amp;</code>): use the Bash tool with <code>run_in_background:true</code> to run <code>java -jar</code>; wait with <code>until grep "Tomcat started on port 8080" log</code>; inspect CI via <code>mcp__github__actions_*</code> + <code>mcp__github__get_job_logs</code> (when list output is too large, save to file and parse with python).</li>
 </ul>

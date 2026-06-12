@@ -70,8 +70,15 @@ overview / tenant(开通/激活/MFA) / license(签发·续期·变更·吊销·*
 - **坑**:Spring Data 不扫描嵌套在普通接口里的 repository 接口(NoSuchBeanDefinition)——每个 repo 顶层文件;
   浏览器端 403 多半是 CORS 白名单(后端只许 5173)而非鉴权。
 
+## 5d. 在线浮动席位浏览器客户端(最近功能)
+- examples/cmprint-integration/cmprint-online-client.mjs:激活/自动心跳(nonce)/Ed25519 响应验签
+  (payload=`licenseId|instanceId|serverTime|STATUS`)/pagehide sendBeacon 释放/断网宽限+恢复自动重激活;
+  online-demo.mjs 真机全链路(席位互斥/释放接替/吊销即时 REVOKED)已跑通。
+- **WebConfig CORS**:/sdk/** 与 /pub/** 对任意来源放开(无凭据;浏览器客户端从集成方域直调),
+  /api/** 仍按 cors.allowed-origins 白名单——CorsConfigTest 三断言回归。
+
 ## 6. 测试与 CI
-- 后端测试(`mvn test`):37 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
+- 后端测试(`mvn test`):40 用例(1 个 `MysqlRealMigrationTest` 仅 CI 真机跑、本地跳过)。关键:`*IntegrationTest`(rbac/features:notice·payment·tax·customer·portal·licenseLifecycle·harden·**cmprint**·**tplAsset**)、`MysqlMigrationTest`(H2 MySQL 模式)、`KnowledgeBaseTest`、`Sm2SignatureServiceTest`、`TotpTest`、`TenantSchemaServiceTest`。
 - CI `.github/workflows/ci.yml`:backend / sdk / sign-smoke(ed25519,sm2) / harden(ProGuard) / frontend / e2e(Playwright,9 specs 含 cmprint/templates)+ 契约校验(check-cmprint-contract) / **mysql 矩阵 [8.0, 5.7] 真机迁移** / ci-summary / release(仅 tag)。
 - **真机验证手法**(沙箱无常驻 `&`):用 Bash 工具 `run_in_background:true` 跑 `java -jar`;`until grep "Tomcat started on port 8080" log` 等待;`mcp__github__actions_*` + `mcp__github__get_job_logs` 查 CI(list 输出过大时存盘后用 python 解析)。
 
